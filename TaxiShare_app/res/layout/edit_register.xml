@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="10dip" >
+
+        <!-- TITULO DA PAGIGA -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
+            android:text="Cadastro"
+            android:textSize="25dip"
+            android:textStyle="bold" />
+
+        <!-- LABEL DE NOME -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Nome Completo" />
+
+        <!-- CAMPO DO NOME -->
+
+        <EditText
+            android:id="@+id/textNome"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DO NICK -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Nick" />
+
+        <!-- CAMPO DO NICK -->
+
+        <EditText
+            android:id="@+id/textNick"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DO EMAIL -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Email" />
+
+        <!-- CAMPO DO EMAIL -->
+
+        <EditText
+            android:id="@+id/textEmail"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DO SEXO -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sexo" />
+        
+        <!-- CAMPO DO SEXO -->
+
+        <Spinner
+            android:id="@+id/textSexo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DO DDD -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="DDD" />
+
+        <!-- CAMPO DO DDD -->
+
+        <EditText
+            android:id="@+id/textDDD"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DO CELULAR -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Celular" />
+
+        <!-- CAMPO DO CELULAR -->
+
+        <EditText
+            android:id="@+id/textCelular"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DA DATA NASCIMENTO -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Data de nascimento" />
+
+        <!-- CAMPO DA DATA NASCIMENTO -->
+
+        <DatePicker
+            android:id="@+id/dateDataNascimemto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DO LOGIN -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Login" />
+
+        <!-- CAMPO DO LOGIN -->
+
+        <EditText
+            android:id="@+id/textLogin"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DA SENHA -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dip"
+            android:text="Senha" />
+
+        <!-- CAMPO DA SENHA -->
+
+        <EditText
+            android:id="@+id/textSenha"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:password="true" />
+
+        <!-- LABEL DA PERGUNTA -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pergunta Secreta" />
+
+        <!-- CAMPO DA PERGUNTA -->
+
+        <Spinner
+            android:id="@+id/textPergunta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DA RESPOSTA -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Resposta" />
+
+        <!-- CAMPO DA RESPOSTA -->
+
+        <EditText
+            android:id="@+id/textResposta"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Error message -->
+
+        <TextView
+            android:id="@+id/textErro"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dip"
+            android:textColor="#e30000"
+            android:textStyle="bold" />
+
+        <!-- Login Button -->
+
+        <Button
+            android:id="@+id/btnCadastrar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:text="Cadastrar" />
+
+        <!-- Link to Login Screen -->
+
+        <Button
+            android:id="@+id/btnLinkToLoginScreen"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dip"
+            android:background="@null"
+            android:text="Já sou cadastrado. Fazer login!"
+            android:textColor="#21dbd4"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</ScrollView>

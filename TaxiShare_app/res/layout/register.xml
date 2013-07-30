@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="10dip" >
+
+        <!-- TITULO DA PAGIGA -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
+            android:text="Cadastro"
+            android:textSize="25dip"
+            android:textStyle="bold" />
+
+        <!-- LABEL DE NOME -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Nome Completo" />
+
+        <!-- CAMPO DO NOME -->
+
+        <EditText
+            android:id="@+id/editNome"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DO NICK -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Nick" />
+
+        <!-- CAMPO DO NICK -->
+
+        <EditText
+            android:id="@+id/editNick"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DO EMAIL -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Email" />
+
+        <!-- CAMPO DO EMAIL -->
+
+        <EditText
+            android:id="@+id/editEmail"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DO SEXO -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sexo" />
+        
+        <!-- CAMPO DO SEXO -->
+
+        <Spinner
+            android:id="@+id/editSexo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DO DDD -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="DDD" />
+
+        <!-- CAMPO DO DDD -->
+
+        <EditText
+            android:id="@+id/editDDD"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DO CELULAR -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Celular" />
+
+        <!-- CAMPO DO CELULAR -->
+
+        <EditText
+            android:id="@+id/editCelular"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DA DATA NASCIMENTO -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Data de nascimento" />
+
+        <!-- CAMPO DA DATA NASCIMENTO -->
+
+        <DatePicker
+            android:id="@+id/editDateDataNascimemto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DO LOGIN -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Login" />
+
+        <!-- CAMPO DO LOGIN -->
+
+        <EditText
+            android:id="@+id/editLogin"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DA SENHA -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dip"
+            android:text="Senha" />
+
+        <!-- CAMPO DA SENHA -->
+
+        <EditText
+            android:id="@+id/editSenha"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:password="true" />
+
+        <!-- LABEL DA PERGUNTA -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pergunta Secreta" />
+
+        <!-- CAMPO DA PERGUNTA -->
+
+        <Spinner
+            android:id="@+id/editPergunta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- LABEL DA RESPOSTA -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Resposta" />
+
+        <!-- CAMPO DA RESPOSTA -->
+
+        <EditText
+            android:id="@+id/editResposta"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Error message -->
+
+        <TextView
+            android:id="@+id/editErro"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dip"
+            android:textColor="#e30000"
+            android:textStyle="bold" />
+
+        <!-- Login Button -->
+
+        <Button
+            android:id="@+id/btnEditSalvar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:text="Cadastrar" />
+
+
+       
+    </LinearLayout>
+
+</ScrollView>
