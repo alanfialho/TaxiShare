@@ -56,6 +56,7 @@ public class WSTaxiShare {
 			for (int i = 0; i < array.size(); i++) {
 				listaPessoa.add(gson.fromJson(array.get(i), PerguntaApp.class));
 			}
+
 			return listaPessoa;
 		} else {
 			throw new Exception(resposta[1]);
@@ -107,16 +108,13 @@ public class WSTaxiShare {
 		{
 			Gson gson = new Gson();
 			String loginJSON = gson.toJson(login);
-			Log.i("Login JSON", loginJSON);
 			resposta = new WSClient().post(URL_WS + "login/create", loginJSON);
 		}
 		catch(Exception ex)
 		{
-			Log.i("Erro no cadastro", "Erro no cadastro login");
-
-			ex.printStackTrace();
+			Log.i("Erronocadastro", "Erro no cadastro login " + ex.toString());
+			Log.i("Erronocadastro2", "Erro no cadastro login " + ex.getMessage());
 		}
-		
 		if (resposta[0].equals("200")) {
 			return resposta[1];
 		} else {

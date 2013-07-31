@@ -119,6 +119,7 @@ public class LoginJpaController implements Serializable {
 
     public Login findLogin(String login) {
         EntityManager em = getEntityManager();
+        System.out.println("ENtrou no find login");
         try {
             String query = "select l from Login l where l.login like :login";
             Query q = em.createQuery(query).setParameter("login", login);

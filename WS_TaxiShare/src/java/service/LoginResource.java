@@ -60,42 +60,48 @@ public class LoginResource {
 
         try {
             Login login = (Login) loginDao.findLogin(loginInfo);
+            if (login != null) {
+                //Checa se a senha bate com o login
+                if (login.getSenha().equals(password)) {
 
-            //Checa se a senha bate com o login
-            if (login.getSenha().equals(password)) {
+                    //Pegando a pessoa do login
+                    NovaPessoa pessoa = login.getNovaPessoa();
 
-                //Pegando a pessoa do login
-                NovaPessoa pessoa = login.getNovaPessoa();
+                    SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yy");
+                    String date = formater.format(pessoa.getDataNascimento());
+                    //Pega os dados da pessoa do FW e seta na entidade pessoa WS
+                    pessoaEntity.setNome(pessoa.getNome());
+                    pessoaEntity.setNick(pessoa.getNick());
+                    pessoaEntity.setDataNascimento(date);
+                    pessoaEntity.setCelular(pessoa.getCelular());
+                    pessoaEntity.setSexo(pessoa.getSexo());
+                    pessoaEntity.setDdd(pessoa.getDdd());
+                    pessoaEntity.setEmail(pessoa.getEmail());
 
-                SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yy");
-                String date = formater.format(pessoa.getDataNascimento());
-                //Pega os dados da pessoa do FW e seta na entidade pessoa WS
-                pessoaEntity.setNome(pessoa.getNome());
-                pessoaEntity.setNick(pessoa.getNick());
-                pessoaEntity.setDataNascimento(date);
-                pessoaEntity.setCelular(pessoa.getCelular());
-                pessoaEntity.setSexo(pessoa.getSexo());
-                pessoaEntity.setDdd(pessoa.getDdd());
-                pessoaEntity.setEmail(pessoa.getEmail());
-
-                //Seta os dados da pergunta do FW e seta na entidade pergunta WS
-                perguntaEntity.setId(login.getPergunta().getId());
-                perguntaEntity.setPergunta(login.getPergunta().getPergunta());
+                    //Seta os dados da pergunta do FW e seta na entidade pergunta WS
+                    perguntaEntity.setId(login.getPergunta().getId());
+                    perguntaEntity.setPergunta(login.getPergunta().getPergunta());
 
 
-                //Pega os dados do login do FW e seta na entidade login do WS
-                loginEntity.setId(login.getId());
-                loginEntity.setLogin(login.getLogin());
-                loginEntity.setPessoa(pessoaEntity);
+                    //Pega os dados do login do FW e seta na entidade login do WS
+                    loginEntity.setId(login.getId());
+                    loginEntity.setLogin(login.getLogin());
+                    loginEntity.setPessoa(pessoaEntity);
 
-                //Objeto de retorno
-                ResponseEntity saida = new ResponseEntity("Sucesso", 0, "Login efetuado!", loginEntity);
+                    //Objeto de retorno
+                    ResponseEntity saida = new ResponseEntity("Sucesso", 0, "Login efetuado!", loginEntity);
 
-                //Retorna um json completo com os dados do usuarios
-                return new Gson().toJson(saida);
+                    //Retorna um json completo com os dados do usuarios
+                    return new Gson().toJson(saida);
+                } else {
+                    System.out.println("Não Logou");
+                    ResponseEntity saida = new ResponseEntity("Erro", 1, "Senha inválida!", null);
+                    return new Gson().toJson(saida);
+                }
+
             } else {
                 System.out.println("Não Logou");
-                ResponseEntity saida = new ResponseEntity("Erro", 1, "Login ou senha invalida!", null);
+                ResponseEntity saida = new ResponseEntity("Erro", 1, "Login inválido!", null);
 
                 return new Gson().toJson(saida);
             }
@@ -110,7 +116,7 @@ public class LoginResource {
     @Path("/create")
     @Produces("application/json")
     @Consumes("application/json")
-    public void create(LoginEntity entity) {
+    public String create(LoginEntity entity) {
 
         try {
 
@@ -128,7 +134,7 @@ public class LoginResource {
 
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
             java.sql.Date data = new java.sql.Date(format.parse(pessoaEntity.getDataNascimento()).getTime());
-            
+
             //Inicializa os valores da pessoa de acordo com a entity
             pessoa.setNome(pessoaEntity.getNome());
             pessoa.setNick(pessoaEntity.getNick());
@@ -158,9 +164,14 @@ public class LoginResource {
             pessoaDAO.create(pessoa);
             System.out.println("Criando Login");
             loginDAO.create(login);
+            
+            ResponseEntity saida = new ResponseEntity("Erro", 0, "Cadastro Efetuado!", null);
+            return new Gson().toJson(saida);
 
         } catch (Exception ex) {
             System.out.println("Erro no login resource --> " + ex.getMessage());
+            ResponseEntity saida = new ResponseEntity("Erro", 2, "Exception de cu é rola!", null);
+            return new Gson().toJson(saida);
         }
     }
 }

@@ -73,7 +73,6 @@ public class RegisterActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register);
-
 		//Importando os campos da pessoa
 		textNome = (EditText) findViewById(R.id.textNome);
 		textNick = (EditText) findViewById(R.id.textNick);
@@ -127,7 +126,6 @@ public class RegisterActivity extends Activity {
 			adapterSexo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinnerSexo.setAdapter(adapterSexo);
 			
-			Log.i("Preenchendo Sppiners", "Tudo Certo");	
 
 
 		}catch (Exception e1) {
@@ -158,7 +156,6 @@ public class RegisterActivity extends Activity {
 				String resposta = textResposta.getText().toString();
 				String senha = textSenha.getText().toString();
 
-				Log.i("Posicao da pergunta","posicao " + pergunta);
 
 				//Criando objeto pessoa e objeto login
 				NovaPessoaApp pessoaApp = new NovaPessoaApp();
@@ -191,10 +188,9 @@ public class RegisterActivity extends Activity {
 				WSTaxiShare ws = new WSTaxiShare();
 				try 
 				{
+					
 					String respostaWs = ws.cadastrarLogin(loginApp);
-					Log.i("Dados do cadastro", respostaWs);
 					gerarToast("Cadastro efetuado!");
-					Log.i("Feito cadastro", "Beleza, deu certo");
 					
 					Intent i = new Intent(getApplicationContext(),
 							LoginActivity.class);
@@ -205,7 +201,7 @@ public class RegisterActivity extends Activity {
 				} 
 				catch (Exception e) {
 					gerarToast("Erro ao cadastrar " + e.getMessage());
-					Log.i("Erro cadastro", "Beleza, deu errado");
+					Log.i("Erro cadastro", "Beleza, deu errado " + e.getMessage() + " --- "+ e.toString());
 				}
 			}
 		});

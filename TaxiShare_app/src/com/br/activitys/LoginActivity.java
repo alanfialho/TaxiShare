@@ -71,7 +71,7 @@ public class LoginActivity extends Activity {
 
 					if (resposta.getInt("errorCode") == 0) {
 						loginErrorMsg.setText("Logou!");
-						gerarToast("Resposta " + resposta.getString("descricao"));
+						gerarToast(resposta.getString("descricao"));
 
 						// Vai para dashboard
 						Intent dashboard = new Intent(getApplicationContext(), DashboardActivity.class);
@@ -85,7 +85,7 @@ public class LoginActivity extends Activity {
 					}else{
 						// Erro de login
 						loginErrorMsg.setText("Usuario ou senha incorreta");
-						gerarToast("Resposta " + resposta.getString("descricao"));
+						gerarToast(resposta.getString("descricao"));
 
 					}
 
