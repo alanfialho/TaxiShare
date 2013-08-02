@@ -30,7 +30,7 @@
         <!-- CAMPO DO NOME -->
 
         <EditText
-            android:id="@+id/textNome"
+            android:id="@+id/editNome"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
@@ -44,7 +44,7 @@
         <!-- CAMPO DO NICK -->
 
         <EditText
-            android:id="@+id/textNick"
+            android:id="@+id/editNick"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
@@ -58,7 +58,7 @@
         <!-- CAMPO DO EMAIL -->
 
         <EditText
-            android:id="@+id/textEmail"
+            android:id="@+id/editEmail"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
@@ -72,7 +72,7 @@
         <!-- CAMPO DO SEXO -->
 
         <Spinner
-            android:id="@+id/textSexo"
+            android:id="@+id/editSexo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -86,7 +86,7 @@
         <!-- CAMPO DO DDD -->
 
         <EditText
-            android:id="@+id/textDDD"
+            android:id="@+id/editDDD"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
@@ -100,7 +100,7 @@
         <!-- CAMPO DO CELULAR -->
 
         <EditText
-            android:id="@+id/textCelular"
+            android:id="@+id/editCelular"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
@@ -114,7 +114,7 @@
         <!-- CAMPO DA DATA NASCIMENTO -->
 
         <DatePicker
-            android:id="@+id/dateDataNascimemto"
+            android:id="@+id/editDateDataNascimemto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -128,7 +128,7 @@
         <!-- CAMPO DO LOGIN -->
 
         <EditText
-            android:id="@+id/textLogin"
+            android:id="@+id/editLogin"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
@@ -143,7 +143,7 @@
         <!-- CAMPO DA SENHA -->
 
         <EditText
-            android:id="@+id/textSenha"
+            android:id="@+id/editSenha"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:password="true" />
@@ -158,7 +158,7 @@
         <!-- CAMPO DA PERGUNTA -->
 
         <Spinner
-            android:id="@+id/textPergunta"
+            android:id="@+id/editPergunta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -172,14 +172,14 @@
         <!-- CAMPO DA RESPOSTA -->
 
         <EditText
-            android:id="@+id/textResposta"
+            android:id="@+id/editResposta"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
         <!-- Error message -->
 
         <TextView
-            android:id="@+id/textErro"
+            android:id="@+id/editErro"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:padding="10dip"
@@ -189,7 +189,7 @@
         <!-- Login Button -->
 
         <Button
-            android:id="@+id/btnCadastrar"
+            android:id="@+id/btnEditSalvar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
