@@ -29,7 +29,7 @@ public final class R {
         public static final int TextView03=0x7f080008;
         public static final int TextView04=0x7f08000c;
         public static final int TextView05=0x7f08000a;
-        public static final int action_settings=0x7f080032;
+        public static final int action_settings=0x7f080035;
         public static final int btAlterar=0x7f080010;
         public static final int btCadastro=0x7f08000e;
         public static final int btConsultar=0x7f08000f;
@@ -53,6 +53,9 @@ public final class R {
         public static final int editResposta=0x7f08001d;
         public static final int editSenha=0x7f08001b;
         public static final int editSexo=0x7f080016;
+        public static final int editText1=0x7f080032;
+        public static final int editText2=0x7f080033;
+        public static final int editText3=0x7f080034;
         public static final int etCel=0x7f080003;
         public static final int etDDD=0x7f080007;
         public static final int etData=0x7f080005;
@@ -82,6 +85,7 @@ public final class R {
         public static final int edit_register=0x7f030002;
         public static final int login=0x7f030003;
         public static final int register=0x7f030004;
+        public static final int teste=0x7f030005;
     }
     public static final class menu {
         public static final int main=0x7f070000;
