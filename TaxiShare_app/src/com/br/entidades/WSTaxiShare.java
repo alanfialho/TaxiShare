@@ -120,7 +120,24 @@ public class WSTaxiShare {
 		} else {
 			throw new Exception(resposta[1]);
 		}
-	} 
+	}
+	
+	public String checkLogin(String login) throws Exception {
+		String[] resposta = {};
+		try
+		{
+			resposta = new WSClient().get(URL_WS + "login/checkLogin?login="+ login);
+		}
+		catch(Exception ex)
+		{
+			Log.i("ErroBruno", "Erro no checar login " + ex.toString() + " -- " + ex);
+		}
+		if (resposta[0].equals("200")) {
+			return resposta[1];
+		} else {
+			throw new Exception(resposta[1]);
+		}
+	}
 
 }
 

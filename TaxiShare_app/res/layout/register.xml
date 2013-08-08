@@ -32,7 +32,8 @@
         <EditText
             android:id="@+id/textNome"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName" />
 
         <!-- LABEL DO NICK -->
 
@@ -90,7 +91,10 @@
         <EditText
             android:id="@+id/textDDD"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="Ex: 11"
+            android:inputType="number"
+            android:maxLength="2" />
 
         <!-- LABEL DO CELULAR -->
 
@@ -104,7 +108,10 @@
         <EditText
             android:id="@+id/textCelular"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="Ex: 999999999"
+            android:inputType="number"
+            android:maxLength="9" />
 
         <!-- LABEL DA DATA NASCIMENTO -->
 
@@ -149,6 +156,22 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:password="true" />
+        
+        <!-- LABEL DA CONFIRMACAO SENHA -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dip"
+            android:text="Confirmar Senha" />
+
+        <!-- CAMPO DA CONFIRMACAO SENHA -->
+
+        <EditText
+            android:id="@+id/textSenha2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:password="true" />
 
         <!-- LABEL DA PERGUNTA -->
 
@@ -179,14 +202,6 @@
             android:layout_height="wrap_content" />
 
         <!-- Error message -->
-
-        <TextView
-            android:id="@+id/textErro"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dip"
-            android:textColor="#e30000"
-            android:textStyle="bold" />
 
         <!-- Login Button -->
 

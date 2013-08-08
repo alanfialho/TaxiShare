@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.br.entidades.WSTaxiShare;
+import com.br.sessions.SessionManagement;
 
 
 public class LoginActivity extends Activity {
@@ -29,7 +30,7 @@ public class LoginActivity extends Activity {
 	EditText loginLogin;
 	EditText loginSenha;
 	TextView loginErrorMsg;
-
+	SessionManagement session;
 	// JSON Response node names
 	private static String KEY_SUCCESS = "success";
 	private static String KEY_ERROR = "error";
@@ -43,6 +44,9 @@ public class LoginActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
+		
+		// Session Manager
+        session = new SessionManagement(getApplicationContext()); 
 
 		//Pegando os campos da tela
 		loginLogin = (EditText) findViewById(R.id.loginLogin);
@@ -58,14 +62,14 @@ public class LoginActivity extends Activity {
 
 			public void onClick(View view) {
 				//Pegando o email e a senha da tela
-				String email = loginLogin.getText().toString();
+				String login = loginLogin.getText().toString();
 				String password = loginSenha.getText().toString();
 				Log.d("Button", "Login");
 
 				WSTaxiShare ws = new WSTaxiShare();
 				try 
 				{	
-					String strJson = ws.login(email, password);
+					String strJson = ws.login(login, password);
 					JSONObject resposta = new JSONObject(strJson);
 					Log.i("MEU JSON FODIDAO", resposta + "");
 
@@ -73,6 +77,18 @@ public class LoginActivity extends Activity {
 						loginErrorMsg.setText("Logou!");
 						gerarToast(resposta.getString("descricao"));
 
+						JSONObject pessoa = resposta.getJSONObject("data").getJSONObject("pessoa");
+						Log.i("Testando as paradas aqui", pessoa.toString());
+						String nome = pessoa.getString("nome");
+						String nick = pessoa.getString("nick");
+						String email = pessoa.getString("email");
+						String ddd = pessoa.getString("ddd");
+						String celular = pessoa.getString("celular");
+						String sexo = pessoa.getString("sexo");
+						String dataNasc = pessoa.getString("dataNascimento");
+						
+						session.createLoginSession(nome,  email,  sexo,  dataNasc,  nick,  ddd,  celular);
+						
 						// Vai para dashboard
 						Intent dashboard = new Intent(getApplicationContext(), DashboardActivity.class);
 

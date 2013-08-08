@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="#ffffff" >
 
     <LinearLayout
@@ -88,7 +88,10 @@
         <EditText
             android:id="@+id/editDDD"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="Ex: 11"
+            android:inputType="number"
+            android:maxLength="2" />
 
         <!-- LABEL DO CELULAR -->
 
@@ -102,7 +105,10 @@
         <EditText
             android:id="@+id/editCelular"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="Ex: 999999999"
+            android:inputType="number"
+            android:maxLength="9" />
 
         <!-- LABEL DA DATA NASCIMENTO -->
 
@@ -120,71 +126,25 @@
 
         <!-- LABEL DO LOGIN -->
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Login" />
-
         <!-- CAMPO DO LOGIN -->
-
-        <EditText
-            android:id="@+id/editLogin"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
 
         <!-- LABEL DA SENHA -->
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dip"
-            android:text="Senha" />
-
         <!-- CAMPO DA SENHA -->
+        
+         <!-- LABEL DA CONFIRMACAO SENHA -->
 
-        <EditText
-            android:id="@+id/editSenha"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:password="true" />
+        <!-- CAMPO DA CONFIRMACAO SENHA -->
 
         <!-- LABEL DA PERGUNTA -->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pergunta Secreta" />
-
         <!-- CAMPO DA PERGUNTA -->
-
-        <Spinner
-            android:id="@+id/editPergunta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
         <!-- LABEL DA RESPOSTA -->
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Resposta" />
-
         <!-- CAMPO DA RESPOSTA -->
 
-        <EditText
-            android:id="@+id/editResposta"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
-
         <!-- Error message -->
-
-        <TextView
-            android:id="@+id/editErro"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dip"
-            android:textColor="#e30000"
-            android:textStyle="bold" />
 
         <!-- Login Button -->
 
@@ -193,7 +153,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:text="Cadastrar" />
+            android:text="Salvar Alterações" />
 
         <!-- Link to Login Screen -->
 

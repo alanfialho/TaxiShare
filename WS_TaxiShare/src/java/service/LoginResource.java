@@ -112,6 +112,36 @@ public class LoginResource {
         }
     }
 
+    @GET
+    @Path("/checkLogin")
+    @Produces("application/json")
+    public String login(@QueryParam("login") String loginInfo) {
+        System.out.println("Login BRUNAO --> " + loginInfo);
+
+        //Controlador do banco de login
+        LoginJpaController loginDao = new LoginJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+
+        try {
+            Login login = (Login) loginDao.findLogin(loginInfo);
+            if (login != null) {
+                //Retorna um json informando que o login ja existe
+                ResponseEntity saida = new ResponseEntity("Erro", 1, "Login já existe!", null);
+
+                return new Gson().toJson(saida);
+            } else {
+                System.out.println("Login Disponivel");
+                //Retorna um json informando que o login esta disponivel
+                ResponseEntity saida = new ResponseEntity("Sucesso", 0, "Login Disponivel!", null);
+                return new Gson().toJson(saida);
+            }
+
+        } catch (Exception ex) {
+            System.out.println("ERRRO --> " + ex.getStackTrace());
+            ResponseEntity saida = new ResponseEntity("Erro", 2, "Exception de cu é rola!", null);
+            return new Gson().toJson(saida);
+        }
+    }
+
     @POST
     @Path("/create")
     @Produces("application/json")
@@ -164,7 +194,7 @@ public class LoginResource {
             pessoaDAO.create(pessoa);
             System.out.println("Criando Login");
             loginDAO.create(login);
-            
+
             ResponseEntity saida = new ResponseEntity("Erro", 0, "Cadastro Efetuado!", null);
             return new Gson().toJson(saida);
 

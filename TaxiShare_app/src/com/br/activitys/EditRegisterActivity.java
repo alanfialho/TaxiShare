@@ -5,9 +5,13 @@
  * */
 package com.br.activitys;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -20,11 +24,13 @@ import com.br.entidades.NovaPessoaApp;
 import com.br.entidades.PerguntaApp;
 import com.br.entidades.WSClient;
 import com.br.entidades.WSTaxiShare;
+import com.br.sessions.SessionManagement;
 
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -43,18 +49,14 @@ public class EditRegisterActivity extends Activity {
 	//dados pessoa
 	EditText textNome;
 	EditText textEmail;
-	EditText textSenha;
 	EditText textCelular;
 	EditText textDDD;	
 	Spinner spinnerSexo;
 	EditText textNick;
 	DatePicker dateDataNascimento;
+	SessionManagement session;
 
-	
-	//Dados login
-	EditText textResposta;
-	EditText textLogin;
-	Spinner spinnerPergunta;
+
 	
 	// JSON Response node names
 	private static String KEY_SUCCESS = "success";
@@ -68,54 +70,25 @@ public class EditRegisterActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.register);
+		setContentView(R.layout.edit_register);
+		
+		session = new SessionManagement(getApplicationContext());
 
 		//Importando os campos da pessoa
 		textNome = (EditText) findViewById(R.id.editNome);
 		textNick = (EditText) findViewById(R.id.editNick);
 		textEmail = (EditText) findViewById(R.id.editEmail);
-		textSenha = (EditText) findViewById(R.id.editSenha);
 		textDDD = (EditText) findViewById(R.id.editDDD);
 		spinnerSexo = (Spinner) findViewById(R.id.editSexo);
 		textCelular = (EditText) findViewById(R.id.editCelular);
 		dateDataNascimento = (DatePicker) findViewById(R.id.editDateDataNascimemto);
-
-
-		//Importando os campos do login
-		spinnerPergunta = (Spinner) findViewById(R.id.editPergunta);
-		textLogin = (EditText) findViewById(R.id.editLogin);
-		textResposta = (EditText) findViewById(R.id.editResposta);
-
-		//Importando botões e caixa de erro
-		btnSalvar = (Button) findViewById(R.id.btnEditSalvar);
-
-
-		//Instanciando WS
-		WSTaxiShare ws = new WSTaxiShare();		
-
-
+		
 		try {
 
 			//Definindo Lista de sexos
 			List<String> sexos = new ArrayList<String>();
 			sexos.add("Masculino");
 			sexos.add("Feminino");			
-
-			//Recebendo lista de perguntas
-			List<PerguntaApp> jsonPerguntas =  ws.getPerguntas();
-			//Criando uma lista para colocar apenas as strings das perguntas
-			List<String> perguntas = new ArrayList<String>();
-
-			//Populando lista de Strings de Pertuntas
-			for(int i = 0; i<5; i++){
-				String opcao = jsonPerguntas.get(i).getId() + " - " + jsonPerguntas.get(i).getPergunta();
-				perguntas.add(opcao);
-			}
-
-			//Colocando lista de perguntas no spinner
-			ArrayAdapter<String> adapterPerguntas = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, perguntas);
-			adapterPerguntas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			spinnerPergunta.setAdapter(adapterPerguntas);		
 
 			//Colocando lista de sexos no spinner
 			ArrayAdapter<String> adapterSexo = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sexos);
@@ -128,7 +101,54 @@ public class EditRegisterActivity extends Activity {
 		}catch (Exception e1) {
 			Log.i("Preenchendo Sppiners Exception", e1.getMessage());	
 		}
+		
+		
+		
+		session.checkLogin();
+        
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+         
+        // name
+        String nome = user.get(SessionManagement.KEY_NAME);
+         
+        // email
+        String email = user.get(SessionManagement.KEY_EMAIL);
+        
+        // name
+        String nick = user.get(SessionManagement.KEY_NICK);
+         
+        // email
+        String sexo = user.get(SessionManagement.KEY_SEXO);
+        Log.i("Sexo", sexo);
+        
+        // name
+        String ddd = user.get(SessionManagement.KEY_DDD);
+         
+        // email
+        String celular = user.get(SessionManagement.KEY_CELULAR);
+        
+        // email
+        String datanasc = user.get(SessionManagement.KEY_DATANASC);
+        Log.i("BRUNO datanasc", datanasc);
+         
+        // displaying user data
+        textNome.setText(nome);
+        textDDD.setText(ddd);
+        textCelular.setText(celular);
+        textEmail.setText(email);
+        textNick.setText(nick);	
+        
+		
 
+
+		//Importando botões e caixa de erro
+		btnSalvar = (Button) findViewById(R.id.btnEditSalvar);
+			
+
+
+		//Instanciando WS
+		WSTaxiShare ws = new WSTaxiShare();		
 
 		//Acao do botao cadastrar
 		btnSalvar.setOnClickListener(new View.OnClickListener() {			
@@ -145,15 +165,11 @@ public class EditRegisterActivity extends Activity {
 				int month = dateDataNascimento.getMonth();
 				int day = dateDataNascimento.getDayOfMonth();
 				String dataNascimento = day + "/" + month+ "/" +year;
+				
+				
 				String sexo = spinnerSexo.getSelectedItem().toString();				
 
-				//Pegando as informações do login
-				int pergunta = spinnerPergunta.getSelectedItemPosition();
-				String login = textLogin.getText().toString();
-				String resposta = textResposta.getText().toString();
-				String senha = textSenha.getText().toString();
 
-				Log.i("Posicao da pergunta","posicao " + pergunta);
 
 				//Criando objeto pessoa e objeto login
 				NovaPessoaApp pessoaApp = new NovaPessoaApp();
@@ -169,13 +185,6 @@ public class EditRegisterActivity extends Activity {
 				pessoaApp.setEmail(email);
 				pessoaApp.setSexo(sexo);
 				
-				//Definindo as paradas em pergunta
-				perguntaApp.setId(new Long(pergunta));			
-				
-				//Definindo as paradas em login
-				loginApp.setLogin(login);
-				loginApp.setSenha(senha);
-				loginApp.setResposta(resposta);
 				
 				//Setando a pergunta no login
 				loginApp.setPergunta(perguntaApp);
