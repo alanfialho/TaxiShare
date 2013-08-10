@@ -98,8 +98,8 @@ public class LoginActivity extends Activity {
 
 				} 
 				catch (Exception e) {
-					e.printStackTrace();
-					gerarToast(e.getMessage());
+					Log.i("Exception Login taxi", e + "");
+					gerarToast("Não Foi possível logar");
 				}
 			}
 		});

@@ -106,7 +106,7 @@ public class LoginResource {
                 return new Gson().toJson(saida);
             }
         } catch (Exception ex) {
-            System.out.println("ERRRO --> " + ex.getStackTrace());
+            System.out.println("ERRRO Login --> " + ex + "");
             ResponseEntity saida = new ResponseEntity("Erro", 2, "Exception de cu é rola!", null);
             return new Gson().toJson(saida);
         }
