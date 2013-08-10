@@ -5,24 +5,12 @@
  * */
 package com.br.activitys;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.br.entidades.LoginApp;
 import com.br.entidades.NovaPessoaApp;
-import com.br.entidades.PerguntaApp;
-import com.br.entidades.WSClient;
 import com.br.entidades.WSTaxiShare;
 import com.br.sessions.SessionManagement;
 
@@ -30,14 +18,12 @@ import com.br.sessions.SessionManagement;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
@@ -45,7 +31,8 @@ import android.widget.Toast;
 public class EditRegisterActivity extends Activity {
 	//botoes
 	Button btnSalvar;
-	
+	Button btnEditVoltar;
+
 	//dados pessoa
 	EditText textNome;
 	EditText textEmail;
@@ -56,22 +43,13 @@ public class EditRegisterActivity extends Activity {
 	DatePicker dateDataNascimento;
 	SessionManagement session;
 
-
-	
-	// JSON Response node names
-	private static String KEY_SUCCESS = "success";
-	private static String KEY_ERROR = "error";
-	private static String KEY_ERROR_MSG = "error_msg";
-	private static String KEY_UID = "uid";
-	private static String KEY_NAME = "name";
-	private static String KEY_EMAIL = "email";
-	private static String KEY_CREATED_AT = "created_at";
+	private static String pessoaID;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_register);
-		
+
 		session = new SessionManagement(getApplicationContext());
 
 		//Importando os campos da pessoa
@@ -82,7 +60,30 @@ public class EditRegisterActivity extends Activity {
 		spinnerSexo = (Spinner) findViewById(R.id.editSexo);
 		textCelular = (EditText) findViewById(R.id.editCelular);
 		dateDataNascimento = (DatePicker) findViewById(R.id.editDateDataNascimemto);
-		
+
+		//Importando botões
+		btnSalvar = (Button) findViewById(R.id.btnEditSalvar);
+		btnEditVoltar = (Button) findViewById(R.id.btnEditVoltar);
+
+		//Checa se o usuario esta logado
+		session.checkLogin();
+
+		//Recupera os dados do usuario na sessão
+		HashMap<String, String> user = session.getUserDetails();         
+
+		//Pega as variaveis do usuario
+		String nome = user.get(SessionManagement.KEY_NAME);
+		String email = user.get(SessionManagement.KEY_EMAIL);
+		String nick = user.get(SessionManagement.KEY_NICK);
+		String sexo = user.get(SessionManagement.KEY_SEXO);
+		String ddd = user.get(SessionManagement.KEY_DDD);
+		String celular = user.get(SessionManagement.KEY_CELULAR);
+		String datanasc = user.get(SessionManagement.KEY_DATANASC);
+
+		//Setando id
+		pessoaID = user.get(SessionManagement.KEY_PESSOAID);
+
+		//Try para preencher o combo de sexo
 		try {
 
 			//Definindo Lista de sexos
@@ -94,61 +95,46 @@ public class EditRegisterActivity extends Activity {
 			ArrayAdapter<String> adapterSexo = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sexos);
 			adapterSexo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinnerSexo.setAdapter(adapterSexo);
-			
-			Log.i("Preenchendo Sppiners", "Tudo Certo");	
+
+			//Retorna a posição do sexo no array e seta no spinner
+			int spinnerPosition = adapterSexo.getPosition(sexo);
+			spinnerSexo.setSelection(spinnerPosition);
+
+			Log.i("Spinners preenchidos taxi", "");	
 
 
 		}catch (Exception e1) {
-			Log.i("Preenchendo Sppiners Exception", e1.getMessage());	
+			Log.i("Preenchendo Sppiners Exception taxi", e1 + "");	
 		}
-		
-		
-		
-		session.checkLogin();
-        
-        // get user data from session
-        HashMap<String, String> user = session.getUserDetails();
-         
-        // name
-        String nome = user.get(SessionManagement.KEY_NAME);
-         
-        // email
-        String email = user.get(SessionManagement.KEY_EMAIL);
-        
-        // name
-        String nick = user.get(SessionManagement.KEY_NICK);
-         
-        // email
-        String sexo = user.get(SessionManagement.KEY_SEXO);
-        Log.i("Sexo", sexo);
-        
-        // name
-        String ddd = user.get(SessionManagement.KEY_DDD);
-         
-        // email
-        String celular = user.get(SessionManagement.KEY_CELULAR);
-        
-        // email
-        String datanasc = user.get(SessionManagement.KEY_DATANASC);
-        Log.i("BRUNO datanasc", datanasc);
-         
-        // displaying user data
-        textNome.setText(nome);
-        textDDD.setText(ddd);
-        textCelular.setText(celular);
-        textEmail.setText(email);
-        textNick.setText(nick);	
-        
-		
+
+		// displaying user data
+		textNome.setText(nome);
+		textDDD.setText(ddd);
+		textCelular.setText(celular);
+		textEmail.setText(email);
+		textNick.setText(nick);		
+
+		try{
+			//convertendo a data para int
+			String year =datanasc.substring(6, 10);
+			String month = datanasc.substring(3, 5);
+			String day = datanasc.substring(0, 2);
+
+			//convertendo a data para int
+			int yearInt = Integer.parseInt(year);
+			int monthInt = Integer.parseInt(month);
+			int dayInt = Integer.parseInt(day);
+
+			dateDataNascimento.updateDate(yearInt, monthInt - 1, dayInt);
+		}
+		catch(Exception e)
+		{
+			Log.i("Exception ao montar a data taxi", e + " -->" + e.getMessage());
+
+		}
 
 
-		//Importando botões e caixa de erro
-		btnSalvar = (Button) findViewById(R.id.btnEditSalvar);
-			
-
-
-		//Instanciando WS
-		WSTaxiShare ws = new WSTaxiShare();		
+		new WSTaxiShare();		
 
 		//Acao do botao cadastrar
 		btnSalvar.setOnClickListener(new View.OnClickListener() {			
@@ -159,24 +145,20 @@ public class EditRegisterActivity extends Activity {
 				String email = textEmail.getText().toString();
 				String ddd = textDDD.getText().toString();
 				String celular = textCelular.getText().toString();
-				
+
 				//Montando data de nascimento
 				int year = dateDataNascimento.getYear();
 				int month = dateDataNascimento.getMonth();
 				int day = dateDataNascimento.getDayOfMonth();
 				String dataNascimento = day + "/" + month+ "/" +year;
-				
-				
+
 				String sexo = spinnerSexo.getSelectedItem().toString();				
-
-
 
 				//Criando objeto pessoa e objeto login
 				NovaPessoaApp pessoaApp = new NovaPessoaApp();
-				LoginApp loginApp = new LoginApp();
-				PerguntaApp perguntaApp = new PerguntaApp();
 
-				//Definindo as paradas em pessoa
+				//Definindo as paradas em pessoa				
+				pessoaApp.setId(Long.parseLong(pessoaID));
 				pessoaApp.setNome(nome);
 				pessoaApp.setNick(nick);
 				pessoaApp.setCelular(celular);
@@ -184,38 +166,46 @@ public class EditRegisterActivity extends Activity {
 				pessoaApp.setDdd(ddd);
 				pessoaApp.setEmail(email);
 				pessoaApp.setSexo(sexo);
-				
-				
-				//Setando a pergunta no login
-				loginApp.setPergunta(perguntaApp);
-
-				//Setando pessoa no login
-				loginApp.setPessoa(pessoaApp);
 
 				WSTaxiShare ws = new WSTaxiShare();
+				//Acessando o WS para fazer a alteração
 				try 
 				{
-					String respostaWs = ws.cadastrarLogin(loginApp);
-					Log.i("Dados do cadastro", respostaWs);
-					gerarToast("Cadastro efetuado!");
-					Log.i("Feito cadastro", "Beleza, deu certo");
+					//Chama o metodo de editar e passa a pessoa no parametro
+					String respostaWs = ws.editarCadastro(pessoaApp);
+					//Cria um obj JSON com a resposta
+					JSONObject respostaWsJSON = new JSONObject(respostaWs);
+					//Imprime na tela a descrição da ação
+					gerarToast(respostaWsJSON.getString("descricao"));
 					
+					session.createLoginSession(pessoaID, nome,  email,  sexo,  dataNascimento,  nick,  ddd,  celular);
+					
+					//Transfere para a pagina de dashboard
 					Intent i = new Intent(getApplicationContext(),
-							LoginActivity.class);
+							DashboardActivity.class);
 					startActivity(i);
-					// Close Registration View
 					finish();
-					
+
 				} 
 				catch (Exception e) {
-					gerarToast("Erro ao cadastrar " + e.getMessage());
-					Log.i("Erro cadastro", "Beleza, deu errado");
+					gerarToast("Erro ao alterar!");
+					Log.i("Exception alterar taxi", e + "");
 				}
 			}
 		});
 
-		
+
+		//Acao do botao voltar
+		btnEditVoltar.setOnClickListener(new View.OnClickListener() {			
+			public void onClick(View view) {
+				Intent i = new Intent(getApplicationContext(),
+						DashboardActivity.class);
+				startActivity(i);
+				finish();			
+			}
+		});
 	}
+
 
 	private void gerarToast(CharSequence message) {
 		int duration = Toast.LENGTH_LONG;
@@ -223,6 +213,7 @@ public class EditRegisterActivity extends Activity {
 				.makeText(getApplicationContext(), message, duration);
 		toast.show();
 	}
+
 }
 
 

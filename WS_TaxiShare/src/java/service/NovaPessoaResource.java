@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import entities.LoginEntity;
 import entities.NovaPessoaEntity;
+import entities.ResponseEntity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ws.rs.QueryParam;
@@ -43,6 +44,12 @@ public class NovaPessoaResource {
     @Produces("application/json")
     @Consumes("application/json")
     public void create(NovaPessoaEntity entity) {
+        /*
+         * MÉTODO EM DESUSO
+         * MÉTODO EM DESUSO
+         * MÉTODO EM DESUSO
+         * MÉTODO EM DESUSO         
+         */
 
         try {
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
@@ -124,7 +131,7 @@ public class NovaPessoaResource {
     @Path("/edit")
     @Produces("application/json")
     @Consumes("application/json")
-    public void edit(NovaPessoaEntity entity) {
+    public String edit(NovaPessoaEntity entity) {
         NovaPessoaJpaController pessoaDAO = new NovaPessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
         NovaPessoa pessoa = new NovaPessoa();
         try {
@@ -140,8 +147,17 @@ public class NovaPessoaResource {
             pessoa.setDataNascimento(data);
 
             pessoaDAO.edit(pessoa);
+
+            //Objeto de retorno
+            ResponseEntity saida = new ResponseEntity("Sucesso", 0, "Cadastro Alterado", entity);
+
+            //Retorna um json completo com os dados do usuarios
+            return new Gson().toJson(saida);
+            
         } catch (Exception ex) {
-            //mensagem e codigo de retorno são aqui
+            System.out.println("ERRRO --> " + ex.getStackTrace());
+            ResponseEntity saida = new ResponseEntity("Erro", 2, "Exception de cu é rola!", null);
+            return new Gson().toJson(saida);
         }
 
     }

@@ -4,13 +4,10 @@ package com.br.entidades;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONObject;
-
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.br.entidades.NovaPessoaApp;; 
 
@@ -42,8 +39,8 @@ public class WSTaxiShare {
 			return saida;
 		}
 	}
-	
-	
+
+
 	public List<PerguntaApp> getPerguntas() throws Exception {
 
 		String[] resposta = new WSClient().get(URL_WS + "pergunta/findAll");
@@ -94,14 +91,14 @@ public class WSTaxiShare {
 		{
 			ex.printStackTrace();
 		}
-		
+
 		if (resposta[0].equals("200")) {
 			return resposta[1];
 		} else {
 			throw new Exception(resposta[1]);
 		}
 	} 
-	
+
 	public String cadastrarLogin(LoginApp login) throws Exception {
 		String[] resposta = {};
 		try
@@ -121,7 +118,32 @@ public class WSTaxiShare {
 			throw new Exception(resposta[1]);
 		}
 	}
-	
+
+	public String editarCadastro(NovaPessoaApp novaPessoa) throws Exception {
+		String[] resposta = {};
+		try
+		{
+			Gson gson = new Gson();
+			String pessoaJSON = gson.toJson(novaPessoa);
+			resposta = new WSClient().post(URL_WS + "novapessoa/edit", pessoaJSON);
+			Log.i("Edittar bruno", resposta[0] + " ----- " +resposta[1]);
+		}
+		catch(Exception ex)
+		{
+			
+		}
+		
+		if (resposta[0].equals("200")) {
+			Log.i("Edittar bruno if", resposta[0] + " ----- " +resposta[1]);
+
+			return resposta[1];
+		} else {
+			Log.i("Edittar bruno else", resposta[0] + " ----- " +resposta[1]);
+
+			return resposta[0];
+		}
+	}
+
 	public String checkLogin(String login) throws Exception {
 		String[] resposta = {};
 		try

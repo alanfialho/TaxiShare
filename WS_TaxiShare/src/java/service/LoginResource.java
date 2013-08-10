@@ -67,7 +67,7 @@ public class LoginResource {
                     //Pegando a pessoa do login
                     NovaPessoa pessoa = login.getNovaPessoa();
 
-                    SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yy");
+                    SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
                     String date = formater.format(pessoa.getDataNascimento());
                     //Pega os dados da pessoa do FW e seta na entidade pessoa WS
                     pessoaEntity.setNome(pessoa.getNome());

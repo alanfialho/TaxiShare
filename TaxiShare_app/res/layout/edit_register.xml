@@ -123,30 +123,8 @@
             android:id="@+id/editDateDataNascimemto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <!-- LABEL DO LOGIN -->
-
-        <!-- CAMPO DO LOGIN -->
-
-        <!-- LABEL DA SENHA -->
-
-        <!-- CAMPO DA SENHA -->
         
-         <!-- LABEL DA CONFIRMACAO SENHA -->
-
-        <!-- CAMPO DA CONFIRMACAO SENHA -->
-
-        <!-- LABEL DA PERGUNTA -->
-
-        <!-- CAMPO DA PERGUNTA -->
-
-        <!-- LABEL DA RESPOSTA -->
-
-        <!-- CAMPO DA RESPOSTA -->
-
-        <!-- Error message -->
-
-        <!-- Login Button -->
+        <!--  BOTAO DE SALVAR -->
 
         <Button
             android:id="@+id/btnEditSalvar"
@@ -154,18 +132,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:text="Salvar Alterações" />
-
-        <!-- Link to Login Screen -->
-
+        
+        
+          <!--  BOTAO DE VOLTAR -->
         <Button
-            android:id="@+id/btnLinkToLoginScreen"
+            android:id="@+id/btnEditVoltar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dip"
-            android:background="@null"
-            android:text="Já sou cadastrado. Fazer login!"
-            android:textColor="#21dbd4"
-            android:textStyle="bold" />
+            android:layout_marginTop="20dip"
+            android:text="Voltar" />
     </LinearLayout>
 
 </ScrollView>

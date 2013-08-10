@@ -5,9 +5,6 @@
  * */
 package com.br.activitys;
 
-import java.util.HashMap;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -31,15 +28,6 @@ public class LoginActivity extends Activity {
 	EditText loginSenha;
 	TextView loginErrorMsg;
 	SessionManagement session;
-	// JSON Response node names
-	private static String KEY_SUCCESS = "success";
-	private static String KEY_ERROR = "error";
-	private static String KEY_ERROR_MSG = "error_msg";
-	private static String KEY_UID = "uid";
-	private static String KEY_NAME = "name";
-	private static String KEY_EMAIL = "email";
-	private static String KEY_CREATED_AT = "created_at";
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,6 +67,7 @@ public class LoginActivity extends Activity {
 
 						JSONObject pessoa = resposta.getJSONObject("data").getJSONObject("pessoa");
 						Log.i("Testando as paradas aqui", pessoa.toString());
+						String pessoaId = resposta.getJSONObject("data").getString("id");
 						String nome = pessoa.getString("nome");
 						String nick = pessoa.getString("nick");
 						String email = pessoa.getString("email");
@@ -87,7 +76,9 @@ public class LoginActivity extends Activity {
 						String sexo = pessoa.getString("sexo");
 						String dataNasc = pessoa.getString("dataNascimento");
 						
-						session.createLoginSession(nome,  email,  sexo,  dataNasc,  nick,  ddd,  celular);
+						Log.i("bruno pessoaid no login", pessoaId);
+						
+						session.createLoginSession(pessoaId, nome,  email,  sexo,  dataNasc,  nick,  ddd,  celular);
 						
 						// Vai para dashboard
 						Intent dashboard = new Intent(getApplicationContext(), DashboardActivity.class);

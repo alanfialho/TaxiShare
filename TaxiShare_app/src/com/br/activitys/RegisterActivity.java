@@ -6,19 +6,12 @@
 package com.br.activitys;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.br.entidades.LoginApp;
 import com.br.entidades.NovaPessoaApp;
 import com.br.entidades.PerguntaApp;
-import com.br.entidades.WSClient;
 import com.br.entidades.WSTaxiShare;
 import com.br.resources.Utils;
 
@@ -58,15 +51,6 @@ public class RegisterActivity extends Activity {
 
 	// Erro
 	TextView registerErrorMsg;
-
-	// JSON Response node names
-	private static String KEY_SUCCESS = "success";
-	private static String KEY_ERROR = "error";
-	private static String KEY_ERROR_MSG = "error_msg";
-	private static String KEY_UID = "uid";
-	private static String KEY_NAME = "name";
-	private static String KEY_EMAIL = "email";
-	private static String KEY_CREATED_AT = "created_at";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -138,7 +122,7 @@ public class RegisterActivity extends Activity {
 		btnCadastrar.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 								
-				Utils utils = new Utils();
+				new Utils();
 
 				// Pegando as informações de pessoas
 				String nome = textNome.getText().toString();
@@ -291,7 +275,7 @@ public class RegisterActivity extends Activity {
 			}
 		});
 
-		// Link to Login Screen
+		// Link para Login
 		btnLinkToLogin.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
