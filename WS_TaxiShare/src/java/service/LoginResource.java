@@ -18,8 +18,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import TS.FrameWork.TO.NovaPessoa;
-import TS.FrameWork.DAO.NovaPessoaJpaController;
+import TS.FrameWork.TO.Pessoa;
+import TS.FrameWork.DAO.PessoaJpaController;
 import TS.FrameWork.DAO.PerguntaJpaController;
 import TS.FrameWork.TO.Login;
 import TS.FrameWork.TO.Pergunta;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.ArrayList;
 import com.google.gson.Gson;
 import entities.LoginEntity;
-import entities.NovaPessoaEntity;
+import entities.PessoaEntity;
 import entities.PerguntaEntity;
 import entities.ResponseEntity;
 import java.text.SimpleDateFormat;
@@ -55,7 +55,7 @@ public class LoginResource {
 
         //Entidades de login, pessoa e pergunta
         LoginEntity loginEntity = new LoginEntity();
-        NovaPessoaEntity pessoaEntity = new NovaPessoaEntity();
+        PessoaEntity pessoaEntity = new PessoaEntity();
         PerguntaEntity perguntaEntity = new PerguntaEntity();
 
         try {
@@ -65,7 +65,7 @@ public class LoginResource {
                 if (login.getSenha().equals(password)) {
 
                     //Pegando a pessoa do login
-                    NovaPessoa pessoa = login.getNovaPessoa();
+                    Pessoa pessoa = login.getNovaPessoa();
 
                     SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
                     String date = formater.format(pessoa.getDataNascimento());
@@ -151,16 +151,16 @@ public class LoginResource {
         try {
 
             //Cria uma pessoa e um login
-            NovaPessoa pessoa = new NovaPessoa();
+            Pessoa pessoa = new Pessoa();
             Login login = new Login();
             Pergunta pergunta = new Pergunta();
 
             //Cria um novo controle de pessoa
-            NovaPessoaJpaController pessoaDAO = new NovaPessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+            PessoaJpaController pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
             LoginJpaController loginDAO = new LoginJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
             PerguntaJpaController perguntaDAO = new PerguntaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
 
-            NovaPessoaEntity pessoaEntity = entity.getPessoa();
+            PessoaEntity pessoaEntity = entity.getPessoa();
 
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
             java.sql.Date data = new java.sql.Date(format.parse(pessoaEntity.getDataNascimento()).getTime());
@@ -203,5 +203,32 @@ public class LoginResource {
             ResponseEntity saida = new ResponseEntity("Erro", 2, "Exception de cu é rola!", null);
             return new Gson().toJson(saida);
         }
+    }
+
+    @POST
+    @Path("/editPassword")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String editLoginPassword(LoginEntity entity) {
+        LoginJpaController loginDAO = new LoginJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        Login login = new Login();
+        try {
+
+            login = loginDAO.findLogin(entity.getId());
+            login.setSenha(entity.getSenha());
+            
+            loginDAO.edit(login);
+
+            //Objeto de retorno
+            ResponseEntity saida = new ResponseEntity("Sucesso", 0, "Senha Alterada", entity);
+            //Retorna um json completo com os dados do usuarios
+            return new Gson().toJson(saida);
+
+        } catch (Exception ex) {
+            System.out.println("ERRRO --> " + ex.getStackTrace());
+            ResponseEntity saida = new ResponseEntity("Erro", 2, "Exception de cu é rola!", null);
+            return new Gson().toJson(saida);
+        }
+
     }
 }

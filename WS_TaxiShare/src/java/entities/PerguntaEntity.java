@@ -4,7 +4,7 @@
  */
 package entities;
 
-import TS.FrameWork.TO.NovaPessoa;
+import TS.FrameWork.TO.Pessoa;
 import TS.FrameWork.TO.Pergunta;
 import java.io.Serializable;
 import java.util.List;

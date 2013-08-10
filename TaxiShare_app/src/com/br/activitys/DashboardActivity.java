@@ -16,6 +16,7 @@ import android.widget.Button;
 public class DashboardActivity extends Activity {
 	Button btnLogout;
 	Button btnEditar;
+	Button dashEditPassword;
 	SessionManagement session;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,7 @@ public class DashboardActivity extends Activity {
 		session = new SessionManagement(getApplicationContext());
 		btnLogout = (Button) findViewById(R.id.btnLogout);	
 		btnEditar = (Button) findViewById(R.id.btnEditar);
+		dashEditPassword = (Button) findViewById(R.id.dashEditPassword);
 
 		
 		btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -34,7 +36,16 @@ public class DashboardActivity extends Activity {
 			};
 
 		});
+		dashEditPassword.setOnClickListener(new View.OnClickListener() {
 
+			public void onClick(View view) {
+				Intent intent = new Intent(getApplicationContext(),
+						EditPasswordActivity.class);
+				startActivity(intent);
+				finish();
+			};
+
+		});
 		btnEditar.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {

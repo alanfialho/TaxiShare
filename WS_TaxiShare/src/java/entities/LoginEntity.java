@@ -5,7 +5,7 @@
 //comentando aqui na moral
 package entities;
 
-import TS.FrameWork.TO.NovaPessoa;
+import TS.FrameWork.TO.Pessoa;
 import TS.FrameWork.TO.Pergunta;
 import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,7 +30,7 @@ public class LoginEntity implements Serializable {
     @XmlElement
     private String resposta;
     @XmlElement
-    private NovaPessoaEntity pessoa;
+    private PessoaEntity pessoa;
     
 
     public LoginEntity(Long id, String login, String senha, PerguntaEntity pergunta, String resposta) {
@@ -84,11 +84,11 @@ public class LoginEntity implements Serializable {
         this.resposta = resposta;
     }
 
-    public NovaPessoaEntity getPessoa() {
+    public PessoaEntity getPessoa() {
         return pessoa;
     }
 
-    public void setPessoa(NovaPessoaEntity pessoa) {
+    public void setPessoa(PessoaEntity pessoa) {
         this.pessoa = pessoa;
     }
     

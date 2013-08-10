@@ -30,7 +30,7 @@ public class Login implements Serializable {
     private String resposta;
     @OneToOne
     @JoinColumn(name = "idPessoa")
-    private NovaPessoa novaPessoa;
+    private Pessoa novaPessoa;
     @OneToOne
     @JoinColumn(name="idPergunta")
     private Pergunta pergunta;
@@ -67,11 +67,11 @@ public class Login implements Serializable {
         this.resposta = resposta;
     }
 
-    public NovaPessoa getNovaPessoa() {
+    public Pessoa getNovaPessoa() {
         return novaPessoa;
     }
 
-    public void setNovaPessoa(NovaPessoa novaPessoa) {
+    public void setNovaPessoa(Pessoa novaPessoa) {
         this.novaPessoa = novaPessoa;
     }
 

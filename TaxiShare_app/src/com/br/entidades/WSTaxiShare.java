@@ -9,20 +9,20 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
-import com.br.entidades.NovaPessoaApp;; 
+import com.br.entidades.PessoaApp;; 
 
 
 public class WSTaxiShare {
 
 	private static final String URL_WS = "http://10.0.2.2:8080/WS_TaxiShare/";
 
-	public NovaPessoaApp getPessoa(int id) throws Exception {
+	public PessoaApp getPessoa(int id) throws Exception {
 
 		String[] resposta = new WSClient().get(URL_WS + "pessoa/findById/" + id);
 
 		if (resposta[0].equals("200")) {
 			Gson gson = new Gson();
-			NovaPessoaApp pessoa = gson.fromJson(resposta[1], NovaPessoaApp.class);
+			PessoaApp pessoa = gson.fromJson(resposta[1], PessoaApp.class);
 			return pessoa;
 		} else {
 			throw new Exception(resposta[1]);
@@ -39,6 +39,7 @@ public class WSTaxiShare {
 			return saida;
 		}
 	}
+
 
 
 	public List<PerguntaApp> getPerguntas() throws Exception {
@@ -60,18 +61,18 @@ public class WSTaxiShare {
 		}
 	}
 
-	public List<NovaPessoaApp> getListaPessoa() throws Exception {
+	public List<PessoaApp> getListaPessoa() throws Exception {
 
 		String[] resposta = new WSClient().get(URL_WS + "pessoa/findAll");
 
 		if (resposta[0].equals("200")) {
 			Gson gson = new Gson();
-			ArrayList<NovaPessoaApp> listaPessoa = new ArrayList<NovaPessoaApp>();
+			ArrayList<PessoaApp> listaPessoa = new ArrayList<PessoaApp>();
 			JsonParser parser = new JsonParser();
 			JsonArray array = parser.parse(resposta[1]).getAsJsonArray();
 
 			for (int i = 0; i < array.size(); i++) {
-				listaPessoa.add(gson.fromJson(array.get(i), NovaPessoaApp.class));
+				listaPessoa.add(gson.fromJson(array.get(i), PessoaApp.class));
 			}
 			return listaPessoa;
 		} else {
@@ -79,13 +80,13 @@ public class WSTaxiShare {
 		}
 	}
 
-	public String cadastrarPessoa(NovaPessoaApp pessoa) throws Exception {
+	public String cadastrarPessoa(PessoaApp pessoa) throws Exception {
 		String[] resposta = {};
 		try
 		{
 			Gson gson = new Gson();
 			String clienteJSON = gson.toJson(pessoa);
-			resposta = new WSClient().post(URL_WS + "novapessoa/create", clienteJSON);
+			resposta = new WSClient().post(URL_WS + "pessoa/create", clienteJSON);
 		}
 		catch(Exception ex)
 		{
@@ -119,26 +120,55 @@ public class WSTaxiShare {
 		}
 	}
 
-	public String editarCadastro(NovaPessoaApp novaPessoa) throws Exception {
+	public String editarCadastro(PessoaApp novaPessoa) throws Exception {
 		String[] resposta = {};
 		try
 		{
 			Gson gson = new Gson();
 			String pessoaJSON = gson.toJson(novaPessoa);
-			resposta = new WSClient().post(URL_WS + "novapessoa/edit", pessoaJSON);
+			resposta = new WSClient().post(URL_WS + "pessoa/edit", pessoaJSON);
 			Log.i("Edittar bruno", resposta[0] + " ----- " +resposta[1]);
 		}
 		catch(Exception ex)
 		{
-			
+
 		}
-		
+
 		if (resposta[0].equals("200")) {
 			Log.i("Edittar bruno if", resposta[0] + " ----- " +resposta[1]);
 
 			return resposta[1];
 		} else {
 			Log.i("Edittar bruno else", resposta[0] + " ----- " +resposta[1]);
+
+			return resposta[0];
+		}
+	}
+
+
+	public String editarSenha(LoginApp loginApp) throws Exception {
+		String[] resposta = {};
+		try
+		{
+			Gson gson = new Gson();
+			String loginJSON = gson.toJson(loginApp);
+			resposta = new WSClient().post(URL_WS + "login/editPassword", loginJSON);
+			Log.i("Editar senha taxi", resposta[0] + " ----- " + resposta[1]);
+			Log.i("Editar senha JSON taxi", loginJSON);
+		}
+		catch(Exception ex)
+		{
+			Log.i("EEEEEEEEEEEEEEEEEEE acth taxi", ex + "");
+
+
+		}
+
+		if (resposta[0].equals("200")) {
+			Log.i("EEEEEEEEEEEEEEEEEEE if taxi", resposta[1]);
+
+			return resposta[1];
+		} else {
+			Log.i("EEEEEEEEEEEEEEEEEEE else taxi", resposta[1]);
 
 			return resposta[0];
 		}

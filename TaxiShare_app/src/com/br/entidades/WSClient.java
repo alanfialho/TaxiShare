@@ -42,7 +42,7 @@ public class WSClient {
 	public final String[] post(String url, String json) {
 		String[] result = new String[2];
 		try {
-			Log.i("post 3", json);
+			Log.i("POST taxi", json);
 			HttpPost httpPost = new HttpPost(new URI(url));
 			httpPost.setHeader("Content-type", "application/json");
 			StringEntity sEntity = new StringEntity(json, "UTF-8");
@@ -57,7 +57,7 @@ public class WSClient {
 				InputStream instream = entity.getContent();
 				result[1] = toString(instream);
 				instream.close();
-				Log.d("post", "Result from post JsonPost : " + result[0] + " : " + result[1]);
+				Log.d("Resultado do Post taxi", "JsonPost : " + result[0] + " : " + result[1]);
 			}
 			else{
 				

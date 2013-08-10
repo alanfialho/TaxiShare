@@ -6,7 +6,7 @@
 package entities;
 
 import TS.FrameWork.TO.Login;
-import TS.FrameWork.TO.NovaPessoa;
+import TS.FrameWork.TO.Pessoa;
 import java.io.Serializable;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlElement;
  * @author alan
  */
 @XmlRootElement
-public class NovaPessoaEntity implements Serializable {
+public class PessoaEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @XmlElement
@@ -40,9 +40,9 @@ public class NovaPessoaEntity implements Serializable {
     @XmlElement
     private Login login;
     @XmlElement
-    private List<NovaPessoa> lstPessoas;
+    private List<Pessoa> lstPessoas;
 
-    public NovaPessoaEntity(Long id, String nome, String ddd, String celular, String dataNascimento, String email, String sexo, List<NovaPessoa> lstPessoas) {
+    public PessoaEntity(Long id, String nome, String ddd, String celular, String dataNascimento, String email, String sexo, List<Pessoa> lstPessoas) {
         this.id = id;
         this.nome = nome;
         this.ddd = ddd;
@@ -53,7 +53,7 @@ public class NovaPessoaEntity implements Serializable {
         this.lstPessoas = lstPessoas;
     }
 
-    public NovaPessoaEntity() {
+    public PessoaEntity() {
     }
 
     public Long getId() {
@@ -121,11 +121,11 @@ public class NovaPessoaEntity implements Serializable {
         this.sexo = sexo;
     }
 
-    public List<NovaPessoa> getLstPessoas() {
+    public List<Pessoa> getLstPessoas() {
         return lstPessoas;
     }
 
-    public void setLstPessoas(List<NovaPessoa> lstPessoas) {
+    public void setLstPessoas(List<Pessoa> lstPessoas) {
         this.lstPessoas = lstPessoas;
     }  
 

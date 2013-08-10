@@ -5,7 +5,7 @@
 package TS.FrameWork.DAO;
 
 import TS.FrameWork.DAO.exceptions.NonexistentEntityException;
-import TS.FrameWork.TO.NovaPessoa;
+import TS.FrameWork.TO.Pessoa;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -17,9 +17,9 @@ import javax.persistence.EntityNotFoundException;
  *
  * @author Bruno
  */
-public class NovaPessoaJpaController implements Serializable {
+public class PessoaJpaController implements Serializable {
 
-    public NovaPessoaJpaController(EntityManagerFactory emf) {
+    public PessoaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -28,7 +28,7 @@ public class NovaPessoaJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(NovaPessoa novaPessoa) {
+    public void create(Pessoa novaPessoa) {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -42,7 +42,7 @@ public class NovaPessoaJpaController implements Serializable {
         }
     }
 
-    public void edit(NovaPessoa novaPessoa) throws NonexistentEntityException, Exception {
+    public void edit(Pessoa novaPessoa) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -70,9 +70,9 @@ public class NovaPessoaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            NovaPessoa novaPessoa;
+            Pessoa novaPessoa;
             try {
-                novaPessoa = em.getReference(NovaPessoa.class, id);
+                novaPessoa = em.getReference(Pessoa.class, id);
                 novaPessoa.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The novaPessoa with id " + id + " no longer exists.", enfe);
@@ -86,15 +86,15 @@ public class NovaPessoaJpaController implements Serializable {
         }
     }
 
-    public List<NovaPessoa> findNovaPessoaEntities() {
+    public List<Pessoa> findNovaPessoaEntities() {
         return findNovaPessoaEntities(true, -1, -1);
     }
 
-    public List<NovaPessoa> findNovaPessoaEntities(int maxResults, int firstResult) {
+    public List<Pessoa> findNovaPessoaEntities(int maxResults, int firstResult) {
         return findNovaPessoaEntities(false, maxResults, firstResult);
     }
 
-    private List<NovaPessoa> findNovaPessoaEntities(boolean all, int maxResults, int firstResult) {
+    private List<Pessoa> findNovaPessoaEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             Query q = em.createQuery("select object(o) from NovaPessoa as o");
@@ -108,10 +108,10 @@ public class NovaPessoaJpaController implements Serializable {
         }
     }
 
-    public NovaPessoa findNovaPessoa(Long id) {
+    public Pessoa findNovaPessoa(Long id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(NovaPessoa.class, id);
+            return em.find(Pessoa.class, id);
         } finally {
             em.close();
         }

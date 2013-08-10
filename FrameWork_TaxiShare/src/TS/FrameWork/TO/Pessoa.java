@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @XmlRootElement
-public class NovaPessoa implements Serializable {
+public class Pessoa implements Serializable {
 
     //Marcação que define como ID auto gerado no BD
     @Id
@@ -27,10 +27,10 @@ public class NovaPessoa implements Serializable {
     private String sexo;
     private String email;
 
-    public NovaPessoa() {
+    public Pessoa() {
     }
 
-    public NovaPessoa(String nome, Date dataNascimento, String celular) {
+    public Pessoa(String nome, Date dataNascimento, String celular) {
         super();
 
         this.nome = nome;

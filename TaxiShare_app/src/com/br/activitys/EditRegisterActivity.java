@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import org.json.JSONObject;
 
-import com.br.entidades.NovaPessoaApp;
+import com.br.entidades.PessoaApp;
 import com.br.entidades.WSTaxiShare;
 import com.br.sessions.SessionManagement;
 
@@ -44,6 +44,8 @@ public class EditRegisterActivity extends Activity {
 	SessionManagement session;
 
 	private static String pessoaID;
+	private static String sessionedLogin;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,7 @@ public class EditRegisterActivity extends Activity {
 
 		//Setando id
 		pessoaID = user.get(SessionManagement.KEY_PESSOAID);
+		sessionedLogin = user.get(SessionManagement.KEY_LOGIN);
 
 		//Try para preencher o combo de sexo
 		try {
@@ -155,7 +158,7 @@ public class EditRegisterActivity extends Activity {
 				String sexo = spinnerSexo.getSelectedItem().toString();				
 
 				//Criando objeto pessoa e objeto login
-				NovaPessoaApp pessoaApp = new NovaPessoaApp();
+				PessoaApp pessoaApp = new PessoaApp();
 
 				//Definindo as paradas em pessoa				
 				pessoaApp.setId(Long.parseLong(pessoaID));
@@ -178,7 +181,7 @@ public class EditRegisterActivity extends Activity {
 					//Imprime na tela a descrição da ação
 					gerarToast(respostaWsJSON.getString("descricao"));
 					
-					session.createLoginSession(pessoaID, nome,  email,  sexo,  dataNascimento,  nick,  ddd,  celular);
+					session.createLoginSession(pessoaID, nome,  email,  sexo,  dataNascimento,  nick,  ddd,  celular, sessionedLogin);
 					
 					//Transfere para a pagina de dashboard
 					Intent i = new Intent(getApplicationContext(),

@@ -10,7 +10,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 import com.br.entidades.LoginApp;
-import com.br.entidades.NovaPessoaApp;
+import com.br.entidades.PessoaApp;
 import com.br.entidades.PerguntaApp;
 import com.br.entidades.WSTaxiShare;
 import com.br.resources.Utils;
@@ -200,7 +200,7 @@ public class RegisterActivity extends Activity {
 
 				if (validate) {
 					// Criando objeto pessoa e objeto login
-					NovaPessoaApp pessoaApp = new NovaPessoaApp();
+					PessoaApp pessoaApp = new PessoaApp();
 					LoginApp loginApp = new LoginApp();
 					PerguntaApp perguntaApp = new PerguntaApp();
 

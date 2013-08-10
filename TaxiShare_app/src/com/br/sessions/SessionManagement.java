@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
  
 public class SessionManagement {
     // Shared Preferences
@@ -52,6 +53,9 @@ public class SessionManagement {
     // Email address (make variable public to access from outside)
     public static final String KEY_CELULAR = "celular";
     
+    // Email address (make variable public to access from outside)
+    public static final String KEY_LOGIN = "login";
+    
   
      
     // Constructor
@@ -64,7 +68,7 @@ public class SessionManagement {
     /**
      * Create login session
      * */
-    public void createLoginSession(String id, String name, String email, String sexo, String datanasc, String nick, String ddd, String celular){
+    public void createLoginSession(String id, String name, String email, String sexo, String datanasc, String nick, String ddd, String celular, String login){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
         
@@ -90,6 +94,9 @@ public class SessionManagement {
         
      // Storing email in pref
         editor.putString(KEY_CELULAR, celular);
+        
+     // Storing email in pref
+        editor.putString(KEY_LOGIN, login);
          
         // commit changes
         editor.commit();
@@ -146,6 +153,8 @@ public class SessionManagement {
         
      // user email id
         user.put(KEY_CELULAR, pref.getString(KEY_CELULAR, null));
+        
+        user.put(KEY_LOGIN, pref.getString(KEY_LOGIN, null));
          
         // return user
         return user;

@@ -10,6 +10,7 @@
         android:orientation="vertical"
         android:padding="10dip" >
 		<!--  View Title Label -->
+
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -70,6 +71,16 @@
             android:layout_marginTop="40dip"
             android:background="@null"
             android:text="Não tem cadastro? Cadastre-se!"
+            android:textColor="#21dbd4"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnLinkToForgetPassword"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dip"
+            android:background="@null"
+            android:text="Esqueci minha senha!"
             android:textColor="#21dbd4"
             android:textStyle="bold" />
 

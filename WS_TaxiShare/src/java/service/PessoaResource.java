@@ -18,14 +18,14 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import TS.FrameWork.TO.NovaPessoa;
-import TS.FrameWork.DAO.NovaPessoaJpaController;
+import TS.FrameWork.TO.Pessoa;
+import TS.FrameWork.DAO.PessoaJpaController;
 import TS.FrameWork.TO.Login;
 import java.util.List;
 import java.util.ArrayList;
 import com.google.gson.Gson;
 import entities.LoginEntity;
-import entities.NovaPessoaEntity;
+import entities.PessoaEntity;
 import entities.ResponseEntity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,14 +36,14 @@ import javax.ws.rs.QueryParam;
  * @author alan
  */
 @Stateless
-@Path("/novapessoa")
-public class NovaPessoaResource {
+@Path("/pessoa")
+public class PessoaResource {
 
     @POST
     @Path("/create")
     @Produces("application/json")
     @Consumes("application/json")
-    public void create(NovaPessoaEntity entity) {
+    public void create(PessoaEntity entity) {
         /*
          * MÉTODO EM DESUSO
          * MÉTODO EM DESUSO
@@ -56,11 +56,11 @@ public class NovaPessoaResource {
             java.sql.Date data = new java.sql.Date(format.parse(entity.getDataNascimento()).getTime());
 
             //Cria uma pessoa e um login
-            NovaPessoa pessoa = new NovaPessoa();
+            Pessoa pessoa = new Pessoa();
             Login login = new Login();
 
             //Cria um novo controle de pessoa
-            NovaPessoaJpaController pessoaDAO = new NovaPessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+            PessoaJpaController pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
             LoginJpaController loginDAO = new LoginJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
 
             //Inicializa os valores da pessoa de acordo com a entity
@@ -94,9 +94,9 @@ public class NovaPessoaResource {
     public String findById(@PathParam("id") Long id) {
 
 
-        NovaPessoaEntity entity = new NovaPessoaEntity();
-        NovaPessoaJpaController pessoaDAO = new NovaPessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
-        NovaPessoa pessoa = pessoaDAO.findNovaPessoa(id);
+        PessoaEntity entity = new PessoaEntity();
+        PessoaJpaController pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        Pessoa pessoa = pessoaDAO.findNovaPessoa(id);
 
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
@@ -119,8 +119,8 @@ public class NovaPessoaResource {
     public String findAll() {
         System.out.println("nada");
 
-        NovaPessoaEntity entity = new NovaPessoaEntity();
-        NovaPessoaJpaController pessoaDAO = new NovaPessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        PessoaEntity entity = new PessoaEntity();
+        PessoaJpaController pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
 
         entity.setLstPessoas(pessoaDAO.findNovaPessoaEntities());
         return new Gson().toJson(entity.getLstPessoas());
@@ -131,9 +131,9 @@ public class NovaPessoaResource {
     @Path("/edit")
     @Produces("application/json")
     @Consumes("application/json")
-    public String edit(NovaPessoaEntity entity) {
-        NovaPessoaJpaController pessoaDAO = new NovaPessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
-        NovaPessoa pessoa = new NovaPessoa();
+    public String edit(PessoaEntity entity) {
+        PessoaJpaController pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        Pessoa pessoa = new Pessoa();
         try {
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
             java.sql.Date data = new java.sql.Date(format.parse(entity.getDataNascimento()).getTime());

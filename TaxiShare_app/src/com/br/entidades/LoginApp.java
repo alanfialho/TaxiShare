@@ -7,7 +7,7 @@ public class LoginApp {
 	private String senha;
 	private PerguntaApp pergunta;
 	private String resposta;
-	private NovaPessoaApp pessoa;
+	private PessoaApp pessoa;
 	
 	public LoginApp(Long id, String login, String senha, PerguntaApp pergunta,
 			String resposta) {
@@ -51,10 +51,10 @@ public class LoginApp {
 	public void setResposta(String resposta) {
 		this.resposta = resposta;
 	}
-	public NovaPessoaApp getPessoa() {
+	public PessoaApp getPessoa() {
 		return pessoa;
 	}
-	public void setPessoa(NovaPessoaApp pessoa) {
+	public void setPessoa(PessoaApp pessoa) {
 		this.pessoa = pessoa;
 	}
 }

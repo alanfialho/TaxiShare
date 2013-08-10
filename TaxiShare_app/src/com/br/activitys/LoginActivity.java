@@ -76,9 +76,9 @@ public class LoginActivity extends Activity {
 						String sexo = pessoa.getString("sexo");
 						String dataNasc = pessoa.getString("dataNascimento");
 						
-						Log.i("bruno pessoaid no login", pessoaId);
-						
-						session.createLoginSession(pessoaId, nome,  email,  sexo,  dataNasc,  nick,  ddd,  celular);
+						Log.i("taxi pessoaid no login", pessoaId);
+						Log.i("taxi login no login", login);
+						session.createLoginSession(pessoaId, nome,  email,  sexo,  dataNasc,  nick,  ddd,  celular, login);
 						
 						// Vai para dashboard
 						Intent dashboard = new Intent(getApplicationContext(), DashboardActivity.class);
