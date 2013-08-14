@@ -120,7 +120,7 @@ public class PessoaEntity implements Serializable {
     public void setSexo(String sexo) {
         this.sexo = sexo;
     }
-
+ 
     public List<Pessoa> getLstPessoas() {
         return lstPessoas;
     }

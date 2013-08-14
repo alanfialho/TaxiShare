@@ -28,12 +28,12 @@ public class PessoaJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Pessoa novaPessoa) {
+    public void create(Pessoa pessoa) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(novaPessoa);
+            em.persist(pessoa);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -42,19 +42,19 @@ public class PessoaJpaController implements Serializable {
         }
     }
 
-    public void edit(Pessoa novaPessoa) throws NonexistentEntityException, Exception {
+    public void edit(Pessoa pessoa) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            novaPessoa = em.merge(novaPessoa);
+            pessoa = em.merge(pessoa);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = novaPessoa.getId();
-                if (findNovaPessoa(id) == null) {
-                    throw new NonexistentEntityException("The novaPessoa with id " + id + " no longer exists.");
+                Long id = pessoa.getId();
+                if (findPessoa(id) == null) {
+                    throw new NonexistentEntityException("The pessoa with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -70,14 +70,14 @@ public class PessoaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Pessoa novaPessoa;
+            Pessoa pessoa;
             try {
-                novaPessoa = em.getReference(Pessoa.class, id);
-                novaPessoa.getId();
+                pessoa = em.getReference(Pessoa.class, id);
+                pessoa.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The novaPessoa with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The pessoa with id " + id + " no longer exists.", enfe);
             }
-            em.remove(novaPessoa);
+            em.remove(pessoa);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -86,18 +86,18 @@ public class PessoaJpaController implements Serializable {
         }
     }
 
-    public List<Pessoa> findNovaPessoaEntities() {
-        return findNovaPessoaEntities(true, -1, -1);
+    public List<Pessoa> findPessoaEntities() {
+        return findPessoaEntities(true, -1, -1);
     }
 
-    public List<Pessoa> findNovaPessoaEntities(int maxResults, int firstResult) {
-        return findNovaPessoaEntities(false, maxResults, firstResult);
+    public List<Pessoa> findPessoaEntities(int maxResults, int firstResult) {
+        return findPessoaEntities(false, maxResults, firstResult);
     }
 
-    private List<Pessoa> findNovaPessoaEntities(boolean all, int maxResults, int firstResult) {
+    private List<Pessoa> findPessoaEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
-            Query q = em.createQuery("select object(o) from NovaPessoa as o");
+            Query q = em.createQuery("select object(o) from Pessoa as o");
             if (!all) {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
@@ -108,7 +108,7 @@ public class PessoaJpaController implements Serializable {
         }
     }
 
-    public Pessoa findNovaPessoa(Long id) {
+    public Pessoa findPessoa(Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Pessoa.class, id);
@@ -117,10 +117,10 @@ public class PessoaJpaController implements Serializable {
         }
     }
 
-    public int getNovaPessoaCount() {
+    public int getPessoaCount() {
         EntityManager em = getEntityManager();
         try {
-            Query q = em.createQuery("select count(o) from NovaPessoa as o");
+            Query q = em.createQuery("select count(o) from Pessoa as o");
             return ((Long) q.getSingleResult()).intValue();
         } finally {
             em.close();

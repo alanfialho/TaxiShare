@@ -5,34 +5,24 @@
 package service;
 
 import TS.FrameWork.DAO.LoginJpaController;
-import java.util.List;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import TS.FrameWork.TO.Pessoa;
 import TS.FrameWork.DAO.PessoaJpaController;
 import TS.FrameWork.DAO.PerguntaJpaController;
 import TS.FrameWork.TO.Login;
 import TS.FrameWork.TO.Pergunta;
-import java.util.List;
-import java.util.ArrayList;
 import com.google.gson.Gson;
 import entities.LoginEntity;
 import entities.PessoaEntity;
 import entities.PerguntaEntity;
 import entities.ResponseEntity;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Formatter;
 import javax.ws.rs.QueryParam;
 
 /**
@@ -107,7 +97,7 @@ public class LoginResource {
             }
         } catch (Exception ex) {
             System.out.println("ERRRO Login --> " + ex + "");
-            ResponseEntity saida = new ResponseEntity("Erro", 2, "Exception de cu é rola!", null);
+            ResponseEntity saida = new ResponseEntity("Erro", 2, "Não foi possivel realizar operação, tente mais tarde!", null);
             return new Gson().toJson(saida);
         }
     }
@@ -137,7 +127,7 @@ public class LoginResource {
 
         } catch (Exception ex) {
             System.out.println("ERRRO --> " + ex.getStackTrace());
-            ResponseEntity saida = new ResponseEntity("Erro", 2, "Exception de cu é rola!", null);
+            ResponseEntity saida = new ResponseEntity("Erro", 2, "Não foi possivel realizar operação, tente mais tarde!", null);
             return new Gson().toJson(saida);
         }
     }
@@ -200,7 +190,7 @@ public class LoginResource {
 
         } catch (Exception ex) {
             System.out.println("Erro no login resource --> " + ex.getMessage());
-            ResponseEntity saida = new ResponseEntity("Erro", 2, "Exception de cu é rola!", null);
+            ResponseEntity saida = new ResponseEntity("Erro", 2, "Não foi possivel realizar operação, tente mais tarde!", null);
             return new Gson().toJson(saida);
         }
     }
@@ -226,7 +216,7 @@ public class LoginResource {
 
         } catch (Exception ex) {
             System.out.println("ERRRO --> " + ex.getStackTrace());
-            ResponseEntity saida = new ResponseEntity("Erro", 2, "Exception de cu é rola!", null);
+            ResponseEntity saida = new ResponseEntity("Erro", 2, "Não foi possivel realizar operação, tente mais tarde!", null);
             return new Gson().toJson(saida);
         }
 

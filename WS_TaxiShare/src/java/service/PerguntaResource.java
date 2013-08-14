@@ -4,33 +4,14 @@
  */
 package service;
 
-import TS.FrameWork.DAO.LoginJpaController;
-import java.util.List;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import TS.FrameWork.TO.Pessoa;
-import TS.FrameWork.DAO.PessoaJpaController;
 import TS.FrameWork.DAO.PerguntaJpaController;
-import TS.FrameWork.TO.Login;
-import java.util.List;
-import java.util.ArrayList;
 import com.google.gson.Gson;
-import entities.LoginEntity;
-import entities.PessoaEntity;
 import entities.PerguntaEntity;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import javax.ws.rs.QueryParam;
 
 /**
  *
