@@ -31,7 +31,6 @@ public class DashboardActivity extends Activity {
 		btnLogout.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View arg0) {
-
 				session.logoutUser();
 			};
 

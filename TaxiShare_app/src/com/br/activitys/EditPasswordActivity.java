@@ -1,10 +1,13 @@
 package com.br.activitys;
 
 import java.util.HashMap;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.br.entidades.LoginApp;
-import com.br.entidades.WSTaxiShare;
+import com.br.network.WSTaxiShare;
 import com.br.sessions.SessionManagement;
 
 public class EditPasswordActivity extends Activity {
@@ -30,6 +33,17 @@ public class EditPasswordActivity extends Activity {
 
 	String sessionedPessoaID;
 	String sessionedLogin;
+
+	String respostaCheckPassword;
+	String novaSenha;
+	String senhaAntiga;
+
+
+	boolean checkEmpty;
+	boolean checkPassword;
+	boolean checkOldAndNew;
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,93 +72,185 @@ public class EditPasswordActivity extends Activity {
 		Log.i("Login Sessao taxi", sessionedLogin + "");
 		Log.i("Login Sessao taxi", sessionedPessoaID + "");
 
-
 		new WSTaxiShare();		
 
 		//Acao do botao cadastrar
 		btnForgotAlterarSenha.setOnClickListener(new View.OnClickListener() {			
 			public void onClick(View view) {
-				//Pegando as informações de pessoas
-				String senhaAntiga = forgotSenhaAntiga.getText().toString();
-				String novaSenha = forgotNovaSenha.getText().toString();
-				String novaSenha2 = forgotNovaSenha2.getText().toString();
 
-				boolean checkEmpty = true;
-				boolean checkPassword = true;
-				boolean checkOldAndNew = true;
-
-				if(senhaAntiga.equals("") || novaSenha.equals("") || novaSenha2.equals(""))
-					checkEmpty = false;				
-
-				if(!novaSenha.equals(novaSenha2))
-					checkPassword = false;
-
-				if(novaSenha.equals(senhaAntiga))
-					checkOldAndNew = false;
-
-				if(checkPassword && checkEmpty && checkOldAndNew){
-					try 
-					{							
-						LoginApp loginApp = new LoginApp();
-
-						WSTaxiShare ws = new WSTaxiShare();
-						String strJson = ws.login(sessionedLogin, senhaAntiga);
-						JSONObject resposta = new JSONObject(strJson);
-
-
-						if (resposta.getInt("errorCode") == 0) {
-							Log.i("Entrou na primeira resposta taxi", resposta.toString());
-							loginApp.setId(resposta.getJSONObject("data").getLong("id"));
-
-							Log.i("Resposta aqui taxe", resposta.getJSONObject("data").toString());
-
-							loginApp.setLogin(sessionedLogin);
-							loginApp.setSenha(novaSenha);
-
-							Log.i("Entrou na primeira resposta taxi", loginApp.getId() + " --- " + loginApp.getLogin() + " ----" + loginApp.getSenha() );
-
-
-							String strJson2 = ws.editarSenha(loginApp);
-							JSONObject resposta2 = new JSONObject(strJson2);
-
-							if(resposta2.getInt("errorCode")== 0){
-								Log.i("Entrou na segunda resposta taxi", resposta.toString());
-								gerarToast(resposta2.getString("descricao"));
-
-								//Transfere para a pagina de dashboard
-								Intent i = new Intent(getApplicationContext(),
-										DashboardActivity.class);
-								startActivity(i);
-								finish();
-
-							}
-							else
-								gerarToast(resposta2.getString("descricao"));
-
-						}
-						else
-							gerarToast(resposta.getString("descricao"));
-
-
-					} 
-					catch (Exception e) {
-						gerarToast("Erro ao alterar!");
-						Log.i("Exception alterar taxi", e + " -- Message: " +e.getMessage());
-					}
-				}
-				else{
-					if(checkEmpty)
-						gerarToast("Todos os campos são obrigatórios");
-					if(checkPassword)
-						gerarToast("Senhas precisam ser iguais");
-					if(checkOldAndNew)
-						gerarToast("Digite uma senha diferente da antiga");
-				}
-
+				checkPassWord task = new checkPassWord();
+				task.execute(new String[] { "" });
 			}
 		});
+	}
 
 
+
+
+	private class checkPassWord extends AsyncTask<String, Void, String> {
+
+		protected void onPreExecute() {
+			checkEmpty = checkPassword = checkOldAndNew = true;
+
+			Log.i("onPreExecute Edit Password taxi", "onPreExecute Edit Password taxi");
+			btnForgotAlterarSenha.setText("Aguarde...");
+			//Pegando as informações de pessoas
+			senhaAntiga = forgotSenhaAntiga.getText().toString();
+			novaSenha = forgotNovaSenha.getText().toString();
+			String novaSenha2 = forgotNovaSenha2.getText().toString();
+
+			if(senhaAntiga.equals("") || novaSenha.equals("") || novaSenha2.equals(""))
+				checkEmpty = false;				
+
+			if(!novaSenha.equals(novaSenha2))
+				checkPassword = false;
+
+			if(novaSenha.equals(senhaAntiga))
+				checkOldAndNew = false;
+		}
+
+		@Override
+		protected String doInBackground(String... urls) {
+			String response = "";
+
+			try{
+				Log.i("doInBackground checkPassWord taxi", "URL -> " + urls);
+
+				if(checkPassword && checkEmpty && checkOldAndNew){
+
+					Log.i("Abrindo o WS checkpassword taxi", "");
+					WSTaxiShare ws = new WSTaxiShare();
+					response = ws.login(sessionedLogin, senhaAntiga);
+					Log.i("Retorno do login taxi", response);					
+
+				}
+				else
+					Log.i("Algum check é falso", "Empty -> " + checkEmpty + " Password -> " + checkPassword + " OldAndNew -> " +checkOldAndNew );
+
+			}catch(Exception e){
+				gerarToast("Erro ao alterar!");
+				Log.i("Excetion check edit password taxi", "Exception -> " + e + " Message -> " + e.getMessage());
+			}
+
+			return response;
+
+		}
+
+		@Override
+		protected void onPostExecute(String strJson) {
+
+			respostaCheckPassword = strJson;
+			Log.i("respostaCheckPassword onPostExecute check", strJson);
+			btnForgotAlterarSenha.setText("Alterar");
+
+			if(!checkEmpty || !checkPassword || !checkOldAndNew)
+			{
+				if(!checkEmpty)
+					gerarToast("Todos os campos são obrigatórios");
+				if(!checkPassword)
+					gerarToast("Senhas precisam ser iguais");
+				if(!checkOldAndNew)
+					gerarToast("Digite uma senha diferente da antiga");
+			}
+			else{
+				Log.i("onPostExecute CheckPassword taxi", strJson);
+				JSONObject resposta;
+				try {
+					resposta = new JSONObject(respostaCheckPassword);
+					if (resposta.getInt("errorCode") == 0) {
+
+						editPasswordTask task = new editPasswordTask();
+						task.execute(new String[] { "" });
+					}
+					else
+						gerarToast(resposta.getString("descricao"));
+					
+				} catch (JSONException e) {
+					Log.i("onPostExecute exception taxi", "Exception -> " + e + "Message -> " + e.getMessage());
+				}
+			}		
+		}
+	}
+
+	private class editPasswordTask extends AsyncTask<String, Void, String> {
+
+		@Override
+		protected String doInBackground(String... urls) {
+			String response = "";
+
+			try{
+				Log.i("doInBackground edit password taxi", "URL -> " + urls.toString());
+
+				LoginApp loginApp = new LoginApp();
+
+				WSTaxiShare ws = new WSTaxiShare();
+				JSONObject resposta = new JSONObject(respostaCheckPassword);
+
+				if (resposta.getInt("errorCode") == 0) {
+					Log.i("Primeira senha ok taxi", "Resposta -> " + resposta.toString());
+
+					loginApp.setId(resposta.getJSONObject("data").getLong("id"));
+
+					loginApp.setLogin(sessionedLogin);
+					loginApp.setSenha(novaSenha);
+
+					Log.i("Dados do login taxi", "ID -> " + loginApp.getId() + " LOGIN -> " + loginApp.getLogin() + " NOVA SENHA -> " + loginApp.getSenha() );
+
+					response = ws.editarSenha(loginApp);
+					JSONObject resposta2 = new JSONObject(response);
+
+					if(resposta2.getInt("errorCode")== 0){
+						Log.i("Resposta da alteracao taxi", resposta.toString());
+						gerarToast(resposta2.getString("descricao"));
+					}
+					else{
+						gerarToast(resposta2.getString("descricao"));
+					}
+				}
+			}catch(Exception e){
+				Log.i("Excetion doinBack edit password taxi", "Exception -> " + e + " Message -> " + e.getMessage());
+				Log.i("Excetion doinBack edit password taxi", "RESPONSE -> " + response);
+			}
+
+			Log.i("doinBack edit password taxi", "RESPONSE -> " + response);
+
+			return response;
+		}
+
+		@Override
+		protected void onPostExecute(String strJson) {
+			Log.i("onPostExecute Edit Password taxi", strJson);
+
+			btnForgotAlterarSenha.setText("Alterar Senha");
+			 
+			try {
+				JSONObject resposta2 = new JSONObject(strJson);
+				if(resposta2.getInt("errorCode")== 0){
+
+					//Transfere para a pagina de dashboard
+					Intent i = new Intent(getApplicationContext(),
+							DashboardActivity.class);
+					startActivity(i);
+					finish();
+				}
+				else{
+					gerarToast(resposta2.getString("descricao"));
+				}
+
+			} catch (JSONException e) {
+				Log.i("Excetion onPostExecute edit password taxi", "Exception -> " + e + " Message -> " + e.getMessage());
+
+			}
+		}
+
+
+
+
+		protected void onPreExecute() {
+			Log.i("onPreExecute Edit Password taxi", "onPreExecute Edit Password taxi");
+			btnForgotAlterarSenha.setText("Aguarde...");
+
+		}
 
 	}
 

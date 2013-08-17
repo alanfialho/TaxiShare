@@ -1,22 +1,21 @@
-/**
- * Author: Ravi Tamada
- * URL: www.androidhive.info
- * twitter: http://twitter.com/ravitamada
- * */
+
 package com.br.activitys;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.br.entidades.PessoaApp;
-import com.br.entidades.WSTaxiShare;
+import com.br.network.WSTaxiShare;
 import com.br.sessions.SessionManagement;
 
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +41,8 @@ public class EditRegisterActivity extends Activity {
 	EditText textNick;
 	DatePicker dateDataNascimento;
 	SessionManagement session;
+
+	PessoaApp pessoaApp;
 
 	private static String pessoaID;
 	private static String sessionedLogin;
@@ -142,58 +143,9 @@ public class EditRegisterActivity extends Activity {
 		//Acao do botao cadastrar
 		btnSalvar.setOnClickListener(new View.OnClickListener() {			
 			public void onClick(View view) {
-				//Pegando as informações de pessoas
-				String nome = textNome.getText().toString();
-				String nick = textNick.getText().toString();
-				String email = textEmail.getText().toString();
-				String ddd = textDDD.getText().toString();
-				String celular = textCelular.getText().toString();
 
-				//Montando data de nascimento
-				int year = dateDataNascimento.getYear();
-				int month = dateDataNascimento.getMonth();
-				int day = dateDataNascimento.getDayOfMonth();
-				String dataNascimento = day + "/" + month+ "/" +year;
-
-				String sexo = spinnerSexo.getSelectedItem().toString();				
-
-				//Criando objeto pessoa e objeto login
-				PessoaApp pessoaApp = new PessoaApp();
-
-				//Definindo as paradas em pessoa				
-				pessoaApp.setId(Long.parseLong(pessoaID));
-				pessoaApp.setNome(nome);
-				pessoaApp.setNick(nick);
-				pessoaApp.setCelular(celular);
-				pessoaApp.setDataNascimento(dataNascimento);
-				pessoaApp.setDdd(ddd);
-				pessoaApp.setEmail(email);
-				pessoaApp.setSexo(sexo);
-
-				WSTaxiShare ws = new WSTaxiShare();
-				//Acessando o WS para fazer a alteração
-				try 
-				{
-					//Chama o metodo de editar e passa a pessoa no parametro
-					String respostaWs = ws.editarCadastro(pessoaApp);
-					//Cria um obj JSON com a resposta
-					JSONObject respostaWsJSON = new JSONObject(respostaWs);
-					//Imprime na tela a descrição da ação
-					gerarToast(respostaWsJSON.getString("descricao"));
-					
-					session.createLoginSession(pessoaID, nome,  email,  sexo,  dataNascimento,  nick,  ddd,  celular, sessionedLogin);
-					
-					//Transfere para a pagina de dashboard
-					Intent i = new Intent(getApplicationContext(),
-							DashboardActivity.class);
-					startActivity(i);
-					finish();
-
-				} 
-				catch (Exception e) {
-					gerarToast("Erro ao alterar!");
-					Log.i("Exception alterar taxi", e + "");
-				}
+				EditRegisterTask task = new EditRegisterTask();
+				task.execute(new String[] { "" });
 			}
 		});
 
@@ -209,6 +161,93 @@ public class EditRegisterActivity extends Activity {
 		});
 	}
 
+	private class EditRegisterTask extends AsyncTask<String, Void, String> {
+
+		protected void onPreExecute() {
+			btnSalvar.setText("Aguarde...");
+			//Pegando as informações de pessoas
+			String nome = textNome.getText().toString();
+			String nick = textNick.getText().toString();
+			String email = textEmail.getText().toString();
+			String ddd = textDDD.getText().toString();
+			String celular = textCelular.getText().toString();
+
+			//Montando data de nascimento
+			int year = dateDataNascimento.getYear();
+			int month = dateDataNascimento.getMonth();
+			int day = dateDataNascimento.getDayOfMonth();
+			String dataNascimento = day + "/" + month+ "/" +year;
+
+			String sexo = spinnerSexo.getSelectedItem().toString();				
+
+			//Criando objeto pessoa e objeto login
+			pessoaApp = new PessoaApp();
+
+			//Definindo as paradas em pessoa				
+			pessoaApp.setId(Long.parseLong(pessoaID));
+			pessoaApp.setNome(nome);
+			pessoaApp.setNick(nick);
+			pessoaApp.setCelular(celular);
+			pessoaApp.setDataNascimento(dataNascimento);
+			pessoaApp.setDdd(ddd);
+			pessoaApp.setEmail(email);
+			pessoaApp.setSexo(sexo);			
+		}
+
+		@Override
+		protected String doInBackground(String... urls) {
+			String response = "";
+
+
+
+			WSTaxiShare ws = new WSTaxiShare();
+			//Acessando o WS para fazer a alteração
+			try 
+			{
+				//Chama o metodo de editar e passa a pessoa no parametro
+				response = ws.editarCadastro(pessoaApp);
+
+			} 
+			catch (Exception e) {
+				gerarToast("Erro ao alterar!");
+				Log.i("Exception alterar taxi", e + "");
+			}
+
+
+
+			return response;
+
+		}
+
+		@Override
+		protected void onPostExecute(String strJson) {
+			
+			btnSalvar.setText("Salvar");
+
+			//Cria um obj JSON com a resposta
+			try {
+				JSONObject respostaWsJSON = new JSONObject(strJson);
+				if(respostaWsJSON.getInt("errorCode") == 0){
+
+					session.createLoginSession(pessoaID, pessoaApp.getNome(),  pessoaApp.getEmail(), pessoaApp.getSexo(),  pessoaApp.getDataNascimento(),  pessoaApp.getNick(), pessoaApp.getDdd(),  pessoaApp.getCelular(), sessionedLogin);
+
+					//Transfere para a pagina de dashboard
+					Intent i = new Intent(getApplicationContext(),
+							DashboardActivity.class);
+					startActivity(i);
+					finish();
+				}
+
+				gerarToast(respostaWsJSON.getString("descricao"));
+
+
+			} catch (JSONException e) {
+				Log.i("onPostExecute Exception taxi", "Exception -> " + e + "Message -> " + e.getMessage());
+			}
+
+		}
+	}
+
 
 	private void gerarToast(CharSequence message) {
 		int duration = Toast.LENGTH_LONG;
@@ -218,5 +257,30 @@ public class EditRegisterActivity extends Activity {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

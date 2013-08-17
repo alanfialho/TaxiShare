@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import com.br.entidades.LoginApp;
 import com.br.entidades.PessoaApp;
 import com.br.entidades.PerguntaApp;
-import com.br.entidades.WSTaxiShare;
+import com.br.network.WSTaxiShare;
 import com.br.resources.Utils;
 
 import android.app.Activity;
