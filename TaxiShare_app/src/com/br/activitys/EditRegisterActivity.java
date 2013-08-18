@@ -14,6 +14,8 @@ import com.br.sessions.SessionManagement;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -42,7 +44,6 @@ public class EditRegisterActivity extends Activity {
 	DatePicker dateDataNascimento;
 	SessionManagement session;
 
-	PessoaApp pessoaApp;
 
 	private static String pessoaID;
 	private static String sessionedLogin;
@@ -145,7 +146,8 @@ public class EditRegisterActivity extends Activity {
 			public void onClick(View view) {
 
 				EditRegisterTask task = new EditRegisterTask();
-				task.execute(new String[] { "" });
+				task.fillContext = view.getContext();
+				task.execute();
 			}
 		});
 
@@ -162,49 +164,58 @@ public class EditRegisterActivity extends Activity {
 	}
 
 	private class EditRegisterTask extends AsyncTask<String, Void, String> {
+		ProgressDialog progress;
+		Context fillContext;
+		PessoaApp pessoaApp;
 
 		protected void onPreExecute() {
-			btnSalvar.setText("Aguarde...");
-			//Pegando as informações de pessoas
-			String nome = textNome.getText().toString();
-			String nick = textNick.getText().toString();
-			String email = textEmail.getText().toString();
-			String ddd = textDDD.getText().toString();
-			String celular = textCelular.getText().toString();
+			try{
+				//Inica a popup de load
+				progress = new ProgressDialog(fillContext);
+				progress.setTitle("Salvando Alterações");
+				progress.setMessage("Aguarde...");
+				progress.show();
+				
+				//Pegando as informações de pessoas
+				String nome = textNome.getText().toString();
+				String nick = textNick.getText().toString();
+				String email = textEmail.getText().toString();
+				String ddd = textDDD.getText().toString();
+				String celular = textCelular.getText().toString();
 
-			//Montando data de nascimento
-			int year = dateDataNascimento.getYear();
-			int month = dateDataNascimento.getMonth();
-			int day = dateDataNascimento.getDayOfMonth();
-			String dataNascimento = day + "/" + month+ "/" +year;
+				//Montando data de nascimento
+				int year = dateDataNascimento.getYear();
+				int month = dateDataNascimento.getMonth();
+				int day = dateDataNascimento.getDayOfMonth();
+				String dataNascimento = day + "/" + month+ "/" +year;
 
-			String sexo = spinnerSexo.getSelectedItem().toString();				
+				String sexo = spinnerSexo.getSelectedItem().toString();				
 
-			//Criando objeto pessoa e objeto login
-			pessoaApp = new PessoaApp();
+				//Criando objeto pessoa e objeto login
+				pessoaApp = new PessoaApp();
 
-			//Definindo as paradas em pessoa				
-			pessoaApp.setId(Long.parseLong(pessoaID));
-			pessoaApp.setNome(nome);
-			pessoaApp.setNick(nick);
-			pessoaApp.setCelular(celular);
-			pessoaApp.setDataNascimento(dataNascimento);
-			pessoaApp.setDdd(ddd);
-			pessoaApp.setEmail(email);
-			pessoaApp.setSexo(sexo);			
+				//Definindo as paradas em pessoa				
+				pessoaApp.setId(Long.parseLong(pessoaID));
+				pessoaApp.setNome(nome);
+				pessoaApp.setNick(nick);
+				pessoaApp.setCelular(celular);
+				pessoaApp.setDataNascimento(dataNascimento);
+				pessoaApp.setDdd(ddd);
+				pessoaApp.setEmail(email);
+				pessoaApp.setSexo(sexo);			
+			}catch(Exception e){
+				Log.i("Exception onPreExecute EditRegisterTask ", "Exection -> " +  e + " || Message -> " + e.getMessage());
+			}
+			
 		}
 
 		@Override
 		protected String doInBackground(String... urls) {
 			String response = "";
 
-
-
-			WSTaxiShare ws = new WSTaxiShare();
-			//Acessando o WS para fazer a alteração
 			try 
 			{
-				//Chama o metodo de editar e passa a pessoa no parametro
+				WSTaxiShare ws = new WSTaxiShare();
 				response = ws.editarCadastro(pessoaApp);
 
 			} 
@@ -214,7 +225,6 @@ public class EditRegisterActivity extends Activity {
 			}
 
 
-
 			return response;
 
 		}
@@ -222,7 +232,6 @@ public class EditRegisterActivity extends Activity {
 		@Override
 		protected void onPostExecute(String strJson) {
 			
-			btnSalvar.setText("Salvar");
 
 			//Cria um obj JSON com a resposta
 			try {
@@ -244,6 +253,8 @@ public class EditRegisterActivity extends Activity {
 			} catch (JSONException e) {
 				Log.i("onPostExecute Exception taxi", "Exception -> " + e + "Message -> " + e.getMessage());
 			}
+			
+			progress.dismiss();
 
 		}
 	}

@@ -6,6 +6,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -78,8 +80,9 @@ public class EditPasswordActivity extends Activity {
 		btnForgotAlterarSenha.setOnClickListener(new View.OnClickListener() {			
 			public void onClick(View view) {
 
-				checkPassWord task = new checkPassWord();
-				task.execute(new String[] { "" });
+				CheckPassWordTask task = new CheckPassWordTask();
+				task.fillContext = view.getContext();
+				task.execute();
 			}
 		});
 	}
@@ -87,9 +90,19 @@ public class EditPasswordActivity extends Activity {
 
 
 
-	private class checkPassWord extends AsyncTask<String, Void, String> {
+	private class CheckPassWordTask extends AsyncTask<String, Void, String> {
+		
+		ProgressDialog progress;
+		Context fillContext;
 
 		protected void onPreExecute() {
+			//Inica a popup de load
+			progress = new ProgressDialog(fillContext);
+			progress.setTitle("Carregando");
+			progress.setMessage("Aguarde...");
+			progress.show();
+
+		
 			checkEmpty = checkPassword = checkOldAndNew = true;
 
 			Log.i("onPreExecute Edit Password taxi", "onPreExecute Edit Password taxi");
@@ -159,8 +172,9 @@ public class EditPasswordActivity extends Activity {
 					resposta = new JSONObject(respostaCheckPassword);
 					if (resposta.getInt("errorCode") == 0) {
 
-						editPasswordTask task = new editPasswordTask();
-						task.execute(new String[] { "" });
+						EditPasswordTask task = new EditPasswordTask();
+						task.fillContext = fillContext;
+						task.execute();
 					}
 					else
 						gerarToast(resposta.getString("descricao"));
@@ -168,11 +182,25 @@ public class EditPasswordActivity extends Activity {
 				} catch (JSONException e) {
 					Log.i("onPostExecute exception taxi", "Exception -> " + e + "Message -> " + e.getMessage());
 				}
-			}		
+			}
+			progress.dismiss();
 		}
 	}
 
-	private class editPasswordTask extends AsyncTask<String, Void, String> {
+	private class EditPasswordTask extends AsyncTask<String, Void, String> {
+		
+		ProgressDialog progress;
+		Context fillContext;
+
+		protected void onPreExecute() {
+			//Inica a popup de load
+			progress = new ProgressDialog(fillContext);
+			progress.setTitle("Salvando Alterações");
+			progress.setMessage("Aguarde...");
+			progress.show();
+			Log.i("onPreExecute Edit Password taxi", "onPreExecute Edit Password taxi");
+
+		}
 
 		@Override
 		protected String doInBackground(String... urls) {
@@ -221,7 +249,6 @@ public class EditPasswordActivity extends Activity {
 		protected void onPostExecute(String strJson) {
 			Log.i("onPostExecute Edit Password taxi", strJson);
 
-			btnForgotAlterarSenha.setText("Alterar Senha");
 			 
 			try {
 				JSONObject resposta2 = new JSONObject(strJson);
@@ -241,16 +268,9 @@ public class EditPasswordActivity extends Activity {
 				Log.i("Excetion onPostExecute edit password taxi", "Exception -> " + e + " Message -> " + e.getMessage());
 
 			}
+			progress.dismiss();
 		}
 
-
-
-
-		protected void onPreExecute() {
-			Log.i("onPreExecute Edit Password taxi", "onPreExecute Edit Password taxi");
-			btnForgotAlterarSenha.setText("Aguarde...");
-
-		}
 
 	}
 

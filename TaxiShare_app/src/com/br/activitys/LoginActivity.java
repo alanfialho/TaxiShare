@@ -9,6 +9,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -52,8 +54,8 @@ public class LoginActivity extends Activity {
 
 			public void onClick(View view) {
 				loginTask task = new loginTask();
-				task.execute(new String[] { "" });
-
+				task.fillContext = view.getContext();
+				task.execute();
 			}
 		});
 
@@ -70,14 +72,21 @@ public class LoginActivity extends Activity {
 		});
 	}
 
-	private void gerarToast(CharSequence message) {
-		int duration = Toast.LENGTH_LONG;
-		Toast toast = Toast
-				.makeText(getApplicationContext(), message, duration);
-		toast.show();
-	}
+
 
 	private class loginTask extends AsyncTask<String, Void, String> {
+
+		ProgressDialog progress;
+		Context fillContext;
+
+		protected void onPreExecute() {
+			//Inica a popup de load
+			progress = new ProgressDialog(fillContext);
+			progress.setTitle("Efetuando login");
+			progress.setMessage("Aguarde...");
+			progress.show();
+
+		}
 
 		@Override
 		protected String doInBackground(String... urls) {
@@ -108,7 +117,6 @@ public class LoginActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(String strJson) {
-			btnLogin.setText("Login");
 
 			try {
 				JSONObject resposta = new JSONObject(strJson);
@@ -153,13 +161,15 @@ public class LoginActivity extends Activity {
 				Log.i("Exception on post execute taxi", "Exception -> " + e + " Message->" +e.getMessage());
 				e.printStackTrace();
 			}
-
+			progress.dismiss();
 		}
 
-		protected void onPreExecute() {
-			btnLogin.setText("Aguarde...");
-		}
+	}
 
+	private void gerarToast(CharSequence message) {
+		int duration = Toast.LENGTH_LONG;
+		Toast toast = Toast.makeText(getApplicationContext(), message, duration);
+		toast.show();
 	}
 
 }
