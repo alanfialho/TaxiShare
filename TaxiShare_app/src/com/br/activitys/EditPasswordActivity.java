@@ -106,7 +106,6 @@ public class EditPasswordActivity extends Activity {
 			checkEmpty = checkPassword = checkOldAndNew = true;
 
 			Log.i("onPreExecute Edit Password taxi", "onPreExecute Edit Password taxi");
-			btnForgotAlterarSenha.setText("Aguarde...");
 			//Pegando as informações de pessoas
 			senhaAntiga = forgotSenhaAntiga.getText().toString();
 			novaSenha = forgotNovaSenha.getText().toString();
@@ -154,7 +153,6 @@ public class EditPasswordActivity extends Activity {
 
 			respostaCheckPassword = strJson;
 			Log.i("respostaCheckPassword onPostExecute check", strJson);
-			btnForgotAlterarSenha.setText("Alterar");
 
 			if(!checkEmpty || !checkPassword || !checkOldAndNew)
 			{
