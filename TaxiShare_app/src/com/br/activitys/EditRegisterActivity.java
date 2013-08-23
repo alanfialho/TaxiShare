@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import com.br.entidades.PessoaApp;
 import com.br.network.WSTaxiShare;
+import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
 
 
@@ -26,10 +27,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 
 public class EditRegisterActivity extends Activity {
+	Context context;
+	
 	//botoes
 	Button btnSalvar;
 	Button btnEditVoltar;
@@ -51,6 +53,7 @@ public class EditRegisterActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_register);
 
@@ -144,6 +147,7 @@ public class EditRegisterActivity extends Activity {
 		//Acao do botao cadastrar
 		btnSalvar.setOnClickListener(new View.OnClickListener() {			
 			public void onClick(View view) {
+				context = view.getContext();
 
 				EditRegisterTask task = new EditRegisterTask();
 				task.fillContext = view.getContext();
@@ -220,7 +224,7 @@ public class EditRegisterActivity extends Activity {
 
 			} 
 			catch (Exception e) {
-				gerarToast("Erro ao alterar!");
+				Utils.gerarToast( context, "Erro ao alterar!");
 				Log.i("Exception alterar taxi", e + "");
 			}
 
@@ -247,7 +251,7 @@ public class EditRegisterActivity extends Activity {
 					finish();
 				}
 
-				gerarToast(respostaWsJSON.getString("descricao"));
+				Utils.gerarToast( context, respostaWsJSON.getString("descricao"));
 
 
 			} catch (JSONException e) {
@@ -258,40 +262,4 @@ public class EditRegisterActivity extends Activity {
 
 		}
 	}
-
-
-	private void gerarToast(CharSequence message) {
-		int duration = Toast.LENGTH_LONG;
-		Toast toast = Toast
-				.makeText(getApplicationContext(), message, duration);
-		toast.show();
-	}
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

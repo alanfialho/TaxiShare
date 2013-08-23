@@ -18,19 +18,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.br.network.WSTaxiShare;
+import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
 
 
 public class LoginActivity extends Activity {
+	Context context;
+	
 	Button btnLogin;
 	Button btnLinkToRegister;
 	EditText loginLogin;
 	EditText loginSenha;
-	TextView loginErrorMsg;
+
 	SessionManagement session;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,12 +49,12 @@ public class LoginActivity extends Activity {
 		//Botoes e erro
 		btnLogin = (Button) findViewById(R.id.btnLogin);
 		btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
-		loginErrorMsg = (TextView) findViewById(R.id.login_error);
 
 		// Evento do botao de click
 		btnLogin.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
+				context = view.getContext();
 				loginTask task = new loginTask();
 				task.fillContext = view.getContext();
 				task.execute();
@@ -64,6 +66,7 @@ public class LoginActivity extends Activity {
 		btnLinkToRegister.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
+				
 				Intent intent = new Intent(getApplicationContext(),
 						RegisterActivity.class);
 				startActivity(intent);
@@ -107,7 +110,7 @@ public class LoginActivity extends Activity {
 
 			} catch (Exception e) {
 				Log.i("Exception Login taxi", e + "");
-				gerarToast("Não Foi possível logar");
+				Utils.gerarToast( context, "Não Foi possível logar");
 				e.printStackTrace();
 			}
 
@@ -123,8 +126,7 @@ public class LoginActivity extends Activity {
 				Log.i("JSON resposta taxi", resposta + "");
 
 				if (resposta.getInt("errorCode") == 0) {
-					loginErrorMsg.setText("Logou!");
-					gerarToast(resposta.getString("descricao"));
+					Utils.gerarToast( context, resposta.getString("descricao"));
 
 					JSONObject pessoa = resposta.getJSONObject("data").getJSONObject("pessoa");
 					Log.i("Testando as paradas aqui", pessoa.toString());
@@ -153,8 +155,7 @@ public class LoginActivity extends Activity {
 					finish();
 				}else{
 					// Erro de login
-					loginErrorMsg.setText("Usuario ou senha incorreta");
-					gerarToast(resposta.getString("descricao"));
+					Utils.gerarToast( context, resposta.getString("descricao"));
 
 				}
 			} catch (JSONException e) {
@@ -163,13 +164,5 @@ public class LoginActivity extends Activity {
 			}
 			progress.dismiss();
 		}
-
 	}
-
-	private void gerarToast(CharSequence message) {
-		int duration = Toast.LENGTH_LONG;
-		Toast toast = Toast.makeText(getApplicationContext(), message, duration);
-		toast.show();
-	}
-
 }

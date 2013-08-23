@@ -26,10 +26,12 @@
             android:text="Login" />
 
 		<!--  Email TextField -->
+
         <EditText
             android:id="@+id/loginLogin"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLines="1" />
         
 		<!--  Password Label -->
 
@@ -40,19 +42,15 @@
             android:text="Senha" />
 
 		<!--  Password TextField -->
+
         <EditText
             android:id="@+id/loginSenha"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:password="true" />
         
         <!--  Error message -->
-        <TextView android:id="@+id/login_error"
-            		android:layout_width="fill_parent"
-            		android:layout_height="wrap_content"
-            		android:textColor="#e30000"
-            		android:padding="10dip"
-            		android:textStyle="bold"/>
 
 		<!--  Login Button -->        
         <Button

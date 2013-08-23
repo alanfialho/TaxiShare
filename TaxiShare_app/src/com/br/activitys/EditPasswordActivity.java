@@ -15,13 +15,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.br.entidades.LoginApp;
 import com.br.network.WSTaxiShare;
+import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
 
 public class EditPasswordActivity extends Activity {
+
+	Context context;
 
 	//botoes
 	Button btnForgotAlterarSenha;
@@ -79,7 +81,7 @@ public class EditPasswordActivity extends Activity {
 		//Acao do botao cadastrar
 		btnForgotAlterarSenha.setOnClickListener(new View.OnClickListener() {			
 			public void onClick(View view) {
-
+				context = view.getContext();
 				CheckPassWordTask task = new CheckPassWordTask();
 				task.fillContext = view.getContext();
 				task.execute();
@@ -91,7 +93,7 @@ public class EditPasswordActivity extends Activity {
 
 
 	private class CheckPassWordTask extends AsyncTask<String, Void, String> {
-		
+
 		ProgressDialog progress;
 		Context fillContext;
 
@@ -102,7 +104,7 @@ public class EditPasswordActivity extends Activity {
 			progress.setMessage("Aguarde...");
 			progress.show();
 
-		
+
 			checkEmpty = checkPassword = checkOldAndNew = true;
 
 			Log.i("onPreExecute Edit Password taxi", "onPreExecute Edit Password taxi");
@@ -140,7 +142,7 @@ public class EditPasswordActivity extends Activity {
 					Log.i("Algum check é falso", "Empty -> " + checkEmpty + " Password -> " + checkPassword + " OldAndNew -> " +checkOldAndNew );
 
 			}catch(Exception e){
-				gerarToast("Erro ao alterar!");
+				Utils.gerarToast(context,"Erro ao alterar!");
 				Log.i("Excetion check edit password taxi", "Exception -> " + e + " Message -> " + e.getMessage());
 			}
 
@@ -157,11 +159,11 @@ public class EditPasswordActivity extends Activity {
 			if(!checkEmpty || !checkPassword || !checkOldAndNew)
 			{
 				if(!checkEmpty)
-					gerarToast("Todos os campos são obrigatórios");
+					Utils.gerarToast( context, "Todos os campos são obrigatórios");
 				if(!checkPassword)
-					gerarToast("Senhas precisam ser iguais");
+					Utils.gerarToast( context, "Senhas precisam ser iguais");
 				if(!checkOldAndNew)
-					gerarToast("Digite uma senha diferente da antiga");
+					Utils.gerarToast( context, "Digite uma senha diferente da antiga");
 			}
 			else{
 				Log.i("onPostExecute CheckPassword taxi", strJson);
@@ -175,8 +177,8 @@ public class EditPasswordActivity extends Activity {
 						task.execute();
 					}
 					else
-						gerarToast(resposta.getString("descricao"));
-					
+						Utils.gerarToast( context, resposta.getString("descricao"));
+
 				} catch (JSONException e) {
 					Log.i("onPostExecute exception taxi", "Exception -> " + e + "Message -> " + e.getMessage());
 				}
@@ -186,7 +188,7 @@ public class EditPasswordActivity extends Activity {
 	}
 
 	private class EditPasswordTask extends AsyncTask<String, Void, String> {
-		
+
 		ProgressDialog progress;
 		Context fillContext;
 
@@ -227,10 +229,10 @@ public class EditPasswordActivity extends Activity {
 
 					if(resposta2.getInt("errorCode")== 0){
 						Log.i("Resposta da alteracao taxi", resposta.toString());
-						gerarToast(resposta2.getString("descricao"));
+						Utils.gerarToast( context, resposta2.getString("descricao"));
 					}
 					else{
-						gerarToast(resposta2.getString("descricao"));
+						Utils.gerarToast( context, resposta2.getString("descricao"));
 					}
 				}
 			}catch(Exception e){
@@ -247,7 +249,7 @@ public class EditPasswordActivity extends Activity {
 		protected void onPostExecute(String strJson) {
 			Log.i("onPostExecute Edit Password taxi", strJson);
 
-			 
+
 			try {
 				JSONObject resposta2 = new JSONObject(strJson);
 				if(resposta2.getInt("errorCode")== 0){
@@ -259,7 +261,7 @@ public class EditPasswordActivity extends Activity {
 					finish();
 				}
 				else{
-					gerarToast(resposta2.getString("descricao"));
+					Utils.gerarToast( context, resposta2.getString("descricao"));
 				}
 
 			} catch (JSONException e) {
@@ -273,11 +275,6 @@ public class EditPasswordActivity extends Activity {
 	}
 
 
-	private void gerarToast(CharSequence message) {
-		int duration = Toast.LENGTH_LONG;
-		Toast toast = Toast
-				.makeText(getApplicationContext(), message, duration);
-		toast.show();
-	}
+
 
 }

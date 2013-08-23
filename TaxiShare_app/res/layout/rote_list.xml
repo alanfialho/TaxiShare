@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/lblOrigemBuscada"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Origem:"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/txtOrigemBuscada"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblOrigemBuscada"
+                android:layout_alignBottom="@+id/lblOrigemBuscada"
+                android:layout_marginLeft="14dp"
+                android:layout_toRightOf="@+id/lblOrigemBuscada"
+                android:text="Rua Cervinho, 191" />
+
+            <TextView
+                android:id="@+id/txtDestino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblDestinoBuscado"
+                android:layout_alignBottom="@+id/lblDestinoBuscado"
+                android:layout_alignLeft="@+id/txtOrigemBuscada"
+                android:text="Rua da Mooca" />
+
+            <TextView
+                android:id="@+id/lblDestinoBuscado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/lblOrigemBuscada"
+                android:text="Destino:"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/lblDisponiveis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lugares Disponiveis"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <Spinner
+                android:id="@+id/spnLugaresDisponiveis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/lblHorario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Horario de Saida"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TimePicker
+                android:id="@+id/timePicker1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/result_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

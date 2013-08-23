@@ -31,9 +31,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 public class RegisterActivity extends Activity {
+	Context context;
 	// botoes
 	Button btnCadastrar;
 	Button btnLinkToLogin;
@@ -108,8 +108,7 @@ public class RegisterActivity extends Activity {
 		btnCadastrar.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 
-				new Utils();
-
+				context = view.getContext();
 				CheckLoginTask task = new CheckLoginTask();
 				task.fillContext = view.getContext();
 				task.execute();
@@ -120,8 +119,7 @@ public class RegisterActivity extends Activity {
 		btnLinkToLogin.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-				Intent i = new Intent(getApplicationContext(),
-						LoginActivity.class);
+				Intent i = new Intent(getApplicationContext(),LoginActivity.class);
 				startActivity(i);
 				// Close Registration View
 				finish();
@@ -176,7 +174,7 @@ public class RegisterActivity extends Activity {
 					registerTask.execute();
 				}
 				else{
-					gerarToast(checkLoginJSON.getString("descricao"));
+					Utils.gerarToast(context, checkLoginJSON.getString("descricao"));
 				}
 
 			} catch (JSONException e) {
@@ -297,20 +295,21 @@ public class RegisterActivity extends Activity {
 				loginApp.setPessoa(pessoaApp);
 			}
 			else
-				gerarToast(message);
+				Utils.gerarToast(context, message);
 		}
 
 		@Override
 		protected String doInBackground(String... urls) {
 			String response = "";
+			if(validate){
+				try {
+					WSTaxiShare ws = new WSTaxiShare();
+					response = ws.cadastrarLogin(loginApp);		
 
-			try {
-				WSTaxiShare ws = new WSTaxiShare();
-				response = ws.cadastrarLogin(loginApp);		
-
-			} catch (Exception e) {
-				gerarToast("Erro ao cadastrar " + e.getMessage());
-				Log.i("Exception RegisterTask doInBackground taxi", "Exception -> " + e + " || Message -> " + e.getMessage());
+				} catch (Exception e) {
+					Utils.gerarToast(context, "Erro ao cadastrar " + e.getMessage());
+					Log.i("Exception RegisterTask doInBackground taxi", "Exception -> " + e + " || Message -> " + e.getMessage());
+				}	
 			}
 
 			return response;
@@ -323,15 +322,15 @@ public class RegisterActivity extends Activity {
 				JSONObject cadastroLoginJSON = new JSONObject(strJson);
 				// Checa se o cadastro deu certo
 				if (cadastroLoginJSON.getInt("errorCode") == 0) {
-					gerarToast("Cadastro efetuado!");
+					Utils.gerarToast(context, "Cadastro efetuado!");
 
 					// Retorna para tela de login
 					Intent i = new Intent(getApplicationContext(), LoginActivity.class);
 					startActivity(i);
 					finish();
 				} else
-					gerarToast(cadastroLoginJSON.getString("descricao"));
-				
+					Utils.gerarToast(context, cadastroLoginJSON.getString("descricao"));
+
 			} catch (JSONException e) {
 				Log.i("Exception RegisterTask onPostExecute taxi", "Exception -> " + e + " || Message -> " + e.getMessage());
 
@@ -386,13 +385,5 @@ public class RegisterActivity extends Activity {
 
 			progress.dismiss();
 		}
-	}
-
-
-
-	private void gerarToast(CharSequence message) {
-		int duration = Toast.LENGTH_LONG;
-		Toast toast = Toast.makeText(getApplicationContext(), message, duration);
-		toast.show();
 	}
 }

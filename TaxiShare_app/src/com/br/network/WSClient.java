@@ -10,6 +10,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 
 
 import android.util.Log;
@@ -26,6 +28,7 @@ public class WSClient {
 			Log.i("Get taxi", "Url -> " + url);
 			response = HttpClientSingleton.getHttpClientInstace().execute(httpget);
 			HttpEntity entity = response.getEntity();
+			
 
 			if (entity != null) {
 				result[0] = String.valueOf(response.getStatusLine().getStatusCode());
@@ -37,7 +40,7 @@ public class WSClient {
 		} catch (Exception e) {
 			Log.i("Exception no get WS taxi", "Exception ->" + e);
 			result[0] = "0";
-			result[1] = "Falha de rede!";
+			result[1] = "{descricao: Falha de rede!}";
 		}
 		return result;
 	}
