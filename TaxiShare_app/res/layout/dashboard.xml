@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#ffff">
-    
-    <TextView android:layout_width="fill_parent"
-        	  android:layout_height="wrap_content"
-        	  android:text="Bem Vindo"
-        	  android:textSize="40dip"
-        	  android:gravity="center"
-        	  android:layout_marginTop="20dip"/>
-    
-    <!--  Login Button -->        
-        <Button
-            android:id="@+id/btnEditar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:text="Editar Cadastro" />
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
         <Button
-            android:id="@+id/dashEditPassword"
+            android:id="@+id/button1"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:text="Alterar Senha" />
+            android:layout_height="fill_parent"
+            android:layout_marginTop="20dp"
+            android:text="Button" />
 
         <Button
-            android:id="@+id/btnBuscarRota"
+            android:id="@+id/button2"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:text="Buscar Rota" />
-    
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dip"
-        android:background="@null"
-        android:text="Sair"
-        android:textColor="#21dbd4"
-        android:textSize="20dip"
-        android:textStyle="bold" />
+            android:layout_height="fill_parent"
+            android:layout_marginTop="20dp"
+            android:text="Button" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="20dp"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="20dp"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="20dp"
+            android:text="Button" />
+    </LinearLayout>
+
+</ScrollView>

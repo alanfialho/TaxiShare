@@ -1,6 +1,5 @@
 package com.br.network;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,10 +9,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
-
-
 import android.util.Log;
 
 public class WSClient {
@@ -25,22 +20,22 @@ public class WSClient {
 		HttpResponse response;
 
 		try {
-			Log.i("Get taxi", "Url -> " + url);
+			Log.i("WSClient Get taxi", "Url -> " + url);
 			response = HttpClientSingleton.getHttpClientInstace().execute(httpget);
 			HttpEntity entity = response.getEntity();
-			
 
 			if (entity != null) {
 				result[0] = String.valueOf(response.getStatusLine().getStatusCode());
 				InputStream instream = entity.getContent();
 				result[1] = toString(instream);
 				instream.close();
-				Log.i("get", "Result from post JsonPost : " + result[0] + " : " + result[1]);
+				Log.i("WSClient if entity not null taxi", "Respsta 0: " + result[0]);
+				Log.i("WSClient if entity not null taxi", "Respsta 1: " + result[1]);
 			}
 		} catch (Exception e) {
-			Log.i("Exception no get WS taxi", "Exception ->" + e);
+			Log.i("Exception WSClient get taxi", "Exception ->" + e);
 			result[0] = "0";
-			result[1] = "{descricao: Falha de rede!}";
+			result[1] = "{errorCode: 1, descricao: Falha de rede!}";
 		}
 		return result;
 	}
@@ -48,7 +43,7 @@ public class WSClient {
 	public final String[] post(String url, String json) {
 		String[] result = new String[2];
 		try {
-			Log.i("POST taxi", json);
+			Log.i("WSClient post taxi", json);
 			HttpPost httpPost = new HttpPost(new URI(url));
 			httpPost.setHeader("Content-type", "application/json");
 			StringEntity sEntity = new StringEntity(json, "UTF-8");
@@ -63,17 +58,13 @@ public class WSClient {
 				InputStream instream = entity.getContent();
 				result[1] = toString(instream);
 				instream.close();
-				Log.d("Resultado do Post taxi", "JsonPost : " + result[0] + " : " + result[1]);
-			}
-			else{
-				
+				Log.i("WSClient Post taxi", "JsonPost : " + result[0] + " : " + result[1]);
 			}
 
 		} catch (Exception e) {
-			Log.e("NGVL", "Falha ao acessar Web service", e);
 			result[0] = "0";
-			result[1] = "Falha de rede!";
-			e.printStackTrace();
+			result[1] = "{errorCode: 1, Descricao: Falha de rede!}";
+			Log.i("WSCliente Exception post", "Exception -> " + e + " | Message -> " + e.getMessage());
 		}
 		return result;
 	}
@@ -89,5 +80,3 @@ public class WSClient {
 		return new String(baos.toByteArray());
 	}
 }
-
-

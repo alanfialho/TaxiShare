@@ -1,8 +1,3 @@
-/**
- * Author: Ravi Tamada
- * URL: www.androidhive.info
- * twitter: http://twitter.com/ravitamada
- * */
 package com.br.activitys;
 
 import java.util.ArrayList;
@@ -259,11 +254,8 @@ public class RegisterActivity extends Activity {
 					Log.i("Erro Validacaop", "Check-Email");
 					message+= "Email inválido!";
 				}
-
 				validate = false;
-
 			}
-
 
 			if (validate) {
 				// Criando objeto pessoa e objeto login
@@ -337,7 +329,6 @@ public class RegisterActivity extends Activity {
 			}
 
 			progress.dismiss();
-
 		}
 	}
 
@@ -352,7 +343,6 @@ public class RegisterActivity extends Activity {
 			progress.setTitle("Carregando");
 			progress.setMessage("Aguarde...");
 			progress.show();
-
 		}
 
 		@Override

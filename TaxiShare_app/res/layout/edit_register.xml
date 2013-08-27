@@ -135,12 +135,6 @@
         
         
           <!--  BOTAO DE VOLTAR -->
-        <Button
-            android:id="@+id/btnEditVoltar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:text="Voltar" />
     </LinearLayout>
 
 </ScrollView>

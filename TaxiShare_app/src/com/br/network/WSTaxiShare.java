@@ -1,8 +1,10 @@
 package com.br.network;
 
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.util.Log;
 
@@ -12,7 +14,6 @@ import com.google.gson.JsonParser;
 import com.br.entidades.LoginApp;
 import com.br.entidades.PerguntaApp;
 import com.br.entidades.PessoaApp;; 
-
 
 public class WSTaxiShare {
 
@@ -30,19 +31,12 @@ public class WSTaxiShare {
 			throw new Exception(resposta[1]);
 		}
 	}	
-	public String login(String email, String password) throws Exception {
 
+	public String login(String email, String password) throws Exception {
 		String[] resposta = new WSClient().get(URL_WS + "login/login/?login="+ email +"&password="+ password);
 
-		String saida = resposta[1];
-		if (resposta[0].equals("200")) {
-			return saida;
-		} else {
-			return saida;
-		}
+		return resposta[1];
 	}
-
-
 
 	public List<PerguntaApp> getPerguntas() throws Exception {
 
@@ -50,11 +44,12 @@ public class WSTaxiShare {
 		if (resposta[0].equals("200")) {
 			Gson gson = new Gson();
 			ArrayList<PerguntaApp> listaPessoa = new ArrayList<PerguntaApp>();
-			JsonParser parser = new JsonParser();
-			JsonArray array = parser.parse(resposta[1]).getAsJsonArray();
+			JSONObject json = new JSONObject(resposta[1]);
+			json = json.getJSONObject("data");
+			JSONArray array = json.getJSONArray("perguntas");
 
-			for (int i = 0; i < array.size(); i++) {
-				listaPessoa.add(gson.fromJson(array.get(i), PerguntaApp.class));
+			for (int i = 0; i < array.length(); i++) {
+				listaPessoa.add(gson.fromJson(array.get(i).toString(), PerguntaApp.class));
 			}
 
 			return listaPessoa;
@@ -87,19 +82,15 @@ public class WSTaxiShare {
 		try
 		{
 			Gson gson = new Gson();
-			String clienteJSON = gson.toJson(pessoa);
-			resposta = new WSClient().post(URL_WS + "pessoa/create", clienteJSON);
+			String pessoaJson = gson.toJson(pessoa);
+			resposta = new WSClient().post(URL_WS + "pessoa/create", pessoaJson);
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
-			ex.printStackTrace();
+			Log.i("WSTaxishare Exception cadastrarPessoa taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
 		}
 
-		if (resposta[0].equals("200")) {
-			return resposta[1];
-		} else {
-			throw new Exception(resposta[1]);
-		}
+		return resposta[1];
 	} 
 
 	public String cadastrarLogin(LoginApp login) throws Exception {
@@ -110,16 +101,12 @@ public class WSTaxiShare {
 			String loginJSON = gson.toJson(login);
 			resposta = new WSClient().post(URL_WS + "login/create", loginJSON);
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
-			Log.i("Erronocadastro", "Erro no cadastro login " + ex.toString());
-			Log.i("Erronocadastro2", "Erro no cadastro login " + ex.getMessage());
+			Log.i("WSTaxishare Exception cadastrarLogin taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
 		}
-		if (resposta[0].equals("200")) {
-			return resposta[1];
-		} else {
-			throw new Exception(resposta[1]);
-		}
+
+		return resposta[1];
 	}
 
 	public String editarCadastro(PessoaApp novaPessoa) throws Exception {
@@ -129,22 +116,14 @@ public class WSTaxiShare {
 			Gson gson = new Gson();
 			String pessoaJSON = gson.toJson(novaPessoa);
 			resposta = new WSClient().post(URL_WS + "pessoa/edit", pessoaJSON);
-			Log.i("Edittar bruno", resposta[0] + " ----- " +resposta[1]);
+			Log.i("WSTaxishare editarCadastro taxi", "ErrorCode: " + resposta[0] + " || Resposta: " +resposta[1]);
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
-
+			Log.i("WSTaxishare Exception editarCadastro taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
 		}
 
-		if (resposta[0].equals("200")) {
-			Log.i("Edittar bruno if", resposta[0] + " ----- " +resposta[1]);
-
-			return resposta[1];
-		} else {
-			Log.i("Edittar bruno else", resposta[0] + " ----- " +resposta[1]);
-
-			return resposta[0];
-		}
+		return resposta[1];
 	}
 
 
@@ -155,25 +134,14 @@ public class WSTaxiShare {
 			Gson gson = new Gson();
 			String loginJSON = gson.toJson(loginApp);
 			resposta = new WSClient().post(URL_WS + "login/editPassword", loginJSON);
-			Log.i("Editar senha taxi", resposta[0] + " ----- " + resposta[1]);
-			Log.i("Editar senha JSON taxi", loginJSON);
+			Log.i("WSTaxishare editarSenha taxi", "ErrorCode: " + resposta[0] + " || Resposta: " +resposta[1]);
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
-			Log.i("EEEEEEEEEEEEEEEEEEE acth taxi", ex + "");
-
-
+			Log.i("WSTaxishare Exception editarSenha taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
 		}
 
-		if (resposta[0].equals("200")) {
-			Log.i("EEEEEEEEEEEEEEEEEEE if taxi", resposta[1]);
-
-			return resposta[1];
-		} else {
-			Log.i("EEEEEEEEEEEEEEEEEEE else taxi", resposta[1]);
-
-			return resposta[0];
-		}
+		return resposta[1];
 	}
 
 	public String checkLogin(String login) throws Exception {
@@ -182,16 +150,12 @@ public class WSTaxiShare {
 		{
 			resposta = new WSClient().get(URL_WS + "login/checkLogin?login="+ login);
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
-			Log.i("ErroBruno", "Erro no checar login " + ex.toString() + " -- " + ex);
+			Log.i("WSTaxishare Exception checkLogin taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
 		}
-		if (resposta[0].equals("200")) {
-			return resposta[1];
-		} else {
-			throw new Exception(resposta[1]);
-		}
-	}
 
+		return resposta[1];
+	}
 }
 

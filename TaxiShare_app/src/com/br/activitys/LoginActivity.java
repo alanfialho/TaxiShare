@@ -1,8 +1,4 @@
-/**
- * Author: Ravi Tamada
- * URL: www.androidhive.info
- * twitter: http://twitter.com/ravitamada
- * */
+
 package com.br.activitys;
 
 import org.json.JSONException;
@@ -18,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 
 import com.br.network.WSTaxiShare;
 import com.br.resources.Utils;
@@ -38,6 +33,7 @@ public class LoginActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
+		
 
 		// Session Manager
 		session = new SessionManagement(getApplicationContext()); 
@@ -143,24 +139,19 @@ public class LoginActivity extends Activity {
 					Log.i("taxi pessoaid no login", pessoaId);
 					Log.i("taxi login no login", aaaaaaaaaa);
 					session.createLoginSession(pessoaId, nome,  email,  sexo,  dataNasc,  nick,  ddd,  celular, aaaaaaaaaa);
-
-					// Vai para dashboard
-					Intent dashboard = new Intent(getApplicationContext(), DashboardActivity.class);
-
-					// fecha todas as views antes de ir para dashboard
-					dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(dashboard);
-
-					// Fecha a tela de logn
+					
+					Intent intent = new Intent(getApplicationContext(),
+							MainActitity.class);
+					startActivity(intent);
 					finish();
+				
+				
 				}else{
 					// Erro de login
 					Utils.gerarToast( context, resposta.getString("descricao"));
-
 				}
 			} catch (JSONException e) {
 				Log.i("Exception on post execute taxi", "Exception -> " + e + " Message->" +e.getMessage());
-				e.printStackTrace();
 			}
 			progress.dismiss();
 		}

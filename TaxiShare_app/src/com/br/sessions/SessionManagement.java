@@ -110,6 +110,7 @@ public class SessionManagement {
     public void checkLogin(){
         // Check login status
         if(!this.isLoggedIn()){
+        	Log.i("Usuario não esta logado taxi" , "" );
             // user is not logged in redirect him to Login Activity
             Intent i = new Intent(_context, LoginActivity.class);
             // Closing all the Activities
