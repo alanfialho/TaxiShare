@@ -5,6 +5,7 @@ import com.br.sessions.SessionManagement;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -38,7 +39,7 @@ public class MainActitity extends Activity {
 		setContentView(R.layout.main_activity_layout);
 
 		session = new SessionManagement(getApplicationContext());
-		
+
 		mTitle = mDrawerTitle = "Dashboard";
 		mDashboardOptions = new String[] {"Dashboard", "Buscar Rota", "Cadastrar Rota", "Editar Perfil", "Alterar Senha", "Logout" } ;
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -79,8 +80,8 @@ public class MainActitity extends Activity {
 		if (savedInstanceState == null) {
 			selectItem(0);
 		}
-		
-		
+
+
 		Fragment fragment = new DashboardFragment();
 		Bundle args = new Bundle();
 		fragment.setArguments(args);
@@ -143,30 +144,31 @@ public class MainActitity extends Activity {
 		//  {"Menu Principal","Buscar Rota", "Cadastrar Rota", "Editar Perfil", "Alterar Senha", "Logout" } ;
 		Bundle args = new Bundle();
 		FragmentManager fragmentManager = getFragmentManager();
-
-
+		FragmentTransaction ftransaction = fragmentManager.beginTransaction();
 		switch(position) {
 
 		case 0:
 			Fragment dashboardFragment = new DashboardFragment();
 			dashboardFragment.setArguments(args);
-			fragmentManager.beginTransaction().replace(R.id.content_frame, dashboardFragment).commit();
+			ftransaction.replace(R.id.content_frame, dashboardFragment);
 			break;
-			
 		case 3:
 			Fragment editRegisterFragment = new EditRegisterFragment();
 			editRegisterFragment.setArguments(args);
-			fragmentManager.beginTransaction().replace(R.id.content_frame, editRegisterFragment).commit();
+			ftransaction.replace(R.id.content_frame, editRegisterFragment);
 			break;
 		case 4:
 			Fragment editPasswordFragment = new EditPasswordFragment();
 			editPasswordFragment.setArguments(args);
-			fragmentManager.beginTransaction().replace(R.id.content_frame, editPasswordFragment).commit();
+			ftransaction.replace(R.id.content_frame, editPasswordFragment);
+
 			break;
 		case 5:
 			session.logoutUser();
 		}
 
+		ftransaction.addToBackStack(null);
+		ftransaction.commit();
 
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
