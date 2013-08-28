@@ -29,10 +29,8 @@ public class PerguntaResource {
         PerguntaEntity entity = new PerguntaEntity();
         ResponseEntity saida;
         PerguntaJpaController perguntasDAO = new PerguntaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
-
         entity.setPerguntas(perguntasDAO.findPerguntaEntities());
-        saida = new ResponseEntity("Sucesso", 0, "Lista de Perguntas", entity.getPerguntas());
-        
+        saida = new ResponseEntity("Sucesso", 0, "Lista de Perguntas", entity);
         return new Gson().toJson(saida);
 
     }
