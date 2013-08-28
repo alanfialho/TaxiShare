@@ -68,3 +68,7 @@ local.properties
 */nbactions.xml
 */nb-configuration.xml
 */build.xml
+
+nbbuild.xml
+build.xml
+manifest.mf
