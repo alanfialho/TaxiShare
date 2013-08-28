@@ -6,18 +6,28 @@ package TS.FrameWork.TO;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  *
@@ -32,88 +42,55 @@ public class Rota implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Long id;
-    @Column(name = "longitude")
-    private String longitude;
-    @Column(name = "latitute")
-    private String latitute;
-    @Column(name = "pass_existentes")
-    private short passExistentes;
-    @Column(name = "pass_max")
-    private short passMax;
-    @Column(name = "flag_aberta")
-    private Boolean flagAberta;
-    @Column(name = "flag_cancelada")
-    private Boolean flagCancelada;
+    private int id;
     @Column(name = "data_rota")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataRota;
-    @JoinColumn(name = "id_end_destino", referencedColumnName = "id")
-    @ManyToOne
-    private Endereco endDestino;
-    @JoinColumn(name = "id_end_origem", referencedColumnName = "id")
-    @ManyToOne
-    private Endereco endOrigem;
+    @Column(name = "flag_aberta")
+    private Boolean flagAberta;
+    @Column(name = "pass_existentes")
+    private Short passExistentes;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "rota_endereco", joinColumns = {
+        @JoinColumn(name = "id_rota", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "id_endereco", referencedColumnName = "id")})
+    private List<Endereco> enderecoList;
+    @ManyToMany(fetch = FetchType.EAGER,  cascade=CascadeType.ALL)
+    @JoinTable(name = "rota_usuario", joinColumns = {
+                    @JoinColumn(name = "id_rota", referencedColumnName = "id", nullable = false, updatable = false)}, inverseJoinColumns = {
+                    @JoinColumn(name = "id_usuario", referencedColumnName = "id", nullable = false, updatable = false)})
+    private Set<Usuario> usuarios = new HashSet<Usuario>(0);
 
     public Rota() {
     }
 
-    public Rota(String longitude, String latitute, short passExistentes, short passMax, Boolean flagAberta, Boolean flagCancelada, Date dataRota, Endereco endDestino, Endereco endOrigem) {
-        this.longitude = longitude;
-        this.latitute = latitute;
-        this.passExistentes = passExistentes;
-        this.passMax = passMax;
-        this.flagAberta = flagAberta;
-        this.flagCancelada = flagCancelada;
-        this.dataRota = dataRota;
-        this.endDestino = endDestino;
-        this.endOrigem = endOrigem;
-    }
-    
-    
-
-    public Rota(Long id) {
+    public Rota(int id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public Rota(Date dataRota, Boolean flagAberta, Short passExistentes, List<Endereco> enderecoList) {
+        this.dataRota = dataRota;
+        this.flagAberta = flagAberta;
+        this.passExistentes = passExistentes;
+        this.enderecoList = enderecoList;
+    }
+    
+    
+    
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getLongitude() {
-        return longitude;
+    public Date getDataRota() {
+        return dataRota;
     }
 
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getLatitute() {
-        return latitute;
-    }
-
-    public void setLatitute(String latitute) {
-        this.latitute = latitute;
-    }
-
-    public short getPassExistentes() {
-        return passExistentes;
-    }
-
-    public void setPassExistentes(short passExistentes) {
-        this.passExistentes = passExistentes;
-    }
-
-    public short getPassMax() {
-        return passMax;
-    }
-
-    public void setPassMax(short passMax) {
-        this.passMax = passMax;
+    public void setDataRota(Date dataRota) {
+        this.dataRota = dataRota;
     }
 
     public Boolean getFlagAberta() {
@@ -124,65 +101,55 @@ public class Rota implements Serializable {
         this.flagAberta = flagAberta;
     }
 
-    public Boolean getFlagCancelada() {
-        return flagCancelada;
-    }
-
-    public void setFlagCancelada(Boolean flagCancelada) {
-        this.flagCancelada = flagCancelada;
-    }
-
-    public Date getDataRota() {
-        return dataRota;
-    }
-
-    public void setDataRota(Date dataRota) {
-        this.dataRota = dataRota;
-    }
     
-    /**
-     * @return the endDestino
-     */
-    public Endereco getEndDestino() {
-        return endDestino;
+    public Short getPassExistentes() {
+        return passExistentes;
+    }
+
+    public void setPassExistentes(Short passExistentes) {
+        this.passExistentes = passExistentes;
+    }
+
+    @XmlTransient
+    public List<Endereco> getEnderecoList() {
+        return enderecoList;
+    }
+
+    public void setEnderecoList(List<Endereco> enderecoList) {
+        this.enderecoList = enderecoList;
     }
 
     /**
-     * @param endDestino the endDestino to set
+     * @return the usuarios
      */
-    public void setEndDestino(Endereco endDestino) {
-        this.endDestino = endDestino;
+    public Set<Usuario> getUsuarios() {
+        return usuarios;
     }
 
     /**
-     * @return the endOrigem
+     * @param usuarios the usuarios to set
      */
-    public Endereco getEndOrigem() {
-        return endOrigem;
+    public void setUsuarios(Set<Usuario> usuarios) {
+        this.usuarios = usuarios;
     }
 
-    /**
-     * @param endOrigem the endOrigem to set
-     */
-    public void setEndOrigem(Endereco endOrigem) {
-        this.endOrigem = endOrigem;
-    }
     
-    @Override
+
+  @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (int) id;
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+   public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Rota)) {
+        if (!(object instanceof Pergunta)) {
             return false;
         }
         Rota other = (Rota) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (this.id != other.id) {
             return false;
         }
         return true;
@@ -192,4 +159,5 @@ public class Rota implements Serializable {
     public String toString() {
         return "TS.FrameWork.TO.Rota[ id=" + id + " ]";
     }
+    
 }

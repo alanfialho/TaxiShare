@@ -52,7 +52,7 @@ public class PessoaJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = pessoa.getId();
+                int id = pessoa.getId();
                 if (findPessoa(id) == null) {
                     throw new NonexistentEntityException("The pessoa with id " + id + " no longer exists.");
                 }
@@ -102,13 +102,14 @@ public class PessoaJpaController implements Serializable {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
             }
+            
             return q.getResultList();
         } finally {
             em.close();
         }
     }
 
-    public Pessoa findPessoa(Long id) {
+    public Pessoa findPessoa(int id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Pessoa.class, id);

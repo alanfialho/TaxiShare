@@ -1,8 +1,10 @@
 package Testes;
 
-import TS.FrameWork.TO.Pessoa;
-import TS.FrameWork.DAO.PessoaJpaController;
+import TS.FrameWork.TO.*;
+import TS.FrameWork.DAO.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Persistence;
 
 /*
@@ -32,9 +34,7 @@ public class Teste extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        entityManager1 = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("HibernateJPAPU").createEntityManager();
         entityManager2 = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("HibernateJPAPU").createEntityManager();
-        entityManager3 = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("HibernateJPAPU").createEntityManager();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -83,9 +83,7 @@ public class Teste extends javax.swing.JDialog {
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(enviarTeste)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(enviarTeste)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -150,17 +148,35 @@ public class Teste extends javax.swing.JDialog {
 
     private void enviarTesteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarTesteActionPerformed
 
-        String nome = nometxt.getText();
-        Date dataNascimento = new Date();
-        String sexo = "Masculino";
-        String dddCelular = dddtxt.getText();
-        String celular = celulartxt.getText();
-        String email = emailtxt.getText();
-        String nick = "alan";
+        Endereco e1 = new Endereco("rua FW","Sao miguel2", 444,"são paulo", "sao paulo", "sp", "brasil", "049876542", 'O');
+        Endereco e2 = new Endereco("rua FW","itaquera2", 444,"são paulo", "sao paulo", "sp", "brasil", "098763838", 'D');
+        Endereco e3 = new Endereco("rua FW","patriarca2", 444,"são paulo", "sao paulo", "sp", "brasil", "098763566", 'D');
         
-        Pessoa pessoaTO = new Pessoa(dataNascimento,nome,nick,dddCelular, celular, sexo, email);
-	PessoaJpaController pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
-        pessoaDAO.create(pessoaTO);
+        List<Endereco> lstEnd  = new ArrayList();
+        lstEnd.add(e1);
+        lstEnd.add(e2);
+        lstEnd.add(e3);
+        
+        Rota rota = new Rota(new Date(), true, Short.parseShort("1"), lstEnd);
+        RotaJpaController rotaDAO = new RotaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        rota = rotaDAO.findRota(2);
+        
+        
+        PerguntaJpaController perguntaDAO = new PerguntaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        PessoaJpaController pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        UsuarioJpaController usuarioDAO = new UsuarioJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        
+                
+        Pessoa pessoa = new Pessoa(new Date(), "alan", "11", "97873829", "feminino", "alan@alan.com");
+        Pergunta pergunta = perguntaDAO.findPergunta(1) ;
+        Usuario u1 = new Usuario("aln2", "@lan", "seila", pessoa, pergunta, null);
+        
+        pessoaDAO.create(pessoa);
+//        usuarioDAO.create(u1);
+        rota.getUsuarios().add(u1);
+        
+        
+        rotaDAO.create(rota);
         
         System.out.println("FOI");
 
@@ -230,9 +246,7 @@ public class Teste extends javax.swing.JDialog {
     private javax.swing.JTextField celulartxt;
     private javax.swing.JTextField dddtxt;
     private javax.swing.JTextField emailtxt;
-    private javax.persistence.EntityManager entityManager1;
     private javax.persistence.EntityManager entityManager2;
-    private javax.persistence.EntityManager entityManager3;
     private javax.swing.JButton enviarTeste;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

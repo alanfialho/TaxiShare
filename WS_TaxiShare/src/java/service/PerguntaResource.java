@@ -12,7 +12,6 @@ import javax.ws.rs.Produces;
 import TS.FrameWork.DAO.PerguntaJpaController;
 import com.google.gson.Gson;
 import entities.PerguntaEntity;
-import entities.ResponseEntity;
 
 /**
  *
@@ -26,15 +25,11 @@ public class PerguntaResource {
     @Path("/findAll")
     @Produces("application/json")
     public String findAll() {
-        System.out.println("aaaa");
         PerguntaEntity entity = new PerguntaEntity();
-        ResponseEntity saida;
         PerguntaJpaController perguntasDAO = new PerguntaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
 
         entity.setPerguntas(perguntasDAO.findPerguntaEntities());
-        
-        saida = new ResponseEntity("Sucesso", 0, "Lista de Perguntas", entity);
-        return new Gson().toJson(saida);
+        return new Gson().toJson(entity.getPerguntas());
 
     }
 }

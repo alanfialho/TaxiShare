@@ -52,7 +52,7 @@ public class PerguntaJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = pergunta.getId();
+                int id = pergunta.getId();
                 if (findPergunta(id) == null) {
                     throw new NonexistentEntityException("The pergunta with id " + id + " no longer exists.");
                 }
@@ -108,7 +108,7 @@ public class PerguntaJpaController implements Serializable {
         }
     }
 
-    public Pergunta findPergunta(Long id) {
+    public Pergunta findPergunta(int id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Pergunta.class, id);

@@ -5,7 +5,7 @@
 //comentando aqui na moral
 package entities;
 
-import TS.FrameWork.TO.Login;
+import TS.FrameWork.TO.Usuario;
 import TS.FrameWork.TO.Pessoa;
 import java.io.Serializable;
 import java.util.Date;
@@ -22,7 +22,7 @@ public class PessoaEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @XmlElement
-    private Long id;
+    private int id;
     @XmlElement
     private String nome;
     @XmlElement
@@ -38,11 +38,11 @@ public class PessoaEntity implements Serializable {
     @XmlElement
     private String sexo;
     @XmlElement
-    private Login login;
+    private Usuario login;
     @XmlElement
     private List<Pessoa> lstPessoas;
 
-    public PessoaEntity(Long id, String nome, String ddd, String celular, String dataNascimento, String email, String sexo, List<Pessoa> lstPessoas) {
+    public PessoaEntity(int id, String nome, String ddd, String celular, String dataNascimento, String email, String sexo, List<Pessoa> lstPessoas) {
         this.id = id;
         this.nome = nome;
         this.ddd = ddd;
@@ -56,11 +56,11 @@ public class PessoaEntity implements Serializable {
     public PessoaEntity() {
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -129,11 +129,11 @@ public class PessoaEntity implements Serializable {
         this.lstPessoas = lstPessoas;
     }  
 
-    public Login getLogin() {
+    public Usuario getLogin() {
         return login;
     }
 
-    public void setLogin(Login login) {
+    public void setLogin(Usuario login) {
         this.login = login;
     }
     

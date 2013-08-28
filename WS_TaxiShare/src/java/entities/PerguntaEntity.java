@@ -20,7 +20,7 @@ public class PerguntaEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @XmlElement
-    private Long id;
+    private int id;
     @XmlElement
     private String pergunta;
     @XmlElement
@@ -29,11 +29,11 @@ public class PerguntaEntity implements Serializable {
     public PerguntaEntity() {
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

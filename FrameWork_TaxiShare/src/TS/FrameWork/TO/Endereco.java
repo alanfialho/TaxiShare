@@ -13,20 +13,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 /**
  *
  * @author alan
  */
 @Entity
 @Table(name = "endereco")
+
 public class Endereco implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Long id;
+    private int id;
     @Column(name = "rua")
     private String rua;
     @Column(name = "bairro")
@@ -45,11 +45,11 @@ public class Endereco implements Serializable {
     private String cep;
     @Column(name = "tipo")
     private Character tipo;
-
+    
     public Endereco() {
     }
 
-    public Endereco(Long id) {
+    public Endereco(int id) {
         this.id = id;
     }
 
@@ -67,11 +67,11 @@ public class Endereco implements Serializable {
     
     
     
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -150,7 +150,7 @@ public class Endereco implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (int) id;
         return hash;
     }
 
@@ -161,7 +161,7 @@ public class Endereco implements Serializable {
             return false;
         }
         Endereco other = (Endereco) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (this.id != other.id) {
             return false;
         }
         return true;

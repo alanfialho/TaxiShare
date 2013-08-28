@@ -5,20 +5,21 @@
 package TS.FrameWork.DAO;
 
 import TS.FrameWork.DAO.exceptions.NonexistentEntityException;
-import TS.FrameWork.TO.Endereco;
+import TS.FrameWork.TO.Usuario;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
 
 /**
  *
  * @author alan
  */
-public class EnderecoJpaController {
-    
-     public EnderecoJpaController(EntityManagerFactory emf) {
+public class UsuarioJpaController implements Serializable {
+
+    public UsuarioJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -27,12 +28,12 @@ public class EnderecoJpaController {
         return emf.createEntityManager();
     }
 
-    public void create(Endereco endereco) {
+    public void create(Usuario usuario) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(endereco);
+            em.persist(usuario);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -41,19 +42,19 @@ public class EnderecoJpaController {
         }
     }
 
-    public void edit(Endereco endereco) throws NonexistentEntityException, Exception {
+    public void edit(Usuario usuario) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            endereco = em.merge(endereco);
+            usuario = em.merge(usuario);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = endereco.getId();
-                if (findEndereco(id) == null) {
-                    throw new NonexistentEntityException("The endereco with id " + id + " no longer exists.");
+                int id = usuario.getId();
+                if (findUsuario(id) == null) {
+                    throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -69,14 +70,14 @@ public class EnderecoJpaController {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Endereco endereco;
+            Usuario usuario;
             try {
-                endereco = em.getReference(Endereco.class, id);
-                endereco.getId();
+                usuario = em.getReference(Usuario.class, id);
+                usuario.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The endereco with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.", enfe);
             }
-            em.remove(endereco);
+            em.remove(usuario);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -85,18 +86,18 @@ public class EnderecoJpaController {
         }
     }
 
-    public List<Endereco> findEnderecoEntities() {
-        return findEnderecoEntities(true, -1, -1);
+    public List<Usuario> findUsuarioEntities() {
+        return findUsuarioEntities(true, -1, -1);
     }
 
-    public List<Endereco> findEnderecoEntities(int maxResults, int firstResult) {
-        return findEnderecoEntities(false, maxResults, firstResult);
+    public List<Usuario> findUsuarioEntities(int maxResults, int firstResult) {
+        return findUsuarioEntities(false, maxResults, firstResult);
     }
 
-    private List<Endereco> findEnderecoEntities(boolean all, int maxResults, int firstResult) {
+    private List<Usuario> findUsuarioEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
-            Query q = em.createQuery("select object(o) from Endereco as o");
+            Query q = em.createQuery("select object(o) from Usuario as o");
             if (!all) {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
@@ -107,24 +108,42 @@ public class EnderecoJpaController {
         }
     }
 
-    public Endereco findEndereco(Long id) {
+    public Usuario findUsuario(int id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Endereco.class, id);
+            return em.find(Usuario.class, id);
+        } finally {
+            em.close();
+        }
+    }
+    
+    public Usuario findLogin(String login) {
+        EntityManager em = getEntityManager();
+        System.out.println("ENtrou no find login");
+        try {
+            String query = "select l from Usuario l where l.usuario like :login";
+            Query q = em.createQuery(query).setParameter("login", login);
+            List results = q.getResultList();
+            Usuario foundEntity = null;
+            if (!results.isEmpty()) {
+                // ignora multiplos resultados
+                foundEntity = (Usuario) results.get(0);
+            }
+
+            return foundEntity;
         } finally {
             em.close();
         }
     }
 
-    public int getEnderecoCount() {
+    public int getUsuarioCount() {
         EntityManager em = getEntityManager();
         try {
-            Query q = em.createQuery("select count(o) from Endereco as o");
+            Query q = em.createQuery("select count(o) from Usuario as o");
             return ((Long) q.getSingleResult()).intValue();
         } finally {
             em.close();
         }
     }
-
     
 }

@@ -4,7 +4,7 @@
  */
 package service;
 
-import TS.FrameWork.DAO.LoginJpaController;
+import TS.FrameWork.DAO.UsuarioJpaController;
 import javax.ejb.Stateless;
 import javax.persistence.Persistence;
 import javax.ws.rs.Consumes;
@@ -15,7 +15,7 @@ import javax.ws.rs.Produces;
 import TS.FrameWork.TO.Pessoa;
 import TS.FrameWork.DAO.PessoaJpaController;
 import TS.FrameWork.DAO.PerguntaJpaController;
-import TS.FrameWork.TO.Login;
+import TS.FrameWork.TO.Usuario;
 import TS.FrameWork.TO.Pergunta;
 import com.google.gson.Gson;
 import entities.LoginEntity;
@@ -41,7 +41,7 @@ public class LoginResource {
         System.out.println("Senha --> " + password);
 
         //Controlador do banco de login
-        LoginJpaController loginDao = new LoginJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        UsuarioJpaController loginDao = new UsuarioJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
 
         //Entidades de login, pessoa e pergunta
         LoginEntity loginEntity = new LoginEntity();
@@ -49,7 +49,7 @@ public class LoginResource {
         PerguntaEntity perguntaEntity = new PerguntaEntity();
 
         try {
-            Login login = (Login) loginDao.findLogin(loginInfo);
+            Usuario login = (Usuario) loginDao.findLogin(loginInfo);
             if (login != null) {
                 //Checa se a senha bate com o login
                 if (login.getSenha().equals(password)) {
@@ -61,7 +61,6 @@ public class LoginResource {
                     String date = formater.format(pessoa.getDataNascimento());
                     //Pega os dados da pessoa do FW e seta na entidade pessoa WS
                     pessoaEntity.setNome(pessoa.getNome());
-                    pessoaEntity.setNick(pessoa.getNick());
                     pessoaEntity.setDataNascimento(date);
                     pessoaEntity.setCelular(pessoa.getCelular());
                     pessoaEntity.setSexo(pessoa.getSexo());
@@ -109,10 +108,10 @@ public class LoginResource {
         System.out.println("Login BRUNAO --> " + loginInfo);
 
         //Controlador do banco de login
-        LoginJpaController loginDao = new LoginJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        UsuarioJpaController loginDao = new UsuarioJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
 
         try {
-            Login login = (Login) loginDao.findLogin(loginInfo);
+            Usuario login = (Usuario) loginDao.findLogin(loginInfo);
             if (login != null) {
                 //Retorna um json informando que o login ja existe
                 ResponseEntity saida = new ResponseEntity("Erro", 1, "Login já existe!", null);
@@ -142,12 +141,12 @@ public class LoginResource {
 
             //Cria uma pessoa e um login
             Pessoa pessoa = new Pessoa();
-            Login login = new Login();
+            Usuario login = new Usuario();
             Pergunta pergunta = new Pergunta();
 
             //Cria um novo controle de pessoa
             PessoaJpaController pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
-            LoginJpaController loginDAO = new LoginJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+            UsuarioJpaController loginDAO = new UsuarioJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
             PerguntaJpaController perguntaDAO = new PerguntaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
 
             PessoaEntity pessoaEntity = entity.getPessoa();
@@ -157,7 +156,6 @@ public class LoginResource {
 
             //Inicializa os valores da pessoa de acordo com a entity
             pessoa.setNome(pessoaEntity.getNome());
-            pessoa.setNick(pessoaEntity.getNick());
             pessoa.setCelular(pessoaEntity.getCelular());
             pessoa.setDdd(pessoaEntity.getDdd());
             pessoa.setSexo(pessoaEntity.getSexo());
@@ -200,11 +198,11 @@ public class LoginResource {
     @Produces("application/json")
     @Consumes("application/json")
     public String editLoginPassword(LoginEntity entity) {
-        LoginJpaController loginDAO = new LoginJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
-        Login login = new Login();
+        UsuarioJpaController loginDAO = new UsuarioJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        Usuario login = new Usuario();
         try {
 
-            login = loginDAO.findLogin(entity.getId());
+            login = loginDAO.findUsuario(entity.getId());
             login.setSenha(entity.getSenha());
             
             loginDAO.edit(login);

@@ -31,28 +31,19 @@ public class PessoaResource {
     @Path("/create")
     @Produces("application/json")
     @Consumes("application/json")
-    public String create(PessoaEntity entity) {
+    public String create(Pessoa pessoa) {
        
         ResponseEntity saida;
         PessoaJpaController pessoaDAO;
         
         try 
         {
+            //trata a data 
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
-            java.sql.Date data = new java.sql.Date(format.parse(entity.getDataNascimento()).getTime());
+            String data = format.format(pessoa.getDataNascimento());
+            pessoa.setDataNascimento(format.parse(data));
             
-            Pessoa pessoa = new Pessoa();
             pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
-           
-            //Inicializa os valores da pessoa de acordo com a entity
-            pessoa.setNome(entity.getNome());
-            pessoa.setNick(entity.getNick());
-            pessoa.setCelular(entity.getCelular());
-            pessoa.setDdd(entity.getDdd());
-            pessoa.setSexo(entity.getSexo());
-            pessoa.setEmail(entity.getEmail());
-            pessoa.setDataNascimento(data);
-            //Insere a pessoa preenchida no banco
             pessoaDAO.create(pessoa);
             
             saida = new ResponseEntity("Sucesso", 0, "Cadastro realizado com sucesso!", null);    
@@ -69,7 +60,7 @@ public class PessoaResource {
     @GET
     @Path("/findById/{id}")
     @Produces("application/json")
-    public String findById(@PathParam("id") Long id) {
+    public String findById(@PathParam("id") int id) {
 
         ResponseEntity saida;
         PessoaJpaController pessoaDAO;
@@ -132,25 +123,18 @@ public class PessoaResource {
     @Path("/edit")
     @Produces("application/json")
     @Consumes("application/json")
-    public String edit(PessoaEntity entity) {
+    public String edit(Pessoa pessoa) {
         PessoaJpaController pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
-        Pessoa pessoa = new Pessoa();
         try {
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
-            java.sql.Date data = new java.sql.Date(format.parse(entity.getDataNascimento()).getTime());
-            pessoa.setId(entity.getId());
-            pessoa.setNome(entity.getNome());
-            pessoa.setSexo(entity.getSexo());
-            pessoa.setEmail(entity.getEmail());
-            pessoa.setDdd(entity.getDdd());
-            pessoa.setCelular(entity.getCelular());
-            pessoa.setNick(entity.getNick());
-            pessoa.setDataNascimento(data);
+            java.sql.Date data = new java.sql.Date(pessoa.getDataNascimento().getTime());
+            String sqlDate = format.format(data);
+            pessoa.setDataNascimento(format.parse(sqlDate));
 
             pessoaDAO.edit(pessoa);
 
             //Objeto de retorno
-            ResponseEntity saida = new ResponseEntity("Sucesso", 0, "Cadastro alterado com sucesso!", entity);
+            ResponseEntity saida = new ResponseEntity("Sucesso", 0, "Cadastro alterado com sucesso!", null);
 
             //Retorna um json completo com os dados do usuarios
             return new Gson().toJson(saida);

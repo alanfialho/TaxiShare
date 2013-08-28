@@ -2,17 +2,7 @@
 
 <Form version="1.3" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <NonVisualComponents>
-    <Component class="javax.persistence.EntityManager" name="entityManager1">
-      <Properties>
-        <Property name="persistenceUnit" type="java.lang.String" value="pu"/>
-      </Properties>
-    </Component>
     <Component class="javax.persistence.EntityManager" name="entityManager2">
-      <Properties>
-        <Property name="persistenceUnit" type="java.lang.String" value="pu"/>
-      </Properties>
-    </Component>
-    <Component class="javax.persistence.EntityManager" name="entityManager3">
       <Properties>
         <Property name="persistenceUnit" type="java.lang.String" value="pu"/>
       </Properties>

@@ -6,18 +6,19 @@ package TS.FrameWork.DAO;
 
 import TS.FrameWork.DAO.exceptions.NonexistentEntityException;
 import TS.FrameWork.TO.Rota;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
 
 /**
  *
  * @author alan
  */
-public class RotaJpaController {
-    
+public class RotaJpaController implements Serializable {
+
     public RotaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
@@ -51,7 +52,7 @@ public class RotaJpaController {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = rota.getId();
+                int id = rota.getId();
                 if (findRota(id) == null) {
                     throw new NonexistentEntityException("The rota with id " + id + " no longer exists.");
                 }
@@ -107,10 +108,10 @@ public class RotaJpaController {
         }
     }
 
-    public Rota findRota(Long id) {
+    public Rota findRota(int id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Rota.class, id);
+            return em.find(Rota.class, id);        
         } finally {
             em.close();
         }
@@ -125,6 +126,5 @@ public class RotaJpaController {
             em.close();
         }
     }
-
     
 }

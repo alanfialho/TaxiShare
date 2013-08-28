@@ -20,7 +20,7 @@ public class LoginEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @XmlElement
-    private Long id;
+    private int id;
     @XmlElement
     private String login;
     @XmlElement
@@ -33,7 +33,7 @@ public class LoginEntity implements Serializable {
     private PessoaEntity pessoa;
     
 
-    public LoginEntity(Long id, String login, String senha, PerguntaEntity pergunta, String resposta) {
+    public LoginEntity(int id, String login, String senha, PerguntaEntity pergunta, String resposta) {
         this.id = id;
         this.login = login;
         this.senha = senha;
@@ -44,11 +44,11 @@ public class LoginEntity implements Serializable {
     public LoginEntity() {
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
