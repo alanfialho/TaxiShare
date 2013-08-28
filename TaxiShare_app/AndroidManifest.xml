@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.br.activitys.EditPasswordFragment"
+            android:name="com.br.fragments.EditPasswordFragment"
             android:label="Login" >
         </activity>
         <activity
@@ -40,7 +40,7 @@
             android:label="Cadastro" >
         </activity>
         <activity
-            android:name="com.br.activitys.EditRegisterFragment"
+            android:name="com.br.fragments.EditRegisterFragment"
             android:label="Editar" >
         </activity>
         <activity

@@ -1,4 +1,4 @@
-package com.br.activitys;
+package com.br.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.br.activitys.R;
 import com.br.sessions.SessionManagement;
 
 public class DashboardFragment extends Fragment {

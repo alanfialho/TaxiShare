@@ -1,15 +1,13 @@
-package com.br.activitys;
+package com.br.fragments;
 
 import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.br.activitys.R;
 import com.br.entidades.LoginApp;
 import com.br.network.WSTaxiShare;
 import com.br.resources.Utils;

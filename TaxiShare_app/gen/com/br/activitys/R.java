@@ -28,7 +28,7 @@ public final class R {
     }
     public static final class id {
         public static final int ScrollView1=0x7f080000;
-        public static final int action_websearch=0x7f080034;
+        public static final int action_rote_search=0x7f080032;
         public static final int btnCadastrar=0x7f080026;
         public static final int btnEditSalvar=0x7f080011;
         public static final int btnForgotAlterarSenha=0x7f080009;
@@ -51,8 +51,6 @@ public final class R {
         public static final int editNick=0x7f08000b;
         public static final int editNome=0x7f08000a;
         public static final int editSexo=0x7f08000d;
-        public static final int editText2=0x7f080032;
-        public static final int editText3=0x7f080033;
         public static final int forgotNovaSenha=0x7f080007;
         public static final int forgotNovaSenha2=0x7f080008;
         public static final int forgotSenhaAntiga=0x7f080006;
@@ -76,9 +74,9 @@ public final class R {
         public static final int textSenha=0x7f080022;
         public static final int textSenha2=0x7f080023;
         public static final int textSexo=0x7f08001d;
+        public static final int textView1=0x7f080031;
         public static final int timePicker1=0x7f08002f;
         public static final int txtDestino=0x7f08002a;
-        public static final int txtOrigem=0x7f080031;
         public static final int txtOrigemBuscada=0x7f080029;
     }
     public static final class layout {
@@ -90,7 +88,7 @@ public final class R {
         public static final int main_activity_layout=0x7f030005;
         public static final int register=0x7f030006;
         public static final int rote_list=0x7f030007;
-        public static final int teste=0x7f030008;
+        public static final int rote_search=0x7f030008;
     }
     public static final class menu {
         public static final int main=0x7f070000;

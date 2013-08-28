@@ -1,13 +1,15 @@
 package com.br.activitys;
 
+import com.br.fragments.DashboardFragment;
+import com.br.fragments.EditPasswordFragment;
+import com.br.fragments.EditRegisterFragment;
+import com.br.fragments.SearchRoteFragment;
 import com.br.sessions.SessionManagement;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.SearchManager;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -20,7 +22,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 
 public class MainActitity extends Activity {
@@ -40,30 +41,31 @@ public class MainActitity extends Activity {
 
 		session = new SessionManagement(getApplicationContext());
 
-		mTitle = mDrawerTitle = "Dashboard";
-		mDashboardOptions = new String[] {"Dashboard", "Buscar Rota", "Cadastrar Rota", "Editar Perfil", "Alterar Senha", "Logout" } ;
+		mTitle = mDrawerTitle = "TaxiShare";
+		mDashboardOptions = new String[] {"Buscar Rota", "Editar Perfil", "Alterar Senha", "Logout" } ;
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-		// set a custom shadow that overlays the main content when the drawer opens
+		//Seta a sombra do menu (Copiei assim, nao vi isso funcionando)
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-		// set up the drawer's list view with items and click listener
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.drawer_list_item, mDashboardOptions));
+
+		//Define as opções dentro do listview do menu lateral
+		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mDashboardOptions));
+
+		//Define as ações dos items no menu lateral instanciando uma subclasse
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-		// enable ActionBar app icon to behave as action to toggle nav drawer
+		//Pelo que eu entendi, ele permite que o botao da actionbar permita o togle do menu lateral
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 
-		// ActionBarDrawerToggle ties together the the proper interactions
-		// between the sliding drawer and the action bar app icon
+		//Define umas paradas do togle do menu lateral
 		mDrawerToggle = new ActionBarDrawerToggle(
-				this,                  /* host Activity */
-				mDrawerLayout,         /* DrawerLayout object */
-				R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
-				R.string.drawer_open,  /* "open drawer" description for accessibility */
-				R.string.drawer_close  /* "close drawer" description for accessibility */
+				this,                  /* Activity que contem o menu*/
+				mDrawerLayout,         /* objeto DrawerLayout */
+				R.drawable.ic_drawer,  /* botaozinho dos pauzinhos do actionBar*/
+				R.string.drawer_open,  /* Descricao de abrir - Para acessibilidade */
+				R.string.drawer_close  /* "Descricao de fechar - Para acessibilidade*/
 				) {
 			public void onDrawerClosed(View view) {
 				getActionBar().setTitle(mTitle);
@@ -75,17 +77,19 @@ public class MainActitity extends Activity {
 				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 			}
 		};
+
+		//Seta comportamento de toggle no menu lateral
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
+		//Nao saquei o que é isso
 		if (savedInstanceState == null) {
 			selectItem(0);
 		}
 
-
-		Fragment fragment = new DashboardFragment();
+		//Seta fragmento de dashboard no content frame
+		Fragment fragment = new SearchRoteFragment();
 		Bundle args = new Bundle();
 		fragment.setArguments(args);
-
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 	}
@@ -102,7 +106,7 @@ public class MainActitity extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// If the nav drawer is open, hide action items related to the content view
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+		menu.findItem(R.id.action_rote_search).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -113,22 +117,31 @@ public class MainActitity extends Activity {
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
+
+		Bundle args = new Bundle();
+		FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction ftransaction = fragmentManager.beginTransaction();
+
 		// Handle action buttons
 		switch(item.getItemId()) {
-		case R.id.action_websearch:
-			// create intent to perform web search for this planet
-			Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-			intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-			// catch event that there's no activity to handle intent
-			if (intent.resolveActivity(getPackageManager()) != null) {
-				startActivity(intent);
-			} else {
-				Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
-			}
-			return true;
+
+		case R.id.action_rote_search:
+
+			Fragment searchRoteFragment = new SearchRoteFragment();
+			searchRoteFragment.setArguments(args);
+			ftransaction.replace(R.id.content_frame, searchRoteFragment);
+
+			break;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+
+
+		ftransaction.addToBackStack(null);
+		ftransaction.commit();
+
+		return true;
+
 	}
 
 	/* The click listner for ListView in the navigation drawer */
@@ -141,29 +154,29 @@ public class MainActitity extends Activity {
 
 	private void selectItem(int position) {
 
-		//  {"Menu Principal","Buscar Rota", "Cadastrar Rota", "Editar Perfil", "Alterar Senha", "Logout" } ;
+//		mDashboardOptions = new String[] {"Buscar Rota", "Editar Perfil", "Alterar Senha", "Logout" } ;
 		Bundle args = new Bundle();
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction ftransaction = fragmentManager.beginTransaction();
 		switch(position) {
 
 		case 0:
-			Fragment dashboardFragment = new DashboardFragment();
-			dashboardFragment.setArguments(args);
-			ftransaction.replace(R.id.content_frame, dashboardFragment);
+			Fragment searchRoteFragment = new SearchRoteFragment();
+			searchRoteFragment.setArguments(args);
+			ftransaction.replace(R.id.content_frame, searchRoteFragment);
 			break;
-		case 3:
+		case 1:
 			Fragment editRegisterFragment = new EditRegisterFragment();
 			editRegisterFragment.setArguments(args);
 			ftransaction.replace(R.id.content_frame, editRegisterFragment);
 			break;
-		case 4:
+		case 3:
 			Fragment editPasswordFragment = new EditPasswordFragment();
 			editPasswordFragment.setArguments(args);
 			ftransaction.replace(R.id.content_frame, editPasswordFragment);
 
 			break;
-		case 5:
+		case 4:
 			session.logoutUser();
 		}
 

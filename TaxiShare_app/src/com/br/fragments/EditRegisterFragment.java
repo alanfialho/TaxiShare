@@ -1,5 +1,5 @@
 
-package com.br.activitys;
+package com.br.fragments;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +8,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.br.activitys.R;
 import com.br.entidades.PessoaApp;
 import com.br.network.WSTaxiShare;
 import com.br.resources.Utils;
