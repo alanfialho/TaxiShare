@@ -2,14 +2,14 @@ package com.br.entidades;
 
 public class LoginApp {
 	
-	private Long id;
+	private int id;
 	private String login;
 	private String senha;
 	private PerguntaApp pergunta;
 	private String resposta;
 	private PessoaApp pessoa;
 	
-	public LoginApp(Long id, String login, String senha, PerguntaApp pergunta,
+	public LoginApp(int id, String login, String senha, PerguntaApp pergunta,
 			String resposta) {
 		super();
 		this.id = id;
@@ -21,10 +21,10 @@ public class LoginApp {
 	public LoginApp() {
 		super();
 	}
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getLogin() {

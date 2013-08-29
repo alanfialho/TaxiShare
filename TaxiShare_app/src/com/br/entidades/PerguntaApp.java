@@ -2,9 +2,9 @@ package com.br.entidades;
 
 public class PerguntaApp {
 	
-	private Long id;
+	private int id;
     private String pergunta;
-	public PerguntaApp(Long id, String pergunta) {
+	public PerguntaApp(int id, String pergunta) {
 		super();
 		this.id = id;
 		this.pergunta = pergunta;
@@ -12,10 +12,10 @@ public class PerguntaApp {
 	public PerguntaApp() {
 		super();
 	}
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getPergunta() {

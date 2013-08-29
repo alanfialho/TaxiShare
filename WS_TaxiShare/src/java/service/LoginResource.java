@@ -95,7 +95,7 @@ public class LoginResource {
                 return new Gson().toJson(saida);
             }
         } catch (Exception ex) {
-            System.out.println("ERRRO Login --> " + ex + "");
+            System.out.println("Exception -> " + ex + " || Message -> " + ex.getMessage());
             ResponseEntity saida = new ResponseEntity("Erro", 2, "Não foi possivel realizar operação, tente mais tarde!", null);
             return new Gson().toJson(saida);
         }

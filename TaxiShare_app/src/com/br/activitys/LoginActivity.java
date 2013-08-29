@@ -128,7 +128,6 @@ public class LoginActivity extends Activity {
 					Log.i("Testando as paradas aqui", pessoa.toString());
 					String pessoaId = resposta.getJSONObject("data").getString("id");
 					String nome = pessoa.getString("nome");
-					String nick = pessoa.getString("nick");
 					String email = pessoa.getString("email");
 					String ddd = pessoa.getString("ddd");
 					String celular = pessoa.getString("celular");
@@ -138,7 +137,7 @@ public class LoginActivity extends Activity {
 
 					Log.i("taxi pessoaid no login", pessoaId);
 					Log.i("taxi login no login", aaaaaaaaaa);
-					session.createLoginSession(pessoaId, nome,  email,  sexo,  dataNasc,  nick,  ddd,  celular, aaaaaaaaaa);
+					session.createLoginSession(pessoaId, nome,  email,  sexo,  dataNasc,  ddd,  celular, aaaaaaaaaa);
 					
 					Intent intent = new Intent(getApplicationContext(),
 							MainActitity.class);

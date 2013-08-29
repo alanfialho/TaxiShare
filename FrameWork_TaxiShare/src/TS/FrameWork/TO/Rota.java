@@ -26,6 +26,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -55,11 +56,13 @@ public class Rota implements Serializable {
         @JoinColumn(name = "id_rota", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "id_endereco", referencedColumnName = "id")})
     private List<Endereco> enderecoList;
-    @ManyToMany(fetch = FetchType.EAGER,  cascade=CascadeType.ALL)
-    @JoinTable(name = "rota_usuario", joinColumns = {
-                    @JoinColumn(name = "id_rota", referencedColumnName = "id", nullable = false, updatable = false)}, inverseJoinColumns = {
-                    @JoinColumn(name = "id_usuario", referencedColumnName = "id", nullable = false, updatable = false)})
-    private Set<Usuario> usuarios = new HashSet<Usuario>(0);
+    
+    @ManyToMany
+    @JoinTable(
+            name = "rota_usuario",
+            joinColumns = {@JoinColumn(name = "id_rota")},
+            inverseJoinColumns = { @JoinColumn(name = "id_usuario")})
+    private List<Usuario> usuarios;
 
     public Rota() {
     }
@@ -122,14 +125,14 @@ public class Rota implements Serializable {
     /**
      * @return the usuarios
      */
-    public Set<Usuario> getUsuarios() {
+    public List<Usuario> getUsuarios() {
         return usuarios;
     }
 
     /**
      * @param usuarios the usuarios to set
      */
-    public void setUsuarios(Set<Usuario> usuarios) {
+    public void setUsuarios(List<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
 

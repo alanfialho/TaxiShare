@@ -37,17 +37,7 @@
 
         <!-- LABEL DO NICK -->
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Nick" />
-
         <!-- CAMPO DO NICK -->
-
-        <EditText
-            android:id="@+id/textNick"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
 
         <!-- LABEL DO EMAIL -->
 

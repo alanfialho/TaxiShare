@@ -40,8 +40,8 @@ public class Usuario implements Serializable {
     @OneToOne
     @JoinColumn(name="idPergunta")
     private Pergunta pergunta;
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "usuarios")
-    private Set<Rota> rotas = new HashSet<Rota>(0);
+    @ManyToMany(mappedBy = "usuarios")
+    private List<Rota> rotas;
 
     public Usuario()
     {
@@ -52,7 +52,7 @@ public class Usuario implements Serializable {
         this.id = id;
     }
 
-    public Usuario(String login, String senha, String resposta, Pessoa novaPessoa, Pergunta pergunta, Set<Rota> rotas) {
+    public Usuario(String login, String senha, String resposta, Pessoa novaPessoa, Pergunta pergunta, List<Rota> rotas) {
         this.login = login;
         this.senha = senha;
         this.resposta = resposta;
@@ -114,14 +114,14 @@ public class Usuario implements Serializable {
     /**
      * @return the rotas
      */
-    public Set<Rota> getRotas() {
+    public List<Rota> getRotas() {
         return rotas;
     }
 
     /**
      * @param rotas the rotas to set
      */
-    public void setRotas(Set<Rota> rotas) {
+    public void setRotas(List<Rota> rotas) {
         this.rotas = rotas;
     }
     

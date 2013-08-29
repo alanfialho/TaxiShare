@@ -170,13 +170,13 @@ public class MainActitity extends Activity {
 			editRegisterFragment.setArguments(args);
 			ftransaction.replace(R.id.content_frame, editRegisterFragment);
 			break;
-		case 3:
+		case 2:
 			Fragment editPasswordFragment = new EditPasswordFragment();
 			editPasswordFragment.setArguments(args);
 			ftransaction.replace(R.id.content_frame, editPasswordFragment);
 
 			break;
-		case 4:
+		case 3:
 			session.logoutUser();
 		}
 

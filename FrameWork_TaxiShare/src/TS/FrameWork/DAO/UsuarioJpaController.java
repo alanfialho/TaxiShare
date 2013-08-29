@@ -121,7 +121,7 @@ public class UsuarioJpaController implements Serializable {
         EntityManager em = getEntityManager();
         System.out.println("ENtrou no find login");
         try {
-            String query = "select l from Usuario l where l.usuario like :login";
+            String query = "select u from Usuario u where u.login like :login";
             Query q = em.createQuery(query).setParameter("login", login);
             List results = q.getResultList();
             Usuario foundEntity = null;

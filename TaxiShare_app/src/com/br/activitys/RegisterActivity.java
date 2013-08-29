@@ -41,7 +41,6 @@ public class RegisterActivity extends Activity {
 	EditText textCelular;
 	EditText textDDD;
 	Spinner spinnerSexo;
-	EditText textNick;
 	DatePicker dateDataNascimento;
 
 	// Dados login
@@ -58,7 +57,6 @@ public class RegisterActivity extends Activity {
 		setContentView(R.layout.register);
 		// Importando os campos da pessoa
 		textNome = (EditText) findViewById(R.id.textNome);
-		textNick = (EditText) findViewById(R.id.textNick);
 		textEmail = (EditText) findViewById(R.id.textEmail);
 		textSenha = (EditText) findViewById(R.id.textSenha);
 		textSenha2 = (EditText) findViewById(R.id.textSenha2);
@@ -202,7 +200,6 @@ public class RegisterActivity extends Activity {
 
 			// Pegando as informações de pessoas
 			String nome = textNome.getText().toString();
-			String nick = textNick.getText().toString();
 			String email = textEmail.getText().toString();
 			String ddd = textDDD.getText().toString();
 			String celular = textCelular.getText().toString();
@@ -226,7 +223,7 @@ public class RegisterActivity extends Activity {
 				checkSenha = false;
 
 			//Checa se não há campos vazios
-			if (nome.equals("") || nick.equals("") || email.equals("") || ddd.equals("") || celular.equals("") || resposta.equals("") || login.equals("") || senha.equals("")) 
+			if (nome.equals("") || email.equals("") || ddd.equals("") || celular.equals("") || resposta.equals("") || login.equals("") || senha.equals("")) 
 				checkEmpty = false;
 
 			//checa se o email é válido
@@ -265,7 +262,6 @@ public class RegisterActivity extends Activity {
 
 				// Definindo as paradas em pessoa
 				pessoaApp.setNome(nome);
-				pessoaApp.setNick(nick);
 				pessoaApp.setCelular(celular);
 				pessoaApp.setDataNascimento(dataNascimento);
 				pessoaApp.setDdd(ddd);
@@ -273,7 +269,7 @@ public class RegisterActivity extends Activity {
 				pessoaApp.setSexo(sexo);
 
 				// Definindo as paradas em pergunta
-				perguntaApp.setId(new Long(pergunta));
+				perguntaApp.setId(pergunta);
 
 				// Definindo as paradas em login
 				loginApp.setLogin(login);

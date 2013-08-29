@@ -44,7 +44,6 @@ public class EditRegisterFragment extends Fragment {
 	EditText textCelular;
 	EditText textDDD;	
 	Spinner spinnerSexo;
-	EditText textNick;
 	DatePicker dateDataNascimento;
 	SessionManagement session;
 
@@ -63,7 +62,6 @@ public class EditRegisterFragment extends Fragment {
 
 		//Importando os campos da pessoa
 		textNome = (EditText) rootView.findViewById(R.id.editNome);
-		textNick = (EditText) rootView.findViewById(R.id.editNick);
 		textEmail = (EditText) rootView.findViewById(R.id.editEmail);
 		textDDD = (EditText) rootView.findViewById(R.id.editDDD);
 		spinnerSexo = (Spinner) rootView.findViewById(R.id.editSexo);
@@ -82,7 +80,6 @@ public class EditRegisterFragment extends Fragment {
 		//Pega as variaveis do usuario
 		String nome = user.get(SessionManagement.KEY_NAME);
 		String email = user.get(SessionManagement.KEY_EMAIL);
-		String nick = user.get(SessionManagement.KEY_NICK);
 		String sexo = user.get(SessionManagement.KEY_SEXO);
 		String ddd = user.get(SessionManagement.KEY_DDD);
 		String celular = user.get(SessionManagement.KEY_CELULAR);
@@ -121,7 +118,6 @@ public class EditRegisterFragment extends Fragment {
 		textDDD.setText(ddd);
 		textCelular.setText(celular);
 		textEmail.setText(email);
-		textNick.setText(nick);		
 
 		try{
 			//convertendo a data para int
@@ -175,7 +171,6 @@ public class EditRegisterFragment extends Fragment {
 				
 				//Pegando as informações de pessoas
 				String nome = textNome.getText().toString();
-				String nick = textNick.getText().toString();
 				String email = textEmail.getText().toString();
 				String ddd = textDDD.getText().toString();
 				String celular = textCelular.getText().toString();
@@ -192,9 +187,8 @@ public class EditRegisterFragment extends Fragment {
 				pessoaApp = new PessoaApp();
 
 				//Definindo as paradas em pessoa				
-				pessoaApp.setId(Long.parseLong(pessoaID));
+				pessoaApp.setId(Integer.parseInt(pessoaID));
 				pessoaApp.setNome(nome);
-				pessoaApp.setNick(nick);
 				pessoaApp.setCelular(celular);
 				pessoaApp.setDataNascimento(dataNascimento);
 				pessoaApp.setDdd(ddd);
@@ -235,7 +229,7 @@ public class EditRegisterFragment extends Fragment {
 				JSONObject respostaWsJSON = new JSONObject(strJson);
 				if(respostaWsJSON.getInt("errorCode") == 0){
 
-					session.createLoginSession(pessoaID, pessoaApp.getNome(),  pessoaApp.getEmail(), pessoaApp.getSexo(),  pessoaApp.getDataNascimento(),  pessoaApp.getNick(), pessoaApp.getDdd(),  pessoaApp.getCelular(), sessionedLogin);
+					session.createLoginSession(pessoaID, pessoaApp.getNome(),  pessoaApp.getEmail(), pessoaApp.getSexo(),  pessoaApp.getDataNascimento(), pessoaApp.getDdd(),  pessoaApp.getCelular(), sessionedLogin);
 					Fragment fragment = new DashboardFragment();
 					Bundle args = new Bundle();
 					fragment.setArguments(args);

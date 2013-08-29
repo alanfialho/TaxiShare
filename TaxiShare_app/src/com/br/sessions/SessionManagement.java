@@ -30,7 +30,6 @@ public class SessionManagement {
 	public static final String KEY_EMAIL = "email";
 	public static final String KEY_SEXO = "sexo";
 	public static final String KEY_DATANASC = "datanasc";
-	public static final String KEY_NICK = "nick";
 	public static final String KEY_DDD = "ddd";
 	public static final String KEY_CELULAR = "celular";
 	public static final String KEY_LOGIN = "login";
@@ -43,7 +42,7 @@ public class SessionManagement {
 	}
 
 	//Cria um ogin na sessao
-	public void createLoginSession(String id, String name, String email, String sexo, String datanasc, String nick, String ddd, String celular, String login){
+	public void createLoginSession(String id, String name, String email, String sexo, String datanasc, String ddd, String celular, String login){
 		//Inicia a variavel is_login como true
 		editor.putBoolean(IS_LOGIN, true);
 
@@ -52,7 +51,6 @@ public class SessionManagement {
 		editor.putString(KEY_EMAIL, email);
 		editor.putString(KEY_SEXO, sexo);
 		editor.putString(KEY_DATANASC, datanasc);
-		editor.putString(KEY_NICK, nick);
 		editor.putString(KEY_DDD, ddd);
 		editor.putString(KEY_CELULAR, celular);
 		editor.putString(KEY_LOGIN, login);
@@ -83,7 +81,6 @@ public class SessionManagement {
 		user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
 		user.put(KEY_SEXO, pref.getString(KEY_SEXO, null));
 		user.put(KEY_DATANASC, pref.getString(KEY_DATANASC, null));
-		user.put(KEY_NICK, pref.getString(KEY_NICK, null));
 		user.put(KEY_DDD, pref.getString(KEY_DDD, null));
 		user.put(KEY_CELULAR, pref.getString(KEY_CELULAR, null));
 		user.put(KEY_LOGIN, pref.getString(KEY_LOGIN, null));

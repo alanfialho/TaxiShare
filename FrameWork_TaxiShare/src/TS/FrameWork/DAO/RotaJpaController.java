@@ -13,10 +13,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 
-/**
- *
- * @author alan
- */
 public class RotaJpaController implements Serializable {
 
     public RotaJpaController(EntityManagerFactory emf) {

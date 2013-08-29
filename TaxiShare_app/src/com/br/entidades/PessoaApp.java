@@ -6,22 +6,20 @@ import android.os.Parcelable;
 public class PessoaApp implements Parcelable {
 
 
-	private Long id;
+	private int id;
 	private String dataNascimento;
 	private String nome;
-	private String nick;
 	private String ddd;
 	private String celular;
 	private String sexo;
 	private String email;
 	
-	public PessoaApp(Long id, String dataNascimento, String nome, String nick,
+	public PessoaApp(int id, String dataNascimento, String nome, String nick,
 			String ddd, String celular, String sexo, String email) {
 		super();
 		this.id = id;
 		this.dataNascimento = dataNascimento;
 		this.nome = nome;
-		this.nick = nick;
 		this.ddd = ddd;
 		this.celular = celular;
 		this.sexo = sexo;
@@ -30,10 +28,10 @@ public class PessoaApp implements Parcelable {
 	public PessoaApp() {
 		super();
 	}
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getDataNascimento() {
@@ -48,12 +46,7 @@ public class PessoaApp implements Parcelable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getNick() {
-		return nick;
-	}
-	public void setNick(String nick) {
-		this.nick = nick;
-	}
+	
 	public String getDdd() {
 		return ddd;
 	}

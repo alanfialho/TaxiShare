@@ -31,6 +31,7 @@
             android:id="@+id/loginLogin"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:lines="1"
             android:maxLines="1" />
         
 		<!--  Password Label -->
@@ -47,6 +48,7 @@
             android:id="@+id/loginSenha"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:lines="1"
             android:maxLines="1"
             android:password="true" />
         

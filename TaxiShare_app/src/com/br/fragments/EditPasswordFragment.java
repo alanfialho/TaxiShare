@@ -221,7 +221,7 @@ public class EditPasswordFragment extends Fragment {
 				if (resposta.getInt("errorCode") == 0) {
 					Log.i("Primeira senha ok taxi", "Resposta -> " + resposta.toString());
 
-					loginApp.setId(resposta.getJSONObject("data").getLong("id"));
+					loginApp.setId(resposta.getJSONObject("data").getInt("id"));
 
 					loginApp.setLogin(sessionedLogin);
 					loginApp.setSenha(novaSenha);
