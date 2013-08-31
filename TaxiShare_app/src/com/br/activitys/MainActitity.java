@@ -1,6 +1,6 @@
 package com.br.activitys;
 
-import com.br.fragments.DashboardFragment;
+import com.br.adapter.MenuAdapter;
 import com.br.fragments.EditPasswordFragment;
 import com.br.fragments.EditRegisterFragment;
 import com.br.fragments.SearchRoteFragment;
@@ -20,7 +20,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
@@ -33,16 +32,20 @@ public class MainActitity extends Activity {
 	private CharSequence mTitle;
 	private String[] mDashboardOptions;
 	private SessionManagement session;
+	
+	 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_activity_layout);
+		mDashboardOptions = new String[] {"Buscar Rota", "Editar Perfil", "Alterar Senha", "Logout" } ;
 
 		session = new SessionManagement(getApplicationContext());
+		
+		MenuAdapter mAdapter = new MenuAdapter(getApplicationContext(), mDashboardOptions);
 
 		mTitle = mDrawerTitle = "TaxiShare";
-		mDashboardOptions = new String[] {"Buscar Rota", "Editar Perfil", "Alterar Senha", "Logout" } ;
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -50,7 +53,7 @@ public class MainActitity extends Activity {
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
 		//Define as opções dentro do listview do menu lateral
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mDashboardOptions));
+		mDrawerList.setAdapter(mAdapter);
 
 		//Define as ações dos items no menu lateral instanciando uma subclasse
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());

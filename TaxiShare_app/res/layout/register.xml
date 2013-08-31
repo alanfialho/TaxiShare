@@ -196,7 +196,7 @@
         <!-- Login Button -->
 
         <Button
-            android:id="@+id/btnCadastrar"
+            android:id="@+id/lblPergunta"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"

@@ -22,9 +22,10 @@ import com.br.sessions.SessionManagement;
 
 public class LoginActivity extends Activity {
 	Context context;
-	
+
 	Button btnLogin;
 	Button btnLinkToRegister;
+	Button btnLinkToForgetPassword;
 	EditText loginLogin;
 	EditText loginSenha;
 
@@ -33,7 +34,7 @@ public class LoginActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
-		
+
 
 		// Session Manager
 		session = new SessionManagement(getApplicationContext()); 
@@ -45,6 +46,7 @@ public class LoginActivity extends Activity {
 		//Botoes e erro
 		btnLogin = (Button) findViewById(R.id.btnLogin);
 		btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
+		btnLinkToForgetPassword = (Button) findViewById(R.id.btnLinkToForgetPassword);
 
 		// Evento do botao de click
 		btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -62,13 +64,23 @@ public class LoginActivity extends Activity {
 		btnLinkToRegister.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-				
+
 				Intent intent = new Intent(getApplicationContext(),
 						RegisterActivity.class);
 				startActivity(intent);
-				finish();
 			}
 		});
+
+		btnLinkToForgetPassword.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View view) {
+				
+				Intent i = new Intent(getApplicationContext(),LoginToResetActivity.class);
+				startActivity(i);
+			
+			}
+		});
+
 	}
 
 
@@ -138,13 +150,13 @@ public class LoginActivity extends Activity {
 					Log.i("taxi pessoaid no login", pessoaId);
 					Log.i("taxi login no login", aaaaaaaaaa);
 					session.createLoginSession(pessoaId, nome,  email,  sexo,  dataNasc,  ddd,  celular, aaaaaaaaaa);
-					
+
 					Intent intent = new Intent(getApplicationContext(),
 							MainActitity.class);
 					startActivity(intent);
 					finish();
-				
-				
+
+
 				}else{
 					// Erro de login
 					Utils.gerarToast( context, resposta.getString("descricao"));

@@ -71,7 +71,7 @@ public class RegisterActivity extends Activity {
 		textResposta = (EditText) findViewById(R.id.textResposta);
 
 		// Importando botões e caixa de erro
-		btnCadastrar = (Button) findViewById(R.id.btnCadastrar);
+		btnCadastrar = (Button) findViewById(R.id.lblPergunta);
 		btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
 
 		// Instanciando WS
