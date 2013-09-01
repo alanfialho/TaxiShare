@@ -34,7 +34,7 @@ import android.widget.DatePicker;
 
 public class EditRegisterFragment extends Fragment {
 	Context context;
-	
+
 	//botoes
 	Button btnSalvar;
 
@@ -152,7 +152,7 @@ public class EditRegisterFragment extends Fragment {
 			}
 		});
 
-		
+
 		return rootView;
 	}
 
@@ -168,7 +168,7 @@ public class EditRegisterFragment extends Fragment {
 				progress.setTitle("Salvando Alterações");
 				progress.setMessage("Aguarde...");
 				progress.show();
-				
+
 				//Pegando as informações de pessoas
 				String nome = textNome.getText().toString();
 				String email = textEmail.getText().toString();
@@ -177,9 +177,12 @@ public class EditRegisterFragment extends Fragment {
 
 				//Montando data de nascimento
 				int year = dateDataNascimento.getYear();
-				int month = dateDataNascimento.getMonth();
+				int month = dateDataNascimento.getMonth() + 1;
 				int day = dateDataNascimento.getDayOfMonth();
-				String dataNascimento = day + "/" + month+ "/" +year;
+				String niceMonth = month > 9 ? "" + month : "0"+ month;
+				String dataNascimento = year + "-" +niceMonth+ "-" +day;
+
+				Log.i("DATAAAAAAAAAAAAAAAAAA taxi", dataNascimento);
 
 				String sexo = spinnerSexo.getSelectedItem().toString();				
 
@@ -197,7 +200,7 @@ public class EditRegisterFragment extends Fragment {
 			}catch(Exception e){
 				Log.i("Exception onPreExecute EditRegisterTask ", "Exection -> " +  e + " || Message -> " + e.getMessage());
 			}
-			
+
 		}
 
 		@Override
@@ -222,7 +225,7 @@ public class EditRegisterFragment extends Fragment {
 
 		@Override
 		protected void onPostExecute(String strJson) {
-			
+
 
 			//Cria um obj JSON com a resposta
 			try {
@@ -230,7 +233,7 @@ public class EditRegisterFragment extends Fragment {
 				if(respostaWsJSON.getInt("errorCode") == 0){
 
 					session.createLoginSession(pessoaID, pessoaApp.getNome(),  pessoaApp.getEmail(), pessoaApp.getSexo(),  pessoaApp.getDataNascimento(), pessoaApp.getDdd(),  pessoaApp.getCelular(), sessionedLogin);
-					Fragment fragment = new DashboardFragment();
+					Fragment fragment = new SearchRoteFragment();
 					Bundle args = new Bundle();
 					fragment.setArguments(args);
 
@@ -242,9 +245,10 @@ public class EditRegisterFragment extends Fragment {
 
 
 			} catch (JSONException e) {
-				Log.i("onPostExecute Exception taxi", "Exception -> " + e + "Message -> " + e.getMessage());
+				Log.i(" EditRegisterTask onPostExecute Exception taxi", "Exception -> " + e + "Message -> " + e.getMessage());
+				Utils.gerarToast( context, "Tente novamente mais tarde!");
 			}
-			
+
 			progress.dismiss();
 
 		}

@@ -119,7 +119,13 @@ public class LoginResource {
             Usuario login = (Usuario) loginDao.findLogin(loginInfo);
             if (login != null) {
                 //Retorna um json informando que o login ja existe
-                ResponseEntity saida = new ResponseEntity("Erro", 1, "Login já existe!", null);
+                login.setSenha("");
+                Usuario loginRetorno = new Usuario();
+                loginRetorno.setId(login.getId());
+                loginRetorno.setPergunta(login.getPergunta());
+                loginRetorno.setLogin(login.getLogin());
+                loginRetorno.setResposta(login.getResposta());
+                ResponseEntity saida = new ResponseEntity("Erro", 1, "Login já existe!", loginRetorno);
 
                 return new Gson().toJson(saida);
             } else {

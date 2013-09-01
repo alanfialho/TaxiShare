@@ -36,7 +36,9 @@
 
         <!-- LABEL DO NICK -->
 
+
         <!-- CAMPO DO NICK -->
+
 
         <!-- LABEL DO EMAIL -->
 
@@ -58,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sexo" />
-        
+
         <!-- CAMPO DO SEXO -->
 
         <Spinner
@@ -112,9 +114,10 @@
         <DatePicker
             android:id="@+id/editDateDataNascimemto"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        
-        <!--  BOTAO DE SALVAR -->
+            android:layout_height="wrap_content"
+            android:calendarViewShown="false" />
+
+        <!-- BOTAO DE SALVAR -->
 
         <Button
             android:id="@+id/btnEditSalvar"
@@ -122,9 +125,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:text="Salvar Alterações" />
-        
-        
-          <!--  BOTAO DE VOLTAR -->
+
+        <!-- BOTAO DE VOLTAR -->
     </LinearLayout>
 
 </ScrollView>

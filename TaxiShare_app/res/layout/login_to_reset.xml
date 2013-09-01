@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="10dip" >
+
+        <!-- TITULO DA PAGIGA -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
+            android:text="Recuperar Senha"
+            android:textSize="25dip"
+            android:textStyle="bold" />
+
+        <!-- CAMPO DO LOGIN -->
+
+        <!-- LABEL DA SENHA -->
+
+        <!-- LABEL DA PERGUNTA -->
+
+        <!-- CAMPO DA PERGUNTA -->
+
+        <!-- LABEL DA RESPOSTA -->
+
+        <!-- CAMPO DA RESPOSTA -->
+
+        <!-- Error message -->
+
+        <!-- Login Button -->
+
+        <!-- Link to Login Screen -->
+        
+
+        <!-- Link to Login Screen -->
+
+        <LinearLayout
+            android:id="@+id/resetLoginLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dip"
+                android:text="Login" />
+
+            <EditText
+                android:id="@+id/resetLogin"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:password="true" >
+
+                <requestFocus />
+            </EditText>
+
+            <Button
+                android:id="@+id/btnResetRecuperarSenha"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:text="Recuperar" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/resetDataLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/lblPergunta"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dip"
+                android:text="Pergunta"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dip"
+                android:text="Resposta" />
+
+            <EditText
+                android:id="@+id/resetResposta"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:password="true" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dip"
+                android:text="Nova Senha" />
+
+            <EditText
+                android:id="@+id/resetNovaSenha"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:password="true" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dip"
+                android:text="Confirmar Nova Senha" />
+
+            <EditText
+                android:id="@+id/resetNovaSenha2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:password="true" />
+
+            <Button
+                android:id="@+id/btnResetAlterarSenha"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:text="Alterar Senha" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
