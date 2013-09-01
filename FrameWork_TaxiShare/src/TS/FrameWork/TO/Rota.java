@@ -26,7 +26,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -55,13 +54,11 @@ public class Rota implements Serializable {
     @JoinTable(name = "rota_endereco", joinColumns = {
         @JoinColumn(name = "id_rota", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "id_endereco", referencedColumnName = "id")})
-    private List<Endereco> enderecoList;
-    
-    @ManyToMany
-    @JoinTable(
-            name = "rota_usuario",
-            joinColumns = {@JoinColumn(name = "id_rota")},
-            inverseJoinColumns = { @JoinColumn(name = "id_usuario")})
+    private List<Endereco> enderecos;
+    @ManyToMany(fetch = FetchType.LAZY,  cascade=CascadeType.ALL)
+    @JoinTable(name = "rota_usuario", joinColumns = {
+                    @JoinColumn(name = "id_rota", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+                    @JoinColumn(name = "id_usuario", referencedColumnName = "id", nullable = false)})
     private List<Usuario> usuarios;
 
     public Rota() {
@@ -75,7 +72,7 @@ public class Rota implements Serializable {
         this.dataRota = dataRota;
         this.flagAberta = flagAberta;
         this.passExistentes = passExistentes;
-        this.enderecoList = enderecoList;
+        this.enderecos = enderecoList;
     }
     
     
@@ -114,17 +111,18 @@ public class Rota implements Serializable {
     }
 
     @XmlTransient
-    public List<Endereco> getEnderecoList() {
-        return enderecoList;
+    public List<Endereco> getEnderecos() {
+        return enderecos;
     }
 
-    public void setEnderecoList(List<Endereco> enderecoList) {
-        this.enderecoList = enderecoList;
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
     }
 
     /**
      * @return the usuarios
      */
+    @XmlTransient
     public List<Usuario> getUsuarios() {
         return usuarios;
     }

@@ -19,13 +19,13 @@ import javax.persistence.EntityNotFoundException;
  */
 public class UsuarioJpaController implements Serializable {
 
-    public UsuarioJpaController(EntityManagerFactory emf) {
+    public UsuarioJpaController(EntityManager emf) {
         this.emf = emf;
     }
-    private EntityManagerFactory emf = null;
+    private EntityManager emf = null;
 
     public EntityManager getEntityManager() {
-        return emf.createEntityManager();
+        return emf;
     }
 
     public void create(Usuario usuario) {
@@ -112,8 +112,8 @@ public class UsuarioJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             return em.find(Usuario.class, id);
-        } finally {
-            em.close();
+        } catch(Exception ex){
+            throw ex;
         }
     }
     

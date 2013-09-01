@@ -147,35 +147,36 @@ public class Teste extends javax.swing.JDialog {
     }//GEN-LAST:event_nometxtActionPerformed
 
     private void enviarTesteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarTesteActionPerformed
-//
-//        Endereco e1 = new Endereco("rua FW","Sao miguel2", 444,"são paulo", "sao paulo", "sp", "brasil", "049876542", 'O');
-//        Endereco e2 = new Endereco("rua FW","itaquera2", 444,"são paulo", "sao paulo", "sp", "brasil", "098763838", 'D');
-//        Endereco e3 = new Endereco("rua FW","patriarca2", 444,"são paulo", "sao paulo", "sp", "brasil", "098763566", 'D');
-//        
-//        List<Endereco> lstEnd  = new ArrayList();
-//        lstEnd.add(e1);
-//        lstEnd.add(e2);
-//        lstEnd.add(e3);
-//        
-//        Rota rota = new Rota(new Date(), true, Short.parseShort("1"), lstEnd);
-        RotaJpaController rotaDAO = new RotaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
-        Rota rotaw = rotaDAO.findRota(1);
-//        
+
+        Endereco e1 = new Endereco("rua FW","Sao miguel2", 444,"são paulo", "sao paulo", "sp", "brasil", "049876542", 'O');
+        Endereco e2 = new Endereco("rua FW","itaquera2", 444,"são paulo", "sao paulo", "sp", "brasil", "098763838", 'D');
+        Endereco e3 = new Endereco("rua FW","patriarca2", 444,"são paulo", "sao paulo", "sp", "brasil", "098763566", 'D');
         
-//        PerguntaJpaController perguntaDAO = new PerguntaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
-//        PessoaJpaController pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
-//        UsuarioJpaController usuarioDAO = new UsuarioJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
-//        
+        List<Endereco> lstEnd  = new ArrayList();
+        lstEnd.add(e1);
+        lstEnd.add(e2);
+        lstEnd.add(e3);
+        
+        Rota rota = new Rota(new Date(), true, Short.parseShort("1"), lstEnd);
+        RotaJpaController rotaDAO = new RotaJpaController(entityManager2);
+        //Rota rotaw = rotaDAO.findRota(1);
+        
+        PerguntaJpaController perguntaDAO = new PerguntaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        PessoaJpaController pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        UsuarioJpaController usuarioDAO = new UsuarioJpaController(entityManager2);
+        
                 
-//        Pessoa pessoa = new Pessoa(new Date(), "alan", "11", "97873829", "feminino", "alan@alan.com");
-//        Pergunta pergunta = perguntaDAO.findPergunta(1) ;
-//        Usuario u1 = new Usuario("aln2", "@lan", "seila", pessoa, pergunta, null);
-//        
-//        pessoaDAO.create(pessoa);
-//        usuarioDAO.create(u1);
-//        rota.getUsuarios().add(u1);
+        Pessoa pessoa = new Pessoa(new Date(), "alan", "11", "97873829", "feminino", "alan@alan.com");
+        Pergunta pergunta = perguntaDAO.findPergunta(1) ;
+        Usuario u1 = new Usuario("aln2", "@lan", "seila", pessoa, pergunta, null);
+        
+        pessoaDAO.create(pessoa);
+        //usuarioDAO.create(u1);
+        rota.getUsuarios().add(u1);
                 
-//        rotaDAO.create(rota);
+        rotaDAO.getEntityManager().getTransaction().begin();
+        rotaDAO.create(rota);
+        rotaDAO.getEntityManager().close();
         
         System.out.println("FOI");
 

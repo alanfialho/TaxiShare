@@ -6,6 +6,7 @@ package TS.FrameWork.DAO;
 
 import TS.FrameWork.DAO.exceptions.NonexistentEntityException;
 import TS.FrameWork.TO.Rota;
+import TS.FrameWork.TO.Usuario;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -15,26 +16,23 @@ import javax.persistence.EntityNotFoundException;
 
 public class RotaJpaController implements Serializable {
 
-    public RotaJpaController(EntityManagerFactory emf) {
+    public RotaJpaController(EntityManager emf) {
         this.emf = emf;
     }
-    private EntityManagerFactory emf = null;
+    private EntityManager emf = null;
 
     public EntityManager getEntityManager() {
-        return emf.createEntityManager();
+        return emf;
     }
 
     public void create(Rota rota) {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            em.getTransaction().begin();
             em.persist(rota);
             em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+        } catch(Exception ex){
+            throw ex;
         }
     }
 
@@ -82,34 +80,18 @@ public class RotaJpaController implements Serializable {
         }
     }
 
-    public List<Rota> findRotaEntities() {
-        return findRotaEntities(true, -1, -1);
-    }
-
-    public List<Rota> findRotaEntities(int maxResults, int firstResult) {
-        return findRotaEntities(false, maxResults, firstResult);
-    }
-
-    private List<Rota> findRotaEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            Query q = em.createQuery("select object(o) from Rota as o");
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
     public Rota findRota(int id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Rota.class, id);        
-        } finally {
-            em.close();
+            Rota rota = em.find(Rota.class, id);
+            //elimina recursividade gerada pelo relacionamento ManyToMany
+            for(Usuario u: rota.getUsuarios())
+            {
+                u.setRotas(null);
+            }
+            return rota;
+        } catch(Exception ex){
+            throw ex;
         }
     }
 

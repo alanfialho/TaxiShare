@@ -18,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -114,6 +115,7 @@ public class Usuario implements Serializable {
     /**
      * @return the rotas
      */
+    
     public List<Rota> getRotas() {
         return rotas;
     }

@@ -37,7 +37,7 @@ public class Endereco implements Serializable {
     private String cidade;
     @Column(name = "estado")
     private String estado;
-    @Column(name = "UF")
+    @Column(name = "uf")
     private String uf;
     @Column(name = "pais")
     private String pais;
@@ -45,6 +45,10 @@ public class Endereco implements Serializable {
     private String cep;
     @Column(name = "tipo")
     private Character tipo;
+    @Column(name = "longitude")
+    private String longitude;
+    @Column(name = "latitude")
+    private String latitude;
     
     public Endereco() {
     }
@@ -145,6 +149,34 @@ public class Endereco implements Serializable {
 
     public void setTipo(Character tipo) {
         this.tipo = tipo;
+    }
+
+    /**
+     * @return the longitude
+     */
+    public String getLongitude() {
+        return longitude;
+    }
+
+    /**
+     * @param longitude the longitude to set
+     */
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    /**
+     * @return the latitude
+     */
+    public String getLatitude() {
+        return latitude;
+    }
+
+    /**
+     * @param latitude the latitude to set
+     */
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
     @Override

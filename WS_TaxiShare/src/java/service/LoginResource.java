@@ -23,6 +23,8 @@ import entities.PessoaEntity;
 import entities.PerguntaEntity;
 import entities.ResponseEntity;
 import java.text.SimpleDateFormat;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.QueryParam;
 
 /**
@@ -32,7 +34,10 @@ import javax.ws.rs.QueryParam;
 @Stateless
 @Path("/login")
 public class LoginResource {
-
+    
+    @PersistenceContext(unitName = "PU")
+    private EntityManager em;
+    
     @GET
     @Path("/login")
     @Produces("application/json")
@@ -41,7 +46,7 @@ public class LoginResource {
         System.out.println("Senha --> " + password);
 
         //Controlador do banco de login
-        UsuarioJpaController loginDao = new UsuarioJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        UsuarioJpaController loginDao = new UsuarioJpaController(getEntityManager());
 
         //Entidades de login, pessoa e pergunta
         LoginEntity loginEntity = new LoginEntity();
@@ -108,7 +113,7 @@ public class LoginResource {
         System.out.println("Login BRUNAO --> " + loginInfo);
 
         //Controlador do banco de login
-        UsuarioJpaController loginDao = new UsuarioJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        UsuarioJpaController loginDao = new UsuarioJpaController(getEntityManager());
 
         try {
             Usuario login = (Usuario) loginDao.findLogin(loginInfo);
@@ -146,7 +151,7 @@ public class LoginResource {
 
             //Cria um novo controle de pessoa
             PessoaJpaController pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
-            UsuarioJpaController loginDAO = new UsuarioJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+            UsuarioJpaController loginDAO = new UsuarioJpaController(getEntityManager());
             PerguntaJpaController perguntaDAO = new PerguntaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
 
             PessoaEntity pessoaEntity = entity.getPessoa();
@@ -198,7 +203,7 @@ public class LoginResource {
     @Produces("application/json")
     @Consumes("application/json")
     public String editLoginPassword(LoginEntity entity) {
-        UsuarioJpaController loginDAO = new UsuarioJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        UsuarioJpaController loginDAO = new UsuarioJpaController(getEntityManager());
         Usuario login = new Usuario();
         try {
 
@@ -218,5 +223,8 @@ public class LoginResource {
             return new Gson().toJson(saida);
         }
 
+    }
+    protected EntityManager getEntityManager() {
+        return em;
     }
 }
