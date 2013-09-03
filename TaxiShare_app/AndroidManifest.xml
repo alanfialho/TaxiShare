@@ -36,7 +36,7 @@
 
         <activity
             android:name="com.br.activitys.LoginActivity"
-            android:label="Login" >
+            android:label="TaxiShare" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

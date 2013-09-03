@@ -33,15 +33,18 @@
             android:id="@+id/textNome"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName" />
-
-        <!-- LABEL DO NICK -->
-
-
-        <!-- CAMPO DO NICK -->
-
+            android:inputType="textPersonName"
+            android:maxLength="50"/>
 
         <!-- LABEL DO EMAIL -->
+
+        <TextView
+            android:id="@+id/registerErrorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/holo_red_light" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -55,9 +58,18 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+         	android:maxLength="30" />
 
         <!-- LABEL DO SEXO -->
+
+        <TextView
+            android:id="@+id/registerErrorEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/holo_red_light" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -91,6 +103,14 @@
         <!-- LABEL DO CELULAR -->
 
         <TextView
+            android:id="@+id/registerErrorDDD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/holo_red_light" />
+
+        <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Celular" />
@@ -106,6 +126,14 @@
             android:maxLength="9" />
 
         <!-- LABEL DA DATA NASCIMENTO -->
+
+        <TextView
+            android:id="@+id/registerErrorPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/holo_red_light" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -133,9 +161,18 @@
         <EditText
             android:id="@+id/textLogin"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLength="12" />
 
         <!-- LABEL DA SENHA -->
+
+        <TextView
+            android:id="@+id/registerErrorLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/holo_red_light" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -149,7 +186,9 @@
             android:id="@+id/textSenha"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:password="true" />
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:maxLength="16" />
 
         <!-- LABEL DA CONFIRMACAO SENHA -->
 
@@ -165,9 +204,19 @@
             android:id="@+id/textSenha2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:password="true" />
+            android:password="true"
+            android:maxLines="1"
+            android:maxLength="16"/>
 
         <!-- LABEL DA PERGUNTA -->
+
+        <TextView
+            android:id="@+id/registerErrorPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/holo_red_light" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -193,7 +242,8 @@
         <EditText
             android:id="@+id/textResposta"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLength="50" />
 
         <!-- Error message -->
 

@@ -11,6 +11,15 @@ import com.br.entidades.PessoaApp;
 import com.br.entidades.PerguntaApp;
 import com.br.network.WSTaxiShare;
 import com.br.resources.Utils;
+import com.br.validation.Rule;
+import com.br.validation.Validator;
+import com.br.validation.Validator.ValidationListener;
+import com.br.validation.annotation.ConfirmPassword;
+import com.br.validation.annotation.Email;
+import com.br.validation.annotation.Password;
+import com.br.validation.annotation.Regex;
+import com.br.validation.annotation.Required;
+import com.br.validation.annotation.TextRule;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -24,37 +33,94 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.DatePicker;
 
 public class RegisterActivity extends Activity {
 	Context context;
 	// botoes
-	Button btnCadastrar;
-	Button btnLinkToLogin;
+	Button btnCadastrar, btnLinkToLogin;
 
-	// dados pessoa
+	Validator validator;
+
+	// Campos
+	@Required(order = 1, message="Campo obrigatorio")
+	@Regex(order=2, pattern="[a-z A-Z]+", message="Deve conter apenas letras")
 	EditText textNome;
+
+	@Required(order = 3, message="Campo obrigatorio")
+	@Email(order =4, message="E-mail Inválido")
 	EditText textEmail;
-	EditText textSenha;
+
+	@Required(order = 5, message="Campo obrigatorio")
+	@Password(order=6)
+	@TextRule(order=7, minLength=6, message="Deve conter no minimo 6 caracteres")
+	EditText textSenha; 
+
+	@Required(order = 8, message="Campo obrigatorio")
+	@ConfirmPassword(order=9, message="Senhas precisam ser iguais")
 	EditText textSenha2;
-	EditText textCelular;
-	EditText textDDD;
+
+	@Required(order = 10, message="Campo obrigatorio")
+	@TextRule(order=11, minLength=8, message="Deve conter no minimo 8 digitos")
+	EditText textCelular; 
+
+	@Required(order = 12, message="Campo obrigatorio")
+	@TextRule(order=13, minLength=2, message="Deve conter 2 digitos")
+	EditText textDDD; 
+
+	@Required(order = 14, message="Campo obrigatorio")
+	@TextRule(order=15, minLength=4, message="Deve conter no minimo 4 caracteres")
+	@Regex(order=16, pattern="[A-Za-z0-9]+", message="Deve conter apenas letras e numeros")
+	EditText textLogin; 
+
+	@Required(order = 17, message="Campo obrigatorio")
+	@TextRule(order=18, minLength=4, message="Deve conter no minimo 4 caracteres")
+	@Regex(order=19, pattern="[A-Za-z0-9 ]+", message="Deve conter apenas letras e numeros")
+	EditText textResposta;
+
 	Spinner spinnerSexo;
 	DatePicker dateDataNascimento;
-
-	// Dados login
-	EditText textResposta;
-	EditText textLogin;
 	Spinner spinnerPergunta;
-
-	// Erro
-	TextView registerErrorMsg;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register);
+		
+		//Criando listner
+		ValidationListner validationListner = new ValidationListner();
+		validationListner.validationContext = this;
+		
+		//Instanciando Validation
+		validator = new Validator(this);
+		validator.setValidationListener(validationListner);
+	
+		setAtributes();
+		setBtnActions();
+	}
+
+	private void setBtnActions() {
+		// Acao do botao cadastrar
+		btnCadastrar.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {			
+
+				validator.validate();
+			}
+		});
+
+		// Link para Login
+		btnLinkToLogin.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View view) {
+				Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+				startActivity(i);
+				// Close Registration View
+				finish();
+			}
+		});		
+	}
+
+	private void setAtributes() {
 		// Importando os campos da pessoa
 		textNome = (EditText) findViewById(R.id.textNome);
 		textEmail = (EditText) findViewById(R.id.textEmail);
@@ -70,9 +136,10 @@ public class RegisterActivity extends Activity {
 		textLogin = (EditText) findViewById(R.id.textLogin);
 		textResposta = (EditText) findViewById(R.id.textResposta);
 
-		// Importando botões e caixa de erro
+		// Importando botões
 		btnCadastrar = (Button) findViewById(R.id.lblPergunta);
 		btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
+
 
 		// Instanciando WS
 
@@ -96,28 +163,30 @@ public class RegisterActivity extends Activity {
 		} catch (Exception e) {
 			Log.i("Preenchendo Sppiners Exception taxi", "Exceptiom -> " + e + " || Message -> " + e.getMessage());
 		}
+	}
 
-		// Acao do botao cadastrar
-		btnCadastrar.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
 
-				context = view.getContext();
-				CheckLoginTask task = new CheckLoginTask();
-				task.fillContext = view.getContext();
-				task.execute();
+	private class ValidationListner implements ValidationListener {
+		Context validationContext;
+
+		public void onValidationSucceeded() {
+			CheckLoginTask task = new CheckLoginTask();
+			task.fillContext = validationContext;			
+			task.execute();
+		}
+
+		public void onValidationFailed(View failedView, Rule<?> failedRule) {
+
+			String message = failedRule.getFailureMessage();
+
+			if (failedView instanceof EditText) {
+				failedView.requestFocus();
+				((EditText) failedView).setError(message);
+			} else {
+				Utils.gerarToast(failedView.getContext(), message);
 			}
-		});
+		}
 
-		// Link para Login
-		btnLinkToLogin.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View view) {
-				Intent i = new Intent(getApplicationContext(),LoginActivity.class);
-				startActivity(i);
-				// Close Registration View
-				finish();
-			}
-		});
 	}
 
 	private class CheckLoginTask extends AsyncTask<String, Void, String> {
@@ -126,14 +195,9 @@ public class RegisterActivity extends Activity {
 		String login;
 
 		protected void onPreExecute() {
-			//Exibe janela de carregando
-			progress = new ProgressDialog(fillContext);
-			progress.setTitle("Checando Login");
-			progress.setMessage("Aguarde...");
-			progress.show();
-
+			progress = Utils.setProgreesDialog(progress, fillContext, "Checando Login", "Aguarde...");
 			//Pega o texto do login
-			login = textLogin.getText().toString();
+			login = textLogin.getText().toString().trim();
 		}
 
 		@Override
@@ -145,6 +209,7 @@ public class RegisterActivity extends Activity {
 				//Inicia o ws e checa se o login esta disponivel
 				WSTaxiShare ws = new WSTaxiShare();
 				response = ws.checkLogin(login);
+				Log.i("Response CheckLoginTask doInBackground taxi", response);
 
 			}catch (Exception e){
 				Log.i("Exception CheckLoginTask doInBackground taxi ", "Execption -> " + e + " || Message -> " +e.getMessage());
@@ -155,6 +220,7 @@ public class RegisterActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(String strJson) {
+			
 			try {
 				//Cria JSON com a resposta do WS
 				JSONObject checkLoginJSON = new JSONObject(strJson);
@@ -165,13 +231,16 @@ public class RegisterActivity extends Activity {
 					RegisterTask registerTask = new RegisterTask();
 					registerTask.fillContext = fillContext;
 					registerTask.execute();
+
 				}
 				else{
-					Utils.gerarToast(context, checkLoginJSON.getString("descricao"));
+					Utils.gerarToast(fillContext, checkLoginJSON.getString("descricao"));
 				}
 
 			} catch (JSONException e) {
 				Log.i("Exception CheckLoginTask onPostExecute taxi ", "Execption -> " + e + " || Message -> " +e.getMessage());
+				Utils.gerarToast(context, "Erro ao checar login!");
+
 			}
 
 			//Fecha o alert de carregando
@@ -184,6 +253,7 @@ public class RegisterActivity extends Activity {
 		boolean checkSenha = true;
 		boolean checkEmpty = true;
 		boolean checkEmail = true;
+		boolean checkPhoneNumber = true;
 		boolean validate = false;
 		String message = "";
 		LoginApp loginApp; 
@@ -192,29 +262,25 @@ public class RegisterActivity extends Activity {
 
 		protected void onPreExecute() {
 
-			//Inica a popup de load
-			progress = new ProgressDialog(fillContext);
-			progress.setTitle("Registrando");
-			progress.setMessage("Aguarde...");
-			progress.show();
+			progress = Utils.setProgreesDialog(progress, fillContext, "Registrando", "Aguarde...");
 
 			// Pegando as informações de pessoas
-			String nome = textNome.getText().toString();
-			String email = textEmail.getText().toString();
-			String ddd = textDDD.getText().toString();
-			String celular = textCelular.getText().toString();
+			String nome = textNome.getText().toString().trim();
+			String email = textEmail.getText().toString().trim();
+			String ddd = textDDD.getText().toString().trim();
+			String celular = textCelular.getText().toString().trim();
 
 			// Montando data de nascimento
 			int year = dateDataNascimento.getYear();
 			int month = dateDataNascimento.getMonth();
 			int day = dateDataNascimento.getDayOfMonth();
 			String dataNascimento = day + "/" + month + "/" + year;
-			String sexo = spinnerSexo.getSelectedItem().toString();
+			String sexo = spinnerSexo.getSelectedItem().toString().trim();
 
 			// Pegando as informações do login
 			int pergunta = spinnerPergunta.getSelectedItemPosition();
-			String login = textLogin.getText().toString();
-			String resposta = textResposta.getText().toString();
+			String login = textLogin.getText().toString().trim();
+			String resposta = textResposta.getText().toString().trim();
 			String senha = textSenha.getText().toString();
 			String senha2 = textSenha2.getText().toString();
 
@@ -228,10 +294,13 @@ public class RegisterActivity extends Activity {
 
 			//checa se o email é válido
 			if(!Utils.isValidEmail(email))
-				checkEmail = false;				
+				checkEmail = false;
+
+			if(celular.length() < 8)
+				checkPhoneNumber = false;
 
 			//Checa se tudo esta ok
-			if(checkSenha && checkEmpty && checkEmail){
+			if(checkSenha && checkEmpty && checkEmail && checkPhoneNumber){
 				validate = true;
 			}
 			else{
@@ -249,8 +318,13 @@ public class RegisterActivity extends Activity {
 
 				if(!checkEmail){
 					Log.i("Erro Validacaop", "Check-Email");
-					message+= "Email inválido!";
+					message+= "Email inválido! \n";
 				}
+				if(!checkPhoneNumber){
+					Log.i("Erro Validacao", "Check-Phone");
+					message+= "Celular inválido!";
+				}
+
 				validate = false;
 			}
 
@@ -295,7 +369,7 @@ public class RegisterActivity extends Activity {
 					response = ws.cadastrarLogin(loginApp);		
 
 				} catch (Exception e) {
-					Utils.gerarToast(context, "Erro ao cadastrar " + e.getMessage());
+					Utils.gerarToast(fillContext, "Erro ao cadastrar!");
 					Log.i("Exception RegisterTask doInBackground taxi", "Exception -> " + e + " || Message -> " + e.getMessage());
 				}	
 			}
@@ -310,17 +384,18 @@ public class RegisterActivity extends Activity {
 				JSONObject cadastroLoginJSON = new JSONObject(strJson);
 				// Checa se o cadastro deu certo
 				if (cadastroLoginJSON.getInt("errorCode") == 0) {
-					Utils.gerarToast(context, "Cadastro efetuado!");
+					Utils.gerarToast(fillContext, "Cadastro efetuado!");
 
 					// Retorna para tela de login
 					Intent i = new Intent(getApplicationContext(), LoginActivity.class);
 					startActivity(i);
 					finish();
 				} else
-					Utils.gerarToast(context, cadastroLoginJSON.getString("descricao"));
+					Utils.gerarToast(fillContext, cadastroLoginJSON.getString("descricao"));
 
 			} catch (JSONException e) {
 				Log.i("Exception RegisterTask onPostExecute taxi", "Exception -> " + e + " || Message -> " + e.getMessage());
+				Utils.gerarToast(fillContext, "Erro ao cadastrar!");
 
 			}
 
@@ -335,10 +410,7 @@ public class RegisterActivity extends Activity {
 
 		protected void onPreExecute() {
 			perguntas = new ArrayList<String>();
-			progress = new ProgressDialog(fillContext);
-			progress.setTitle("Carregando");
-			progress.setMessage("Aguarde...");
-			progress.show();
+			progress = Utils.setProgreesDialog(progress, fillContext, "Carregando", "Aguarde...");
 		}
 
 		@Override
@@ -365,9 +437,14 @@ public class RegisterActivity extends Activity {
 		@Override
 		protected void onPostExecute(String strJson) {
 			// Colocando lista de perguntas no spinner
-			ArrayAdapter<String> adapterPerguntas = new ArrayAdapter<String>(fillContext, android.R.layout.simple_spinner_item, perguntas);
-			adapterPerguntas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			spinnerPergunta.setAdapter(adapterPerguntas);
+			try{
+				ArrayAdapter<String> adapterPerguntas = new ArrayAdapter<String>(fillContext, android.R.layout.simple_spinner_item, perguntas);
+				adapterPerguntas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				spinnerPergunta.setAdapter(adapterPerguntas);	
+			}
+			catch(Exception e){
+				Log.i("Exeception onPostExecute fillQuestionSpinner taxi", "Exception -> " + e + "  || Message: -> " + e.getMessage());			
+			}			
 
 			progress.dismiss();
 		}

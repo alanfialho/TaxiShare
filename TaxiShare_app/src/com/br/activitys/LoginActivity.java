@@ -30,12 +30,58 @@ public class LoginActivity extends Activity {
 	EditText loginSenha;
 
 	SessionManagement session;
-	@Override
+	@Override	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
+		setAtributes();
+		setBtnActions();
+	}
 
+	private void setBtnActions() {
+		// Evento do botao login
+		btnLogin.setOnClickListener(new View.OnClickListener() {
 
+			public void onClick(View view) {
+				context = view.getContext();
+
+				boolean checkLogin = loginLogin.getText().toString().isEmpty();
+				boolean checkSenha = loginLogin.getText().toString().isEmpty();
+				if(!checkLogin || !checkSenha){
+					loginTask task = new loginTask();
+					task.fillContext = view.getContext();
+					task.execute();
+				}
+				else{
+					Utils.gerarToast(context, "Preencha Login e Senha!");
+				}
+
+			}
+		});
+
+		// Link para tela de cadastro
+		btnLinkToRegister.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View view) {
+				Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+				startActivity(intent);
+			}
+		});
+
+		//Link para tela de recuperação de senha
+		btnLinkToForgetPassword.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View view) {
+
+				Intent i = new Intent(getApplicationContext(),LoginToResetActivity.class);
+				startActivity(i);
+
+			}
+		});
+
+	}
+
+	public void setAtributes(){
 		// Session Manager
 		session = new SessionManagement(getApplicationContext()); 
 
@@ -47,62 +93,20 @@ public class LoginActivity extends Activity {
 		btnLogin = (Button) findViewById(R.id.btnLogin);
 		btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
 		btnLinkToForgetPassword = (Button) findViewById(R.id.btnLinkToForgetPassword);
-
-		// Evento do botao de click
-		btnLogin.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View view) {
-				context = view.getContext();
-				loginTask task = new loginTask();
-				task.fillContext = view.getContext();
-				task.execute();
-			}
-		});
-
-
-		// Link para tela de cadastro
-		btnLinkToRegister.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View view) {
-
-				Intent intent = new Intent(getApplicationContext(),
-						RegisterActivity.class);
-				startActivity(intent);
-			}
-		});
-
-		btnLinkToForgetPassword.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View view) {
-				
-				Intent i = new Intent(getApplicationContext(),LoginToResetActivity.class);
-				startActivity(i);
-			
-			}
-		});
-
 	}
-
-
 
 	private class loginTask extends AsyncTask<String, Void, String> {
 
 		ProgressDialog progress;
 		Context fillContext;
-
 		protected void onPreExecute() {
 			//Inica a popup de load
-			progress = new ProgressDialog(fillContext);
-			progress.setTitle("Efetuando login");
-			progress.setMessage("Aguarde...");
-			progress.show();
-
+			progress = Utils.setProgreesDialog(progress, fillContext, "Efetuando Login", "Aguarde...");
 		}
 
 		@Override
 		protected String doInBackground(String... urls) {
 			String response = "";
-
 
 			try {
 				//Pegando o email e a senha da tela
@@ -118,7 +122,7 @@ public class LoginActivity extends Activity {
 
 			} catch (Exception e) {
 				Log.i("Exception Login taxi", e + "");
-				Utils.gerarToast( context, "Não Foi possível logar");
+				Utils.gerarToast( fillContext, "Não Foi possível logar");
 				e.printStackTrace();
 			}
 
@@ -134,7 +138,7 @@ public class LoginActivity extends Activity {
 				Log.i("JSON resposta taxi", resposta + "");
 
 				if (resposta.getInt("errorCode") == 0) {
-					Utils.gerarToast( context, resposta.getString("descricao"));
+					Utils.gerarToast( fillContext, resposta.getString("descricao"));
 
 					JSONObject pessoa = resposta.getJSONObject("data").getJSONObject("pessoa");
 					Log.i("Testando as paradas aqui", pessoa.toString());
@@ -159,7 +163,7 @@ public class LoginActivity extends Activity {
 
 				}else{
 					// Erro de login
-					Utils.gerarToast( context, resposta.getString("descricao"));
+					Utils.gerarToast( fillContext, resposta.getString("descricao"));
 				}
 			} catch (JSONException e) {
 				Log.i("Exception on post execute taxi", "Exception -> " + e + " Message->" +e.getMessage());

@@ -36,6 +36,7 @@ public class LoginToResetActivity extends Activity {
 
 	Button btnRecuperar;
 	Button btnAlterar;
+	Button btnCheckAnswer;
 
 	LoginApp loginApp;
 
@@ -43,11 +44,9 @@ public class LoginToResetActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.login_to_reset);
-		// Session Manager
-		session = new SessionManagement(getApplicationContext()); 	
+		setContentView(R.layout.login_to_reset); 	
 
-		setResources();
+		setAtributes();
 		setBtnActions();	
 		setInvisiblePart("other");
 	}
@@ -69,29 +68,41 @@ public class LoginToResetActivity extends Activity {
 		btnAlterar.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-				String resposta = txtResposta.getText().toString();
 				String novaSenha = txtNovasenha.getText().toString();
 				String novaSenha2 = txtNovasenha2.getText().toString();
 				Log.i("Respota Retornada Taxi", loginApp.getResposta());
-				if(resposta.equals(loginApp.getResposta())){
-					if(novaSenha.equals(novaSenha2)){
-						context = view.getContext();
-						EditPasswordTask editTask = new EditPasswordTask();
-						editTask.fillContext = view.getContext();
-						editTask.execute();
-					}
-					else
-						Utils.gerarToast(context, "Senhas precisam ser iguais");
+
+				if(novaSenha.equals(novaSenha2)){
+					context = view.getContext();
+					EditPasswordTask editTask = new EditPasswordTask();
+					editTask.fillContext = view.getContext();
+					editTask.execute();
 				}
 				else
-					Utils.gerarToast(context, "Resposta Inválida");
-
+					Utils.gerarToast(context, "Senhas precisam ser iguais");
 			}
 		});
 
+
+
+		btnCheckAnswer.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View view) {
+				String resposta = txtResposta.getText().toString();
+				Log.i("Respota Retornada Taxi", loginApp.getResposta());
+				if(resposta.equals(loginApp.getResposta())){
+					aQuery.id(R.id.resetPasswordLayout).visible();	
+				}
+				else
+					Utils.gerarToast(context, "Resposta Inválida");
+			}
+		});
 	}
 
-	private void setResources(){
+	private void setAtributes(){
+		// Session Manager
+		session = new SessionManagement(getApplicationContext());
+
 		//Pegando os campos da tela
 		txtLogin = (EditText) findViewById(R.id.resetLogin);
 		txtResposta = (EditText) findViewById(R.id.resetResposta);
@@ -102,10 +113,9 @@ public class LoginToResetActivity extends Activity {
 		//Botoes e erro
 		btnRecuperar = (Button) findViewById(R.id.btnResetRecuperarSenha);
 		btnAlterar = (Button) findViewById(R.id.btnResetAlterarSenha);
+		btnCheckAnswer = (Button) findViewById(R.id.resetCheckAnswerBtn);
 
-		aQuery = new AQuery(this);		
-
-
+		aQuery = new AQuery(this);	
 	}
 
 	public void setInvisiblePart(String part){
@@ -127,10 +137,7 @@ public class LoginToResetActivity extends Activity {
 
 		protected void onPreExecute() {
 			//Inica a popup de load
-			progress = new ProgressDialog(fillContext);
-			progress.setTitle("Verificando login");
-			progress.setMessage("Aguarde...");
-			progress.show();
+			progress = Utils.setProgreesDialog(progress, fillContext, "Verificando Login", "Aguarde...");
 		}
 
 		@Override
@@ -200,10 +207,7 @@ public class LoginToResetActivity extends Activity {
 
 		protected void onPreExecute() {
 			//Inica a popup de load
-			progress = new ProgressDialog(fillContext);
-			progress.setTitle("Checando resposta");
-			progress.setMessage("Aguarde...");
-			progress.show();
+			progress = Utils.setProgreesDialog(progress, fillContext, "Alterando", "Aguarde...");
 			loginApp.setSenha(txtNovasenha.getText().toString());
 			resposta = txtResposta.getText().toString();
 
@@ -221,7 +225,6 @@ public class LoginToResetActivity extends Activity {
 
 			if(checkNovaSenha.equals(checkNovaSenha2))
 				checkEquals = true;
-
 		}
 
 		@Override
@@ -240,17 +243,17 @@ public class LoginToResetActivity extends Activity {
 					response = ws.editarSenha(loginApp);
 
 				else{
-					
+
 					if(!checkEquals)
 						response = "{errorCode:1, descricao:Senhas precisam ser iguais}";
-					
+
 					if(!checkEmpty)
 						response = "{errorCode:1, descricao:Preencha todos os campos}";
-									
+
 					if(!checkResposta)
 						response = "{errorCode:1, descricao:Resposta Invalida}";
 				}
-					
+
 
 				Log.i("EditPasswordTask doInBackground taxi response", response + "");
 

@@ -51,11 +51,32 @@ public class EditPasswordFragment extends Fragment {
 
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.edit_password, container, false);
 
+		setAtributes(rootView);
+		setBtnActions();
+		//Checa se o usuario esta logado
+		session.checkLogin();
 
+		Log.i("Login Sessao taxi", "Login -> " + sessionedLogin + " Pessoa ->" + sessionedPessoaID);
+
+		return rootView;
+	}
+
+	private void setBtnActions() {
+		//Acao do botao cadastrar
+		btnForgotAlterarSenha.setOnClickListener(new View.OnClickListener() {			
+			public void onClick(View view) {
+				context = view.getContext();
+				CheckPassWordTask task = new CheckPassWordTask();
+				task.fillContext = view.getContext();
+				task.execute();
+			}
+		});	
+	}
+
+	private void setAtributes(View rootView) {
 		session = new SessionManagement(rootView.getContext());
 
 		//Importando os campos da pessoa
@@ -66,31 +87,12 @@ public class EditPasswordFragment extends Fragment {
 		//Importando botões
 		btnForgotAlterarSenha = (Button) rootView.findViewById(R.id.btnForgotAlterarSenha);
 
-		//Checa se o usuario esta logado
-		session.checkLogin();
-
 		//Recupera os dados do usuario na sessão
 		HashMap<String, String> user = session.getUserDetails();
 
 		//Setando id
 		sessionedPessoaID = user.get(SessionManagement.KEY_PESSOAID);
 		sessionedLogin = user.get(SessionManagement.KEY_LOGIN);
-
-		Log.i("Login Sessao taxi", sessionedLogin + "");
-		Log.i("Login Sessao taxi", sessionedPessoaID + "");
-
-		new WSTaxiShare();		
-
-		//Acao do botao cadastrar
-		btnForgotAlterarSenha.setOnClickListener(new View.OnClickListener() {			
-			public void onClick(View view) {
-				context = view.getContext();
-				CheckPassWordTask task = new CheckPassWordTask();
-				task.fillContext = view.getContext();
-				task.execute();
-			}
-		});
-		return rootView;
 	}
 
 
@@ -103,11 +105,7 @@ public class EditPasswordFragment extends Fragment {
 
 		protected void onPreExecute() {
 			//Inica a popup de load
-			progress = new ProgressDialog(fillContext);
-			progress.setTitle("Carregando");
-			progress.setMessage("Aguarde...");
-			progress.show();
-
+			progress = Utils.setProgreesDialog(progress, fillContext, "Carregando", "Aguarde...");
 
 			checkEmpty = checkPassword = checkOldAndNew = true;
 
@@ -198,12 +196,8 @@ public class EditPasswordFragment extends Fragment {
 
 		protected void onPreExecute() {
 			//Inica a popup de load
-			progress = new ProgressDialog(fillContext);
-			progress.setTitle("Salvando Alterações");
-			progress.setMessage("Aguarde...");
-			progress.show();
+			progress = 	Utils.setProgreesDialog(progress, fillContext, "Salvando Alterações", "Aguarde...");
 			Log.i("onPreExecute Edit Password taxi", "onPreExecute Edit Password taxi");
-
 		}
 
 		@Override
@@ -258,11 +252,11 @@ public class EditPasswordFragment extends Fragment {
 				JSONObject resposta2 = new JSONObject(strJson);
 				if(resposta2.getInt("errorCode")== 0){
 
-//					//Transfere para a pagina de dashboard
-//					Intent i = new Intent(getApplicationContext(),
-//							DashboardActivity.class);
-//					startActivity(i);
-//					finish();
+					//					//Transfere para a pagina de dashboard
+					//					Intent i = new Intent(getApplicationContext(),
+					//							DashboardActivity.class);
+					//					startActivity(i);
+					//					finish();
 				}
 				else{
 					Utils.gerarToast( context, resposta2.getString("descricao"));

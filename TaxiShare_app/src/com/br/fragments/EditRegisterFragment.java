@@ -56,24 +56,29 @@ public class EditRegisterFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.edit_register, container, false);
-
-
-		session = new SessionManagement(rootView.getContext());
-
-		//Importando os campos da pessoa
-		textNome = (EditText) rootView.findViewById(R.id.editNome);
-		textEmail = (EditText) rootView.findViewById(R.id.editEmail);
-		textDDD = (EditText) rootView.findViewById(R.id.editDDD);
-		spinnerSexo = (Spinner) rootView.findViewById(R.id.editSexo);
-		textCelular = (EditText) rootView.findViewById(R.id.editCelular);
-		dateDataNascimento = (DatePicker) rootView.findViewById(R.id.editDateDataNascimemto);
-
-		//Importando botões
-		btnSalvar = (Button) rootView.findViewById(R.id.btnEditSalvar);
-
+		setAtributes(rootView);
+		fillFields(rootView);
+		setBtnAction();
 		//Checa se o usuario esta logado
 		session.checkLogin();
 
+		return rootView;
+	}
+
+	private void setBtnAction() {
+		//Acao do botao cadastrar
+		btnSalvar.setOnClickListener(new View.OnClickListener() {			
+			public void onClick(View view) {
+				context = view.getContext();
+
+				EditRegisterTask task = new EditRegisterTask();
+				task.fillContext = view.getContext();
+				task.execute();
+			}
+		});		
+	}
+
+	private void fillFields(View rootView) {
 		//Recupera os dados do usuario na sessão
 		HashMap<String, String> user = session.getUserDetails();         
 
@@ -138,22 +143,22 @@ public class EditRegisterFragment extends Fragment {
 
 		}
 
+	}
 
-		new WSTaxiShare();		
+	private void setAtributes(View rootView) {
+		session = new SessionManagement(rootView.getContext());
 
-		//Acao do botao cadastrar
-		btnSalvar.setOnClickListener(new View.OnClickListener() {			
-			public void onClick(View view) {
-				context = view.getContext();
+		//Importando os campos da pessoa
+		textNome = (EditText) rootView.findViewById(R.id.editNome);
+		textEmail = (EditText) rootView.findViewById(R.id.editEmail);
+		textDDD = (EditText) rootView.findViewById(R.id.editDDD);
+		spinnerSexo = (Spinner) rootView.findViewById(R.id.editSexo);
+		textCelular = (EditText) rootView.findViewById(R.id.editCelular);
+		dateDataNascimento = (DatePicker) rootView.findViewById(R.id.editDateDataNascimemto);
 
-				EditRegisterTask task = new EditRegisterTask();
-				task.fillContext = view.getContext();
-				task.execute();
-			}
-		});
+		//Importando botões
+		btnSalvar = (Button) rootView.findViewById(R.id.btnEditSalvar);
 
-
-		return rootView;
 	}
 
 	private class EditRegisterTask extends AsyncTask<String, Void, String> {
@@ -163,11 +168,8 @@ public class EditRegisterFragment extends Fragment {
 
 		protected void onPreExecute() {
 			try{
-				//Inica a popup de load
-				progress = new ProgressDialog(fillContext);
-				progress.setTitle("Salvando Alterações");
-				progress.setMessage("Aguarde...");
-				progress.show();
+				//Inica a popup de load				
+				progress = Utils.setProgreesDialog(progress, fillContext, "Salvando Alterações", "Aguarde...");
 
 				//Pegando as informações de pessoas
 				String nome = textNome.getText().toString();
