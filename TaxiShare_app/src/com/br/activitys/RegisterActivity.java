@@ -165,7 +165,7 @@ public class RegisterActivity extends Activity {
 		}
 	}
 
-
+	
 	private class ValidationListner implements ValidationListener {
 		Context validationContext;
 

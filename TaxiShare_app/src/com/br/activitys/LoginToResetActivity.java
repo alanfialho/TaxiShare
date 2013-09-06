@@ -134,63 +134,71 @@ public class LoginToResetActivity extends Activity {
 
 		ProgressDialog progress;
 		Context fillContext;
+		String login;
+
 
 		protected void onPreExecute() {
 			//Inica a popup de load
 			progress = Utils.setProgreesDialog(progress, fillContext, "Verificando Login", "Aguarde...");
+			login = txtLogin.getText().toString(); 
+
 		}
 
 		@Override
 		protected String doInBackground(String... urls) {
 			String response = "";
+			if(login.length() >3){
+				try {
+					//Pegando o email e a senha da tela
 
-			try {
-				//Pegando o email e a senha da tela
-				String login = txtLogin.getText().toString(); 
+					WSTaxiShare ws = new WSTaxiShare();
 
-				WSTaxiShare ws = new WSTaxiShare();
-
-				Log.i("CheckLoginTask  doInBackground taxi", "Login -> " + login);
-				response = ws.checkLogin(login);
-				Log.i("CheckLoginTask  doInBackground taxi response", response + "");
+					Log.i("CheckLoginTask  doInBackground taxi", "Login -> " + login);
+					response = ws.checkLogin(login);
+					Log.i("CheckLoginTask  doInBackground taxi response", response + "");
 
 
-			} catch (Exception e) {
-				Log.i("CheckLoginTask Exception doInBackground taxi", e + "");
-				Utils.gerarToast( context, "Não foi possível checar login");
+				} catch (Exception e) {
+					Log.i("CheckLoginTask Exception doInBackground taxi", e + "");
+					Utils.gerarToast( context, "Não foi possível checar login");
+				}
 			}
-
 			return response;
 		}
 
 		@Override
 		protected void onPostExecute(String strJson) {
 
-			try {
+			if(login.length() >3){
+				try {
 
-				JSONObject jsonResposta = new JSONObject(strJson);
-				Log.i("CheckLoginTask Exception onPostExecute taxi",  "Json resposta -> " + jsonResposta);
+					JSONObject jsonResposta = new JSONObject(strJson);
+					Log.i("CheckLoginTask Exception onPostExecute taxi",  "Json resposta -> " + jsonResposta);
 
 
-				if (jsonResposta.getInt("errorCode") == 1) {
-					setInvisiblePart("login");
+					if (jsonResposta.getInt("errorCode") == 1) {
+						setInvisiblePart("login");
 
-					JSONObject objetoResposta= jsonResposta.getJSONObject("data");
-					Log.i("CheckLoginTask  doInBackground taxi response data", objetoResposta + "");
-					Log.i("CheckLoginTask  doInBackground taxi response resposta", objetoResposta.getString("resposta"));
+						JSONObject objetoResposta= jsonResposta.getJSONObject("data");
+						Log.i("CheckLoginTask  doInBackground taxi response data", objetoResposta + "");
+						Log.i("CheckLoginTask  doInBackground taxi response resposta", objetoResposta.getString("resposta"));
 
-					lblPergunta.setText(objetoResposta.getJSONObject("pergunta").getString("pergunta"));
-					loginApp = new LoginApp();
-					loginApp.setId(objetoResposta.getInt("id"));
-					loginApp.setLogin(objetoResposta.getString("login"));	
-					loginApp.setResposta(objetoResposta.getString("resposta"));
+						lblPergunta.setText(objetoResposta.getJSONObject("pergunta").getString("pergunta"));
+						loginApp = new LoginApp();
+						loginApp.setId(objetoResposta.getInt("id"));
+						loginApp.setLogin(objetoResposta.getString("login"));	
+						loginApp.setResposta(objetoResposta.getString("resposta"));
 
-				}else{
-					// Erro de login
-					Utils.gerarToast( context, jsonResposta.getString("descricao"));
+					}else{
+						// Erro de login
+						Utils.gerarToast( context, jsonResposta.getString("descricao"));
+					}
+				} catch (Exception e) {
+					Log.i("Exception on post execute taxi", "Exception -> " + e + " Message->" +e.getMessage());
 				}
-			} catch (Exception e) {
-				Log.i("Exception on post execute taxi", "Exception -> " + e + " Message->" +e.getMessage());
+				
+			}else{
+				txtLogin.setError("Deve conter no minimo 4 digitos!");
 			}
 			progress.dismiss();
 		}
@@ -219,12 +227,24 @@ public class LoginToResetActivity extends Activity {
 
 			if(resposta.equals(loginApp.getResposta()))
 				checkResposta = true;
+			else
+				txtResposta.setError("Resposta Inválida");
 
-			if(!resposta2.isEmpty() && !checkNovaSenha.isEmpty() && !checkNovaSenha2.isEmpty())
+
+			if(!resposta2.isEmpty() && !checkNovaSenha.isEmpty() && !checkNovaSenha2.isEmpty()){
 				checkEmpty = true;
-
-			if(checkNovaSenha.equals(checkNovaSenha2))
+			}
+			else{
+				txtResposta.setError("Campo obrigatório");
+				txtNovasenha.setError("Campo obrigatório");
+				txtNovasenha2.setError("Campo obrigatório");
+			}
+			
+			if(checkNovaSenha.equals(checkNovaSenha2)){
 				checkEquals = true;
+			}else{
+				txtNovasenha2.setError("Senhas devem ser iguais!");
+			}
 		}
 
 		@Override

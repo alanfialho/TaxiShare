@@ -22,33 +22,42 @@ import com.br.entidades.LoginApp;
 import com.br.network.WSTaxiShare;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
+import com.br.validation.Rule;
+import com.br.validation.Validator;
+import com.br.validation.Validator.ValidationListener;
+import com.br.validation.annotation.ConfirmPassword;
+import com.br.validation.annotation.Password;
+import com.br.validation.annotation.Regex;
+import com.br.validation.annotation.Required;
+import com.br.validation.annotation.TextRule;
 
 public class EditPasswordFragment extends Fragment {
 
 	Context context;
+	Validator validator;
 
 	//botoes
 	Button btnForgotAlterarSenha;
 
 	//dados pessoa
-	EditText forgotSenhaAntiga;
+
+	@Required(order = 1, message="Campo obrigatorio")
+	@TextRule(order=3, minLength=6, message="Deve conter no minimo 6 caracteres")
+	EditText forgotSenhaAntiga;	
+
+	@Required(order = 4, message="Campo obrigatorio")
+	@Password(order=5)
+	@TextRule(order=6, minLength=6, message="Deve conter no minimo 6 caracteres")
 	EditText forgotNovaSenha;
+
+	@Required(order = 7, message="Campo obrigatorio")
+	@ConfirmPassword(order=8, message="Senhas precisam ser iguais")
 	EditText forgotNovaSenha2;
 
 	SessionManagement session;
 
-	String sessionedPessoaID;
-	String sessionedLogin;
-
-	String respostaCheckPassword;
-	String novaSenha;
-	String senhaAntiga;
-
-
-	boolean checkEmpty;
-	boolean checkPassword;
-	boolean checkOldAndNew;
-
+	String sessionedPessoaID, sessionedLogin, respostaCheckPassword, novaSenha, senhaAntiga;
+	boolean checkEmpty, checkPassword, checkOldAndNew;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +66,17 @@ public class EditPasswordFragment extends Fragment {
 		setAtributes(rootView);
 		setBtnActions();
 		//Checa se o usuario esta logado
+
+
+		//Criando listner
+		ValidationListner validationListner = new ValidationListner();
+		validationListner.validationContext = getActivity();
+
+		//Instanciando Validation
+		validator = new Validator(this);
+		validator.setValidationListener(validationListner);
+
+
 		session.checkLogin();
 
 		Log.i("Login Sessao taxi", "Login -> " + sessionedLogin + " Pessoa ->" + sessionedPessoaID);
@@ -68,10 +88,8 @@ public class EditPasswordFragment extends Fragment {
 		//Acao do botao cadastrar
 		btnForgotAlterarSenha.setOnClickListener(new View.OnClickListener() {			
 			public void onClick(View view) {
-				context = view.getContext();
-				CheckPassWordTask task = new CheckPassWordTask();
-				task.fillContext = view.getContext();
-				task.execute();
+				context = view.getContext();				
+				validator.validate();
 			}
 		});	
 	}
@@ -95,9 +113,6 @@ public class EditPasswordFragment extends Fragment {
 		sessionedLogin = user.get(SessionManagement.KEY_LOGIN);
 	}
 
-
-
-
 	private class CheckPassWordTask extends AsyncTask<String, Void, String> {
 
 		ProgressDialog progress;
@@ -111,18 +126,17 @@ public class EditPasswordFragment extends Fragment {
 
 			Log.i("onPreExecute Edit Password taxi", "onPreExecute Edit Password taxi");
 			//Pegando as informações de pessoas
-			senhaAntiga = forgotSenhaAntiga.getText().toString();
+			senhaAntiga = forgotSenhaAntiga.getText().toString().trim();
 			novaSenha = forgotNovaSenha.getText().toString();
-			String novaSenha2 = forgotNovaSenha2.getText().toString();
 
-			if(senhaAntiga.equals("") || novaSenha.equals("") || novaSenha2.equals(""))
-				checkEmpty = false;				
+			if(senhaAntiga.isEmpty() || senhaAntiga.equals(" ")){
+				checkEmpty = false;
+			}
 
-			if(!novaSenha.equals(novaSenha2))
-				checkPassword = false;
-
-			if(novaSenha.equals(senhaAntiga))
+			if(novaSenha.equals(senhaAntiga)){
 				checkOldAndNew = false;
+			}
+
 		}
 
 		@Override
@@ -132,7 +146,7 @@ public class EditPasswordFragment extends Fragment {
 			try{
 				Log.i("doInBackground checkPassWord taxi", "URL -> " + urls);
 
-				if(checkPassword && checkEmpty && checkOldAndNew){
+				if(checkEmpty && checkOldAndNew){
 
 					Log.i("Abrindo o WS checkpassword taxi", "");
 					WSTaxiShare ws = new WSTaxiShare();
@@ -144,7 +158,7 @@ public class EditPasswordFragment extends Fragment {
 					Log.i("Algum check é falso", "Empty -> " + checkEmpty + " Password -> " + checkPassword + " OldAndNew -> " +checkOldAndNew );
 
 			}catch(Exception e){
-				Utils.gerarToast(context,"Erro ao alterar!");
+				Utils.gerarToast(fillContext,"Erro ao alterar!");
 				Log.i("Excetion check edit password taxi", "Exception -> " + e + " Message -> " + e.getMessage());
 			}
 
@@ -160,12 +174,13 @@ public class EditPasswordFragment extends Fragment {
 
 			if(!checkEmpty || !checkPassword || !checkOldAndNew)
 			{
-				if(!checkEmpty)
-					Utils.gerarToast( context, "Todos os campos são obrigatórios");
-				if(!checkPassword)
-					Utils.gerarToast( context, "Senhas precisam ser iguais");
+				if(!checkEmpty){
+					forgotSenhaAntiga.setError("Campo Obrigatório");
+					forgotSenhaAntiga.requestFocus();
+				}
+					
 				if(!checkOldAndNew)
-					Utils.gerarToast( context, "Digite uma senha diferente da antiga");
+					forgotNovaSenha.setError("Nova senha deve ser diferente da senha antiga");
 			}
 			else{
 				Log.i("onPostExecute CheckPassword taxi", strJson);
@@ -179,7 +194,7 @@ public class EditPasswordFragment extends Fragment {
 						task.execute();
 					}
 					else
-						Utils.gerarToast( context, resposta.getString("descricao"));
+						Utils.gerarToast( fillContext, resposta.getString("descricao"));
 
 				} catch (JSONException e) {
 					Log.i("onPostExecute exception taxi", "Exception -> " + e + "Message -> " + e.getMessage());
@@ -227,10 +242,10 @@ public class EditPasswordFragment extends Fragment {
 
 					if(resposta2.getInt("errorCode")== 0){
 						Log.i("Resposta da alteracao taxi", resposta.toString());
-						Utils.gerarToast( context, resposta2.getString("descricao"));
+						Utils.gerarToast( fillContext, resposta2.getString("descricao"));
 					}
 					else{
-						Utils.gerarToast( context, resposta2.getString("descricao"));
+						Utils.gerarToast( fillContext, resposta2.getString("descricao"));
 					}
 				}
 			}catch(Exception e){
@@ -259,7 +274,7 @@ public class EditPasswordFragment extends Fragment {
 					//					finish();
 				}
 				else{
-					Utils.gerarToast( context, resposta2.getString("descricao"));
+					Utils.gerarToast( fillContext, resposta2.getString("descricao"));
 				}
 
 			} catch (JSONException e) {
@@ -268,8 +283,28 @@ public class EditPasswordFragment extends Fragment {
 			}
 			progress.dismiss();
 		}
+	}
 
+	private class ValidationListner implements ValidationListener {
+		Context validationContext;
 
+		public void onValidationSucceeded() {
+			CheckPassWordTask task = new CheckPassWordTask();
+			task.fillContext = validationContext;
+			task.execute();
+		}
+
+		public void onValidationFailed(View failedView, Rule<?> failedRule) {
+
+			String message = failedRule.getFailureMessage();
+
+			if (failedView instanceof EditText) {
+				failedView.requestFocus();
+				((EditText) failedView).setError(message);
+			} else {
+				Utils.gerarToast(failedView.getContext(), message);
+			}
+		}
 	}
 
 

@@ -13,6 +13,13 @@ import com.br.entidades.PessoaApp;
 import com.br.network.WSTaxiShare;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
+import com.br.validation.Rule;
+import com.br.validation.Validator;
+import com.br.validation.Validator.ValidationListener;
+import com.br.validation.annotation.Email;
+import com.br.validation.annotation.Regex;
+import com.br.validation.annotation.Required;
+import com.br.validation.annotation.TextRule;
 
 
 import android.app.Fragment;
@@ -34,15 +41,32 @@ import android.widget.DatePicker;
 
 public class EditRegisterFragment extends Fragment {
 	Context context;
+	Validator validator;
+
 
 	//botoes
 	Button btnSalvar;
 
 	//dados pessoa
+
+	@Required(order = 1, message="Campo obrigatorio")
+	@Regex(order=2, pattern="[a-z A-Z]+", message="Deve conter apenas letras")
 	EditText textNome;
+
+	@Required(order = 3, message="Campo obrigatorio")
+	@Email(order =4, message="E-mail Inválido")
 	EditText textEmail;
+
+
+	@Required(order = 5, message="Campo obrigatorio")
+	@TextRule(order=6, minLength=8, message="Deve conter no minimo 8 digitos")
 	EditText textCelular;
-	EditText textDDD;	
+
+
+	@Required(order = 7, message="Campo obrigatorio")
+	@TextRule(order=8, minLength=2, message="Deve conter 2 digitos")
+	EditText textDDD;
+
 	Spinner spinnerSexo;
 	DatePicker dateDataNascimento;
 	SessionManagement session;
@@ -59,6 +83,15 @@ public class EditRegisterFragment extends Fragment {
 		setAtributes(rootView);
 		fillFields(rootView);
 		setBtnAction();
+
+		//Criando listner
+		ValidationListner validationListner = new ValidationListner();
+		validationListner.validationContext = getActivity();
+
+		//Instanciando Validation
+		validator = new Validator(this);
+		validator.setValidationListener(validationListner);
+
 		//Checa se o usuario esta logado
 		session.checkLogin();
 
@@ -71,9 +104,10 @@ public class EditRegisterFragment extends Fragment {
 			public void onClick(View view) {
 				context = view.getContext();
 
-				EditRegisterTask task = new EditRegisterTask();
-				task.fillContext = view.getContext();
-				task.execute();
+				validator.validate();
+
+
+
 			}
 		});		
 	}
@@ -159,6 +193,29 @@ public class EditRegisterFragment extends Fragment {
 		//Importando botões
 		btnSalvar = (Button) rootView.findViewById(R.id.btnEditSalvar);
 
+	}
+
+	private class ValidationListner implements ValidationListener {
+		Context validationContext;
+
+		public void onValidationSucceeded() {
+
+			EditRegisterTask task = new EditRegisterTask();
+			task.fillContext = validationContext;
+			task.execute();
+		}
+
+		public void onValidationFailed(View failedView, Rule<?> failedRule) {
+
+			String message = failedRule.getFailureMessage();
+
+			if (failedView instanceof EditText) {
+				failedView.requestFocus();
+				((EditText) failedView).setError(message);
+			} else {
+				Utils.gerarToast(failedView.getContext(), message);
+			}
+		}
 	}
 
 	private class EditRegisterTask extends AsyncTask<String, Void, String> {
