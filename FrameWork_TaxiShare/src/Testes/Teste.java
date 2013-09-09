@@ -161,18 +161,18 @@ public class Teste extends javax.swing.JDialog {
         RotaJpaController rotaDAO = new RotaJpaController(entityManager2);
         //Rota rotaw = rotaDAO.findRota(1);
         
-        PerguntaJpaController perguntaDAO = new PerguntaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
-        PessoaJpaController pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+//        PerguntaJpaController perguntaDAO = new PerguntaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+//        PessoaJpaController pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
         UsuarioJpaController usuarioDAO = new UsuarioJpaController(entityManager2);
         
                 
         Pessoa pessoa = new Pessoa(new Date(), "alan", "11", "97873829", "feminino", "alan@alan.com");
-        Pergunta pergunta = perguntaDAO.findPergunta(1) ;
-        Usuario u1 = new Usuario("aln2", "@lan", "seila", pessoa, pergunta, null);
+  //      Pergunta pergunta = perguntaDAO.findPergunta(1) ;
+      //  Usuario u1 = new Usuario("aln2", "@lan", "seila", pessoa, pergunta, null);
         
-        pessoaDAO.create(pessoa);
+    //    pessoaDAO.create(pessoa);
         //usuarioDAO.create(u1);
-        rota.getUsuarios().add(u1);
+        //rota.getUsuarios().add(u1);
                 
         rotaDAO.getEntityManager().getTransaction().begin();
         rotaDAO.create(rota);

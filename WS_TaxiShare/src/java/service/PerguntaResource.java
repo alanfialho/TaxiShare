@@ -13,6 +13,8 @@ import TS.FrameWork.DAO.PerguntaJpaController;
 import com.google.gson.Gson;
 import entities.PerguntaEntity;
 import entities.ResponseEntity;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -22,13 +24,20 @@ import entities.ResponseEntity;
 @Path("/pergunta")
 public class PerguntaResource {
 
+    @PersistenceContext(unitName = "PU")
+    private EntityManager em;  
+
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+    
     @GET
     @Path("/findAll")
     @Produces("application/json")
     public String findAll() {
         PerguntaEntity entity = new PerguntaEntity();
         ResponseEntity saida;
-        PerguntaJpaController perguntasDAO = new PerguntaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        PerguntaJpaController perguntasDAO = new PerguntaJpaController(getEntityManager());
         entity.setPerguntas(perguntasDAO.findPerguntaEntities());
         saida = new ResponseEntity("Sucesso", 0, "Lista de Perguntas", entity);
         return new Gson().toJson(saida);

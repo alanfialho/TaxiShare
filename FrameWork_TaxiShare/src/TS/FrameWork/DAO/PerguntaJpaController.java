@@ -19,26 +19,22 @@ import javax.persistence.EntityNotFoundException;
  */
 public class PerguntaJpaController implements Serializable {
 
-    public PerguntaJpaController(EntityManagerFactory emf) {
+    public PerguntaJpaController(EntityManager emf) {
         this.emf = emf;
     }
-    private EntityManagerFactory emf = null;
+    private EntityManager emf = null;
 
     public EntityManager getEntityManager() {
-        return emf.createEntityManager();
+        return emf;
     }
 
     public void create(Pergunta pergunta) {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            em.getTransaction().begin();
             em.persist(pergunta);
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+        } catch(Exception ex) {
+            throw ex;
         }
     }
 
@@ -46,9 +42,7 @@ public class PerguntaJpaController implements Serializable {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            em.getTransaction().begin();
             pergunta = em.merge(pergunta);
-            em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
@@ -58,18 +52,13 @@ public class PerguntaJpaController implements Serializable {
                 }
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+        } 
     }
 
     public void destroy(Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            em.getTransaction().begin();
             Pergunta pergunta;
             try {
                 pergunta = em.getReference(Pergunta.class, id);
@@ -78,11 +67,8 @@ public class PerguntaJpaController implements Serializable {
                 throw new NonexistentEntityException("The pergunta with id " + id + " no longer exists.", enfe);
             }
             em.remove(pergunta);
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+        } catch(Exception ex) {
+            throw ex;
         }
     }
 
@@ -103,8 +89,8 @@ public class PerguntaJpaController implements Serializable {
                 q.setFirstResult(firstResult);
             }
             return q.getResultList();
-        } finally {
-            em.close();
+        } catch(Exception ex) {
+            throw ex;
         }
     }
 
@@ -112,8 +98,8 @@ public class PerguntaJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             return em.find(Pergunta.class, id);
-        } finally {
-            em.close();
+        } catch(Exception ex) {
+            throw ex;
         }
     }
 
@@ -122,8 +108,8 @@ public class PerguntaJpaController implements Serializable {
         try {
             Query q = em.createQuery("select count(o) from Pergunta as o");
             return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
+        } catch(Exception ex) {
+            throw ex;
         }
     }
     

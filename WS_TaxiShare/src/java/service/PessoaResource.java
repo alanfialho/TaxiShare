@@ -18,6 +18,8 @@ import com.google.gson.Gson;
 import entities.PessoaEntity;
 import entities.ResponseEntity;
 import java.text.SimpleDateFormat;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -26,7 +28,10 @@ import java.text.SimpleDateFormat;
 @Stateless
 @Path("/pessoa")
 public class PessoaResource {
-
+    
+    @PersistenceContext(unitName = "PU")
+    private EntityManager em;  
+    
     @POST
     @Path("/create")
     @Produces("application/json")
@@ -43,7 +48,7 @@ public class PessoaResource {
             String data = format.format(pessoa.getDataNascimento());
             pessoa.setDataNascimento(format.parse(data));
             
-            pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+            pessoaDAO = new PessoaJpaController(getEntityManager());
             pessoaDAO.create(pessoa);
             
             saida = new ResponseEntity("Sucesso", 0, "Cadastro realizado com sucesso!", null);    
@@ -67,7 +72,7 @@ public class PessoaResource {
         
         try
         {
-            pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+            pessoaDAO = new PessoaJpaController(getEntityManager());
             Pessoa pessoa = pessoaDAO.findPessoa(id);
             
             if(pessoa != null)
@@ -100,7 +105,7 @@ public class PessoaResource {
         try
         {
             entity = new PessoaEntity();
-            pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+            pessoaDAO = new PessoaJpaController(getEntityManager());
             entity.setLstPessoas(pessoaDAO.findPessoaEntities());
             
             if(entity.getLstPessoas().size() > 0)
@@ -124,7 +129,7 @@ public class PessoaResource {
     @Produces("application/json")
     @Consumes("application/json")
     public String edit(Pessoa pessoa) {
-        PessoaJpaController pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+        PessoaJpaController pessoaDAO = new PessoaJpaController(getEntityManager());
         try {
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
             java.sql.Date data = new java.sql.Date(pessoa.getDataNascimento().getTime());
@@ -145,5 +150,8 @@ public class PessoaResource {
             return new Gson().toJson(saida);
         }
 
+    }
+    protected EntityManager getEntityManager() {
+        return em;
     }
 }

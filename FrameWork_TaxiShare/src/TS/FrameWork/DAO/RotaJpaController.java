@@ -8,9 +8,7 @@ import TS.FrameWork.DAO.exceptions.NonexistentEntityException;
 import TS.FrameWork.TO.Rota;
 import TS.FrameWork.TO.Usuario;
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 
@@ -30,7 +28,6 @@ public class RotaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.persist(rota);
-            em.getTransaction().commit();
         } catch(Exception ex){
             throw ex;
         }
@@ -40,9 +37,7 @@ public class RotaJpaController implements Serializable {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            em.getTransaction().begin();
-            rota = em.merge(rota);
-            em.getTransaction().commit();
+            em.merge(rota);
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
@@ -52,18 +47,14 @@ public class RotaJpaController implements Serializable {
                 }
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+        } 
     }
 
     public void destroy(int id) throws NonexistentEntityException {
         EntityManager em = null;
-        try {
+        try 
+        {
             em = getEntityManager();
-            em.getTransaction().begin();
             Rota rota;
             try {
                 rota = em.getReference(Rota.class, id);
@@ -72,11 +63,9 @@ public class RotaJpaController implements Serializable {
                 throw new NonexistentEntityException("The rota with id " + id + " no longer exists.", enfe);
             }
             em.remove(rota);
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+        } 
+        catch(Exception ex){
+            throw ex;
         }
     }
 
@@ -85,15 +74,20 @@ public class RotaJpaController implements Serializable {
         try {
             Rota rota = em.find(Rota.class, id);
             //elimina recursividade gerada pelo relacionamento ManyToMany
-            for(Usuario u: rota.getUsuarios())
+            if(rota != null)
             {
-                u.setRotas(null);
+                for(Usuario u: rota.getUsuarios())
+                {
+                    u.setRotas(null);
+                }
             }
             return rota;
         } catch(Exception ex){
             throw ex;
         }
     }
+    
+    
 
     public int getRotaCount() {
         EntityManager em = getEntityManager();

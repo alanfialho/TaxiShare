@@ -5,11 +5,11 @@
 package TS.FrameWork.DAO;
 
 import TS.FrameWork.DAO.exceptions.NonexistentEntityException;
+import TS.FrameWork.TO.Rota;
 import TS.FrameWork.TO.Usuario;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 
@@ -32,13 +32,10 @@ public class UsuarioJpaController implements Serializable {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            em.getTransaction().begin();
             em.persist(usuario);
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+        } 
+        catch(Exception ex) {
+            throw ex;
         }
     }
 
@@ -46,9 +43,7 @@ public class UsuarioJpaController implements Serializable {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            em.getTransaction().begin();
-            usuario = em.merge(usuario);
-            em.getTransaction().commit();
+            em.merge(usuario);
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
@@ -58,31 +53,18 @@ public class UsuarioJpaController implements Serializable {
                 }
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+        } 
     }
 
     public void destroy(int id) throws NonexistentEntityException {
         EntityManager em = null;
+        Usuario usuario;
         try {
             em = getEntityManager();
-            em.getTransaction().begin();
-            Usuario usuario;
-            try {
-                usuario = em.getReference(Usuario.class, id);
-                usuario.getId();
-            } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.", enfe);
-            }
+            usuario = em.getReference(Usuario.class, id);
             em.remove(usuario);
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+        } catch (EntityNotFoundException enfe) {
+            throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.", enfe);
         }
     }
 
@@ -103,15 +85,23 @@ public class UsuarioJpaController implements Serializable {
                 q.setFirstResult(firstResult);
             }
             return q.getResultList();
-        } finally {
-            em.close();
+        } catch(Exception ex) {
+            throw ex;
         }
     }
 
     public Usuario findUsuario(int id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Usuario.class, id);
+            Usuario usuario = em.find(Usuario.class, id);
+            //elimina recursividade gerada pelo relacionamento ManyToMany
+            if(usuario != null){
+                for(Rota r: usuario.getRotas())
+                {
+                    r.setUsuarios(null);
+                }
+            }
+            return usuario;
         } catch(Exception ex){
             throw ex;
         }
@@ -131,8 +121,8 @@ public class UsuarioJpaController implements Serializable {
             }
 
             return foundEntity;
-        } finally {
-            em.close();
+        }catch(Exception ex){
+            throw ex;
         }
     }
 
@@ -141,8 +131,8 @@ public class UsuarioJpaController implements Serializable {
         try {
             Query q = em.createQuery("select count(o) from Usuario as o");
             return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
+        } catch(Exception ex) {
+            throw ex;
         }
     }
     

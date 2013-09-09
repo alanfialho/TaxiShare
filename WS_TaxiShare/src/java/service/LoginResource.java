@@ -18,7 +18,7 @@ import TS.FrameWork.DAO.PerguntaJpaController;
 import TS.FrameWork.TO.Usuario;
 import TS.FrameWork.TO.Pergunta;
 import com.google.gson.Gson;
-import entities.LoginEntity;
+import entities.UsuarioEntity;
 import entities.PessoaEntity;
 import entities.PerguntaEntity;
 import entities.ResponseEntity;
@@ -49,7 +49,7 @@ public class LoginResource {
         UsuarioJpaController loginDao = new UsuarioJpaController(getEntityManager());
 
         //Entidades de login, pessoa e pergunta
-        LoginEntity loginEntity = new LoginEntity();
+        UsuarioEntity loginEntity = new UsuarioEntity();
         PessoaEntity pessoaEntity = new PessoaEntity();
         PerguntaEntity perguntaEntity = new PerguntaEntity();
 
@@ -146,7 +146,7 @@ public class LoginResource {
     @Path("/create")
     @Produces("application/json")
     @Consumes("application/json")
-    public String create(LoginEntity entity) {
+    public String create(UsuarioEntity entity) {
 
         try {
 
@@ -156,9 +156,9 @@ public class LoginResource {
             Pergunta pergunta = new Pergunta();
 
             //Cria um novo controle de pessoa
-            PessoaJpaController pessoaDAO = new PessoaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+            PessoaJpaController pessoaDAO = new PessoaJpaController(getEntityManager());
             UsuarioJpaController loginDAO = new UsuarioJpaController(getEntityManager());
-            PerguntaJpaController perguntaDAO = new PerguntaJpaController(Persistence.createEntityManagerFactory("HibernateJPAPU"));
+            PerguntaJpaController perguntaDAO = new PerguntaJpaController(getEntityManager());
 
             PessoaEntity pessoaEntity = entity.getPessoa();
 
@@ -208,7 +208,7 @@ public class LoginResource {
     @Path("/editPassword")
     @Produces("application/json")
     @Consumes("application/json")
-    public String editLoginPassword(LoginEntity entity) {
+    public String editLoginPassword(UsuarioEntity entity) {
         UsuarioJpaController loginDAO = new UsuarioJpaController(getEntityManager());
         Usuario login = new Usuario();
         try {

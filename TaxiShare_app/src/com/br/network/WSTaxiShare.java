@@ -1,5 +1,6 @@
 package com.br.network;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,11 +10,10 @@ import org.json.JSONObject;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
-import com.br.entidades.LoginApp;
-import com.br.entidades.PerguntaApp;
-import com.br.entidades.PessoaApp;; 
+import com.br.entidades.*;
 
 public class WSTaxiShare {
 
@@ -157,5 +157,40 @@ public class WSTaxiShare {
 
 		return resposta[1];
 	}
+	public String criarRota(RotaApp rota) throws Exception {
+		String[] resposta = {};
+		try
+		{
+			Gson gson = new Gson();
+			String rotaJson = gson.toJson(rota) ;
+			resposta = new WSClient().post(URL_WS + "rota/create", rotaJson);
+		}
+		catch(Exception e)
+		{
+			Log.i("WSTaxishare Exception criarRota taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
+		}
+
+		return resposta[1];
+	}
+	
+	public String participarRota(int idRota, int idUsuario) throws Exception {
+		
+		String[] resposta = {};
+			
+		try
+		{
+			resposta = new WSClient().put(URL_WS + "rota/joinIn/" + idRota + "/" + idUsuario);
+			Log.i("WSTaxishare participarRota taxi", "ErrorCode: " + resposta[0] + " || Resposta: " +resposta[1]);
+		}
+		catch(Exception e)
+		{
+			Log.i("WSTaxishare Exception participarRota taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
+		}
+
+		return resposta[1];
+		
+	} 
+
+
 }
 

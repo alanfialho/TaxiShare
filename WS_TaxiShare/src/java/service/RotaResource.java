@@ -7,18 +7,18 @@ package service;
 import TS.FrameWork.TO.Rota;
 import TS.FrameWork.DAO.RotaJpaController;
 import TS.FrameWork.DAO.UsuarioJpaController;
+import TS.FrameWork.TO.Endereco;
 import TS.FrameWork.TO.Usuario;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import entities.ResponseEntity;
+import entities.RotaEntity;
+import entities.UsuarioEntity;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -40,18 +40,38 @@ public class RotaResource {
     @Path("/create")
     @Produces("application/json")
     @Consumes("application/json")
-    public String create(Rota rota) {
+    public String create(RotaEntity entity) {
+        
         ResponseEntity saida;
-        Usuario usuario = null;
+        Rota rota = new Rota();
         RotaJpaController rotaDAO = new RotaJpaController(getEntityManager());
         UsuarioJpaController usuarioDAO = new UsuarioJpaController(getEntityManager());
         
+        
         try
         {
-            usuarioDAO.findUsuario(rota.getUsuarios().get(0).getId());
-            
-            rotaDAO.create(rota);
-            saida = new ResponseEntity("Sucesso", 0, "Rota criada com sucesso!", null);
+            //find para carregar as rotas do usuario
+            Usuario u = usuarioDAO.findUsuario(entity.getUsuarios().get(0).getId());
+            if(validaEndOrigem(u.getRotas(),entity.getEnderecos()))
+            {
+                //De para entity rota
+                rota.setEnderecos(entity.getEnderecos());
+                rota.setFlagAberta(entity.getFlagAberta());
+                rota.setPassExistentes(entity.getPassExistentes());
+                rota.setUsuarios(entity.getUsuarios());
+
+                //trata a data
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
+                java.sql.Date data = new java.sql.Date(format.parse(entity.getDataRota()).getTime());
+                rota.setDataRota(data);
+
+                rotaDAO.create(rota);
+                saida = new ResponseEntity("Sucesso", 0, "Rota criada com sucesso!", null);
+            }
+            else
+            {
+                saida = new ResponseEntity("Erro", 2, "Usuário já possui uma rota aberta com esta origem!", null);
+            }
         }
         catch(Exception ex){
             System.out.println("ERRRO --> " + ex.getMessage());
@@ -85,9 +105,115 @@ public class RotaResource {
         
         return new Gson().toJson(saida);
     }
+    
+    @PUT
+    @Path("/joinIn/{idRota}/{idUsuario}")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String joinIn(@PathParam("idRota")int idRota, @PathParam("idUsuario")int idUsuario) {
+        
+        ResponseEntity saida = null;
+        Rota rota = null;
+        Usuario usuario = null;
+        RotaJpaController rotaDAO = new RotaJpaController(getEntityManager());
+        UsuarioJpaController usuarioDAO = new UsuarioJpaController(getEntityManager());
+        
+        try
+        {
+
+            if(idRota <= 0){
+                saida = new ResponseEntity("Erro", 2, "Rota inválida!", null);
+                throw new Exception("Erro");
+            }        
+            if(idUsuario <= 0){
+                saida = new ResponseEntity("Erro", 3, "Usuário inválido!", null);
+                throw new Exception("Erro");
+            }
+            //validações referente a rota
+            rota = rotaDAO.findRota(idRota);
+            if(rota == null){
+                saida = new ResponseEntity("Erro", 4, "Rota não encontrada!", null);
+                throw new Exception("Erro");
+            }
+            else if(rota.getUsuarios().size() == 4){
+                saida = new ResponseEntity("Erro", 5, "Rota já esta lotada!", null);
+                throw new Exception("Erro");
+            }
+            else
+            {
+                //verifica se o usuário já se encontra na rota
+                for(Usuario u : rota.getUsuarios())
+                {
+                    if(u.getId() == idUsuario){
+                        saida = new ResponseEntity("Erro", 6, "O usuário já é participante desta rota", null);
+                        throw new Exception("Erro");
+                    }
+                }
+            }
+
+            usuario = usuarioDAO.findUsuario(idUsuario);
+            if(usuario == null){
+                saida = new ResponseEntity("Erro", 7, "Usuario não encontrado!", null);
+                throw new Exception("Erro");
+            }
+            
+            if(saida == null){
+                rota.getUsuarios().add(usuario);
+                rotaDAO.edit(rota);
+                saida = new ResponseEntity("Sucesso", 0, "Participação concluida com sucesso!", null);
+            }        
+        }
+        catch(Exception ex){
+            if (!ex.getMessage().equals("Erro"))
+            {
+                System.out.println("ERRRO --> " + ex.getMessage());
+                saida = new ResponseEntity("Erro", 1, "Não foi possivel realizar operação, tente mais tarde!", null);
+            }
+        }
+        
+        return new Gson().toJson(saida);
+    }
  
     protected EntityManager getEntityManager() {
         return em;
+    }
+    protected Boolean validaEndOrigem(List<Rota> rotasUsuario, List<Endereco> enderecosEntity)
+    {
+        Boolean retorno = true;
+        Endereco origemEncontrada = null;
+        
+        ////verifica se o usuario tem rota aberta e pega o endereço de origem para comparação
+        for(Rota r : rotasUsuario)
+        {
+           
+           if(r.getFlagAberta() == true)
+           {
+               //se tiver rota aberta verifica a origem
+               for(Endereco e : r.getEnderecos())
+               {
+                   if(e.getTipo().equals('O'))
+                   {
+                       origemEncontrada = e;
+                   }
+               }
+           }
+        
+        }
+        //agora pega o endereço de origem que esta tentando criar a rota
+        //e compara a origem 
+        if(origemEncontrada != null){
+            for(Endereco e : enderecosEntity)
+            {
+                if(e.getTipo().equals('O'))
+                {
+                    if(e.getCep().equals(origemEncontrada.getCep()))
+                    {
+                        retorno = false;
+                    }
+                }
+            }
+        }
+        return retorno;
     }
     
 }

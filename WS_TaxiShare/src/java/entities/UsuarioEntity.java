@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlElement;
  * @author bruno
  */
 @XmlRootElement
-public class LoginEntity implements Serializable {
+public class UsuarioEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @XmlElement
@@ -33,7 +33,7 @@ public class LoginEntity implements Serializable {
     private PessoaEntity pessoa;
     
 
-    public LoginEntity(int id, String login, String senha, PerguntaEntity pergunta, String resposta) {
+    public UsuarioEntity(int id, String login, String senha, PerguntaEntity pergunta, String resposta) {
         this.id = id;
         this.login = login;
         this.senha = senha;
@@ -41,7 +41,7 @@ public class LoginEntity implements Serializable {
         this.resposta = resposta;
     }
 
-    public LoginEntity() {
+    public UsuarioEntity() {
     }
 
     public int getId() {

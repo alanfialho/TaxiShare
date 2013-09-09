@@ -6,9 +6,7 @@ package TS.FrameWork.TO;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,8 +24,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 /**
  *
@@ -55,7 +51,7 @@ public class Rota implements Serializable {
         @JoinColumn(name = "id_rota", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "id_endereco", referencedColumnName = "id")})
     private List<Endereco> enderecos;
-    @ManyToMany(fetch = FetchType.LAZY,  cascade=CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY,  cascade={CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinTable(name = "rota_usuario", joinColumns = {
                     @JoinColumn(name = "id_rota", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
                     @JoinColumn(name = "id_usuario", referencedColumnName = "id", nullable = false)})
