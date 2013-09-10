@@ -9,7 +9,8 @@
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:padding="10dip" >
-		<!--  View Title Label -->
+
+        <!-- View Title Label -->
 
         <TextView
             android:layout_width="fill_parent"
@@ -18,23 +19,23 @@
             android:text="LOGIN"
             android:textSize="25dip"
             android:textStyle="bold" />
-		<!--  Email Label -->
+        <!-- Email Label -->
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Login" />
 
-		<!--  Email TextField -->
+        <!-- Email TextField -->
 
         <EditText
             android:id="@+id/loginLogin"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:lines="1"
+            android:maxLength="12"
             android:maxLines="1" />
-        
-		<!--  Password Label -->
+
+        <!-- Password Label -->
 
         <TextView
             android:layout_width="fill_parent"
@@ -42,19 +43,18 @@
             android:layout_marginTop="15dip"
             android:text="Senha" />
 
-		<!--  Password TextField -->
+        <!-- Password TextField -->
 
         <EditText
             android:id="@+id/loginSenha"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:lines="1"
+            android:inputType="textPassword"
             android:maxLines="1"
-            android:password="true" />
-        
-        <!--  Error message -->
+            android:maxLength="16" />
 
-		<!--  Login Button -->        
+        <!-- Login Button -->
+
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="fill_parent"
@@ -62,7 +62,7 @@
             android:layout_marginTop="20dip"
             android:text="Login" />
 
-        <!--  Link to Registration Screen -->
+        <!-- Link to Registration Screen -->
 
         <Button
             android:id="@+id/btnLinkToRegisterScreen"
@@ -83,7 +83,6 @@
             android:text="Esqueci minha senha!"
             android:textColor="#21dbd4"
             android:textStyle="bold" />
-
     </LinearLayout>
 
 </ScrollView>

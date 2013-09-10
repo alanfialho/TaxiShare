@@ -13,7 +13,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
+<<<<<<< HEAD
 import com.br.entidades.*;
+=======
+import com.br.entidades.LoginApp;
+import com.br.entidades.PerguntaApp;
+import com.br.entidades.PessoaApp;
+import com.br.entidades.ResponseApp;
+>>>>>>> 7922f31d5ac658f1f7390b904d74b2ccd25ec816
 
 public class WSTaxiShare {
 
@@ -155,7 +162,14 @@ public class WSTaxiShare {
 			Log.i("WSTaxishare Exception checkLogin taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
 		}
 
-		return resposta[1];
+
+		if(resposta[0].equals("200"))
+			return resposta[1];
+		else{
+			ResponseApp resp = new ResponseApp("Erro no servidor", 2, "Servidor indisponivel, tente novamente mais tarde", null);
+			Gson gson = new Gson();
+			return gson.toJson(resp).toString();
+		}
 	}
 	public String criarRota(RotaApp rota) throws Exception {
 		String[] resposta = {};

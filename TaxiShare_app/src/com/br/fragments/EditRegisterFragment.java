@@ -13,6 +13,13 @@ import com.br.entidades.PessoaApp;
 import com.br.network.WSTaxiShare;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
+import com.br.validation.Rule;
+import com.br.validation.Validator;
+import com.br.validation.Validator.ValidationListener;
+import com.br.validation.annotation.Email;
+import com.br.validation.annotation.Regex;
+import com.br.validation.annotation.Required;
+import com.br.validation.annotation.TextRule;
 
 
 import android.app.Fragment;
@@ -34,15 +41,32 @@ import android.widget.DatePicker;
 
 public class EditRegisterFragment extends Fragment {
 	Context context;
+	Validator validator;
+
 
 	//botoes
 	Button btnSalvar;
 
 	//dados pessoa
+
+	@Required(order = 1, message="Campo obrigatorio")
+	@Regex(order=2, pattern="[a-z A-Z]+", message="Deve conter apenas letras")
 	EditText textNome;
+
+	@Required(order = 3, message="Campo obrigatorio")
+	@Email(order =4, message="E-mail Inválido")
 	EditText textEmail;
+
+
+	@Required(order = 5, message="Campo obrigatorio")
+	@TextRule(order=6, minLength=8, message="Deve conter no minimo 8 digitos")
 	EditText textCelular;
-	EditText textDDD;	
+
+
+	@Required(order = 7, message="Campo obrigatorio")
+	@TextRule(order=8, minLength=2, message="Deve conter 2 digitos")
+	EditText textDDD;
+
 	Spinner spinnerSexo;
 	DatePicker dateDataNascimento;
 	SessionManagement session;
@@ -56,24 +80,39 @@ public class EditRegisterFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.edit_register, container, false);
+		setAtributes(rootView);
+		fillFields(rootView);
+		setBtnAction();
 
+		//Criando listner
+		ValidationListner validationListner = new ValidationListner();
+		validationListner.validationContext = getActivity();
 
-		session = new SessionManagement(rootView.getContext());
-
-		//Importando os campos da pessoa
-		textNome = (EditText) rootView.findViewById(R.id.editNome);
-		textEmail = (EditText) rootView.findViewById(R.id.editEmail);
-		textDDD = (EditText) rootView.findViewById(R.id.editDDD);
-		spinnerSexo = (Spinner) rootView.findViewById(R.id.editSexo);
-		textCelular = (EditText) rootView.findViewById(R.id.editCelular);
-		dateDataNascimento = (DatePicker) rootView.findViewById(R.id.editDateDataNascimemto);
-
-		//Importando botões
-		btnSalvar = (Button) rootView.findViewById(R.id.btnEditSalvar);
+		//Instanciando Validation
+		validator = new Validator(this);
+		validator.setValidationListener(validationListner);
 
 		//Checa se o usuario esta logado
 		session.checkLogin();
 
+		return rootView;
+	}
+
+	private void setBtnAction() {
+		//Acao do botao cadastrar
+		btnSalvar.setOnClickListener(new View.OnClickListener() {			
+			public void onClick(View view) {
+				context = view.getContext();
+
+				validator.validate();
+
+
+
+			}
+		});		
+	}
+
+	private void fillFields(View rootView) {
 		//Recupera os dados do usuario na sessão
 		HashMap<String, String> user = session.getUserDetails();         
 
@@ -138,22 +177,45 @@ public class EditRegisterFragment extends Fragment {
 
 		}
 
+	}
 
-		new WSTaxiShare();		
+	private void setAtributes(View rootView) {
+		session = new SessionManagement(rootView.getContext());
 
-		//Acao do botao cadastrar
-		btnSalvar.setOnClickListener(new View.OnClickListener() {			
-			public void onClick(View view) {
-				context = view.getContext();
+		//Importando os campos da pessoa
+		textNome = (EditText) rootView.findViewById(R.id.editNome);
+		textEmail = (EditText) rootView.findViewById(R.id.editEmail);
+		textDDD = (EditText) rootView.findViewById(R.id.editDDD);
+		spinnerSexo = (Spinner) rootView.findViewById(R.id.editSexo);
+		textCelular = (EditText) rootView.findViewById(R.id.editCelular);
+		dateDataNascimento = (DatePicker) rootView.findViewById(R.id.editDateDataNascimemto);
 
-				EditRegisterTask task = new EditRegisterTask();
-				task.fillContext = view.getContext();
-				task.execute();
+		//Importando botões
+		btnSalvar = (Button) rootView.findViewById(R.id.btnEditSalvar);
+
+	}
+
+	private class ValidationListner implements ValidationListener {
+		Context validationContext;
+
+		public void onValidationSucceeded() {
+
+			EditRegisterTask task = new EditRegisterTask();
+			task.fillContext = validationContext;
+			task.execute();
+		}
+
+		public void onValidationFailed(View failedView, Rule<?> failedRule) {
+
+			String message = failedRule.getFailureMessage();
+
+			if (failedView instanceof EditText) {
+				failedView.requestFocus();
+				((EditText) failedView).setError(message);
+			} else {
+				Utils.gerarToast(failedView.getContext(), message);
 			}
-		});
-
-
-		return rootView;
+		}
 	}
 
 	private class EditRegisterTask extends AsyncTask<String, Void, String> {
@@ -163,11 +225,8 @@ public class EditRegisterFragment extends Fragment {
 
 		protected void onPreExecute() {
 			try{
-				//Inica a popup de load
-				progress = new ProgressDialog(fillContext);
-				progress.setTitle("Salvando Alterações");
-				progress.setMessage("Aguarde...");
-				progress.show();
+				//Inica a popup de load				
+				progress = Utils.setProgreesDialog(progress, fillContext, "Salvando Alterações", "Aguarde...");
 
 				//Pegando as informações de pessoas
 				String nome = textNome.getText().toString();

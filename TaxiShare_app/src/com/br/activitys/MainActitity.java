@@ -32,17 +32,17 @@ public class MainActitity extends Activity {
 	private CharSequence mTitle;
 	private String[] mDashboardOptions;
 	private SessionManagement session;
-	
-	 
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_activity_layout);
-		mDashboardOptions = new String[] {"Buscar Rota", "Editar Perfil", "Alterar Senha", "Logout" } ;
+		mDashboardOptions = getResources().getStringArray(R.array.menu_options) ;
 
 		session = new SessionManagement(getApplicationContext());
-		
+
 		MenuAdapter mAdapter = new MenuAdapter(getApplicationContext(), mDashboardOptions);
 
 		mTitle = mDrawerTitle = "TaxiShare";
@@ -157,32 +157,33 @@ public class MainActitity extends Activity {
 
 	private void selectItem(int position) {
 
-//		mDashboardOptions = new String[] {"Buscar Rota", "Editar Perfil", "Alterar Senha", "Logout" } ;
+		//		<item>Buscar Rota</item>
+		//		<item>Editar Perfil</item>
+		//		<item>Alterar Senha</item>
+		//		<item>Logout</item>
+
 		Bundle args = new Bundle();
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction ftransaction = fragmentManager.beginTransaction();
+		Fragment fragment = new Fragment();
 		switch(position) {
 
 		case 0:
-			Fragment searchRoteFragment = new SearchRoteFragment();
-			searchRoteFragment.setArguments(args);
-			ftransaction.replace(R.id.content_frame, searchRoteFragment);
+			fragment = new SearchRoteFragment();			
 			break;
 		case 1:
-			Fragment editRegisterFragment = new EditRegisterFragment();
-			editRegisterFragment.setArguments(args);
-			ftransaction.replace(R.id.content_frame, editRegisterFragment);
+			fragment = new EditRegisterFragment();
 			break;
 		case 2:
-			Fragment editPasswordFragment = new EditPasswordFragment();
-			editPasswordFragment.setArguments(args);
-			ftransaction.replace(R.id.content_frame, editPasswordFragment);
-
+			fragment = new EditPasswordFragment();
 			break;
 		case 3:
 			session.logoutUser();
 		}
 
+
+		fragment.setArguments(args);
+		ftransaction.replace(R.id.content_frame, fragment);
 		ftransaction.addToBackStack(null);
 		ftransaction.commit();
 
@@ -199,8 +200,8 @@ public class MainActitity extends Activity {
 	}
 
 	/**
-	 * When using the ActionBarDrawerToggle, you must call it during
-	 * onPostCreate() and onConfigurationChanged()...
+	 * Quando usar  ActionBarDrawerToggle, precisamos chamar
+	 * onPostCreate() e onConfigurationChanged()...
 	 */
 
 	@Override

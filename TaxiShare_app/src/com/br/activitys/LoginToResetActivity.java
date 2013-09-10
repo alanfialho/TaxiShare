@@ -36,6 +36,7 @@ public class LoginToResetActivity extends Activity {
 
 	Button btnRecuperar;
 	Button btnAlterar;
+	Button btnCheckAnswer;
 
 	LoginApp loginApp;
 
@@ -43,11 +44,9 @@ public class LoginToResetActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.login_to_reset);
-		// Session Manager
-		session = new SessionManagement(getApplicationContext()); 	
+		setContentView(R.layout.login_to_reset); 	
 
-		setResources();
+		setAtributes();
 		setBtnActions();	
 		setInvisiblePart("other");
 	}
@@ -69,29 +68,41 @@ public class LoginToResetActivity extends Activity {
 		btnAlterar.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-				String resposta = txtResposta.getText().toString();
 				String novaSenha = txtNovasenha.getText().toString();
 				String novaSenha2 = txtNovasenha2.getText().toString();
 				Log.i("Respota Retornada Taxi", loginApp.getResposta());
-				if(resposta.equals(loginApp.getResposta())){
-					if(novaSenha.equals(novaSenha2)){
-						context = view.getContext();
-						EditPasswordTask editTask = new EditPasswordTask();
-						editTask.fillContext = view.getContext();
-						editTask.execute();
-					}
-					else
-						Utils.gerarToast(context, "Senhas precisam ser iguais");
+
+				if(novaSenha.equals(novaSenha2)){
+					context = view.getContext();
+					EditPasswordTask editTask = new EditPasswordTask();
+					editTask.fillContext = view.getContext();
+					editTask.execute();
 				}
 				else
-					Utils.gerarToast(context, "Resposta Inválida");
-
+					Utils.gerarToast(context, "Senhas precisam ser iguais");
 			}
 		});
 
+
+
+		btnCheckAnswer.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View view) {
+				String resposta = txtResposta.getText().toString();
+				Log.i("Respota Retornada Taxi", loginApp.getResposta());
+				if(resposta.equals(loginApp.getResposta())){
+					aQuery.id(R.id.resetPasswordLayout).visible();	
+				}
+				else
+					Utils.gerarToast(context, "Resposta Inválida");
+			}
+		});
 	}
 
-	private void setResources(){
+	private void setAtributes(){
+		// Session Manager
+		session = new SessionManagement(getApplicationContext());
+
 		//Pegando os campos da tela
 		txtLogin = (EditText) findViewById(R.id.resetLogin);
 		txtResposta = (EditText) findViewById(R.id.resetResposta);
@@ -102,10 +113,9 @@ public class LoginToResetActivity extends Activity {
 		//Botoes e erro
 		btnRecuperar = (Button) findViewById(R.id.btnResetRecuperarSenha);
 		btnAlterar = (Button) findViewById(R.id.btnResetAlterarSenha);
+		btnCheckAnswer = (Button) findViewById(R.id.resetCheckAnswerBtn);
 
-		aQuery = new AQuery(this);		
-
-
+		aQuery = new AQuery(this);	
 	}
 
 	public void setInvisiblePart(String part){
@@ -124,66 +134,71 @@ public class LoginToResetActivity extends Activity {
 
 		ProgressDialog progress;
 		Context fillContext;
+		String login;
+
 
 		protected void onPreExecute() {
 			//Inica a popup de load
-			progress = new ProgressDialog(fillContext);
-			progress.setTitle("Verificando login");
-			progress.setMessage("Aguarde...");
-			progress.show();
+			progress = Utils.setProgreesDialog(progress, fillContext, "Verificando Login", "Aguarde...");
+			login = txtLogin.getText().toString(); 
+
 		}
 
 		@Override
 		protected String doInBackground(String... urls) {
 			String response = "";
+			if(login.length() >3){
+				try {
+					//Pegando o email e a senha da tela
 
-			try {
-				//Pegando o email e a senha da tela
-				String login = txtLogin.getText().toString(); 
+					WSTaxiShare ws = new WSTaxiShare();
 
-				WSTaxiShare ws = new WSTaxiShare();
-
-				Log.i("CheckLoginTask  doInBackground taxi", "Login -> " + login);
-				response = ws.checkLogin(login);
-				Log.i("CheckLoginTask  doInBackground taxi response", response + "");
+					Log.i("CheckLoginTask  doInBackground taxi", "Login -> " + login);
+					response = ws.checkLogin(login);
+					Log.i("CheckLoginTask  doInBackground taxi response", response + "");
 
 
-			} catch (Exception e) {
-				Log.i("CheckLoginTask Exception doInBackground taxi", e + "");
-				Utils.gerarToast( context, "Não foi possível checar login");
+				} catch (Exception e) {
+					Log.i("CheckLoginTask Exception doInBackground taxi", e + "");
+					Utils.gerarToast( context, "Não foi possível checar login");
+				}
 			}
-
 			return response;
 		}
 
 		@Override
 		protected void onPostExecute(String strJson) {
 
-			try {
+			if(login.length() >3){
+				try {
 
-				JSONObject jsonResposta = new JSONObject(strJson);
-				Log.i("CheckLoginTask Exception onPostExecute taxi",  "Json resposta -> " + jsonResposta);
+					JSONObject jsonResposta = new JSONObject(strJson);
+					Log.i("CheckLoginTask Exception onPostExecute taxi",  "Json resposta -> " + jsonResposta);
 
 
-				if (jsonResposta.getInt("errorCode") == 1) {
-					setInvisiblePart("login");
+					if (jsonResposta.getInt("errorCode") == 1) {
+						setInvisiblePart("login");
 
-					JSONObject objetoResposta= jsonResposta.getJSONObject("data");
-					Log.i("CheckLoginTask  doInBackground taxi response data", objetoResposta + "");
-					Log.i("CheckLoginTask  doInBackground taxi response resposta", objetoResposta.getString("resposta"));
+						JSONObject objetoResposta= jsonResposta.getJSONObject("data");
+						Log.i("CheckLoginTask  doInBackground taxi response data", objetoResposta + "");
+						Log.i("CheckLoginTask  doInBackground taxi response resposta", objetoResposta.getString("resposta"));
 
-					lblPergunta.setText(objetoResposta.getJSONObject("pergunta").getString("pergunta"));
-					loginApp = new LoginApp();
-					loginApp.setId(objetoResposta.getInt("id"));
-					loginApp.setLogin(objetoResposta.getString("login"));	
-					loginApp.setResposta(objetoResposta.getString("resposta"));
+						lblPergunta.setText(objetoResposta.getJSONObject("pergunta").getString("pergunta"));
+						loginApp = new LoginApp();
+						loginApp.setId(objetoResposta.getInt("id"));
+						loginApp.setLogin(objetoResposta.getString("login"));	
+						loginApp.setResposta(objetoResposta.getString("resposta"));
 
-				}else{
-					// Erro de login
-					Utils.gerarToast( context, jsonResposta.getString("descricao"));
+					}else{
+						// Erro de login
+						Utils.gerarToast( context, jsonResposta.getString("descricao"));
+					}
+				} catch (Exception e) {
+					Log.i("Exception on post execute taxi", "Exception -> " + e + " Message->" +e.getMessage());
 				}
-			} catch (Exception e) {
-				Log.i("Exception on post execute taxi", "Exception -> " + e + " Message->" +e.getMessage());
+				
+			}else{
+				txtLogin.setError("Deve conter no minimo 4 digitos!");
 			}
 			progress.dismiss();
 		}
@@ -200,10 +215,7 @@ public class LoginToResetActivity extends Activity {
 
 		protected void onPreExecute() {
 			//Inica a popup de load
-			progress = new ProgressDialog(fillContext);
-			progress.setTitle("Checando resposta");
-			progress.setMessage("Aguarde...");
-			progress.show();
+			progress = Utils.setProgreesDialog(progress, fillContext, "Alterando", "Aguarde...");
 			loginApp.setSenha(txtNovasenha.getText().toString());
 			resposta = txtResposta.getText().toString();
 
@@ -215,13 +227,24 @@ public class LoginToResetActivity extends Activity {
 
 			if(resposta.equals(loginApp.getResposta()))
 				checkResposta = true;
+			else
+				txtResposta.setError("Resposta Inválida");
 
-			if(!resposta2.isEmpty() && !checkNovaSenha.isEmpty() && !checkNovaSenha2.isEmpty())
+
+			if(!resposta2.isEmpty() && !checkNovaSenha.isEmpty() && !checkNovaSenha2.isEmpty()){
 				checkEmpty = true;
-
-			if(checkNovaSenha.equals(checkNovaSenha2))
+			}
+			else{
+				txtResposta.setError("Campo obrigatório");
+				txtNovasenha.setError("Campo obrigatório");
+				txtNovasenha2.setError("Campo obrigatório");
+			}
+			
+			if(checkNovaSenha.equals(checkNovaSenha2)){
 				checkEquals = true;
-
+			}else{
+				txtNovasenha2.setError("Senhas devem ser iguais!");
+			}
 		}
 
 		@Override
@@ -240,17 +263,17 @@ public class LoginToResetActivity extends Activity {
 					response = ws.editarSenha(loginApp);
 
 				else{
-					
+
 					if(!checkEquals)
 						response = "{errorCode:1, descricao:Senhas precisam ser iguais}";
-					
+
 					if(!checkEmpty)
 						response = "{errorCode:1, descricao:Preencha todos os campos}";
-									
+
 					if(!checkResposta)
 						response = "{errorCode:1, descricao:Resposta Invalida}";
 				}
-					
+
 
 				Log.i("EditPasswordTask doInBackground taxi response", response + "");
 

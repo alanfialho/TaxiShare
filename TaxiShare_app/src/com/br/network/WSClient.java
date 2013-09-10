@@ -32,6 +32,10 @@ public class WSClient {
 				instream.close();
 				Log.i("WSClient if entity not null taxi", "Respsta 0: " + result[0]);
 				Log.i("WSClient if entity not null taxi", "Respsta 1: " + result[1]);
+				
+				if(!result[0].equals("200"))
+					result[1] = "{errorCode: 1, descricao: Falha de rede!}";
+
 			}
 		} catch (Exception e) {
 			Log.i("Exception WSClient get taxi", "Exception ->" + e);

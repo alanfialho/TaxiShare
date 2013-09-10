@@ -57,9 +57,7 @@
                 android:id="@+id/resetLogin"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:password="true" >
-
+                android:ems="10">
                 <requestFocus />
             </EditText>
 
@@ -95,41 +93,55 @@
                 android:id="@+id/resetResposta"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:password="true" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dip"
-                android:text="Nova Senha" />
-
-            <EditText
-                android:id="@+id/resetNovaSenha"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:password="true" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dip"
-                android:text="Confirmar Nova Senha" />
-
-            <EditText
-                android:id="@+id/resetNovaSenha2"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:password="true" />
+                android:ems="10" />
 
             <Button
-                android:id="@+id/btnResetAlterarSenha"
+                android:id="@+id/resetCheckAnswerBtn"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dip"
                 android:text="Alterar Senha" />
+
+            <LinearLayout
+                android:id="@+id/resetPasswordLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" 
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dip"
+                    android:text="Nova Senha" />
+
+                <EditText
+                    android:id="@+id/resetNovaSenha"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPassword" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dip"
+                    android:text="Confirmar Nova Senha" />
+
+                <EditText
+                    android:id="@+id/resetNovaSenha2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPassword" />
+
+                <Button
+                    android:id="@+id/btnResetAlterarSenha"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dip"
+                    android:text="Alterar Senha" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
