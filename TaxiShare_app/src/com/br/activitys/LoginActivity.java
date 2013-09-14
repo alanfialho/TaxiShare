@@ -10,23 +10,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.AndroidCharacter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.br.entidades.EnderecoApp;
-import com.br.entidades.LoginApp;
-import com.br.entidades.RotaApp;
 import com.br.network.WSTaxiShare;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
-
-import java.util.ArrayList;
-//para teste da rota
-import java.util.Date;
-import java.util.List;
 
 
 public class LoginActivity extends Activity {

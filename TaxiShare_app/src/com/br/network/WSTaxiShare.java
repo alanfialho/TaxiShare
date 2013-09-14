@@ -1,6 +1,5 @@
 package com.br.network;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +9,8 @@ import org.json.JSONObject;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+
 import com.google.gson.JsonParser;
 
 import com.br.entidades.*;

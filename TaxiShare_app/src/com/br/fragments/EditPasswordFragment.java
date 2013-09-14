@@ -27,7 +27,6 @@ import com.br.validation.Validator;
 import com.br.validation.Validator.ValidationListener;
 import com.br.validation.annotation.ConfirmPassword;
 import com.br.validation.annotation.Password;
-import com.br.validation.annotation.Regex;
 import com.br.validation.annotation.Required;
 import com.br.validation.annotation.TextRule;
 
