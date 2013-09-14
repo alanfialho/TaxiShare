@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/lblCreateOrigem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Origem"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/txtCreateOrigem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/lblCreateDestino"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Destino"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/txtCreateDestinp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/lblCreatePessoas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Numero Pesssoa"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Spinner
+        android:id="@+id/spinnerCreatePessoas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:prompt="@array/numero_pessoas" />
+
+    <TextView
+        android:id="@+id/lblCreateHoraSaida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Horario Saida"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TimePicker
+        android:id="@+id/timePickerCreateHorarioSaida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btnCreateCriar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Criar" />
+
+</LinearLayout>

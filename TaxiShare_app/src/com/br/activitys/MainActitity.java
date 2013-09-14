@@ -1,6 +1,7 @@
 package com.br.activitys;
 
 import com.br.adapter.MenuAdapter;
+import com.br.fragments.CreateRoteFragment;
 import com.br.fragments.EditPasswordFragment;
 import com.br.fragments.EditRegisterFragment;
 import com.br.fragments.SearchRoteFragment;
@@ -178,6 +179,9 @@ public class MainActitity extends Activity {
 			fragment = new EditPasswordFragment();
 			break;
 		case 3:
+			fragment = new CreateRoteFragment();
+			break;
+		case 4:
 			session.logoutUser();
 		}
 

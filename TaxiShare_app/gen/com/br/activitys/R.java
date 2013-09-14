@@ -10,6 +10,7 @@ package com.br.activitys;
 public final class R {
     public static final class array {
         public static final int menu_options=0x7f060000;
+        public static final int numero_pessoas=0x7f060001;
     }
     public static final class attr {
     }
@@ -29,17 +30,23 @@ public final class R {
         public static final int cactus=0x7f020002;
         public static final int car=0x7f020003;
         public static final int clown=0x7f020004;
-        public static final int denied=0x7f020005;
-        public static final int design=0x7f020006;
-        public static final int drawer_shadow=0x7f020007;
-        public static final int group=0x7f020008;
-        public static final int ic_drawer=0x7f020009;
-        public static final int icon=0x7f02000a;
-        public static final int key=0x7f02000b;
+        public static final int create_rote=0x7f020005;
+        public static final int denied=0x7f020006;
+        public static final int design=0x7f020007;
+        public static final int drawer_shadow=0x7f020008;
+        public static final int edit_icon=0x7f020009;
+        public static final int group=0x7f02000a;
+        public static final int ic_drawer=0x7f02000b;
+        public static final int icon=0x7f02000c;
+        public static final int key=0x7f02000d;
+        public static final int logout_icon=0x7f02000e;
+        public static final int password_icon=0x7f02000f;
+        public static final int social_icon=0x7f020010;
     }
     public static final class id {
-        public static final int ScrollView1=0x7f090033;
-        public static final int action_rote_search=0x7f09003d;
+        public static final int ScrollView1=0x7f09003c;
+        public static final int action_rote_search=0x7f090045;
+        public static final int btnCreateCriar=0x7f09003b;
         public static final int btnEditSalvar=0x7f09000d;
         public static final int btnForgotAlterarSenha=0x7f090006;
         public static final int btnLinkToForgetPassword=0x7f090012;
@@ -60,10 +67,14 @@ public final class R {
         public static final int forgotNovaSenha=0x7f090004;
         public static final int forgotNovaSenha2=0x7f090005;
         public static final int forgotSenhaAntiga=0x7f090003;
-        public static final int lblDestinoBuscado=0x7f090037;
-        public static final int lblDisponiveis=0x7f090038;
-        public static final int lblHorario=0x7f09003a;
-        public static final int lblOrigemBuscada=0x7f090034;
+        public static final int lblCreateDestino=0x7f090035;
+        public static final int lblCreateHoraSaida=0x7f090039;
+        public static final int lblCreateOrigem=0x7f090033;
+        public static final int lblCreatePessoas=0x7f090037;
+        public static final int lblDestinoBuscado=0x7f090040;
+        public static final int lblDisponiveis=0x7f090041;
+        public static final int lblHorario=0x7f090043;
+        public static final int lblOrigemBuscada=0x7f09003d;
         public static final int lblPergunta=0x7f090017;
         public static final int left_drawer=0x7f090020;
         public static final int linearLayoutItem=0x7f090000;
@@ -84,8 +95,9 @@ public final class R {
         public static final int resetNovaSenha2=0x7f09001c;
         public static final int resetPasswordLayout=0x7f09001a;
         public static final int resetResposta=0x7f090018;
-        public static final int result_list=0x7f09003c;
-        public static final int spnLugaresDisponiveis=0x7f090039;
+        public static final int result_list=0x7f090044;
+        public static final int spinnerCreatePessoas=0x7f090038;
+        public static final int spnLugaresDisponiveis=0x7f090042;
         public static final int textCelular=0x7f090028;
         public static final int textDDD=0x7f090026;
         public static final int textEmail=0x7f090023;
@@ -96,10 +108,12 @@ public final class R {
         public static final int textSenha=0x7f09002d;
         public static final int textSenha2=0x7f09002e;
         public static final int textSexo=0x7f090025;
-        public static final int timePicker1=0x7f09003b;
-        public static final int txtDestino=0x7f090036;
+        public static final int timePickerCreateHorarioSaida=0x7f09003a;
+        public static final int txtCreateDestinp=0x7f090036;
+        public static final int txtCreateOrigem=0x7f090034;
+        public static final int txtDestino=0x7f09003f;
         public static final int txtMenuOption=0x7f090002;
-        public static final int txtOrigemBuscada=0x7f090035;
+        public static final int txtOrigemBuscada=0x7f09003e;
     }
     public static final class layout {
         public static final int drawer_list_item=0x7f030000;
@@ -109,8 +123,9 @@ public final class R {
         public static final int login_to_reset=0x7f030004;
         public static final int main_activity_layout=0x7f030005;
         public static final int register=0x7f030006;
-        public static final int rote_list=0x7f030007;
-        public static final int rote_search=0x7f030008;
+        public static final int rote_create=0x7f030007;
+        public static final int rote_list=0x7f030008;
+        public static final int rote_search=0x7f030009;
     }
     public static final class menu {
         public static final int main=0x7f080000;

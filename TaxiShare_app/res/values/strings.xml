@@ -14,7 +14,14 @@
         <item>Buscar Rota</item>
         <item>Editar Perfil</item>
         <item>Alterar Senha</item>
+        <item>Criar Rota</item>
         <item>Logout</item>
+    </string-array>
+    <string-array name="numero_pessoas">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
     </string-array>
 
 </resources>
