@@ -146,7 +146,7 @@ public class LoginActivity extends Activity {
 				//*****************************************
 				//Participar da rota
 				//*****************************************
-				response = ws.participarRota(1, 11);
+//				response = ws.participarRota(1, 11);
 				
 				
 				

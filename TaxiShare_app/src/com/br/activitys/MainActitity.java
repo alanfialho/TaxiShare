@@ -91,7 +91,7 @@ public class MainActitity extends Activity {
 		}
 
 		//Seta fragmento de dashboard no content frame
-		Fragment fragment = new SearchRoteFragment();
+		Fragment fragment = new CreateRoteFragment();
 		Bundle args = new Bundle();
 		fragment.setArguments(args);
 		FragmentManager fragmentManager = getFragmentManager();
