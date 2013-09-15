@@ -1,27 +1,20 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
- 
-<!-- <fragment -->
-<!--     android:id="@+id/map" -->
-<!--     android:layout_width="fill_parent" -->
-<!--     android:layout_height="fill_parent" -->
-<!--     class="com.google.android.gms.maps.SupportMapFragment" /> -->
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffff" >
 
-    <TextView
-        android:id="@+id/registerErrorName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="26dp"
-        android:text="BUSCA DE ROTA"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
- 
-</RelativeLayout>
+    <fragment
+    android:id="@+id/novoMapa"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+<!--     <TextView -->
+<!--         android:id="@+id/textView1" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="match_parent" -->
+<!--         android:text="Large Text" -->
+<!--         android:textAppearance="?android:attr/textAppearanceLarge" /> -->
+
+</ScrollView>
