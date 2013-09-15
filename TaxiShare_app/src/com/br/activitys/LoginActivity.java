@@ -113,49 +113,7 @@ public class LoginActivity extends Activity {
 				String login = loginLogin.getText().toString();
 				String password = loginSenha.getText().toString();
 				WSTaxiShare ws = new WSTaxiShare();
-<<<<<<< HEAD
-=======
-				//************************************************
-				//teste rota
-				
-				//*************************************************
-				//Cadastro da rota
-				//*************************************************
-//				EnderecoApp e1 = new EnderecoApp("rua FW","Sao miguel2", 444,"são paulo", "sao paulo", "sp", "brasil", "049876542", 'O',"02928765","098653098");
-//		        EnderecoApp e2 = new EnderecoApp("rua FW","itaquera2", 444,"são paulo", "sao paulo", "sp", "brasil", "098763838", 'D',"0987453782","948764325");
-//		        EnderecoApp e3 = new EnderecoApp("rua FW","patriarca2", 444,"são paulo", "sao paulo", "sp", "brasil", "098763566", 'D',"77654339","4362892291");
-//		        
-//		        List<EnderecoApp> lstEnd  = new ArrayList();
-//		        lstEnd.add(e1);
-//		        lstEnd.add(e2);
-//		        lstEnd.add(e3);
-//		        
-//		        List<LoginApp> lstUsuarios = new ArrayList();
-//		        LoginApp usuario = new LoginApp();
-//		        usuario.setId(9);
-//		        lstUsuarios.add(usuario);
-//				
-//				RotaApp rota = new RotaApp("12/04/13",true,Short.parseShort("1"),lstEnd,lstUsuarios);
-//				response = ws.criarRota(rota);
-				
-				//*****************************************************
-				//fim cadastro da rota
-				//*****************************************************
-				//fim teste rota
-				//*****************************************************
-				
-				//*****************************************
-				//Participar da rota
-				//*****************************************
-//				response = ws.participarRota(1, 11);
-				
-				
-				
-				//*****************************************
-				//Fim participar da rota
-				//*****************************************
-				
->>>>>>> ca4e16f3b21d22ceb14f13cf44c19e7710f1c721
+
 				Log.i("inciando login taxi", "Login -> " + login + " Senha -> " + password);
 				response = ws.login(login, password);
 				Log.i("String resposta taxi", response + "");
