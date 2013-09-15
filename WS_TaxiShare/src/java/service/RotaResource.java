@@ -51,14 +51,14 @@ public class RotaResource {
         try
         {
             //find para carregar as rotas do usuario
-            Usuario u = usuarioDAO.findUsuario(entity.getUsuarios().get(0).getId());
-            if(validaEndOrigem(u.getRotas(),entity.getEnderecos()))
+            Usuario usuario = usuarioDAO.findUsuario(entity.getAdministrador().getId());
+            if(validaEndOrigem(usuario.getRotas(),entity.getEnderecos()))
             {
-                //De para entity rota
+                //De para entity/rota
                 rota.setEnderecos(entity.getEnderecos());
                 rota.setFlagAberta(entity.getFlagAberta());
                 rota.setPassExistentes(entity.getPassExistentes());
-                rota.setUsuarios(entity.getUsuarios());
+                rota.setAdministrador(usuario);
 
                 //trata a data
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");

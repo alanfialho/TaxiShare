@@ -7,7 +7,9 @@ package entities;
 
 import TS.FrameWork.TO.Pessoa;
 import TS.FrameWork.TO.Pergunta;
+import TS.FrameWork.TO.Rota;
 import java.io.Serializable;
+import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -31,6 +33,7 @@ public class UsuarioEntity implements Serializable {
     private String resposta;
     @XmlElement
     private PessoaEntity pessoa;
+    private List<Rota> rotas;
     
 
     public UsuarioEntity(int id, String login, String senha, PerguntaEntity pergunta, String resposta) {
@@ -90,6 +93,14 @@ public class UsuarioEntity implements Serializable {
 
     public void setPessoa(PessoaEntity pessoa) {
         this.pessoa = pessoa;
+    }
+
+    public List<Rota> getRotas() {
+        return rotas;
+    }
+
+    public void setRotas(List<Rota> rotas) {
+        this.rotas = rotas;
     }
     
     

@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -56,6 +57,10 @@ public class Rota implements Serializable {
                     @JoinColumn(name = "id_rota", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
                     @JoinColumn(name = "id_usuario", referencedColumnName = "id", nullable = false)})
     private List<Usuario> usuarios;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_usuario_adm")
+    private Usuario administrador;
 
     public Rota() {
     }
@@ -128,6 +133,14 @@ public class Rota implements Serializable {
      */
     public void setUsuarios(List<Usuario> usuarios) {
         this.usuarios = usuarios;
+    }
+
+    public Usuario getAdministrador() {
+        return administrador;
+    }
+
+    public void setAdministrador(Usuario administrador) {
+        this.administrador = administrador;
     }
 
     

@@ -18,6 +18,7 @@ public class RotaEntity {
 	private String dataRota;
 	private Boolean flagAberta;
 	private Short passExistentes;
+        private Usuario administrador;
 	private List<Endereco> enderecos;
 	private List<Usuario> usuarios;
 
@@ -119,7 +120,16 @@ public class RotaEntity {
     public void setUsuarios(List<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
-        
+
+    public Usuario getAdministrador() {
+        return administrador;
+    }
+
+    public void setAdministrador(Usuario administrador) {
+        this.administrador = administrador;
+    }
+    
+    
         
     
 }

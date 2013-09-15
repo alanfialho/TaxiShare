@@ -101,7 +101,7 @@ public final class R {
         public static final int textSenha2=0x7f09002e;
         public static final int textSexo=0x7f090025;
         public static final int timePickerCreateHorarioSaida=0x7f09003a;
-        public static final int txtCreateDestinp=0x7f090036;
+        public static final int txtCreateDestino=0x7f090036;
         public static final int txtCreateOrigem=0x7f090034;
         public static final int txtDestino=0x7f09003f;
         public static final int txtMenuOption=0x7f090002;

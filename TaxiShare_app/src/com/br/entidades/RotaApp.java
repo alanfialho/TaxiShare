@@ -10,6 +10,7 @@ public class RotaApp {
 	private Short passExistentes;
 	private List<EnderecoApp> enderecos;
 	private List<LoginApp> usuarios;
+	private LoginApp administrador;
 	
 	public RotaApp(){}
 
@@ -63,5 +64,14 @@ public class RotaApp {
 	public void setUsuarios(List<LoginApp> usuarios) {
 		this.usuarios = usuarios;
 	}
+
+	public LoginApp getAdministrador() {
+		return administrador;
+	}
+
+	public void setAdministrador(LoginApp administrador) {
+		this.administrador = administrador;
+	}
+	
 
 }

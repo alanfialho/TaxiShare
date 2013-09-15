@@ -1,5 +1,7 @@
 package com.br.entidades;
 
+import java.util.List;
+
 public class LoginApp {
 	
 	private int id;
@@ -8,6 +10,7 @@ public class LoginApp {
 	private PerguntaApp pergunta;
 	private String resposta;
 	private PessoaApp pessoa;
+	private List<RotaApp> rotas;
 	
 	public LoginApp(int id, String login, String senha, PerguntaApp pergunta,
 			String resposta) {
@@ -56,5 +59,11 @@ public class LoginApp {
 	}
 	public void setPessoa(PessoaApp pessoa) {
 		this.pessoa = pessoa;
+	}
+	public List<RotaApp> getRotas() {
+		return rotas;
+	}
+	public void setRotas(List<RotaApp> rotas) {
+		this.rotas = rotas;
 	}
 }

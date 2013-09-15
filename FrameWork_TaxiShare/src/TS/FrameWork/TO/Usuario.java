@@ -43,6 +43,7 @@ public class Usuario implements Serializable {
     private Pergunta pergunta;
     @ManyToMany(mappedBy = "usuarios")
     private List<Rota> rotas;
+    
 
     public Usuario()
     {
@@ -126,7 +127,7 @@ public class Usuario implements Serializable {
     public void setRotas(List<Rota> rotas) {
         this.rotas = rotas;
     }
-    
+ 
     
     @Override
     public String toString(){
