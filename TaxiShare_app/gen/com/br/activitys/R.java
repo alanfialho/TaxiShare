@@ -9,8 +9,9 @@ package com.br.activitys;
 
 public final class R {
     public static final class array {
+        public static final int enderecos=0x7f080001;
         public static final int menu_options=0x7f080000;
-        public static final int numero_pessoas=0x7f080001;
+        public static final int numero_pessoas=0x7f080002;
     }
     public static final class attr {
         /** <p>Must be a floating point value, such as "<code>1.2</code>".
@@ -194,86 +195,14 @@ containing a value of this type.
         public static final int social_icon=0x7f020020;
     }
     public static final class id {
-<<<<<<< HEAD
-        public static final int ScrollView1=0x7f09003c;
-        public static final int action_rote_search=0x7f090045;
-        public static final int btnCreateCriar=0x7f09003b;
-        public static final int btnEditSalvar=0x7f09000d;
-        public static final int btnForgotAlterarSenha=0x7f090006;
-        public static final int btnLinkToForgetPassword=0x7f090012;
-        public static final int btnLinkToLoginScreen=0x7f090032;
-        public static final int btnLinkToRegisterScreen=0x7f090011;
-        public static final int btnLogin=0x7f090010;
-        public static final int btnResetAlterarSenha=0x7f09001d;
-        public static final int btnResetRecuperarSenha=0x7f090015;
-        public static final int content_frame=0x7f09001f;
-        public static final int dateDataNascimemto=0x7f09002a;
-        public static final int drawer_layout=0x7f09001e;
-        public static final int editCelular=0x7f09000b;
-        public static final int editDDD=0x7f09000a;
-        public static final int editDateDataNascimemto=0x7f09000c;
-        public static final int editEmail=0x7f090008;
-        public static final int editNome=0x7f090007;
-        public static final int editSexo=0x7f090009;
-        public static final int forgotNovaSenha=0x7f090004;
-        public static final int forgotNovaSenha2=0x7f090005;
-        public static final int forgotSenhaAntiga=0x7f090003;
-        public static final int lblCreateDestino=0x7f090035;
-        public static final int lblCreateHoraSaida=0x7f090039;
-        public static final int lblCreateOrigem=0x7f090033;
-        public static final int lblCreatePessoas=0x7f090037;
-        public static final int lblDestinoBuscado=0x7f090040;
-        public static final int lblDisponiveis=0x7f090041;
-        public static final int lblHorario=0x7f090043;
-        public static final int lblOrigemBuscada=0x7f09003d;
-        public static final int lblPergunta=0x7f090017;
-        public static final int left_drawer=0x7f090020;
-        public static final int linearLayoutItem=0x7f090000;
-        public static final int loginLogin=0x7f09000e;
-        public static final int loginSenha=0x7f09000f;
-        public static final int menuImg=0x7f090001;
-        public static final int registerErrorDDD=0x7f090027;
-        public static final int registerErrorEmail=0x7f090024;
-        public static final int registerErrorLogin=0x7f09002c;
-        public static final int registerErrorName=0x7f090022;
-        public static final int registerErrorPassword=0x7f09002f;
-        public static final int registerErrorPhone=0x7f090029;
-        public static final int resetCheckAnswerBtn=0x7f090019;
-        public static final int resetDataLayout=0x7f090016;
-        public static final int resetLogin=0x7f090014;
-        public static final int resetLoginLayout=0x7f090013;
-        public static final int resetNovaSenha=0x7f09001b;
-        public static final int resetNovaSenha2=0x7f09001c;
-        public static final int resetPasswordLayout=0x7f09001a;
-        public static final int resetResposta=0x7f090018;
-        public static final int result_list=0x7f090044;
-        public static final int spinnerCreatePessoas=0x7f090038;
-        public static final int spnLugaresDisponiveis=0x7f090042;
-        public static final int textCelular=0x7f090028;
-        public static final int textDDD=0x7f090026;
-        public static final int textEmail=0x7f090023;
-        public static final int textLogin=0x7f09002b;
-        public static final int textNome=0x7f090021;
-        public static final int textPergunta=0x7f090030;
-        public static final int textResposta=0x7f090031;
-        public static final int textSenha=0x7f09002d;
-        public static final int textSenha2=0x7f09002e;
-        public static final int textSexo=0x7f090025;
-        public static final int timePickerCreateHorarioSaida=0x7f09003a;
-        public static final int txtCreateDestino=0x7f090036;
-        public static final int txtCreateOrigem=0x7f090034;
-        public static final int txtDestino=0x7f09003f;
-        public static final int txtMenuOption=0x7f090002;
-        public static final int txtOrigemBuscada=0x7f09003e;
-=======
-        public static final int ScrollView1=0x7f050041;
-        public static final int action_rote_search=0x7f05004b;
+        public static final int action_rote_search=0x7f050045;
         public static final int btnCreateCriar=0x7f050040;
         public static final int btnEditSalvar=0x7f050012;
         public static final int btnForgotAlterarSenha=0x7f05000b;
         public static final int btnLinkToForgetPassword=0x7f050017;
         public static final int btnLinkToLoginScreen=0x7f050037;
         public static final int btnLinkToRegisterScreen=0x7f050016;
+        public static final int btnListarRotas=0x7f050043;
         public static final int btnLogin=0x7f050015;
         public static final int btnResetAlterarSenha=0x7f050022;
         public static final int btnResetRecuperarSenha=0x7f05001a;
@@ -294,19 +223,15 @@ containing a value of this type.
         public static final int lblCreateHoraSaida=0x7f05003e;
         public static final int lblCreateOrigem=0x7f050038;
         public static final int lblCreatePessoas=0x7f05003c;
-        public static final int lblDestinoBuscado=0x7f050045;
-        public static final int lblDisponiveis=0x7f050046;
-        public static final int lblHorario=0x7f050048;
-        public static final int lblOrigemBuscada=0x7f050042;
         public static final int lblPergunta=0x7f05001c;
         public static final int left_drawer=0x7f050025;
         public static final int linearLayoutItem=0x7f050005;
+        public static final int listViewRoteList=0x7f050044;
         public static final int loginLogin=0x7f050013;
         public static final int loginSenha=0x7f050014;
         public static final int menuImg=0x7f050006;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int novoMapa=0x7f05004a;
         public static final int registerErrorDDD=0x7f05002c;
         public static final int registerErrorEmail=0x7f050029;
         public static final int registerErrorLogin=0x7f050031;
@@ -321,10 +246,9 @@ containing a value of this type.
         public static final int resetNovaSenha2=0x7f050021;
         public static final int resetPasswordLayout=0x7f05001f;
         public static final int resetResposta=0x7f05001d;
-        public static final int result_list=0x7f050049;
+        public static final int roteListItem=0x7f050041;
         public static final int satellite=0x7f050002;
         public static final int spinnerCreatePessoas=0x7f05003d;
-        public static final int spnLugaresDisponiveis=0x7f050047;
         public static final int terrain=0x7f050003;
         public static final int textCelular=0x7f05002d;
         public static final int textDDD=0x7f05002b;
@@ -337,12 +261,10 @@ containing a value of this type.
         public static final int textSenha2=0x7f050033;
         public static final int textSexo=0x7f05002a;
         public static final int timePickerCreateHorarioSaida=0x7f05003f;
-        public static final int txtCreateDestinp=0x7f05003b;
+        public static final int txtCreateDestino=0x7f05003b;
         public static final int txtCreateOrigem=0x7f050039;
-        public static final int txtDestino=0x7f050044;
         public static final int txtMenuOption=0x7f050007;
-        public static final int txtOrigemBuscada=0x7f050043;
->>>>>>> ca4e16f3b21d22ceb14f13cf44c19e7710f1c721
+        public static final int txtRoteInfoList=0x7f050042;
     }
     public static final class layout {
         public static final int drawer_list_item=0x7f030000;
@@ -353,7 +275,7 @@ containing a value of this type.
         public static final int main_activity_layout=0x7f030005;
         public static final int register=0x7f030006;
         public static final int rote_create=0x7f030007;
-        public static final int rote_list=0x7f030008;
+        public static final int rote_list_item=0x7f030008;
         public static final int rote_search=0x7f030009;
     }
     public static final class menu {

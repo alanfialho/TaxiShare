@@ -44,16 +44,16 @@ public class CreateRoteFragment extends Fragment {
 
 	Context context;
 	SessionManagement session;
-//	private GoogleMap mapa;
-//	private Marker marcador;
+	//	private GoogleMap mapa;
+	//	private Marker marcador;
 	private double lat, lon, minhaLat, minhaLong;
-	
+
 	Button btnCriarRota;
 	EditText textOrigem;
 	EditText textDestino;
 	Spinner spnPessoas;
 	TimePicker tpHorarioSaida;
-	
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,38 +64,36 @@ public class CreateRoteFragment extends Fragment {
 
 		//Checa se o usuario esta logado
 		session.checkLogin();
-		
+
 		setAtributes(rootView);
 		setBtnAction();
 
-		
-		
-		//setUpMapSePreciso()
 
+		//setUpMapSePreciso()
 
 		return rootView;
 	}
-	
+
 	/**
 	private void setUpMapSePreciso() {
-		
+
 		//Verifica se o mapa está nulo ou não para saber se é preciso cria-lo
 		if(mapa == null) {
-			
+
 			//Tenta obter um mapa do SupportMapFragment
 			mapa = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 			//Verifica se teve sucesso em obter o mapa
 			if(mapa != null){
 				setUpMap();
 			}
-			
-			
+
+
 		}
-		
+
 	}
-	
+
 	 **/
-	
+
 	private void setAtributes(View rootView) {
 		session = new SessionManagement(rootView.getContext());
 
@@ -104,42 +102,39 @@ public class CreateRoteFragment extends Fragment {
 		textDestino = (EditText) rootView.findViewById(R.id.txtCreateDestino);
 		spnPessoas = (Spinner) rootView.findViewById(R.id.spinnerCreatePessoas);
 		tpHorarioSaida = (TimePicker) rootView.findViewById(R.id.timePickerCreateHorarioSaida);
-		
+
 		//Importando botões
 		btnCriarRota = (Button) rootView.findViewById(R.id.btnCreateCriar);
 
 	}
-	
+
 	private void setBtnAction() {
 		//Acao do botao criar rota
 		btnCriarRota.setOnClickListener(new View.OnClickListener() {			
 			public void onClick(View view) {
 				context = view.getContext();
-					
 				CreateRoteTask task = new CreateRoteTask();
 				task.execute();
 			}
 		});		
 	}
 
-	
+
 	private class CreateRoteTask extends AsyncTask<String, Void, String> {
-		
+
 		ProgressDialog progress;
-		Context fillContext;
 		RotaApp rotaApp;
 		EnderecoApp enderecoOrigem;
 		EnderecoApp enderecoDestino;
 		LoginApp usuarioAdm;
-		
 		protected void onPreExecute() {
-			
+			progress = Utils.setProgreesDialog(progress, context, "Criando Rota", "Aguarde...");
 			Log.i("onPreExecute Create Rota taxi", "onPreExecute Create Rota taxi");
-			
+
 			//quebrando o endereço padrão Google só foi feito isso para o teste
 			String endOrigem[] = textOrigem.getText().toString().split(",");
 			String endDestino[] = textDestino.getText().toString().split(",");
-			
+
 			//instaciando os endereços
 			enderecoOrigem = new EnderecoApp();
 			enderecoOrigem.setRua(endOrigem[0]);
@@ -153,7 +148,7 @@ public class CreateRoteFragment extends Fragment {
 			enderecoOrigem.setUf("SP");
 			enderecoOrigem.setCep("08021170");
 			enderecoOrigem.setTipo('O');
-			
+
 			enderecoDestino = new EnderecoApp();
 			enderecoDestino.setRua(endOrigem[0]);
 			enderecoDestino.setNumero(Integer.parseInt(endOrigem[1].trim()));
@@ -166,8 +161,8 @@ public class CreateRoteFragment extends Fragment {
 			enderecoDestino.setUf("SP");
 			enderecoDestino.setCep("08021170");
 			enderecoDestino.setTipo('D');
-			
-			
+
+
 			//instaciando a rota e setando valores
 			rotaApp = new RotaApp();
 			List<EnderecoApp> lstEndereco = new ArrayList();
@@ -176,7 +171,7 @@ public class CreateRoteFragment extends Fragment {
 			rotaApp.setEnderecos(lstEndereco);
 			rotaApp.setFlagAberta(true);
 			rotaApp.setPassExistentes(Short.parseShort("2"));
-			
+
 			//o usuário que está criando a rota é o administrador
 			//vinculando o idUsuario(login) que provavelmente esta em session
 			LoginApp adm = new LoginApp();
@@ -189,12 +184,6 @@ public class CreateRoteFragment extends Fragment {
 			data.setMinutes(tpHorarioSaida.getCurrentMinute());
 			String dataFormatada = format.format(data);
 			rotaApp.setDataRota(dataFormatada);
-			
-			
-			
-			
-			
-		
 		}
 
 		@Override
@@ -204,35 +193,29 @@ public class CreateRoteFragment extends Fragment {
 			{
 				WSTaxiShare ws = new WSTaxiShare();
 				response = ws.criarRota(rotaApp);
-				
+
 			}
 			catch(Exception ex)
 			{
 				Utils.gerarToast( context, "Erro ao criar rota!");
 				Log.i("Exception criar rota taxi", ex + "");
 			}	
-			
+
 			return response;
 
 		}
 
 		@Override
 		protected void onPostExecute(String strJson) {
-			
+			progress.dismiss();
+
 			try {
-					JSONObject respostaWsJSON = new JSONObject(strJson);
-					Utils.gerarToast( context, respostaWsJSON.getString("descricao"));				
+				JSONObject respostaWsJSON = new JSONObject(strJson);
+				Utils.gerarToast( context, respostaWsJSON.getString("descricao"));				
 
 			} catch (JSONException e) {
 				Log.i("CreateRoteTask onPostExecute Exception taxi", "Exception -> " + e + "Message -> " + e.getMessage());
 				Utils.gerarToast( context, "Tente novamente mais tarde!");
 			}
-
-
 		}
-	}
-
-	
-	
-
-}
+	}}

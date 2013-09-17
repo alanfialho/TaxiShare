@@ -17,6 +17,12 @@
         <item>Criar Rota</item>
         <item>Logout</item>
     </string-array>
+     <string-array name="enderecos">
+        <item>Rua cervinho, 191</item>
+        <item>Rua Cague, 666</item>
+        <item>Rua fodase, 69</item>
+       
+    </string-array>
     <string-array name="numero_pessoas">
         <item>1</item>
         <item>2</item>

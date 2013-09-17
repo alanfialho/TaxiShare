@@ -5,6 +5,7 @@ import com.br.fragments.CreateRoteFragment;
 import com.br.fragments.EditPasswordFragment;
 import com.br.fragments.EditRegisterFragment;
 import com.br.fragments.SearchRoteFragment;
+import com.br.fragments.SearchRoteFragmentAntigo;
 import com.br.sessions.SessionManagement;
 
 import android.app.Activity;

@@ -292,7 +292,7 @@ public class EditRegisterFragment extends Fragment {
 				if(respostaWsJSON.getInt("errorCode") == 0){
 
 					session.createLoginSession(pessoaID, pessoaApp.getNome(),  pessoaApp.getEmail(), pessoaApp.getSexo(),  pessoaApp.getDataNascimento(), pessoaApp.getDdd(),  pessoaApp.getCelular(), sessionedLogin);
-					Fragment fragment = new SearchRoteFragment();
+					Fragment fragment = new SearchRoteFragmentAntigo();
 					Bundle args = new Bundle();
 					fragment.setArguments(args);
 
