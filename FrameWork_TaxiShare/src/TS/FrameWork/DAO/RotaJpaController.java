@@ -8,6 +8,7 @@ import TS.FrameWork.DAO.exceptions.NonexistentEntityException;
 import TS.FrameWork.TO.Rota;
 import TS.FrameWork.TO.Usuario;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -87,6 +88,28 @@ public class RotaJpaController implements Serializable {
         }
     }
     
+    public List<Rota> findRotaEntities() {
+        return findRotaEntities(true, -1, -1);
+    }
+
+    public List<Rota> findRotaEntities(int maxResults, int firstResult) {
+        return findRotaEntities(false, maxResults, firstResult);
+    }
+
+    private List<Rota> findRotaEntities(boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("select object(o) from Rota as o");
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            
+            return q.getResultList();
+        } catch(Exception ex) {
+            throw ex;
+        }
+    }
     
 
     public int getRotaCount() {

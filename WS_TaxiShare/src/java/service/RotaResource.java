@@ -106,6 +106,32 @@ public class RotaResource {
         return new Gson().toJson(saida);
     }
     
+    @GET
+    @Path("/findAll")
+    @Produces({"application/json"})
+    public String findAll() {
+        ResponseEntity saida;
+        RotaJpaController rotaDAO = new RotaJpaController(getEntityManager());
+        List<Rota> rotas = null;
+        
+        try
+        {
+            rotas = rotaDAO.findRotaEntities();
+            if(rotas != null && rotas.size() > 0)
+                saida = new ResponseEntity("Sucesso", 0, "Rotas encontradas!", rotas);
+            else
+                saida = new ResponseEntity("Sucesso", 2, "Rotas não encontradas!", null);
+        }
+        catch(Exception ex) 
+        {
+           System.out.println("ERRRO --> " + ex.getMessage());
+           saida = new ResponseEntity("Erro", 1, "Não foi possivel realizar operação, tente mais tarde!", null);  
+        }
+        
+        return new Gson().toJson(saida);
+    }
+    
+    
     @PUT
     @Path("/joinIn/{idRota}/{idUsuario}")
     @Produces("application/json")
