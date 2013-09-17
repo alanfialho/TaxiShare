@@ -4,7 +4,7 @@ import com.br.adapter.MenuAdapter;
 import com.br.fragments.CreateRoteFragment;
 import com.br.fragments.EditPasswordFragment;
 import com.br.fragments.EditRegisterFragment;
-import com.br.fragments.SearchRoteFragment;
+import com.br.fragments.SearchRoteFragmentAntigo;
 import com.br.fragments.SearchRoteFragmentAntigo;
 import com.br.sessions.SessionManagement;
 
@@ -132,9 +132,9 @@ public class MainActitity extends Activity {
 
 		case R.id.action_rote_search:
 
-			Fragment searchRoteFragment = new SearchRoteFragment();
-			searchRoteFragment.setArguments(args);
-			ftransaction.replace(R.id.content_frame, searchRoteFragment);
+			Fragment SearchRoteFragmentAntigo = new SearchRoteFragmentAntigo();
+			SearchRoteFragmentAntigo.setArguments(args);
+			ftransaction.replace(R.id.content_frame, SearchRoteFragmentAntigo);
 
 			break;
 		default:
@@ -171,7 +171,7 @@ public class MainActitity extends Activity {
 		switch(position) {
 
 		case 0:
-			fragment = new SearchRoteFragment();			
+			fragment = new SearchRoteFragmentAntigo();			
 			break;
 		case 1:
 			fragment = new EditRegisterFragment();

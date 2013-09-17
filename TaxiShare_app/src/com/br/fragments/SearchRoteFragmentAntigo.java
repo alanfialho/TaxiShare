@@ -1,167 +1,186 @@
 package com.br.fragments;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Locale;
+
 import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
 import com.br.activitys.R;
 import com.br.resources.Utils;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class SearchRoteFragmentAntigo extends Fragment {
+import com.br.resources.Utils;
+
+
+public class SearchRoteFragmentAntigo extends Fragment implements OnClickListener{
 
 	// Google Map
 	private GoogleMap googleMap;
 	private static View view;
+	private MapView m;
+	private Bundle mBundle;
+	private Button btBusca;
+	private EditText txtEndereco;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.rote_search, container, false);	
+		view = inflater.inflate(R.layout.teste_mapa, container, false);
 		
-		
-		if (view != null) {
-	        ViewGroup parent = (ViewGroup) view.getParent();
-	        if (parent != null)
-	            parent.removeView(view);
-	    }
-	    try {
-	    	view = inflater.inflate(R.layout.rote_search, container, false);
-	    } catch (InflateException e) {
-	        /* map is already there, just return view as it is */
-	    }
-		
-		
-
 		try {
-			// Loading map
-			initilizeMap(view);
+            MapsInitializer.initialize(getActivity());
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO handle this situation
+        }
 
-			// Changing map type
-			googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-			// googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-			// googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-			// googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-			// googleMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+        m = (MapView) view.findViewById(R.id.map);
+        m.onCreate(mBundle);
+        setUpMapIfNeeded(view);
+        criaTela();
 
-			// Showing / hiding your current location
-			googleMap.setMyLocationEnabled(true);
+		
+		
+		return view;	
+		
 
-			// Enable / Disable zooming controls
-			googleMap.getUiSettings().setZoomControlsEnabled(false);
+}
+		
+	@Override
+    public void onResume() {
+        super.onResume();
+        m.onResume();
+    }
 
-			// Enable / Disable my location button
-			googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+    @Override
+    public void onPause() {
+        super.onPause();
+        m.onPause();
+    }
 
-			// Enable / Disable Compass icon
-			googleMap.getUiSettings().setCompassEnabled(true);
+    @Override
+    public void onDestroy() {
+        m.onDestroy();
+        super.onDestroy();
+    }
 
-			// Enable / Disable Rotate gesture
-			googleMap.getUiSettings().setRotateGesturesEnabled(true);
+		
+	
+	private void setUpMapIfNeeded(View inflatedView) {
+        if (googleMap == null) {
+        	googleMap = ((MapView) inflatedView.findViewById(R.id.map)).getMap();
+            if (googleMap != null) {
+                setUpMap();
+            }
+        }
+    }
 
-			// Enable / Disable zooming functionality
-			googleMap.getUiSettings().setZoomGesturesEnabled(true);
-
-			double latitude = 17.385044;
-			double longitude = 78.486671;
-
-			// lets place some 10 random markers
-			for (int i = 0; i < 10; i++) {
-				// random latitude and logitude
-				double[] randomLocation = createRandLocation(latitude,
-						longitude);
-
-				// Adding a marker
-				MarkerOptions marker = new MarkerOptions().position(
-						new LatLng(randomLocation[0], randomLocation[1]))
-						.title("Hello Maps " + i);
-
-				Log.e("Random", "> " + randomLocation[0] + ", "
-						+ randomLocation[1]);
-
-				// changing marker color
-				if (i == 0)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-				if (i == 1)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-				if (i == 2)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-				if (i == 3)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-				if (i == 4)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-				if (i == 5)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-				if (i == 6)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-				if (i == 7)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-				if (i == 8)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
-				if (i == 9)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-
-				googleMap.addMarker(marker);
-
-				// Move the camera to last position with a zoom level
-				if (i == 9) {
-					CameraPosition cameraPosition = new CameraPosition.Builder()
-					.target(new LatLng(randomLocation[0],
-							randomLocation[1])).zoom(15).build();
-
-					googleMap.animateCamera(CameraUpdateFactory
-							.newCameraPosition(cameraPosition));
-				}
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return view;
+    private void setUpMap() {
+    	googleMap.addMarker(new MarkerOptions().position(new LatLng(-23.489839, -46.410520)).title("Marker"));
+    	setaZoom();
+    }
+	
+	
+	
+	public void setaZoom(){
+		//Location myLocation = googleMap.getMyLocation();
+        LatLng myLatLng = new LatLng(-23.489839,
+        		 -46.410520);
+		
+		//Adiciona a latitude e longitude da minha localização a um objeto LatLng
+		
+		
+		//Move a camera do mapa para a minha localização de acordo com o objeto LatLng gerado
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+		
 	}
 
 
+	
+	public void procuraEndereco(String endereco) throws IOException{
+		Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());// esse Geocoder aqui é quem vai traduzir o endereço de String para coordenadas double  
+		
+		List<Address> enderecos = null;//este Adress aqui recebe um retorno do metodo geoCoder.getFromLocationName vc manipula este retorno pra pega as coordenadas  
 
+		enderecos = geoCoder.getFromLocationName(endereco, 1);// o numero um aqui é a quantidade maxima de resultados que vc quer receber
+		
+		
+		double lat = enderecos.get(0).getLatitude();  
+		double lon = enderecos.get(0).getLongitude();  
+		String end = enderecos.get(0).getAddressLine(0);
+		
+		Utils.gerarToast(getActivity(), end);
+
+
+	}
+	
+	public void criaTela(){
+
+		btBusca = (Button) view.findViewById(R.id.btBusca);
+		btBusca.setOnClickListener(this);
+		txtEndereco = (EditText) view.findViewById(R.id.txtEndereco);
+				
+		
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		int id = v.getId();
+		if (id == R.id.btBusca) {
+			String e = txtEndereco.getText().toString();
+			try {
+				procuraEndereco(e);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		
+		
+	}
+	
 	/**
-	 * function to load map If map is not created it will create it for you
-	 * */
-	private void initilizeMap(View rootView) {
-		if (googleMap == null) {
-//			googleMap = ((MapFragment) getFragmentManager().findFragmentById(
-//					R.id.novoMapa)).getMap();
-
-			// check if map is created successfully or not
-			if (googleMap == null) {
-				Utils.gerarToast(rootView.getContext(), "Nao sei");
-			}
-		}
+	
+	else if (id == R.id.btEnderecos) {
+		
+		Intent intent = new Intent (TaxyShareMapa.this, MinhaRota.class);
+		Bundle extras = new Bundle();
+		List<Address> origem = enderecos2;
+		List<Address> destino = enderecos;
+		extras.putSerializable("ori", (Serializable) origem);
+		extras.putSerializable("dest", (Serializable) destino);
+		intent.putExtras(extras);
+		startActivity(intent);
+		
+		
 	}
-
-	/*
-	 * creating random postion around a location for testing purpose only
-	 */
-	private double[] createRandLocation(double latitude, double longitude) {
-
-		return new double[] { latitude + ((Math.random() - 0.5) / 500),
-				longitude + ((Math.random() - 0.5) / 500),
-				150 + ((Math.random() - 0.5) * 10) };
-	}
+	
+	**/
 }

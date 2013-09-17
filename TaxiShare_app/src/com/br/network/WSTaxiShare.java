@@ -22,7 +22,7 @@ import com.br.entidades.ResponseApp;
 
 public class WSTaxiShare {
 
-	private static final String URL_WS = "http://10.0.2.2:8080/WS_TaxiShare/";
+	private static final String URL_WS = "http://192.168.56.1:8080/WS_TaxiShare/";
 
 	public PessoaApp getPessoa(int id) throws Exception {
 
