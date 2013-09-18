@@ -14,7 +14,7 @@
         android:layout_height="match_parent" >
 
         <EditText
-            android:id="@+id/txtEndereco"
+            android:id="@+id/txtEndereco1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -25,22 +25,23 @@
             <requestFocus />
         </EditText>
 
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/txtEndereco"
-            android:layout_marginTop="49dp"
-            android:ems="10" />
-
         <Button
             android:id="@+id/btBusca"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="25dp"
             android:text="Busca" />
+
+        <EditText
+            android:id="@+id/txtEndereco2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/txtEndereco1"
+            android:layout_marginTop="26dp"
+            android:ems="10" />
 
     </RelativeLayout>
 

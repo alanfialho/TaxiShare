@@ -4,8 +4,8 @@ import com.br.adapter.MenuAdapter;
 import com.br.fragments.CreateRoteFragment;
 import com.br.fragments.EditPasswordFragment;
 import com.br.fragments.EditRegisterFragment;
-import com.br.fragments.SearchRoteFragmentAntigo;
-import com.br.fragments.SearchRoteFragmentAntigo;
+import com.br.fragments.SearchRoteFragment;
+import com.br.fragments.SearchRoteFragment;
 import com.br.sessions.SessionManagement;
 
 import android.app.Activity;
@@ -92,7 +92,7 @@ public class MainActitity extends Activity {
 		}
 
 		//Seta fragmento de dashboard no content frame
-		Fragment fragment = new CreateRoteFragment();
+		Fragment fragment = new SearchRoteFragment();
 		Bundle args = new Bundle();
 		fragment.setArguments(args);
 		FragmentManager fragmentManager = getFragmentManager();
@@ -132,7 +132,7 @@ public class MainActitity extends Activity {
 
 		case R.id.action_rote_search:
 
-			Fragment SearchRoteFragmentAntigo = new SearchRoteFragmentAntigo();
+			Fragment SearchRoteFragmentAntigo = new SearchRoteFragment();
 			SearchRoteFragmentAntigo.setArguments(args);
 			ftransaction.replace(R.id.content_frame, SearchRoteFragmentAntigo);
 
@@ -171,7 +171,7 @@ public class MainActitity extends Activity {
 		switch(position) {
 
 		case 0:
-			fragment = new SearchRoteFragmentAntigo();			
+			fragment = new SearchRoteFragment();			
 			break;
 		case 1:
 			fragment = new EditRegisterFragment();

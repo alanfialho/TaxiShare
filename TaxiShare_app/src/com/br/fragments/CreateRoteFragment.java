@@ -34,12 +34,6 @@ import android.widget.Spinner;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
-
-//import com.google.android.gms.maps.CameraUpdateFactory;
-//import com.google.android.gms.maps.GoogleMap;
-//import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
-
-
 public class CreateRoteFragment extends Fragment {
 
 	Context context;
@@ -102,6 +96,10 @@ public class CreateRoteFragment extends Fragment {
 		textDestino = (EditText) rootView.findViewById(R.id.txtCreateDestino);
 		spnPessoas = (Spinner) rootView.findViewById(R.id.spinnerCreatePessoas);
 		tpHorarioSaida = (TimePicker) rootView.findViewById(R.id.timePickerCreateHorarioSaida);
+		
+		Bundle args = getArguments();
+		textOrigem.setText(args.getCharSequence("origem"));
+		textDestino.setText(args.getCharSequence("destino"));
 
 		//Importando botões
 		btnCriarRota = (Button) rootView.findViewById(R.id.btnCreateCriar);
