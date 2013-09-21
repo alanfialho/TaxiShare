@@ -54,15 +54,16 @@
                 android:text="Login" />
 
             <EditText
-                android:id="@+id/resetLogin"
+                android:id="@+id/reset_pass_txt_login"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:ems="10">
+                android:ems="10" >
+
                 <requestFocus />
             </EditText>
 
             <Button
-                android:id="@+id/btnResetRecuperarSenha"
+                android:id="@+id/reset_pass_btn_recuperar"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dip"
@@ -76,7 +77,7 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/lblPergunta"
+                android:id="@+id/reset_pass_lbl_pergunta"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dip"
@@ -90,13 +91,13 @@
                 android:text="Resposta" />
 
             <EditText
-                android:id="@+id/resetResposta"
+                android:id="@+id/reset_pass_txt_resposta"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:ems="10" />
 
             <Button
-                android:id="@+id/resetCheckAnswerBtn"
+                android:id="@+id/reset_pass_btn_checar"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Alterar Senha" />
@@ -115,7 +116,7 @@
                     android:text="Nova Senha" />
 
                 <EditText
-                    android:id="@+id/resetNovaSenha"
+                    android:id="@+id/reset_pass_nova_senha"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -128,14 +129,14 @@
                     android:text="Confirmar Nova Senha" />
 
                 <EditText
-                    android:id="@+id/resetNovaSenha2"
+                    android:id="@+id/reset_pass_nova_senha2"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="textPassword" />
 
                 <Button
-                    android:id="@+id/btnResetAlterarSenha"
+                    android:id="@+id/reset_pass_btn_alterar2"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dip"

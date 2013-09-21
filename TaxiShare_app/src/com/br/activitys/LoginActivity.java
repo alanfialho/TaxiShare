@@ -36,6 +36,7 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.login);
 		setAtributes();
 		setBtnActions();
+		context = this;
 	}
 
 	private void setBtnActions() {
@@ -49,13 +50,11 @@ public class LoginActivity extends Activity {
 				boolean checkSenha = loginLogin.getText().toString().isEmpty();
 				if(!checkLogin || !checkSenha){
 					loginTask task = new loginTask();
-					task.fillContext = view.getContext();
 					task.execute();
 				}
 				else{
 					Utils.gerarToast(context, "Preencha Login e Senha!");
 				}
-
 			}
 		});
 
@@ -72,13 +71,10 @@ public class LoginActivity extends Activity {
 		btnLinkToForgetPassword.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-
 				Intent i = new Intent(getApplicationContext(),LoginToResetActivity.class);
 				startActivity(i);
-
 			}
 		});
-
 	}
 
 	public void setAtributes(){
@@ -86,22 +82,22 @@ public class LoginActivity extends Activity {
 		session = new SessionManagement(getApplicationContext()); 
 
 		//Pegando os campos da tela
-		loginLogin = (EditText) findViewById(R.id.loginLogin);
-		loginSenha = (EditText) findViewById(R.id.loginSenha);
+		loginLogin = (EditText) findViewById(R.id.login_txt_login);
+		loginSenha = (EditText) findViewById(R.id.login_senha);
 
 		//Botoes e erro
-		btnLogin = (Button) findViewById(R.id.btnLogin);
-		btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
-		btnLinkToForgetPassword = (Button) findViewById(R.id.btnLinkToForgetPassword);
+		btnLogin = (Button) findViewById(R.id.login_btn_login);
+		btnLinkToRegister = (Button) findViewById(R.id.login_btn_register);
+		btnLinkToForgetPassword = (Button) findViewById(R.id.login_btn_forget);
 	}
 
 	private class loginTask extends AsyncTask<String, Void, String> {
 
 		ProgressDialog progress;
-		Context fillContext;
+
 		protected void onPreExecute() {
 			//Inica a popup de load
-			progress = Utils.setProgreesDialog(progress, fillContext, "Efetuando Login", "Aguarde...");
+			progress = Utils.setProgreesDialog(progress, context, "Efetuando Login", "Aguarde...");
 		}
 
 		@Override
@@ -121,7 +117,7 @@ public class LoginActivity extends Activity {
 
 			} catch (Exception e) {
 				Log.i("Exception Login taxi", e + "");
-				Utils.gerarToast( fillContext, "Não Foi possível logar");
+				Utils.gerarToast( context, "Não Foi possível logar");
 				e.printStackTrace();
 			}
 
@@ -137,7 +133,7 @@ public class LoginActivity extends Activity {
 				Log.i("JSON resposta taxi", resposta + "");
 
 				if (resposta.getInt("errorCode") == 0) {
-					Utils.gerarToast( fillContext, resposta.getString("descricao"));
+					Utils.gerarToast( context, resposta.getString("descricao"));
 
 					JSONObject pessoa = resposta.getJSONObject("data").getJSONObject("pessoa");
 					Log.i("Testando as paradas aqui", pessoa.toString());
@@ -148,21 +144,20 @@ public class LoginActivity extends Activity {
 					String celular = pessoa.getString("celular");
 					String sexo = pessoa.getString("sexo");
 					String dataNasc = pessoa.getString("dataNascimento");
-					String aaaaaaaaaa = loginLogin.getText().toString();
+					String login = loginLogin.getText().toString();
 
 					Log.i("taxi pessoaid no login", pessoaId);
-					Log.i("taxi login no login", aaaaaaaaaa);
-					session.createLoginSession(pessoaId, nome,  email,  sexo,  dataNasc,  ddd,  celular, aaaaaaaaaa);
+					Log.i("taxi login no login", login);
+					session.createLoginSession(pessoaId, nome,  email,  sexo,  dataNasc,  ddd,  celular, login);
 
 					Intent intent = new Intent(getApplicationContext(),
 							MainActitity.class);
 					startActivity(intent);
 					finish();
 
-
 				}else{
 					// Erro de login
-					Utils.gerarToast( fillContext, resposta.getString("descricao"));
+					Utils.gerarToast( context, resposta.getString("descricao"));
 				}
 			} catch (JSONException e) {
 				Log.i("Exception on post execute taxi", "Exception -> " + e + " Message->" +e.getMessage());

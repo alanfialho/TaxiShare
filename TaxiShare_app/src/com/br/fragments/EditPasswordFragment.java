@@ -97,12 +97,12 @@ public class EditPasswordFragment extends Fragment {
 		session = new SessionManagement(rootView.getContext());
 
 		//Importando os campos da pessoa
-		forgotSenhaAntiga = (EditText) rootView.findViewById(R.id.forgotSenhaAntiga);
-		forgotNovaSenha = (EditText) rootView.findViewById(R.id.forgotNovaSenha);
-		forgotNovaSenha2 = (EditText) rootView.findViewById(R.id.forgotNovaSenha2);
+		forgotSenhaAntiga = (EditText) rootView.findViewById(R.id.edit_pass_senha_antiga);
+		forgotNovaSenha = (EditText) rootView.findViewById(R.id.edit_pass_nova_senha);
+		forgotNovaSenha2 = (EditText) rootView.findViewById(R.id.edit_pass_nova_senha_2);
 
 		//Importando botões
-		btnForgotAlterarSenha = (Button) rootView.findViewById(R.id.btnForgotAlterarSenha);
+		btnForgotAlterarSenha = (Button) rootView.findViewById(R.id.edit_pass_btn_alterar);
 
 		//Recupera os dados do usuario na sessão
 		HashMap<String, String> user = session.getUserDetails();

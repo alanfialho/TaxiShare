@@ -52,26 +52,28 @@ public class RegisterActivity extends Activity {
 	EditText textEmail;
 
 	@Required(order = 5, message="Campo obrigatorio")
-	@Password(order=6)
-	@TextRule(order=7, minLength=6, message="Deve conter no minimo 6 caracteres")
-	EditText textSenha; 
-
-	@Required(order = 8, message="Campo obrigatorio")
-	@ConfirmPassword(order=9, message="Senhas precisam ser iguais")
-	EditText textSenha2;
-
-	@Required(order = 10, message="Campo obrigatorio")
-	@TextRule(order=11, minLength=8, message="Deve conter no minimo 8 digitos")
-	EditText textCelular; 
-
-	@Required(order = 12, message="Campo obrigatorio")
-	@TextRule(order=13, minLength=2, message="Deve conter 2 digitos")
+	@TextRule(order=6, minLength=2, message="Deve conter 2 digitos")
 	EditText textDDD; 
 
-	@Required(order = 14, message="Campo obrigatorio")
-	@TextRule(order=15, minLength=4, message="Deve conter no minimo 4 caracteres")
-	@Regex(order=16, pattern="[A-Za-z0-9]+", message="Deve conter apenas letras e numeros")
+
+	@Required(order = 7, message="Campo obrigatorio")
+	@TextRule(order=8, minLength=8, message="Deve conter no minimo 8 digitos")
+	EditText textCelular; 
+
+
+	@Required(order = 9, message="Campo obrigatorio")
+	@TextRule(order=10, minLength=4, message="Deve conter no minimo 4 caracteres")
+	@Regex(order=11, pattern="[A-Za-z0-9]+", message="Deve conter apenas letras e numeros")
 	EditText textLogin; 
+
+	@Required(order = 12, message="Campo obrigatorio")
+	@Password(order=13)
+	@TextRule(order=14, minLength=6, message="Deve conter no minimo 6 caracteres")
+	EditText textSenha; 
+
+	@Required(order = 15, message="Campo obrigatorio")
+	@ConfirmPassword(order=16, message="Senhas precisam ser iguais")
+	EditText textSenha2;
 
 	@Required(order = 17, message="Campo obrigatorio")
 	@TextRule(order=18, minLength=4, message="Deve conter no minimo 4 caracteres")
@@ -86,15 +88,14 @@ public class RegisterActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register);
-		
+		context = this;
 		//Criando listner
 		ValidationListner validationListner = new ValidationListner();
-		validationListner.validationContext = this;
-		
+
 		//Instanciando Validation
 		validator = new Validator(this);
 		validator.setValidationListener(validationListner);
-	
+
 		setAtributes();
 		setBtnActions();
 	}
@@ -122,23 +123,23 @@ public class RegisterActivity extends Activity {
 
 	private void setAtributes() {
 		// Importando os campos da pessoa
-		textNome = (EditText) findViewById(R.id.textNome);
-		textEmail = (EditText) findViewById(R.id.textEmail);
-		textSenha = (EditText) findViewById(R.id.textSenha);
-		textSenha2 = (EditText) findViewById(R.id.textSenha2);
-		textDDD = (EditText) findViewById(R.id.textDDD);
-		spinnerSexo = (Spinner) findViewById(R.id.textSexo);
-		textCelular = (EditText) findViewById(R.id.textCelular);
-		dateDataNascimento = (DatePicker) findViewById(R.id.dateDataNascimemto);
+		textNome = (EditText) findViewById(R.id.register_txt_nome);
+		textEmail = (EditText) findViewById(R.id.register_txt_email);
+		textSenha = (EditText) findViewById(R.id.register_txt_senha);
+		textSenha2 = (EditText) findViewById(R.id.register_txt_senha2);
+		textDDD = (EditText) findViewById(R.id.register_txt_ddd);
+		spinnerSexo = (Spinner) findViewById(R.id.register_sp_sexo);
+		textCelular = (EditText) findViewById(R.id.register_txt_celular);
+		dateDataNascimento = (DatePicker) findViewById(R.id.register_txt_data_nasc);
 
 		// Importando os campos do login
-		spinnerPergunta = (Spinner) findViewById(R.id.textPergunta);
-		textLogin = (EditText) findViewById(R.id.textLogin);
-		textResposta = (EditText) findViewById(R.id.textResposta);
+		spinnerPergunta = (Spinner) findViewById(R.id.register_sp_pergunta);
+		textLogin = (EditText) findViewById(R.id.register_txt_login);
+		textResposta = (EditText) findViewById(R.id.register_txt_resposta);
 
 		// Importando botões
-		btnCadastrar = (Button) findViewById(R.id.lblPergunta);
-		btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
+		btnCadastrar = (Button) findViewById(R.id.reset_pass_lbl_pergunta);
+		btnLinkToLogin = (Button) findViewById(R.id.register_btn_login);
 
 
 		// Instanciando WS
@@ -165,13 +166,11 @@ public class RegisterActivity extends Activity {
 		}
 	}
 
-	
+
 	private class ValidationListner implements ValidationListener {
-		Context validationContext;
 
 		public void onValidationSucceeded() {
 			CheckLoginTask task = new CheckLoginTask();
-			task.fillContext = validationContext;			
 			task.execute();
 		}
 
@@ -190,12 +189,11 @@ public class RegisterActivity extends Activity {
 	}
 
 	private class CheckLoginTask extends AsyncTask<String, Void, String> {
-		Context fillContext;
 		ProgressDialog progress;
 		String login;
 
 		protected void onPreExecute() {
-			progress = Utils.setProgreesDialog(progress, fillContext, "Checando Login", "Aguarde...");
+			progress = Utils.setProgreesDialog(progress, context, "Checando Login", "Aguarde...");
 			//Pega o texto do login
 			login = textLogin.getText().toString().trim();
 		}
@@ -220,7 +218,7 @@ public class RegisterActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(String strJson) {
-			
+
 			try {
 				//Cria JSON com a resposta do WS
 				JSONObject checkLoginJSON = new JSONObject(strJson);
@@ -229,12 +227,11 @@ public class RegisterActivity extends Activity {
 				if (checkLoginJSON.getInt("errorCode") == 0) {
 					//Caso esteja tudo certo, cria uma task para efeutar o cadastro.
 					RegisterTask registerTask = new RegisterTask();
-					registerTask.fillContext = fillContext;
 					registerTask.execute();
 
 				}
 				else{
-					Utils.gerarToast(fillContext, checkLoginJSON.getString("descricao"));
+					Utils.gerarToast(context, checkLoginJSON.getString("descricao"));
 				}
 
 			} catch (JSONException e) {
@@ -250,19 +247,13 @@ public class RegisterActivity extends Activity {
 
 	private class RegisterTask extends AsyncTask<String, Void, String> {
 
-		boolean checkSenha = true;
-		boolean checkEmpty = true;
-		boolean checkEmail = true;
-		boolean checkPhoneNumber = true;
 		boolean validate = false;
-		String message = "";
 		LoginApp loginApp; 
 		ProgressDialog progress;
-		Context fillContext;
 
 		protected void onPreExecute() {
 
-			progress = Utils.setProgreesDialog(progress, fillContext, "Registrando", "Aguarde...");
+			progress = Utils.setProgreesDialog(progress, context, "Registrando", "Aguarde...");
 
 			// Pegando as informações de pessoas
 			String nome = textNome.getText().toString().trim();
@@ -282,82 +273,32 @@ public class RegisterActivity extends Activity {
 			String login = textLogin.getText().toString().trim();
 			String resposta = textResposta.getText().toString().trim();
 			String senha = textSenha.getText().toString();
-			String senha2 = textSenha2.getText().toString();
+			// Criando objeto pessoa e objeto login
+			PessoaApp pessoaApp = new PessoaApp();
+			loginApp = new LoginApp();
+			PerguntaApp perguntaApp = new PerguntaApp();
 
-			//Checa se as senhas são iguais
-			if (!senha.equals(senha2) || senha.equals("") || senha2.equals(""))
-				checkSenha = false;
+			// Definindo as paradas em pessoa
+			pessoaApp.setNome(nome);
+			pessoaApp.setCelular(celular);
+			pessoaApp.setDataNascimento(dataNascimento);
+			pessoaApp.setDdd(ddd);
+			pessoaApp.setEmail(email);
+			pessoaApp.setSexo(sexo);
 
-			//Checa se não há campos vazios
-			if (nome.equals("") || email.equals("") || ddd.equals("") || celular.equals("") || resposta.equals("") || login.equals("") || senha.equals("")) 
-				checkEmpty = false;
+			// Definindo as paradas em pergunta
+			perguntaApp.setId(pergunta);
 
-			//checa se o email é válido
-			if(!Utils.isValidEmail(email))
-				checkEmail = false;
+			// Definindo as paradas em login
+			loginApp.setLogin(login);
+			loginApp.setSenha(senha);
+			loginApp.setResposta(resposta);
 
-			if(celular.length() < 8)
-				checkPhoneNumber = false;
+			// Setando a pergunta no login
+			loginApp.setPergunta(perguntaApp);
 
-			//Checa se tudo esta ok
-			if(checkSenha && checkEmpty && checkEmail && checkPhoneNumber){
-				validate = true;
-			}
-			else{
-				Log.i("Erro Validacao Registro taxi", "Senha-> "+ checkSenha + "|| Empty -> " + checkEmpty + " || Email -> " + checkEmail);
-
-				if(!checkSenha){
-					Log.i("Erro Validacao", "Check-Senha");
-					message+= "Senhas precisam ser iguais! \n";
-				}
-
-				if(!checkEmpty){
-					Log.i("Erro Validacao", "Check-Vazio");
-					message+= "Preencha os campos vazios! \n";
-				}
-
-				if(!checkEmail){
-					Log.i("Erro Validacaop", "Check-Email");
-					message+= "Email inválido! \n";
-				}
-				if(!checkPhoneNumber){
-					Log.i("Erro Validacao", "Check-Phone");
-					message+= "Celular inválido!";
-				}
-
-				validate = false;
-			}
-
-			if (validate) {
-				// Criando objeto pessoa e objeto login
-				PessoaApp pessoaApp = new PessoaApp();
-				loginApp = new LoginApp();
-				PerguntaApp perguntaApp = new PerguntaApp();
-
-				// Definindo as paradas em pessoa
-				pessoaApp.setNome(nome);
-				pessoaApp.setCelular(celular);
-				pessoaApp.setDataNascimento(dataNascimento);
-				pessoaApp.setDdd(ddd);
-				pessoaApp.setEmail(email);
-				pessoaApp.setSexo(sexo);
-
-				// Definindo as paradas em pergunta
-				perguntaApp.setId(pergunta);
-
-				// Definindo as paradas em login
-				loginApp.setLogin(login);
-				loginApp.setSenha(senha);
-				loginApp.setResposta(resposta);
-
-				// Setando a pergunta no login
-				loginApp.setPergunta(perguntaApp);
-
-				// Setando pessoa no login
-				loginApp.setPessoa(pessoaApp);
-			}
-			else
-				Utils.gerarToast(context, message);
+			// Setando pessoa no login
+			loginApp.setPessoa(pessoaApp);
 		}
 
 		@Override
@@ -369,7 +310,7 @@ public class RegisterActivity extends Activity {
 					response = ws.cadastrarLogin(loginApp);		
 
 				} catch (Exception e) {
-					Utils.gerarToast(fillContext, "Erro ao cadastrar!");
+					Utils.gerarToast(context, "Erro ao cadastrar!");
 					Log.i("Exception RegisterTask doInBackground taxi", "Exception -> " + e + " || Message -> " + e.getMessage());
 				}	
 			}
@@ -384,18 +325,18 @@ public class RegisterActivity extends Activity {
 				JSONObject cadastroLoginJSON = new JSONObject(strJson);
 				// Checa se o cadastro deu certo
 				if (cadastroLoginJSON.getInt("errorCode") == 0) {
-					Utils.gerarToast(fillContext, "Cadastro efetuado!");
+					Utils.gerarToast(context, "Cadastro efetuado!");
 
 					// Retorna para tela de login
 					Intent i = new Intent(getApplicationContext(), LoginActivity.class);
 					startActivity(i);
 					finish();
 				} else
-					Utils.gerarToast(fillContext, cadastroLoginJSON.getString("descricao"));
+					Utils.gerarToast(context, cadastroLoginJSON.getString("descricao"));
 
 			} catch (JSONException e) {
 				Log.i("Exception RegisterTask onPostExecute taxi", "Exception -> " + e + " || Message -> " + e.getMessage());
-				Utils.gerarToast(fillContext, "Erro ao cadastrar!");
+				Utils.gerarToast(context, "Erro ao cadastrar!");
 
 			}
 

@@ -30,7 +30,7 @@
         <!-- CAMPO DO NOME -->
 
         <EditText
-            android:id="@+id/editNome"
+            android:id="@+id/edit_reg_txt_nome"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
@@ -50,7 +50,7 @@
         <!-- CAMPO DO EMAIL -->
 
         <EditText
-            android:id="@+id/editEmail"
+            android:id="@+id/edit_reg_txt_email"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
@@ -64,7 +64,7 @@
         <!-- CAMPO DO SEXO -->
 
         <Spinner
-            android:id="@+id/editSexo"
+            android:id="@+id/edit_reg_sp_sexo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -78,7 +78,7 @@
         <!-- CAMPO DO DDD -->
 
         <EditText
-            android:id="@+id/editDDD"
+            android:id="@+id/edit_reg_txt_ddd"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="Ex: 11"
@@ -95,7 +95,7 @@
         <!-- CAMPO DO CELULAR -->
 
         <EditText
-            android:id="@+id/editCelular"
+            android:id="@+id/edit_reg_txt_celular"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="Ex: 999999999"
@@ -112,7 +112,7 @@
         <!-- CAMPO DA DATA NASCIMENTO -->
 
         <DatePicker
-            android:id="@+id/editDateDataNascimemto"
+            android:id="@+id/edit_reg_dp_data_nasc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:calendarViewShown="false" />
@@ -120,7 +120,7 @@
         <!-- BOTAO DE SALVAR -->
 
         <Button
-            android:id="@+id/btnEditSalvar"
+            android:id="@+id/edit_reg_btn_salvar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"

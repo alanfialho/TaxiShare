@@ -21,7 +21,6 @@ import com.br.validation.annotation.Regex;
 import com.br.validation.annotation.Required;
 import com.br.validation.annotation.TextRule;
 
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
@@ -38,12 +37,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.DatePicker;
 
-
 public class EditRegisterFragment extends Fragment {
 	Context context;
 	Validator validator;
-
-
+	
 	//botoes
 	Button btnSalvar;
 
@@ -57,11 +54,9 @@ public class EditRegisterFragment extends Fragment {
 	@Email(order =4, message="E-mail Inválido")
 	EditText textEmail;
 
-
 	@Required(order = 5, message="Campo obrigatorio")
 	@TextRule(order=6, minLength=8, message="Deve conter no minimo 8 digitos")
 	EditText textCelular;
-
 
 	@Required(order = 7, message="Campo obrigatorio")
 	@TextRule(order=8, minLength=2, message="Deve conter 2 digitos")
@@ -71,10 +66,8 @@ public class EditRegisterFragment extends Fragment {
 	DatePicker dateDataNascimento;
 	SessionManagement session;
 
-
 	private static String pessoaID;
 	private static String sessionedLogin;
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,6 +87,8 @@ public class EditRegisterFragment extends Fragment {
 
 		//Checa se o usuario esta logado
 		session.checkLogin();
+		
+		context = rootView.getContext();
 
 		return rootView;
 	}
@@ -102,12 +97,7 @@ public class EditRegisterFragment extends Fragment {
 		//Acao do botao cadastrar
 		btnSalvar.setOnClickListener(new View.OnClickListener() {			
 			public void onClick(View view) {
-				context = view.getContext();
-
 				validator.validate();
-
-
-
 			}
 		});		
 	}
@@ -173,35 +163,29 @@ public class EditRegisterFragment extends Fragment {
 		}
 		catch(Exception e)
 		{
-			Log.i("Exception ao montar a data taxi", e + " -->" + e.getMessage());
-
+			Log.i("Exception ao montar a data taxi", e + " ->" + e.getMessage());
 		}
-
 	}
 
 	private void setAtributes(View rootView) {
 		session = new SessionManagement(rootView.getContext());
 
 		//Importando os campos da pessoa
-		textNome = (EditText) rootView.findViewById(R.id.editNome);
-		textEmail = (EditText) rootView.findViewById(R.id.editEmail);
-		textDDD = (EditText) rootView.findViewById(R.id.editDDD);
-		spinnerSexo = (Spinner) rootView.findViewById(R.id.editSexo);
-		textCelular = (EditText) rootView.findViewById(R.id.editCelular);
-		dateDataNascimento = (DatePicker) rootView.findViewById(R.id.editDateDataNascimemto);
+		textNome = (EditText) rootView.findViewById(R.id.edit_reg_txt_nome);
+		textEmail = (EditText) rootView.findViewById(R.id.edit_reg_txt_email);
+		textDDD = (EditText) rootView.findViewById(R.id.edit_reg_txt_ddd);
+		spinnerSexo = (Spinner) rootView.findViewById(R.id.edit_reg_sp_sexo);
+		textCelular = (EditText) rootView.findViewById(R.id.edit_reg_txt_celular);
+		dateDataNascimento = (DatePicker) rootView.findViewById(R.id.edit_reg_dp_data_nasc);
 
 		//Importando botões
-		btnSalvar = (Button) rootView.findViewById(R.id.btnEditSalvar);
-
+		btnSalvar = (Button) rootView.findViewById(R.id.edit_reg_btn_salvar);
 	}
 
 	private class ValidationListner implements ValidationListener {
-		Context validationContext;
 
 		public void onValidationSucceeded() {
-
 			EditRegisterTask task = new EditRegisterTask();
-			task.fillContext = validationContext;
 			task.execute();
 		}
 
@@ -220,13 +204,12 @@ public class EditRegisterFragment extends Fragment {
 
 	private class EditRegisterTask extends AsyncTask<String, Void, String> {
 		ProgressDialog progress;
-		Context fillContext;
 		PessoaApp pessoaApp;
 
 		protected void onPreExecute() {
 			try{
 				//Inica a popup de load				
-				progress = Utils.setProgreesDialog(progress, fillContext, "Salvando Alterações", "Aguarde...");
+				progress = Utils.setProgreesDialog(progress, context, "Salvando Alterações", "Aguarde...");
 
 				//Pegando as informações de pessoas
 				String nome = textNome.getText().toString();
@@ -270,21 +253,17 @@ public class EditRegisterFragment extends Fragment {
 			{
 				WSTaxiShare ws = new WSTaxiShare();
 				response = ws.editarCadastro(pessoaApp);
-
 			} 
 			catch (Exception e) {
 				Utils.gerarToast( context, "Erro ao alterar!");
 				Log.i("Exception alterar taxi", e + "");
 			}
 
-
 			return response;
-
 		}
 
 		@Override
 		protected void onPostExecute(String strJson) {
-
 
 			//Cria um obj JSON com a resposta
 			try {

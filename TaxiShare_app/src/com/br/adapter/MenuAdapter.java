@@ -52,8 +52,8 @@ public class MenuAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.drawer_list_item, null);
 			holder = new ViewHolder();
  
-			holder.option = (TextView) convertView.findViewById(R.id.txtMenuOption);
-			holder.img = (ImageView) convertView.findViewById(R.id.menuImg);
+			holder.option = (TextView) convertView.findViewById(R.id.dliLblOption);
+			holder.img = (ImageView) convertView.findViewById(R.id.dliIVImage);
  
 			convertView.setTag(holder);
  

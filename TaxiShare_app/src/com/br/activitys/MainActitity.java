@@ -5,7 +5,6 @@ import com.br.fragments.CreateRoteFragment;
 import com.br.fragments.EditPasswordFragment;
 import com.br.fragments.EditRegisterFragment;
 import com.br.fragments.SearchRoteFragment;
-import com.br.fragments.SearchRoteFragment;
 import com.br.sessions.SessionManagement;
 
 import android.app.Activity;
@@ -26,13 +25,13 @@ import android.widget.ListView;
 
 
 public class MainActitity extends Activity {
-	private DrawerLayout mDrawerLayout;
-	private ListView mDrawerList;
+	private DrawerLayout menuLateral;
+	private ListView listaMenuLateral;
 	private ActionBarDrawerToggle mDrawerToggle;
 
-	private CharSequence mDrawerTitle;
-	private CharSequence mTitle;
-	private String[] mDashboardOptions;
+	private CharSequence tituloMenuLateral;
+	private CharSequence titulo;
+	private String[] opcoes;
 	private SessionManagement session;
 
 
@@ -41,24 +40,24 @@ public class MainActitity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_activity_layout);
-		mDashboardOptions = getResources().getStringArray(R.array.menu_options) ;
+		opcoes = getResources().getStringArray(R.array.menu_options) ;
 
 		session = new SessionManagement(getApplicationContext());
 
-		MenuAdapter mAdapter = new MenuAdapter(getApplicationContext(), mDashboardOptions);
+		MenuAdapter mAdapter = new MenuAdapter(getApplicationContext(), opcoes);
 
-		mTitle = mDrawerTitle = "TaxiShare";
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		titulo = tituloMenuLateral = "TaxiShare";
+		menuLateral = (DrawerLayout) findViewById(R.id.drawer_layout);
+		listaMenuLateral = (ListView) findViewById(R.id.left_drawer);
 
 		//Seta a sombra do menu (Copiei assim, nao vi isso funcionando)
-		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+		menuLateral.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
 		//Define as opções dentro do listview do menu lateral
-		mDrawerList.setAdapter(mAdapter);
+		listaMenuLateral.setAdapter(mAdapter);
 
 		//Define as ações dos items no menu lateral instanciando uma subclasse
-		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+		listaMenuLateral.setOnItemClickListener(new DrawerItemClickListener());
 
 		//Pelo que eu entendi, ele permite que o botao da actionbar permita o togle do menu lateral
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -67,31 +66,32 @@ public class MainActitity extends Activity {
 		//Define umas paradas do togle do menu lateral
 		mDrawerToggle = new ActionBarDrawerToggle(
 				this,                  /* Activity que contem o menu*/
-				mDrawerLayout,         /* objeto DrawerLayout */
+				menuLateral,         /* objeto DrawerLayout */
 				R.drawable.ic_drawer,  /* botaozinho dos pauzinhos do actionBar*/
 				R.string.drawer_open,  /* Descricao de abrir - Para acessibilidade */
 				R.string.drawer_close  /* "Descricao de fechar - Para acessibilidade*/
 				) {
 			public void onDrawerClosed(View view) {
-				getActionBar().setTitle(mTitle);
+				getActionBar().setTitle(titulo);
 				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 			}
 
 			public void onDrawerOpened(View drawerView) {
-				getActionBar().setTitle(mDrawerTitle);
+				getActionBar().setTitle(tituloMenuLateral);
 				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 			}
 		};
 
 		//Seta comportamento de toggle no menu lateral
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		menuLateral.setDrawerListener(mDrawerToggle);
 
 		//Nao saquei o que é isso
 		if (savedInstanceState == null) {
 			selectItem(0);
 		}
 
-		//Seta fragmento de dashboard no content frame
+		
+		//Seta fragmento home no content frame HENRIQUE
 		Fragment fragment = new SearchRoteFragment();
 		Bundle args = new Bundle();
 		fragment.setArguments(args);
@@ -110,7 +110,7 @@ public class MainActitity extends Activity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// If the nav drawer is open, hide action items related to the content view
-		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+		boolean drawerOpen = menuLateral.isDrawerOpen(listaMenuLateral);
 		menu.findItem(R.id.action_rote_search).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -128,6 +128,7 @@ public class MainActitity extends Activity {
 		FragmentTransaction ftransaction = fragmentManager.beginTransaction();
 
 		// Handle action buttons
+		//HENRIQUE aqui esta definindo a ação do botão da lupa no action bar
 		switch(item.getItemId()) {
 
 		case R.id.action_rote_search:
@@ -158,11 +159,9 @@ public class MainActitity extends Activity {
 	}
 
 	private void selectItem(int position) {
-
-		//		<item>Buscar Rota</item>
-		//		<item>Editar Perfil</item>
-		//		<item>Alterar Senha</item>
-		//		<item>Logout</item>
+		
+		//HENRIQUE
+		//É aqui que a parada esta trocando de tela, são essas 4 linhas, mas a linha de case que define o framegment, mais as 2 la em baixo.
 
 		Bundle args = new Bundle();
 		FragmentManager fragmentManager = getFragmentManager();
@@ -189,19 +188,20 @@ public class MainActitity extends Activity {
 
 		fragment.setArguments(args);
 		ftransaction.replace(R.id.content_frame, fragment);
+		//Essa linha coloca ele como back, ou seja, deixa ele no botão voltar.
 		ftransaction.addToBackStack(null);
 		ftransaction.commit();
 
 		// update selected item and title, then close the drawer
-		mDrawerList.setItemChecked(position, true);
-		setTitle(mDashboardOptions[position]);
-		mDrawerLayout.closeDrawer(mDrawerList);
+		listaMenuLateral.setItemChecked(position, true);
+		setTitle(opcoes[position]);
+		menuLateral.closeDrawer(listaMenuLateral);
 	}
 
 	@Override
 	public void setTitle(CharSequence title) {
-		mTitle = title;
-		getActionBar().setTitle(mTitle);
+		titulo = title;
+		getActionBar().setTitle(titulo);
 	}
 
 	/**

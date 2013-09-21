@@ -30,7 +30,7 @@
         <!-- Email TextField -->
 
         <EditText
-            android:id="@+id/loginLogin"
+            android:id="@+id/login_txt_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:maxLength="12"
@@ -47,17 +47,17 @@
         <!-- Password TextField -->
 
         <EditText
-            android:id="@+id/loginSenha"
+            android:id="@+id/login_senha"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:maxLines="1"
-            android:maxLength="16" />
+            android:maxLength="16"
+            android:maxLines="1" />
 
         <!-- Login Button -->
 
         <Button
-            android:id="@+id/btnLogin"
+            android:id="@+id/login_btn_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
@@ -66,7 +66,7 @@
         <!-- Link to Registration Screen -->
 
         <Button
-            android:id="@+id/btnLinkToRegisterScreen"
+            android:id="@+id/login_btn_register"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dip"
@@ -76,7 +76,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btnLinkToForgetPassword"
+            android:id="@+id/login_btn_forget"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dip"

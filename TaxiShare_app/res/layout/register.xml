@@ -30,21 +30,13 @@
         <!-- CAMPO DO NOME -->
 
         <EditText
-            android:id="@+id/textNome"
+            android:id="@+id/register_txt_nome"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:maxLength="50"/>
+            android:maxLength="50" />
 
         <!-- LABEL DO EMAIL -->
-
-        <TextView
-            android:id="@+id/registerErrorName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/holo_red_light" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -54,22 +46,14 @@
         <!-- CAMPO DO EMAIL -->
 
         <EditText
-            android:id="@+id/textEmail"
+            android:id="@+id/register_txt_email"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textEmailAddress"
-         	android:maxLength="30" />
+            android:maxLength="30" />
 
         <!-- LABEL DO SEXO -->
-
-        <TextView
-            android:id="@+id/registerErrorEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/holo_red_light" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -79,7 +63,7 @@
         <!-- CAMPO DO SEXO -->
 
         <Spinner
-            android:id="@+id/textSexo"
+            android:id="@+id/register_sp_sexo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -93,7 +77,7 @@
         <!-- CAMPO DO DDD -->
 
         <EditText
-            android:id="@+id/textDDD"
+            android:id="@+id/register_txt_ddd"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="Ex: 11"
@@ -103,14 +87,6 @@
         <!-- LABEL DO CELULAR -->
 
         <TextView
-            android:id="@+id/registerErrorDDD"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/holo_red_light" />
-
-        <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Celular" />
@@ -118,7 +94,7 @@
         <!-- CAMPO DO CELULAR -->
 
         <EditText
-            android:id="@+id/textCelular"
+            android:id="@+id/register_txt_celular"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="Ex: 999999999"
@@ -128,14 +104,6 @@
         <!-- LABEL DA DATA NASCIMENTO -->
 
         <TextView
-            android:id="@+id/registerErrorPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/holo_red_light" />
-
-        <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Data de nascimento" />
@@ -143,7 +111,7 @@
         <!-- CAMPO DA DATA NASCIMENTO -->
 
         <DatePicker
-            android:id="@+id/dateDataNascimemto"
+            android:id="@+id/register_txt_data_nasc"
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_weight="1"
@@ -159,20 +127,12 @@
         <!-- CAMPO DO LOGIN -->
 
         <EditText
-            android:id="@+id/textLogin"
+            android:id="@+id/register_txt_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:maxLength="12" />
 
         <!-- LABEL DA SENHA -->
-
-        <TextView
-            android:id="@+id/registerErrorLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/holo_red_light" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -183,12 +143,12 @@
         <!-- CAMPO DA SENHA -->
 
         <EditText
-            android:id="@+id/textSenha"
+            android:id="@+id/register_txt_senha"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:maxLines="1"
-            android:maxLength="16" />
+            android:maxLength="16"
+            android:maxLines="1" />
 
         <!-- LABEL DA CONFIRMACAO SENHA -->
 
@@ -201,22 +161,14 @@
         <!-- CAMPO DA CONFIRMACAO SENHA -->
 
         <EditText
-            android:id="@+id/textSenha2"
+            android:id="@+id/register_txt_senha2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:password="true"
+            android:maxLength="16"
             android:maxLines="1"
-            android:maxLength="16"/>
+            android:password="true" />
 
         <!-- LABEL DA PERGUNTA -->
-
-        <TextView
-            android:id="@+id/registerErrorPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/holo_red_light" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -226,7 +178,7 @@
         <!-- CAMPO DA PERGUNTA -->
 
         <Spinner
-            android:id="@+id/textPergunta"
+            android:id="@+id/register_sp_pergunta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -240,7 +192,7 @@
         <!-- CAMPO DA RESPOSTA -->
 
         <EditText
-            android:id="@+id/textResposta"
+            android:id="@+id/register_txt_resposta"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:maxLength="50" />
@@ -251,7 +203,7 @@
         <!-- Login Button -->
 
         <Button
-            android:id="@+id/lblPergunta"
+            android:id="@+id/reset_pass_lbl_pergunta"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
@@ -260,7 +212,7 @@
         <!-- Link to Login Screen -->
 
         <Button
-            android:id="@+id/btnLinkToLoginScreen"
+            android:id="@+id/register_btn_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dip"

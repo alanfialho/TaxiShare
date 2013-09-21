@@ -21,7 +21,6 @@ public class ListRoteFragment extends Fragment {
 
 	private static View view;
 	private ListView RoteList;
-	private String endereco1, endereco2;
 	public TextView txtEndereco1, txtEndereco2;
 	private Button btnCriarRota;
 	
@@ -101,8 +100,6 @@ public class ListRoteFragment extends Fragment {
 	}
 	
 	public void setEnderecos(String endereco1, String endereco2){
-		this.endereco1 = endereco1;
-		this.endereco2 = endereco2;
 	}
 
 }

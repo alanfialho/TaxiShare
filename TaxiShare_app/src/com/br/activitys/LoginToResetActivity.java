@@ -104,16 +104,16 @@ public class LoginToResetActivity extends Activity {
 		session = new SessionManagement(getApplicationContext());
 
 		//Pegando os campos da tela
-		txtLogin = (EditText) findViewById(R.id.resetLogin);
-		txtResposta = (EditText) findViewById(R.id.resetResposta);
-		txtNovasenha = (EditText) findViewById(R.id.resetNovaSenha);
-		txtNovasenha2 = (EditText) findViewById(R.id.resetNovaSenha2);
-		lblPergunta = (TextView) findViewById(R.id.lblPergunta);
+		txtLogin = (EditText) findViewById(R.id.reset_pass_txt_login);
+		txtResposta = (EditText) findViewById(R.id.reset_pass_txt_resposta);
+		txtNovasenha = (EditText) findViewById(R.id.reset_pass_nova_senha);
+		txtNovasenha2 = (EditText) findViewById(R.id.reset_pass_nova_senha2);
+		lblPergunta = (TextView) findViewById(R.id.reset_pass_lbl_pergunta);
 
 		//Botoes e erro
-		btnRecuperar = (Button) findViewById(R.id.btnResetRecuperarSenha);
-		btnAlterar = (Button) findViewById(R.id.btnResetAlterarSenha);
-		btnCheckAnswer = (Button) findViewById(R.id.resetCheckAnswerBtn);
+		btnRecuperar = (Button) findViewById(R.id.reset_pass_btn_recuperar);
+		btnAlterar = (Button) findViewById(R.id.reset_pass_btn_alterar2);
+		btnCheckAnswer = (Button) findViewById(R.id.reset_pass_btn_checar);
 
 		aQuery = new AQuery(this);	
 	}
