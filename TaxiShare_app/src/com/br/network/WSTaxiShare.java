@@ -24,40 +24,32 @@ public class WSTaxiShare {
 
 	private static final String URL_WS = "http://192.168.56.1:8080/WS_TaxiShare/";
 
-	public PessoaApp getPessoa(int id) throws Exception {
-
-		String[] resposta = new WSClient().get(URL_WS + "pessoa/findById/" + id);
-
-		if (resposta[0].equals("200")) {
-			Gson gson = new Gson();
-			PessoaApp pessoa = gson.fromJson(resposta[1], PessoaApp.class);
-			return pessoa;
-		} else {
-			throw new Exception(resposta[1]);
-		}
-	}	
-
 	public String login(String email, String password) throws Exception {
+		Log.i("WSTaxiShare login taxi", "email ->" + email + " || senha -> " + password);
+		
 		String[] resposta = new WSClient().get(URL_WS + "login/login/?login="+ email +"&password="+ password);
 
-		return resposta[1];
+		return checkError(resposta);
 	}
 
 	public List<PerguntaApp> getPerguntas() throws Exception {
 
 		String[] resposta = new WSClient().get(URL_WS + "pergunta/findAll");
+		
+		Log.i("WSTaxiShare getPerguntas taxi", "resposta 0 -> " + resposta[0] + " || resposta 1 -> " + resposta[1]);
+		
 		if (resposta[0].equals("200")) {
 			Gson gson = new Gson();
-			ArrayList<PerguntaApp> listaPessoa = new ArrayList<PerguntaApp>();
+			ArrayList<PerguntaApp> listaPerguntas = new ArrayList<PerguntaApp>(); 
 			JSONObject json = new JSONObject(resposta[1]);
 			json = json.getJSONObject("data");
 			JSONArray array = json.getJSONArray("perguntas");
 
 			for (int i = 0; i < array.length(); i++) {
-				listaPessoa.add(gson.fromJson(array.get(i).toString(), PerguntaApp.class));
+				listaPerguntas.add(gson.fromJson(array.get(i).toString(), PerguntaApp.class));
 			}
 
-			return listaPessoa;
+			return listaPerguntas;
 		} else {
 			throw new Exception(resposta[1]);
 		}
@@ -66,6 +58,8 @@ public class WSTaxiShare {
 	public List<PessoaApp> getListaPessoa() throws Exception {
 
 		String[] resposta = new WSClient().get(URL_WS + "pessoa/findAll");
+		
+		Log.i("WSTaxiShare getListaPessoa taxi", "resposta 0 -> " + resposta[0] + " || resposta 1 -> " + resposta[1]);
 
 		if (resposta[0].equals("200")) {
 			Gson gson = new Gson();
@@ -82,40 +76,26 @@ public class WSTaxiShare {
 		}
 	}
 
-	public String cadastrarPessoa(PessoaApp pessoa) throws Exception {
-		String[] resposta = {};
-		try
-		{
-			Gson gson = new Gson();
-			String pessoaJson = gson.toJson(pessoa);
-			resposta = new WSClient().post(URL_WS + "pessoa/create", pessoaJson);
-		}
-		catch(Exception e)
-		{
-			Log.i("WSTaxishare Exception cadastrarPessoa taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
-		}
-
-		return resposta[1];
-	} 
-
 	public String cadastrarLogin(LoginApp login) throws Exception {
-		String[] resposta = {};
+		String[] resposta = {"", "errorCode:1, descricao: Problema no servidor"};
 		try
 		{
 			Gson gson = new Gson();
 			String loginJSON = gson.toJson(login);
 			resposta = new WSClient().post(URL_WS + "login/create", loginJSON);
+			Log.i("WSTaxishare cadastrarLogin taxi", "URL -> " + URL_WS + " || Resposta -> " + resposta );
+
 		}
 		catch(Exception e)
 		{
 			Log.i("WSTaxishare Exception cadastrarLogin taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
 		}
 
-		return resposta[1];
+		return checkError(resposta);
 	}
 
 	public String editarCadastro(PessoaApp novaPessoa) throws Exception {
-		String[] resposta = {};
+		String[] resposta = {"", "errorCode:1, descricao: Problema no servidor"};
 		try
 		{
 			Gson gson = new Gson();
@@ -128,12 +108,11 @@ public class WSTaxiShare {
 			Log.i("WSTaxishare Exception editarCadastro taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
 		}
 
-		return resposta[1];
+		return checkError(resposta);
 	}
 
-
 	public String editarSenha(LoginApp loginApp) throws Exception {
-		String[] resposta = {};
+		String[] resposta = {"", "errorCode:1, descricao: Problema no servidor"};
 		try
 		{
 			Gson gson = new Gson();
@@ -146,11 +125,11 @@ public class WSTaxiShare {
 			Log.i("WSTaxishare Exception editarSenha taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
 		}
 
-		return resposta[1];
+		return checkError(resposta);
 	}
 
 	public String checkLogin(String login) throws Exception {
-		String[] resposta = {};
+		String[] resposta = {"", "errorCode:1, descricao: Problema no servidor"};
 		try
 		{
 			resposta = new WSClient().get(URL_WS + "login/checkLogin?login="+ login);
@@ -160,15 +139,9 @@ public class WSTaxiShare {
 			Log.i("WSTaxishare Exception checkLogin taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
 		}
 
-
-		if(resposta[0].equals("200"))
-			return resposta[1];
-		else{
-			ResponseApp resp = new ResponseApp("Erro no servidor", 2, "Servidor indisponivel, tente novamente mais tarde", null);
-			Gson gson = new Gson();
-			return gson.toJson(resp).toString();
-		}
+		return checkError(resposta);
 	}
+	
 	public String criarRota(RotaApp rota) throws Exception {
 		String[] resposta = {};
 		try
@@ -182,12 +155,12 @@ public class WSTaxiShare {
 			Log.i("WSTaxishare Exception criarRota taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
 		}
 
-		return resposta[1];
+		return checkError(resposta);
 	}
 	
 	public String participarRota(int idRota, int idUsuario) throws Exception {
 		
-		String[] resposta = {};
+		String[] resposta = {"", "errorCode:1, descricao: Problema no servidor"};
 			
 		try
 		{
@@ -199,10 +172,19 @@ public class WSTaxiShare {
 			Log.i("WSTaxishare Exception participarRota taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
 		}
 
-		return resposta[1];
+		return checkError(resposta);
 		
-	} 
-
+	}
+	
+	private String checkError(String[] resposta){
+		if(resposta[0].equals("200"))
+			return resposta[1];
+		else{
+			ResponseApp resp = new ResponseApp("Erro no servidor", 2, "Servidor indisponivel, tente novamente mais tarde", null);
+			Gson gson = new Gson();
+			return gson.toJson(resp).toString();
+		}
+	}
 
 }
 

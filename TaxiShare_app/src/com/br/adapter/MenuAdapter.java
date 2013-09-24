@@ -16,7 +16,7 @@ public class MenuAdapter extends BaseAdapter {
 	private ViewHolder holder;
  
 	public static final Integer[] images = { R.drawable.action_search,
-        R.drawable.social_icon, R.drawable.password_icon, R.drawable.create_rote, R.drawable.logout_icon};
+        R.drawable.icon_profile, R.drawable.icon_password, R.drawable.icon_locate, R.drawable.icon_logout};
 	
 	
 	static class ViewHolder{

@@ -3,14 +3,12 @@ package com.br.fragments;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -31,7 +29,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 public class CreateRoteFragment extends Fragment {
@@ -53,6 +50,7 @@ public class CreateRoteFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.rote_create, container, false);
+		context = getActivity();
 
 		session = new SessionManagement(rootView.getContext());
 
@@ -68,41 +66,45 @@ public class CreateRoteFragment extends Fragment {
 		return rootView;
 	}
 
-	/**
-	private void setUpMapSePreciso() {
-
-		//Verifica se o mapa está nulo ou não para saber se é preciso cria-lo
-		if(mapa == null) {
-
-			//Tenta obter um mapa do SupportMapFragment
-			mapa = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-			//Verifica se teve sucesso em obter o mapa
-			if(mapa != null){
-				setUpMap();
-			}
-
-
-		}
-
-	}
-
-	 **/
-
+	
 	private void setAtributes(View rootView) {
 		session = new SessionManagement(rootView.getContext());
 
 		//Importando os campos da pessoa
-		textOrigem = (EditText) rootView.findViewById(R.id.txtCreateOrigem);
-		textDestino = (EditText) rootView.findViewById(R.id.txtCreateDestino);
-		spnPessoas = (Spinner) rootView.findViewById(R.id.spinnerCreatePessoas);
-		tpHorarioSaida = (TimePicker) rootView.findViewById(R.id.timePickerCreateHorarioSaida);
+		textOrigem = (EditText) rootView.findViewById(R.id.rote_create_txt_origem);
+		textDestino = (EditText) rootView.findViewById(R.id.rote_create_txt_destino);
+		spnPessoas = (Spinner) rootView.findViewById(R.id.rote_create_sp_pessoas);
+		tpHorarioSaida = (TimePicker) rootView.findViewById(R.id.rote_create_tp_saida);
 		
 		Bundle args = getArguments();
 		textOrigem.setText(args.getCharSequence("origem"));
 		textDestino.setText(args.getCharSequence("destino"));
+		
+
+		try {
+
+			// Definindo Lista de sexos
+			List<String> numeroPessoas = new ArrayList<String>();
+			numeroPessoas.add("1");
+			numeroPessoas.add("2");
+			
+
+			// Colocando lista de sexos no spinner
+			ArrayAdapter<String> adapterSexo = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, numeroPessoas);
+			adapterSexo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spnPessoas.setAdapter(adapterSexo);		
+
+
+		} catch (Exception e) {
+			Log.i("Preenchendo Sppiners Exception taxi", "Exceptiom -> " + e + " || Message -> " + e.getMessage());
+		}
+		
+		
+		
+		
 
 		//Importando botões
-		btnCriarRota = (Button) rootView.findViewById(R.id.btnCreateCriar);
+		btnCriarRota = (Button) rootView.findViewById(R.id.rote_create_btn_criar);
 
 	}
 
@@ -110,7 +112,6 @@ public class CreateRoteFragment extends Fragment {
 		//Acao do botao criar rota
 		btnCriarRota.setOnClickListener(new View.OnClickListener() {			
 			public void onClick(View view) {
-				context = view.getContext();
 				CreateRoteTask task = new CreateRoteTask();
 				task.execute();
 			}

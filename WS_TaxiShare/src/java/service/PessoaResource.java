@@ -40,6 +40,8 @@ public class PessoaResource {
        
         ResponseEntity saida;
         PessoaJpaController pessoaDAO;
+                    System.out.println("entrou no create pessoa resource");
+
         
         try 
         {
@@ -51,12 +53,15 @@ public class PessoaResource {
             pessoaDAO = new PessoaJpaController(getEntityManager());
             pessoaDAO.create(pessoa);
             
-            saida = new ResponseEntity("Sucesso", 0, "Cadastro realizado com sucesso!", null);    
+            saida = new ResponseEntity("Sucesso", 0, "Cadastro realizado com sucesso!", null); 
+            System.out.println("create pessoa resource sucesso");
+            
         } 
         catch (Exception ex) 
         {
             System.out.println("ERRRO --> " + ex.getMessage());
             saida = new ResponseEntity("Erro", 1, "Não foi possivel realizar operação, tente mais tarde!", null);
+            System.out.println("create pessoa resource exception -> " + ex + " -- Message -> " + ex.getMessage());
         }
         
         return new Gson().toJson(saida);
