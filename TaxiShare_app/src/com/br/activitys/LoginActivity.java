@@ -94,10 +94,13 @@ public class LoginActivity extends Activity {
 	private class loginTask extends AsyncTask<String, Void, String> {
 
 		ProgressDialog progress;
-
+		String login, password;
 		protected void onPreExecute() {
 			//Inica a popup de load
 			progress = Utils.setProgreesDialog(progress, context, "Efetuando Login", "Aguarde...");
+			//Pegando o email e a senha da tela
+			login = loginLogin.getText().toString();
+			password = loginSenha.getText().toString();
 		}
 
 		@Override
@@ -105,39 +108,31 @@ public class LoginActivity extends Activity {
 			String response = "";
 
 			try {
-				//Pegando o email e a senha da tela
-				String login = loginLogin.getText().toString();
-				String password = loginSenha.getText().toString();
+				
 				WSTaxiShare ws = new WSTaxiShare();
-
-				Log.i("inciando login taxi", "Login -> " + login + " Senha -> " + password);
 				response = ws.login(login, password);
-				Log.i("String resposta taxi", response + "");
-
 
 			} catch (Exception e) {
 				Log.i("Exception Login taxi", e + "");
 				Utils.gerarToast( context, "Não Foi possível logar");
-				e.printStackTrace();
 			}
-
 
 			return response;
 		}
 
 		@Override
-		protected void onPostExecute(String strJson) {
+		protected void onPostExecute(String response) {
 
 			try {
-				JSONObject resposta = new JSONObject(strJson);
-				Log.i("JSON resposta taxi", resposta + "");
+				JSONObject json = new JSONObject(response);
+				Log.i("JSON resposta taxi", json + "");
 
-				if (resposta.getInt("errorCode") == 0) {
-					Utils.gerarToast( context, resposta.getString("descricao"));
+				if (json.getInt("errorCode") == 0) {
+					Utils.gerarToast( context, json.getString("descricao"));
 
-					JSONObject pessoa = resposta.getJSONObject("data").getJSONObject("pessoa");
+					JSONObject pessoa = json.getJSONObject("data").getJSONObject("pessoa");
 					Log.i("Testando as paradas aqui", pessoa.toString());
-					String pessoaId = resposta.getJSONObject("data").getString("id");
+					String pessoaId = json.getJSONObject("data").getString("id");
 					String nome = pessoa.getString("nome");
 					String email = pessoa.getString("email");
 					String ddd = pessoa.getString("ddd");
@@ -157,7 +152,7 @@ public class LoginActivity extends Activity {
 
 				}else{
 					// Erro de login
-					Utils.gerarToast( context, resposta.getString("descricao"));
+					Utils.gerarToast( context, json.getString("descricao"));
 				}
 			} catch (JSONException e) {
 				Log.i("Exception on post execute taxi", "Exception -> " + e + " Message->" +e.getMessage());

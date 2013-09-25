@@ -137,7 +137,7 @@ public class LoginResource {
     @Path("/checkLogin")
     @Produces("application/json")
     public String login(@QueryParam("login") String loginInfo) {
-        System.out.println("Login BRUNAO --> " + loginInfo);
+        System.out.println("Login --> " + loginInfo);
 
         //Controlador do banco de login
         UsuarioJpaController loginDao = new UsuarioJpaController(getEntityManager());
@@ -174,8 +174,10 @@ public class LoginResource {
     @Produces("application/json")
     @Consumes("application/json")
     public String create(UsuarioEntity entity) {
+        System.out.println("Entrou em create login LoginResource");
 
         try {
+        System.out.println("Entrou em create login LoginResource");
 
             //Cria uma pessoa e um login
             Pessoa pessoa = new Pessoa();

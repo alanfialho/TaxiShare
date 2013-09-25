@@ -20,27 +20,7 @@
             android:textSize="25dip"
             android:textStyle="bold" />
 
-        <!-- CAMPO DO LOGIN -->
-
-        <!-- LABEL DA SENHA -->
-
-        <!-- LABEL DA PERGUNTA -->
-
-        <!-- CAMPO DA PERGUNTA -->
-
-        <!-- LABEL DA RESPOSTA -->
-
-        <!-- CAMPO DA RESPOSTA -->
-
-        <!-- Error message -->
-
-        <!-- Login Button -->
-
-        <!-- Link to Login Screen -->
-        
-
-        <!-- Link to Login Screen -->
-
+       
         <LinearLayout
             android:id="@+id/resetLoginLayout"
             android:layout_width="match_parent"
@@ -57,7 +37,8 @@
                 android:id="@+id/reset_pass_txt_login"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:ems="10" >
+                android:ems="10"
+                android:maxLines="1" >
 
                 <requestFocus />
             </EditText>
@@ -94,7 +75,8 @@
                 android:id="@+id/reset_pass_txt_resposta"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:ems="10" />
+                android:ems="10"
+                android:maxLines="1" />
 
             <Button
                 android:id="@+id/reset_pass_btn_checar"
@@ -120,7 +102,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -133,7 +116,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
 
                 <Button
                     android:id="@+id/reset_pass_btn_alterar2"

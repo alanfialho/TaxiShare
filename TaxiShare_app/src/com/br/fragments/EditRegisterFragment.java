@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.br.activitys.R;
@@ -40,7 +39,7 @@ import android.widget.DatePicker;
 public class EditRegisterFragment extends Fragment {
 	Context context;
 	Validator validator;
-	
+
 	//botoes
 	Button btnSalvar;
 
@@ -73,22 +72,21 @@ public class EditRegisterFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.edit_register, container, false);
+		context = getActivity();
+
 		setAtributes(rootView);
 		fillFields(rootView);
 		setBtnAction();
 
 		//Criando listner
 		ValidationListner validationListner = new ValidationListner();
-		validationListner.validationContext = getActivity();
-
 		//Instanciando Validation
 		validator = new Validator(this);
 		validator.setValidationListener(validationListner);
 
 		//Checa se o usuario esta logado
 		session.checkLogin();
-		
-		context = rootView.getContext();
+
 
 		return rootView;
 	}
@@ -256,18 +254,20 @@ public class EditRegisterFragment extends Fragment {
 			} 
 			catch (Exception e) {
 				Utils.gerarToast( context, "Erro ao alterar!");
-				Log.i("Exception alterar taxi", e + "");
+				Log.i("Exception doInBackground alterar taxi", e + "");
 			}
 
 			return response;
 		}
 
 		@Override
-		protected void onPostExecute(String strJson) {
+		protected void onPostExecute(String response) {
+			progress.dismiss();
+
 
 			//Cria um obj JSON com a resposta
 			try {
-				JSONObject respostaWsJSON = new JSONObject(strJson);
+				JSONObject respostaWsJSON = new JSONObject(response);
 				if(respostaWsJSON.getInt("errorCode") == 0){
 
 					session.createLoginSession(pessoaID, pessoaApp.getNome(),  pessoaApp.getEmail(), pessoaApp.getSexo(),  pessoaApp.getDataNascimento(), pessoaApp.getDdd(),  pessoaApp.getCelular(), sessionedLogin);
@@ -282,13 +282,10 @@ public class EditRegisterFragment extends Fragment {
 				Utils.gerarToast( context, respostaWsJSON.getString("descricao"));
 
 
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				Log.i(" EditRegisterTask onPostExecute Exception taxi", "Exception -> " + e + "Message -> " + e.getMessage());
 				Utils.gerarToast( context, "Tente novamente mais tarde!");
 			}
-
-			progress.dismiss();
-
 		}
 	}
 }

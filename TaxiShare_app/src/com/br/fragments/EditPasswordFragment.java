@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -61,20 +62,18 @@ public class EditPasswordFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.edit_password, container, false);
+		context = getActivity();
 
 		setAtributes(rootView);
 		setBtnActions();
 		//Checa se o usuario esta logado
 
-
 		//Criando listner
 		ValidationListner validationListner = new ValidationListner();
-		validationListner.validationContext = getActivity();
 
 		//Instanciando Validation
 		validator = new Validator(this);
 		validator.setValidationListener(validationListner);
-
 
 		session.checkLogin();
 
@@ -115,11 +114,10 @@ public class EditPasswordFragment extends Fragment {
 	private class CheckPassWordTask extends AsyncTask<String, Void, String> {
 
 		ProgressDialog progress;
-		Context fillContext;
 
 		protected void onPreExecute() {
 			//Inica a popup de load
-			progress = Utils.setProgreesDialog(progress, fillContext, "Carregando", "Aguarde...");
+			progress = Utils.setProgreesDialog(progress, context, "Carregando", "Aguarde...");
 
 			checkEmpty = checkPassword = checkOldAndNew = true;
 
@@ -157,7 +155,7 @@ public class EditPasswordFragment extends Fragment {
 					Log.i("Algum check é falso", "Empty -> " + checkEmpty + " Password -> " + checkPassword + " OldAndNew -> " +checkOldAndNew );
 
 			}catch(Exception e){
-				Utils.gerarToast(fillContext,"Erro ao alterar!");
+				Utils.gerarToast(context,"Erro ao alterar!");
 				Log.i("Excetion check edit password taxi", "Exception -> " + e + " Message -> " + e.getMessage());
 			}
 
@@ -166,10 +164,10 @@ public class EditPasswordFragment extends Fragment {
 		}
 
 		@Override
-		protected void onPostExecute(String strJson) {
+		protected void onPostExecute(String response) {
 
-			respostaCheckPassword = strJson;
-			Log.i("respostaCheckPassword onPostExecute check", strJson);
+			respostaCheckPassword = response;
+			Log.i("respostaCheckPassword onPostExecute check", response);
 
 			if(!checkEmpty || !checkPassword || !checkOldAndNew)
 			{
@@ -182,18 +180,17 @@ public class EditPasswordFragment extends Fragment {
 					forgotNovaSenha.setError("Nova senha deve ser diferente da senha antiga");
 			}
 			else{
-				Log.i("onPostExecute CheckPassword taxi", strJson);
+				Log.i("onPostExecute CheckPassword taxi", response);
 				JSONObject resposta;
 				try {
 					resposta = new JSONObject(respostaCheckPassword);
 					if (resposta.getInt("errorCode") == 0) {
 
 						EditPasswordTask task = new EditPasswordTask();
-						task.fillContext = fillContext;
 						task.execute();
 					}
 					else
-						Utils.gerarToast( fillContext, resposta.getString("descricao"));
+						Utils.gerarToast( context, resposta.getString("descricao"));
 
 				} catch (JSONException e) {
 					Log.i("onPostExecute exception taxi", "Exception -> " + e + "Message -> " + e.getMessage());
@@ -206,11 +203,10 @@ public class EditPasswordFragment extends Fragment {
 	private class EditPasswordTask extends AsyncTask<String, Void, String> {
 
 		ProgressDialog progress;
-		Context fillContext;
 
 		protected void onPreExecute() {
 			//Inica a popup de load
-			progress = 	Utils.setProgreesDialog(progress, fillContext, "Salvando Alterações", "Aguarde...");
+			progress = 	Utils.setProgreesDialog(progress, context, "Salvando Alterações", "Aguarde...");
 			Log.i("onPreExecute Edit Password taxi", "onPreExecute Edit Password taxi");
 		}
 
@@ -241,10 +237,10 @@ public class EditPasswordFragment extends Fragment {
 
 					if(resposta2.getInt("errorCode")== 0){
 						Log.i("Resposta da alteracao taxi", resposta.toString());
-						Utils.gerarToast( fillContext, resposta2.getString("descricao"));
+						Utils.gerarToast( context, resposta2.getString("descricao"));
 					}
 					else{
-						Utils.gerarToast( fillContext, resposta2.getString("descricao"));
+						Utils.gerarToast( context, resposta2.getString("descricao"));
 					}
 				}
 			}catch(Exception e){
@@ -258,22 +254,24 @@ public class EditPasswordFragment extends Fragment {
 		}
 
 		@Override
-		protected void onPostExecute(String strJson) {
-			Log.i("onPostExecute Edit Password taxi", strJson);
+		protected void onPostExecute(String response) {
+			Log.i("onPostExecute Edit Password taxi", response);
 
 
 			try {
-				JSONObject resposta2 = new JSONObject(strJson);
+				JSONObject resposta2 = new JSONObject(response);
 				if(resposta2.getInt("errorCode")== 0){
+					Utils.gerarToast( context, resposta2.getString("descricao"));
 
-					//					//Transfere para a pagina de dashboard
-					//					Intent i = new Intent(getApplicationContext(),
-					//							DashboardActivity.class);
-					//					startActivity(i);
-					//					finish();
+					Fragment fragment = new SearchRoteFragment();
+					Bundle args = new Bundle();
+					fragment.setArguments(args);
+
+					FragmentManager fragmentManager = getFragmentManager();
+					fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 				}
 				else{
-					Utils.gerarToast( fillContext, resposta2.getString("descricao"));
+					Utils.gerarToast( context, resposta2.getString("descricao"));
 				}
 
 			} catch (JSONException e) {
@@ -285,11 +283,9 @@ public class EditPasswordFragment extends Fragment {
 	}
 
 	private class ValidationListner implements ValidationListener {
-		Context validationContext;
 
 		public void onValidationSucceeded() {
 			CheckPassWordTask task = new CheckPassWordTask();
-			task.fillContext = validationContext;
 			task.execute();
 		}
 

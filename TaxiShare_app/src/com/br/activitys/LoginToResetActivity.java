@@ -21,15 +21,30 @@ import com.br.entidades.LoginApp;
 import com.br.network.WSTaxiShare;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
+import com.br.validation.Rule;
+import com.br.validation.Validator;
+import com.br.validation.Validator.ValidationListener;
+import com.br.validation.annotation.ConfirmPassword;
+import com.br.validation.annotation.Password;
+import com.br.validation.annotation.Required;
+import com.br.validation.annotation.TextRule;
 
 
 public class LoginToResetActivity extends Activity {
 	Context context;
 	AQuery aQuery;
+	Validator validator;
 
 	EditText txtLogin;
 	EditText txtResposta;
-	EditText txtNovasenha;
+
+	@Required(order = 1, message="Campo obrigatorio")
+	@Password(order=2)
+	@TextRule(order=3, minLength=6, message="Deve conter no minimo 6 caracteres")
+	EditText txtNovasenha; 
+
+	@Required(order = 4, message="Campo obrigatorio")
+	@ConfirmPassword(order=5, message="Senhas precisam ser iguais")
 	EditText txtNovasenha2;
 
 	TextView lblPergunta;
@@ -44,7 +59,14 @@ public class LoginToResetActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.login_to_reset); 	
+		setContentView(R.layout.login_to_reset);
+		context = this;		
+		//Criando listner
+		ValidationListner validationListner = new ValidationListner();
+
+		//Instanciando Validation
+		validator = new Validator(this);
+		validator.setValidationListener(validationListner);
 
 		setAtributes();
 		setBtnActions();	
@@ -56,9 +78,8 @@ public class LoginToResetActivity extends Activity {
 		btnRecuperar.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-				context = view.getContext();
+
 				CheckLoginTask task = new CheckLoginTask();
-				task.fillContext = view.getContext();
 				task.execute();
 			}
 		});
@@ -68,18 +89,7 @@ public class LoginToResetActivity extends Activity {
 		btnAlterar.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-				String novaSenha = txtNovasenha.getText().toString();
-				String novaSenha2 = txtNovasenha2.getText().toString();
-				Log.i("Respota Retornada Taxi", loginApp.getResposta());
-
-				if(novaSenha.equals(novaSenha2)){
-					context = view.getContext();
-					EditPasswordTask editTask = new EditPasswordTask();
-					editTask.fillContext = view.getContext();
-					editTask.execute();
-				}
-				else
-					Utils.gerarToast(context, "Senhas precisam ser iguais");
+				validator.validate();
 			}
 		});
 
@@ -90,7 +100,7 @@ public class LoginToResetActivity extends Activity {
 			public void onClick(View view) {
 				String resposta = txtResposta.getText().toString();
 				Log.i("Respota Retornada Taxi", loginApp.getResposta());
-				if(resposta.equals(loginApp.getResposta())){
+				if(resposta.equalsIgnoreCase(loginApp.getResposta())){
 					aQuery.id(R.id.resetPasswordLayout).visible();	
 				}
 				else
@@ -130,16 +140,37 @@ public class LoginToResetActivity extends Activity {
 		}
 	}
 
+	private class ValidationListner implements ValidationListener {
+
+		public void onValidationSucceeded() {
+			EditPasswordTask editTask = new EditPasswordTask();			
+			editTask.execute();		
+		}
+
+		public void onValidationFailed(View failedView, Rule<?> failedRule) {
+
+			String message = failedRule.getFailureMessage();
+
+			if (failedView instanceof EditText) {
+				failedView.requestFocus();
+				((EditText) failedView).setError(message);
+			} else {
+				Utils.gerarToast(failedView.getContext(), message);
+			}
+		}
+
+	}
+
+
 	private class CheckLoginTask extends AsyncTask<String, Void, String> {
 
 		ProgressDialog progress;
-		Context fillContext;
 		String login;
 
 
 		protected void onPreExecute() {
 			//Inica a popup de load
-			progress = Utils.setProgreesDialog(progress, fillContext, "Verificando Login", "Aguarde...");
+			progress = Utils.setProgreesDialog(progress, context, "Verificando Login", "Aguarde...");
 			login = txtLogin.getText().toString(); 
 
 		}
@@ -167,12 +198,12 @@ public class LoginToResetActivity extends Activity {
 		}
 
 		@Override
-		protected void onPostExecute(String strJson) {
+		protected void onPostExecute(String response) {
 
 			if(login.length() >3){
 				try {
 
-					JSONObject jsonResposta = new JSONObject(strJson);
+					JSONObject jsonResposta = new JSONObject(response);
 					Log.i("CheckLoginTask Exception onPostExecute taxi",  "Json resposta -> " + jsonResposta);
 
 
@@ -196,7 +227,7 @@ public class LoginToResetActivity extends Activity {
 				} catch (Exception e) {
 					Log.i("Exception on post execute taxi", "Exception -> " + e + " Message->" +e.getMessage());
 				}
-				
+
 			}else{
 				txtLogin.setError("Deve conter no minimo 4 digitos!");
 			}
@@ -207,7 +238,6 @@ public class LoginToResetActivity extends Activity {
 	private class EditPasswordTask extends AsyncTask<String, Void, String> {
 
 		ProgressDialog progress;
-		Context fillContext;
 		String resposta;
 		boolean checkResposta;
 		boolean checkEquals;
@@ -215,7 +245,7 @@ public class LoginToResetActivity extends Activity {
 
 		protected void onPreExecute() {
 			//Inica a popup de load
-			progress = Utils.setProgreesDialog(progress, fillContext, "Alterando", "Aguarde...");
+			progress = Utils.setProgreesDialog(progress, context, "Alterando", "Aguarde...");
 			loginApp.setSenha(txtNovasenha.getText().toString());
 			resposta = txtResposta.getText().toString();
 
@@ -225,7 +255,7 @@ public class LoginToResetActivity extends Activity {
 
 			checkResposta = checkEquals = checkEmpty = false;
 
-			if(resposta.equals(loginApp.getResposta()))
+			if(resposta.equalsIgnoreCase(loginApp.getResposta()))
 				checkResposta = true;
 			else
 				txtResposta.setError("Resposta Inválida");
@@ -239,7 +269,7 @@ public class LoginToResetActivity extends Activity {
 				txtNovasenha.setError("Campo obrigatório");
 				txtNovasenha2.setError("Campo obrigatório");
 			}
-			
+
 			if(checkNovaSenha.equals(checkNovaSenha2)){
 				checkEquals = true;
 			}else{
@@ -287,11 +317,11 @@ public class LoginToResetActivity extends Activity {
 		}
 
 		@Override
-		protected void onPostExecute(String strJson) {
+		protected void onPostExecute(String response) {
 
 			try {
 
-				JSONObject resposta = new JSONObject(strJson);
+				JSONObject resposta = new JSONObject(response);
 				Log.i("EditPasswordTask doInBackground taxi resposta", resposta + "");
 
 				if (resposta.getInt("errorCode") == 0) {

@@ -115,7 +115,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_weight="1"
-            android:calendarViewShown="false" />
+            android:calendarViewShown="false"
+            android:focusable="true" />
 
         <!-- LABEL DO LOGIN -->
 
@@ -203,7 +204,7 @@
         <!-- Login Button -->
 
         <Button
-            android:id="@+id/reset_pass_lbl_pergunta"
+            android:id="@+id/reset_btn_cadastrar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
