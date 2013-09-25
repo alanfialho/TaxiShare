@@ -45,10 +45,10 @@ public class RoteAdapter extends BaseAdapter {
 	public View getView(int posicao, View convertView, ViewGroup arg2) {
 
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.rote_list_item, null);
+			convertView = mInflater.inflate(R.layout.rote_list, null);
 			holder = new ViewHolder();
 
-			holder.roteInfo = (TextView) convertView.findViewById(R.id.txtRoteInfoList);
+			//holder.roteInfo = (TextView) convertView.findViewById(R.id.txtRoteListOrigem);
 
 			convertView.setTag(holder);
 

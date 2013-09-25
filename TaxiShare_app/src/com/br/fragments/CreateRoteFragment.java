@@ -2,6 +2,7 @@ package com.br.fragments;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.json.JSONObject;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,7 +46,8 @@ public class CreateRoteFragment extends Fragment {
 	EditText textDestino;
 	Spinner spnPessoas;
 	TimePicker tpHorarioSaida;
-
+	Address ori, dest;
+	EnderecoApp enderecoOrigem, enderecoDestino;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,7 +69,7 @@ public class CreateRoteFragment extends Fragment {
 		return rootView;
 	}
 
-	
+
 	private void setAtributes(View rootView) {
 		session = new SessionManagement(rootView.getContext());
 
@@ -75,19 +78,27 @@ public class CreateRoteFragment extends Fragment {
 		textDestino = (EditText) rootView.findViewById(R.id.rote_create_txt_destino);
 		spnPessoas = (Spinner) rootView.findViewById(R.id.rote_create_sp_pessoas);
 		tpHorarioSaida = (TimePicker) rootView.findViewById(R.id.rote_create_tp_saida);
-		
+
 		Bundle args = getArguments();
-		textOrigem.setText(args.getCharSequence("origem"));
-		textDestino.setText(args.getCharSequence("destino"));
-		
+		ori = (Address) args.getParcelable("origemAddress");
+		dest  = (Address) args.getParcelable("destinoAddress");
+		enderecoOrigem = populaEnderecoApp(ori, 'O');
+		enderecoDestino = populaEnderecoApp(dest, 'D');
+		String ruaOri = enderecoOrigem.getRua() + ", " + enderecoOrigem.getNumero() + " - " + enderecoOrigem.getCidade();
+		String ruaDest = enderecoDestino.getRua() + ", " + enderecoDestino.getNumero() + " - " + enderecoDestino.getCidade();
+
+		textOrigem.setText(ruaOri);
+		textDestino.setText(ruaDest);
+
 
 		try {
 
 			// Definindo Lista de sexos
 			List<String> numeroPessoas = new ArrayList<String>();
+			numeroPessoas.add("0");
 			numeroPessoas.add("1");
 			numeroPessoas.add("2");
-			
+
 
 			// Colocando lista de sexos no spinner
 			ArrayAdapter<String> adapterSexo = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, numeroPessoas);
@@ -98,10 +109,10 @@ public class CreateRoteFragment extends Fragment {
 		} catch (Exception e) {
 			Log.i("Preenchendo Sppiners Exception taxi", "Exceptiom -> " + e + " || Message -> " + e.getMessage());
 		}
-		
-		
-		
-		
+
+
+
+
 
 		//Importando botões
 		btnCriarRota = (Button) rootView.findViewById(R.id.rote_create_btn_criar);
@@ -130,6 +141,9 @@ public class CreateRoteFragment extends Fragment {
 			progress = Utils.setProgreesDialog(progress, context, "Criando Rota", "Aguarde...");
 			Log.i("onPreExecute Create Rota taxi", "onPreExecute Create Rota taxi");
 
+<<<<<<< HEAD
+
+=======
 			//quebrando o endereço padrão Google só foi feito isso para o teste
 			String endOrigem[] = textOrigem.getText().toString().split(",");
 			String endDestino[] = textDestino.getText().toString().split(",");
@@ -149,11 +163,11 @@ public class CreateRoteFragment extends Fragment {
 			enderecoOrigem.setTipo('O');
 
 			enderecoDestino = new EnderecoApp();
-			enderecoDestino.setRua(endOrigem[0]);
+			enderecoDestino.setRua(endDestino[0]);
 			enderecoDestino.setNumero(Integer.parseInt(endOrigem[1].trim()));
-			enderecoDestino.setBairro(endOrigem[2]);
-			enderecoDestino.setCidade(endOrigem[3]);
-			enderecoDestino.setEstado(endOrigem[4]);
+			enderecoDestino.setBairro(endDestino[2]);
+			enderecoDestino.setCidade(endDestino[3]);
+			enderecoDestino.setEstado(endDestino[4]);
 			enderecoDestino.setPais("Brasil");
 			enderecoDestino.setLatitude("13762782");
 			enderecoDestino.setLongitude("4938520");
@@ -161,6 +175,7 @@ public class CreateRoteFragment extends Fragment {
 			enderecoDestino.setCep("08021170");
 			enderecoDestino.setTipo('D');
 
+>>>>>>> 20da9d77acab4a0894476299aa4595f7d45a9c38
 
 			//instaciando a rota e setando valores
 			rotaApp = new RotaApp();
@@ -177,13 +192,26 @@ public class CreateRoteFragment extends Fragment {
 			adm.setId(1);
 			rotaApp.setAdministrador(adm);
 			//horario de saida
-			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
-			Date data  = new Date();
-			data.setHours(tpHorarioSaida.getCurrentHour());
-			data.setMinutes(tpHorarioSaida.getCurrentMinute());
-			String dataFormatada = format.format(data);
-			rotaApp.setDataRota(dataFormatada);
+			try
+			{
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
+				Calendar cal = Calendar.getInstance();
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), tpHorarioSaida.getCurrentHour(), tpHorarioSaida.getCurrentMinute());
+				Date data = cal.getTime();
+				String dataFormatada = dateFormat.format(data);
+				rotaApp.setDataRota(dataFormatada);
+			}
+			catch(Exception ex)
+			{
+				Utils.gerarToast( context, "Erro ao criar rota!");
+				Log.i("Exception criar rota taxi", ex.getMessage() + "");
+
+			}
 		}
+
+
+
+
 
 		@Override
 		protected String doInBackground(String... urls) {
@@ -217,4 +245,45 @@ public class CreateRoteFragment extends Fragment {
 				Utils.gerarToast( context, "Tente novamente mais tarde!");
 			}
 		}
-	}}
+	}
+
+	public EnderecoApp populaEnderecoApp(Address address, Character tipo){
+		EnderecoApp endereco = new EnderecoApp();
+		switch (tipo) {
+		case 'O':
+			enderecoOrigem = new EnderecoApp();
+			enderecoOrigem.setRua(address.getThoroughfare());
+			enderecoOrigem.setNumero(Integer.parseInt(address.getSubThoroughfare()));
+			enderecoOrigem.setBairro(address.getSubLocality());
+			enderecoOrigem.setCidade(address.getLocality());
+			enderecoOrigem.setEstado(address.getAdminArea());
+			enderecoOrigem.setPais(address.getCountryName());
+			enderecoOrigem.setLatitude(Double.toString(address.getLatitude()));
+			enderecoOrigem.setLongitude(Double.toString(address.getLongitude()));
+			enderecoOrigem.setUf("SP");
+			enderecoOrigem.setCep(address.getPostalCode());
+			enderecoOrigem.setTipo(tipo);
+			endereco = enderecoOrigem;
+		case 'D':
+			enderecoDestino = new EnderecoApp();
+			enderecoDestino.setRua(address.getThoroughfare());
+			enderecoDestino.setNumero(Integer.parseInt(address.getSubThoroughfare()));
+			enderecoDestino.setBairro(address.getSubLocality());
+			enderecoDestino.setCidade(address.getLocality());
+			enderecoDestino.setEstado(address.getAdminArea());
+			enderecoDestino.setPais(address.getCountryName());
+			enderecoDestino.setLatitude(Double.toString(address.getLatitude()));
+			enderecoDestino.setLongitude(Double.toString(address.getLongitude()));
+			enderecoDestino.setUf("SP");
+			enderecoDestino.setCep(address.getPostalCode());
+			enderecoDestino.setTipo(tipo);
+			endereco = enderecoDestino;
+		default:
+			break;
+		}
+		return endereco;
+
+
+	}
+
+}
