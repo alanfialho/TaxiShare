@@ -141,41 +141,8 @@ public class CreateRoteFragment extends Fragment {
 			progress = Utils.setProgreesDialog(progress, context, "Criando Rota", "Aguarde...");
 			Log.i("onPreExecute Create Rota taxi", "onPreExecute Create Rota taxi");
 
-<<<<<<< HEAD
 
-=======
-			//quebrando o endereço padrão Google só foi feito isso para o teste
-			String endOrigem[] = textOrigem.getText().toString().split(",");
-			String endDestino[] = textDestino.getText().toString().split(",");
 
-			//instaciando os endereços
-			enderecoOrigem = new EnderecoApp();
-			enderecoOrigem.setRua(endOrigem[0]);
-			enderecoOrigem.setNumero(Integer.parseInt(endOrigem[1].trim()));
-			enderecoOrigem.setBairro(endOrigem[2]);
-			enderecoOrigem.setCidade(endOrigem[3]);
-			enderecoOrigem.setEstado(endOrigem[4]);
-			enderecoOrigem.setPais("Brasil");
-			enderecoOrigem.setLatitude("13762782");
-			enderecoOrigem.setLongitude("4938520");
-			enderecoOrigem.setUf("SP");
-			enderecoOrigem.setCep("08021170");
-			enderecoOrigem.setTipo('O');
-
-			enderecoDestino = new EnderecoApp();
-			enderecoDestino.setRua(endDestino[0]);
-			enderecoDestino.setNumero(Integer.parseInt(endOrigem[1].trim()));
-			enderecoDestino.setBairro(endDestino[2]);
-			enderecoDestino.setCidade(endDestino[3]);
-			enderecoDestino.setEstado(endDestino[4]);
-			enderecoDestino.setPais("Brasil");
-			enderecoDestino.setLatitude("13762782");
-			enderecoDestino.setLongitude("4938520");
-			enderecoDestino.setUf("SP");
-			enderecoDestino.setCep("08021170");
-			enderecoDestino.setTipo('D');
-
->>>>>>> 20da9d77acab4a0894476299aa4595f7d45a9c38
 
 			//instaciando a rota e setando valores
 			rotaApp = new RotaApp();
