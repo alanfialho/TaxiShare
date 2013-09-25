@@ -2,6 +2,7 @@ package com.br.fragments;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -148,11 +149,11 @@ public class CreateRoteFragment extends Fragment {
 			enderecoOrigem.setTipo('O');
 
 			enderecoDestino = new EnderecoApp();
-			enderecoDestino.setRua(endOrigem[0]);
+			enderecoDestino.setRua(endDestino[0]);
 			enderecoDestino.setNumero(Integer.parseInt(endOrigem[1].trim()));
-			enderecoDestino.setBairro(endOrigem[2]);
-			enderecoDestino.setCidade(endOrigem[3]);
-			enderecoDestino.setEstado(endOrigem[4]);
+			enderecoDestino.setBairro(endDestino[2]);
+			enderecoDestino.setCidade(endDestino[3]);
+			enderecoDestino.setEstado(endDestino[4]);
 			enderecoDestino.setPais("Brasil");
 			enderecoDestino.setLatitude("13762782");
 			enderecoDestino.setLongitude("4938520");
@@ -176,12 +177,21 @@ public class CreateRoteFragment extends Fragment {
 			adm.setId(1);
 			rotaApp.setAdministrador(adm);
 			//horario de saida
-			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
-			Date data  = new Date();
-			data.setHours(tpHorarioSaida.getCurrentHour());
-			data.setMinutes(tpHorarioSaida.getCurrentMinute());
-			String dataFormatada = format.format(data);
-			rotaApp.setDataRota(dataFormatada);
+			try
+			{
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
+				Calendar cal = Calendar.getInstance();
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), tpHorarioSaida.getCurrentHour(), tpHorarioSaida.getCurrentMinute());
+				Date data = cal.getTime();
+				String dataFormatada = dateFormat.format(data);
+				rotaApp.setDataRota(dataFormatada);
+			}
+			catch(Exception ex)
+			{
+				Utils.gerarToast( context, "Erro ao criar rota!");
+				Log.i("Exception criar rota taxi", ex.getMessage() + "");
+
+			}
 		}
 
 		@Override
