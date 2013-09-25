@@ -261,13 +261,13 @@ public class EditRegisterFragment extends Fragment {
 		}
 
 		@Override
-		protected void onPostExecute(String strJson) {
+		protected void onPostExecute(String response) {
 			progress.dismiss();
 
 
 			//Cria um obj JSON com a resposta
 			try {
-				JSONObject respostaWsJSON = new JSONObject(strJson);
+				JSONObject respostaWsJSON = new JSONObject(response);
 				if(respostaWsJSON.getInt("errorCode") == 0){
 
 					session.createLoginSession(pessoaID, pessoaApp.getNome(),  pessoaApp.getEmail(), pessoaApp.getSexo(),  pessoaApp.getDataNascimento(), pessoaApp.getDdd(),  pessoaApp.getCelular(), sessionedLogin);

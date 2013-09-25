@@ -14,9 +14,11 @@ import android.util.Log;
 
 public class WSClient {
 
-	public final String[] get(String url) {
+	public final String get(String url) {
 
-		String[] result = new String[2];
+		String resultCode = "";
+		String result = "";
+
 		HttpGet httpget = new HttpGet(url);
 		HttpResponse response;
 
@@ -26,29 +28,29 @@ public class WSClient {
 			HttpEntity entity = response.getEntity();
 
 			if (entity != null) {
-				result[0] = String.valueOf(response.getStatusLine().getStatusCode());
+				//Código da respostas
+				resultCode = String.valueOf(response.getStatusLine().getStatusCode());
 				InputStream instream = entity.getContent();
-				result[1] = toString(instream);
+				//Resposta
+				result = toString(instream);
 				instream.close();
-				Log.i("WSClient if entity not null taxi", "Respsta 0: " + result[0]);
-				Log.i("WSClient if entity not null taxi", "Respsta 1: " + result[1]);
-				
-				if(!result[0].equals("200"))
-					result[1] = "{errorCode: 1, descricao: Falha de rede!}";
+				Log.i("WSClient if entity not null taxi", "Result Code " + resultCode);
+				Log.i("WSClient if entity not null taxi", "Result: " + result);
 
+				if(!resultCode.equals("200"))					
+					result = "{errorCode: 1, descricao: Falha de rede!}";
 			}
 		} catch (Exception e) {
 			Log.i("Exception WSClient get taxi", "Exception ->" + e);
-			result[0] = "0";
-			result[1] = "{errorCode: 1, descricao: Falha de rede!}";
+			result = "{errorCode: 1, descricao: Falha de rede!}";
 		}
 		return result;
 	}
 
-	public final String[] post(String url, String json) {
-		String[] result = new String[2];
+	public final String post(String url, String json) {
+		String resultCode = "";
+		String result = "";
 		try {
-			Log.i("WSClient post taxi", json);
 			HttpPost httpPost = new HttpPost(new URI(url));
 			httpPost.setHeader("Content-type", "application/json");
 			StringEntity sEntity = new StringEntity(json, "UTF-8");
@@ -59,48 +61,47 @@ public class WSClient {
 			HttpEntity entity = response.getEntity();
 
 			if (entity != null) {
-				result[0] = String.valueOf(response.getStatusLine().getStatusCode());
+				resultCode = String.valueOf(response.getStatusLine().getStatusCode());
 				InputStream instream = entity.getContent();
-				result[1] = toString(instream);
+				result = toString(instream);
 				instream.close();
-				Log.i("WSClient Post taxi", "JsonPost : " + result[0] + " : " + result[1]);
+				
+				if(!resultCode.equals("200"))					
+					result = "{errorCode: 1, descricao: Falha de rede!}";
 			}
 
 		} catch (Exception e) {
-			result[0] = "0";
-			result[1] = "{errorCode: 1, Descricao: Falha de rede!}";
-			Log.i("WSCliente Exception post", "Exception -> " + e + " | Message -> " + e.getMessage());
+			result = "{errorCode: 1, descricao: Falha de rede!}";
 		}
 		return result;
 	}
-	
-	public final String[] put(String url) {
 
-		String[] result = new String[2];
+	public final String put(String url) {
+
+		String resultCode = "";
+		String result = "";
 		HttpPut httput = new HttpPut(url);
 		HttpResponse response;
 
 		try {
-			Log.i("WSClient Put taxi", "Url -> " + url);
 			response = HttpClientSingleton.getHttpClientInstace().execute(httput);
 			HttpEntity entity = response.getEntity();
 
 			if (entity != null) {
-				result[0] = String.valueOf(response.getStatusLine().getStatusCode());
+				resultCode = String.valueOf(response.getStatusLine().getStatusCode());
 				InputStream instream = entity.getContent();
-				result[1] = toString(instream);
+				result = toString(instream);
 				instream.close();
-				Log.i("WSClient if entity not null taxi", "Respsta 0: " + result[0]);
-				Log.i("WSClient if entity not null taxi", "Respsta 1: " + result[1]);
+				
+				if(!resultCode.equals("200"))					
+					result = "{errorCode: 1, descricao: Falha de rede!}";
 			}
 		} catch (Exception e) {
-			Log.i("Exception WSClient get taxi", "Exception ->" + e);
-			result[0] = "0";
-			result[1] = "{errorCode: 1, descricao: Falha de rede!}";
+			result = "{errorCode: 1, descricao: Falha de rede!}";
 		}
 		return result;
 	}
-	
+
 	private String toString(InputStream is) throws IOException {
 
 		byte[] bytes = new byte[1024];

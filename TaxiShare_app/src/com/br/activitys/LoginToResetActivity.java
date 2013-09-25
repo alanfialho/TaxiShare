@@ -198,12 +198,12 @@ public class LoginToResetActivity extends Activity {
 		}
 
 		@Override
-		protected void onPostExecute(String strJson) {
+		protected void onPostExecute(String response) {
 
 			if(login.length() >3){
 				try {
 
-					JSONObject jsonResposta = new JSONObject(strJson);
+					JSONObject jsonResposta = new JSONObject(response);
 					Log.i("CheckLoginTask Exception onPostExecute taxi",  "Json resposta -> " + jsonResposta);
 
 
@@ -317,11 +317,11 @@ public class LoginToResetActivity extends Activity {
 		}
 
 		@Override
-		protected void onPostExecute(String strJson) {
+		protected void onPostExecute(String response) {
 
 			try {
 
-				JSONObject resposta = new JSONObject(strJson);
+				JSONObject resposta = new JSONObject(response);
 				Log.i("EditPasswordTask doInBackground taxi resposta", resposta + "");
 
 				if (resposta.getInt("errorCode") == 0) {

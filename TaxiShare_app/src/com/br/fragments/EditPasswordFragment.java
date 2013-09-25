@@ -164,10 +164,10 @@ public class EditPasswordFragment extends Fragment {
 		}
 
 		@Override
-		protected void onPostExecute(String strJson) {
+		protected void onPostExecute(String response) {
 
-			respostaCheckPassword = strJson;
-			Log.i("respostaCheckPassword onPostExecute check", strJson);
+			respostaCheckPassword = response;
+			Log.i("respostaCheckPassword onPostExecute check", response);
 
 			if(!checkEmpty || !checkPassword || !checkOldAndNew)
 			{
@@ -180,7 +180,7 @@ public class EditPasswordFragment extends Fragment {
 					forgotNovaSenha.setError("Nova senha deve ser diferente da senha antiga");
 			}
 			else{
-				Log.i("onPostExecute CheckPassword taxi", strJson);
+				Log.i("onPostExecute CheckPassword taxi", response);
 				JSONObject resposta;
 				try {
 					resposta = new JSONObject(respostaCheckPassword);
@@ -254,12 +254,12 @@ public class EditPasswordFragment extends Fragment {
 		}
 
 		@Override
-		protected void onPostExecute(String strJson) {
-			Log.i("onPostExecute Edit Password taxi", strJson);
+		protected void onPostExecute(String response) {
+			Log.i("onPostExecute Edit Password taxi", response);
 
 
 			try {
-				JSONObject resposta2 = new JSONObject(strJson);
+				JSONObject resposta2 = new JSONObject(response);
 				if(resposta2.getInt("errorCode")== 0){
 					Utils.gerarToast( context, resposta2.getString("descricao"));
 

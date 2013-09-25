@@ -205,11 +205,11 @@ public class CreateRoteFragment extends Fragment {
 		}
 
 		@Override
-		protected void onPostExecute(String strJson) {
+		protected void onPostExecute(String response) {
 			progress.dismiss();
 
 			try {
-				JSONObject respostaWsJSON = new JSONObject(strJson);
+				JSONObject respostaWsJSON = new JSONObject(response);
 				Utils.gerarToast( context, respostaWsJSON.getString("descricao"));				
 
 			} catch (JSONException e) {

@@ -3,6 +3,7 @@ package com.br.activitys;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,6 +21,7 @@ import com.br.validation.annotation.Password;
 import com.br.validation.annotation.Regex;
 import com.br.validation.annotation.Required;
 import com.br.validation.annotation.TextRule;
+import com.google.gson.Gson;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -86,7 +88,7 @@ public class RegisterActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register);
-		
+
 		//Seta essa activity como contexto
 		context = this;
 
@@ -211,28 +213,28 @@ public class RegisterActivity extends Activity {
 
 			}catch (Exception e){
 				Log.i("Exception CheckLoginTask doInBackground taxi ", "Execption -> " + e + " || Message -> " +e.getMessage());
+				response = "{errorCode:1, descricao:Erro ao checar login!}";
 			}
 
 			return response;
 		}
 
 		@Override
-		protected void onPostExecute(String strJson) {
-
+		protected void onPostExecute(String response) {
 
 			try {
 				//Cria JSON com a resposta do WS
-				JSONObject checkLoginJSON = new JSONObject(strJson);
+				JSONObject json = new JSONObject(response);
 
 				//Checa se existe erro
-				if (checkLoginJSON.getInt("errorCode") == 0) {
+				if (json.getInt("errorCode") == 0) {
 					//Caso esteja tudo certo, cria uma task para efeutar o cadastro.
 					RegisterTask registerTask = new RegisterTask();
 					registerTask.execute();
 				}
 				else{
 					//caso possua algum erro, gera um toast com a descricao do erro
-					Utils.gerarToast(context, checkLoginJSON.getString("descricao"));
+					Utils.gerarToast(context, json.getString("descricao"));
 				}
 
 			} catch (JSONException e) {
@@ -316,14 +318,14 @@ public class RegisterActivity extends Activity {
 		}
 
 		@Override
-		protected void onPostExecute(String strJson) {
+		protected void onPostExecute(String response) {
 			// Transforma a string em um objeto JSON
 
 			try {
-				JSONObject cadastroLoginJSON = new JSONObject(strJson);
+				JSONObject json = new JSONObject(response);
 
 				// Checa se o cadastro deu certo
-				if (cadastroLoginJSON.getInt("errorCode") == 0) {
+				if (json.getInt("errorCode") == 0) {
 					Utils.gerarToast(context, "Cadastro efetuado!");
 
 					// Retorna para tela de login
@@ -331,22 +333,19 @@ public class RegisterActivity extends Activity {
 					startActivity(i);
 					finish();
 				} else
-					Utils.gerarToast(context, cadastroLoginJSON.getString("descricao"));
+					Utils.gerarToast(context, json.getString("descricao"));
 
 			} catch (JSONException e) {
 				Log.i("Exception RegisterTask onPostExecute taxi", "Exception -> " + e + " || Message -> " + e.getMessage());
-				Utils.gerarToast(context, strJson);
 			}
 			progress.dismiss();
 		}
 	}
 
 	private class FillQuestionSpinner extends AsyncTask<String, Void, String> {
-		List <String> perguntas;
 		ProgressDialog progress;
 
 		protected void onPreExecute() {
-			perguntas = new ArrayList<String>();
 			progress = Utils.setProgreesDialog(progress, context, "Carregando", "Aguarde...");
 		}
 
@@ -357,33 +356,57 @@ public class RegisterActivity extends Activity {
 
 			try {
 				WSTaxiShare ws = new WSTaxiShare();
-				List<PerguntaApp> jsonPerguntas = ws.getPerguntas();
+				response = ws.getPerguntas();
 
-				//Populando lista de Strings de Pertuntas
-				for (int i = 0; i < 4; i++) {
-					String opcao = jsonPerguntas.get(i).getId() + " - " + jsonPerguntas.get(i).getPergunta();
-					perguntas.add(opcao);
-				}
 			} catch (Exception e) {
-				Log.i("Exeception doInBackground fillQuestionSpinner taxi", "Exception -> " + e + "  || Message: -> " + e.getMessage());			
+				Log.i("Exeception doInBackground fillQuestionSpinner taxi", "Exception -> " + e + "  || Message: -> " + e.getMessage());
+				response = "{errorCode:1, descricao:Erro ao cadastrar!}";
 			}
 
 			return response;
 		}
 
 		@Override
-		protected void onPostExecute(String strJson) {
-			// Colocando lista de perguntas no spinner
-			try{		
+		protected void onPostExecute(String response) {
+			setPerguntas(response);
+			progress.dismiss();
+		}
+	}
+
+	private void setPerguntas(String resposta){
+
+		ArrayList<String> perguntas = new ArrayList<String>();	
+
+		try {
+			JSONObject json = new JSONObject(resposta);
+
+			Log.i("resposta taxi", resposta);
+
+			if (json.getInt("errorCode") == 0) {
+				Gson gson = new Gson();
+				ArrayList<PerguntaApp> listaPerguntas = new ArrayList<PerguntaApp>(); 
+
+				json = json.getJSONObject("data");
+				JSONArray array = json.getJSONArray("perguntas");
+
+				for (int i = 0; i < array.length(); i++) {
+					listaPerguntas.add(gson.fromJson(array.get(i).toString(), PerguntaApp.class));
+				}
+
+				//Populando lista de Strings de Pertuntas
+				for (int i = 0; i < 4; i++) {
+					String opcao = listaPerguntas.get(i).getId() + " - " + listaPerguntas.get(i).getPergunta();
+					perguntas.add(opcao);
+				}
+
 				ArrayAdapter<String> adapterPerguntas = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, perguntas);
 				adapterPerguntas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				spinnerPergunta.setAdapter(adapterPerguntas);	
+				spinnerPergunta.setAdapter(adapterPerguntas);
 			}
-			catch(Exception e){
-				Log.i("Exeception onPostExecute fillQuestionSpinner taxi", "Exception -> " + e + "  || Message: -> " + e.getMessage());			
-			}			
 
-			progress.dismiss();
+		} catch (JSONException e) {
+			Log.i("Exeception onPostExecute fillQuestionSpinner taxi", "Exception -> " + e + "  || Message: -> " + e.getMessage());			
+
 		}
 	}
 }
