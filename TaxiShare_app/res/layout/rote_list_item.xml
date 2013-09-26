@@ -1,20 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/roteListItem"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="left|center"
-    android:paddingBottom="5sp"
-    android:paddingLeft="5sp"
-    android:paddingTop="5sp" >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffff" >
 
-       <TextView
-        android:id="@+id/txtRoteInfoList"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-/>
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/listItemOrigem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3.32"
+            android:text="Origem" 
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/listItemOrigemInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3.32"
+            android:text="Origem vai aqui" 
+            android:textColor="#c5c5c5"/>
+
+        <TextView
+            android:id="@+id/listItemDestino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3.32"
+            android:text="Destino" 
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/listItemDestinoInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3.32"
+            android:text="Destino vai aqui" 
+            android:textColor="#c5c5c5"/>
+    </LinearLayout>
+
+</ScrollView>

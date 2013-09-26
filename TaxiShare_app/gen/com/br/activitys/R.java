@@ -197,7 +197,6 @@ containing a value of this type.
     public static final class id {
         public static final int action_rote_search=0x7f050046;
         public static final int btBusca=0x7f050044;
-        public static final int btnListCriarRota=0x7f05003f;
         public static final int content_frame=0x7f050024;
         public static final int dliIVImage=0x7f050006;
         public static final int dliLblOption=0x7f050007;
@@ -216,7 +215,10 @@ containing a value of this type.
         public static final int hybrid=0x7f050004;
         public static final int left_drawer=0x7f050025;
         public static final int linearLayoutItem=0x7f050005;
-        public static final int listViewRoteList=0x7f05003e;
+        public static final int listItemDestino=0x7f050040;
+        public static final int listItemDestinoInfo=0x7f050041;
+        public static final int listItemOrigem=0x7f05003e;
+        public static final int listItemOrigemInfo=0x7f05003f;
         public static final int login_btn_forget=0x7f050017;
         public static final int login_btn_login=0x7f050015;
         public static final int login_btn_register=0x7f050016;
@@ -249,7 +251,8 @@ containing a value of this type.
         public static final int reset_pass_nova_senha2=0x7f050021;
         public static final int reset_pass_txt_login=0x7f050019;
         public static final int reset_pass_txt_resposta=0x7f05001d;
-        public static final int roteListItem=0x7f050040;
+        public static final int roteList=0x7f05003d;
+        public static final int roteListItemInfo=0x7f05003c;
         public static final int rote_create_btn_criar=0x7f05003b;
         public static final int rote_create_lbl_destino=0x7f050035;
         public static final int rote_create_lbl_origem=0x7f050033;
@@ -261,11 +264,8 @@ containing a value of this type.
         public static final int rote_create_txt_origem=0x7f050034;
         public static final int satellite=0x7f050002;
         public static final int terrain=0x7f050003;
-        public static final int textView1=0x7f05003c;
-        public static final int textView2=0x7f05003d;
         public static final int txtEndereco1=0x7f050043;
         public static final int txtEndereco2=0x7f050045;
-        public static final int txtRoteInfoList=0x7f050041;
     }
     public static final class layout {
         public static final int drawer_list_item=0x7f030000;

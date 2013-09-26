@@ -1,53 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#ffff" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/roteListItemInfo"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="5sp"
+    android:paddingLeft="5sp"
+    android:paddingTop="5sp" >
 
-<!--     <fragment -->
-<!--         android:id="@+id/novoMapa" -->
-<!--         android:name="com.google.android.gms.maps.MapFragment" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="match_parent" /> -->
-
-<!--     <TextView -->
-<!--         android:id="@+id/textView1" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="match_parent" -->
-<!--         android:text="Large Text" -->
-<!--         android:textAppearance="?android:attr/textAppearanceLarge" /> -->
-
-
-
-    <LinearLayout
+    <ListView
+        android:id="@+id/roteList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content" >
+    </ListView>
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Origem" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Destino" />
-
-        <ListView
-            android:id="@+id/listViewRoteList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-        </ListView>
-
-        <Button
-            android:id="@+id/btnListCriarRota"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Criar Rota" />
-
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>

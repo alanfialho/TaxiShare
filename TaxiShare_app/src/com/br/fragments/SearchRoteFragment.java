@@ -11,6 +11,7 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import com.br.activitys.R;
+import com.br.entidades.EnderecoApp;
 import com.br.resources.Utils;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -38,6 +40,8 @@ public class SearchRoteFragment extends Fragment implements OnClickListener{
 	private Button btBusca;
 	private EditText txtEndereco1, txtEndereco2;
 	private Context context;
+	EnderecoApp enderecoOrigem;
+	EnderecoApp enderecoDestino;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,7 +118,7 @@ public class SearchRoteFragment extends Fragment implements OnClickListener{
 
 
 
-	public String procuraEndereco(String endereco, int respostas) throws IOException{
+	public Address procuraEndereco(String endereco) throws IOException{
 
 		// esse Geocoder aqui é quem vai traduzir o endereço de String para coordenadas double
 		Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
@@ -123,15 +127,11 @@ public class SearchRoteFragment extends Fragment implements OnClickListener{
 		List<Address> enderecos = null;  
 
 		// o numero um aqui é a quantidade maxima de resultados que vc quer receber
-		enderecos = geoCoder.getFromLocationName(endereco, respostas);
+		enderecos = geoCoder.getFromLocationName(endereco, 1);
 
 		Address address = enderecos.get(0);
 
-		String	end = address.getAddressLine(0) + ", 10, " + address.getSubLocality() + ", " + address.getLocality() + ", Sao Paulo";
-
-		return end;
-
-		//Utils.gerarToast(getActivity(), end);
+		return address;
 	}
 
 	public void criaTela(){
@@ -144,22 +144,27 @@ public class SearchRoteFragment extends Fragment implements OnClickListener{
 
 			public void onClick(View view) {
 				context = view.getContext();
+				Address ori = null;
+				Address dest = null;
 				String origem = txtEndereco1.getText().toString();
 				String destino = txtEndereco2.getText().toString();
 				try {
-					origem = procuraEndereco(origem, 1);
-					destino = procuraEndereco(destino, 10);
+					ori = procuraEndereco(origem);
+					
+					dest = procuraEndereco(destino);
+					
 				} catch (IOException e) {
 					e.printStackTrace();
 					Utils.gerarToast(context, "Nenhum Endereço Encontrado");
 				}
 
 				Bundle args = new Bundle();
-				args.putCharSequence("origem", origem);
-				args.putCharSequence("destino", destino);
+				
+				args.putParcelable("origemAddress", ori);
+				args.putParcelable("destinoAddress", dest);
 				FragmentManager fragmentManager = getFragmentManager();
 				FragmentTransaction ftransaction = fragmentManager.beginTransaction();
-				Fragment fragment = new ListRoteFragment();
+				Fragment fragment = new CreateRoteFragment();
 				fragment.setArguments(args);
 				ftransaction.replace(R.id.content_frame, fragment);
 				ftransaction.addToBackStack(null);
@@ -174,7 +179,7 @@ public class SearchRoteFragment extends Fragment implements OnClickListener{
 		if (id == R.id.btBusca) {
 			String e = txtEndereco1.getText().toString();
 			try {
-				procuraEndereco(e, 1);
+				procuraEndereco(e);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -182,6 +187,8 @@ public class SearchRoteFragment extends Fragment implements OnClickListener{
 
 
 	}
+	
+	
 
 	/**
 

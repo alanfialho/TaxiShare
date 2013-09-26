@@ -16,7 +16,9 @@
         android:id="@+id/rote_create_txt_origem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" >
+        android:ems="10" 
+        android:enabled="false"
+        android:focusable="false">
 
         <requestFocus />
     </EditText>
@@ -32,7 +34,9 @@
         android:id="@+id/rote_create_txt_destino"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" />
+        android:ems="10" 
+        android:enabled="false"
+        android:focusable="false"/>
 
     <TextView
         android:id="@+id/rote_create_lbl_pessoas"
