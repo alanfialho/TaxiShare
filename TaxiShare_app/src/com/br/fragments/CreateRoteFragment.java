@@ -101,9 +101,9 @@ public class CreateRoteFragment extends Fragment {
 
 
 			// Colocando lista de sexos no spinner
-			ArrayAdapter<String> adapterSexo = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, numeroPessoas);
-			adapterSexo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			spnPessoas.setAdapter(adapterSexo);		
+			ArrayAdapter<String> adapterPessoas = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, numeroPessoas);
+			adapterPessoas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spnPessoas.setAdapter(adapterPessoas);		
 
 
 		} catch (Exception e) {

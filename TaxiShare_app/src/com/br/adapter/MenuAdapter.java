@@ -15,7 +15,7 @@ public class MenuAdapter extends BaseAdapter {
 	private LayoutInflater mInflater;
 	private ViewHolder holder;
  
-	public static final Integer[] images = { R.drawable.action_search,
+	public static final Integer[] images = { R.drawable.icon_search,
         R.drawable.icon_profile, R.drawable.icon_password, R.drawable.icon_locate, R.drawable.icon_logout};
 	
 	
