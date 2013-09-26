@@ -134,9 +134,7 @@ public class CreateRoteFragment extends Fragment {
 
 		ProgressDialog progress;
 		RotaApp rotaApp;
-		EnderecoApp enderecoOrigem;
-		EnderecoApp enderecoDestino;
-		LoginApp usuarioAdm;
+		
 		protected void onPreExecute() {
 			progress = Utils.setProgreesDialog(progress, context, "Criando Rota", "Aguarde...");
 			Log.i("onPreExecute Create Rota taxi", "onPreExecute Create Rota taxi");
