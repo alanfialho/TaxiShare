@@ -100,6 +100,10 @@ public class UsuarioJpaController implements Serializable {
                 {
                     r.setUsuarios(null);
                 }
+                for(Rota r: usuario.getRotasAdm())
+                {
+                    r.setAdministrador(null);
+                }
             }
             return usuario;
         } catch(Exception ex){

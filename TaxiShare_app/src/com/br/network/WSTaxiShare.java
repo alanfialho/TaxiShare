@@ -49,10 +49,24 @@ public class WSTaxiShare {
 	}
 
 
-	public String getRotas() throws Exception {
+	public List<RotaApp> getRotas() throws Exception {
 
-		String resposta = new WSClient().get(URL_WS + "rota/findAll");
-		return resposta;
+		String resposta = new WSClient().get(URL_WS + "rota/findAll");		
+		JSONObject jsonResposta = new JSONObject(resposta);
+		ArrayList<RotaApp> rotas = new ArrayList<RotaApp>();
+		JsonParser parser = new JsonParser();
+
+		if (jsonResposta.getInt("errorCode") == 0) {
+			
+			Gson gson = new Gson();
+			JsonArray array = parser.parse(jsonResposta.getJSONArray("data").toString()).getAsJsonArray();
+
+			for (int i = 0; i < array.size(); i++) {
+				rotas.add(gson.fromJson(array.get(i), RotaApp.class));
+			}
+		}		
+		return rotas;
+
 	}
 
 	public List<PessoaApp> getListaPessoa() throws Exception {

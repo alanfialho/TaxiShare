@@ -181,9 +181,12 @@ public class CreateRoteFragment extends Fragment {
 		@Override
 		protected String doInBackground(String... urls) {
 			String response = "";
+			//List<RotaApp> list;
 			try
 			{
 				WSTaxiShare ws = new WSTaxiShare();
+				//list = ws.getRotas();
+				
 				response = ws.criarRota(rotaApp);
 
 			}

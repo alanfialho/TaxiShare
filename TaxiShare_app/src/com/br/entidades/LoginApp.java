@@ -11,6 +11,7 @@ public class LoginApp {
 	private String resposta;
 	private PessoaApp pessoa;
 	private List<RotaApp> rotas;
+	private List<RotaApp> rotasAdm;
 	
 	public LoginApp(int id, String login, String senha, PerguntaApp pergunta,
 			String resposta) {
@@ -65,5 +66,11 @@ public class LoginApp {
 	}
 	public void setRotas(List<RotaApp> rotas) {
 		this.rotas = rotas;
+	}
+	public List<RotaApp> getRotasAdm() {
+		return rotasAdm;
+	}
+	public void setRotasAdm(List<RotaApp> rotasAdm) {
+		this.rotasAdm = rotasAdm;
 	}
 }

@@ -81,6 +81,7 @@ public class RotaJpaController implements Serializable {
                 {
                     u.setRotas(null);
                 }
+                rota.getAdministrador().setRotasAdm(null);
             }
             return rota;
         } catch(Exception ex){
@@ -99,13 +100,31 @@ public class RotaJpaController implements Serializable {
     private List<Rota> findRotaEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
+            List<Rota> rotas;
             Query q = em.createQuery("select object(o) from Rota as o");
             if (!all) {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
             }
             
-            return q.getResultList();
+            rotas = q.getResultList();
+            //eliminando recursividade
+            if(rotas != null)
+            {
+                for(Rota rota : rotas)
+                {
+                  for(Usuario u: rota.getUsuarios())
+                  {
+                    if(u != null)
+                      u.setRotas(null);
+                  }
+                  if(rota.getAdministrador() != null)
+                    rota.getAdministrador().setRotasAdm(null);  
+                }
+            }
+            
+            return rotas;
+            
         } catch(Exception ex) {
             throw ex;
         }

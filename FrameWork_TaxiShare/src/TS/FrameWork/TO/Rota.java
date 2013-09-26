@@ -47,11 +47,13 @@ public class Rota implements Serializable {
     private Boolean flagAberta;
     @Column(name = "pass_existentes")
     private Short passExistentes;
+    
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "rota_endereco", joinColumns = {
         @JoinColumn(name = "id_rota", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "id_endereco", referencedColumnName = "id")})
     private List<Endereco> enderecos;
+    
     @ManyToMany(fetch = FetchType.LAZY,  cascade={CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinTable(name = "rota_usuario", joinColumns = {
                     @JoinColumn(name = "id_rota", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {

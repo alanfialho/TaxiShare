@@ -14,6 +14,7 @@ import entities.ResponseEntity;
 import entities.RotaEntity;
 import entities.UsuarioEntity;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -52,7 +53,7 @@ public class RotaResource {
         {
             //find para carregar as rotas do usuario
             Usuario usuario = usuarioDAO.findUsuario(entity.getAdministrador().getId());
-            if(validaEndOrigem(usuario.getRotas(),entity.getEnderecos()))
+            if(validaHora(usuario.getRotasAdm()))
             {
                 //De para entity/rota
                 rota.setEnderecos(entity.getEnderecos());
@@ -61,7 +62,7 @@ public class RotaResource {
                 rota.setAdministrador(usuario);
 
                 //trata a data
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy HH:mm");
                 java.sql.Date data = new java.sql.Date(format.parse(entity.getDataRota()).getTime());
                 rota.setDataRota(data);
 
@@ -70,7 +71,7 @@ public class RotaResource {
             }
             else
             {
-                saida = new ResponseEntity("Erro", 2, "Usuário já possui uma rota aberta com esta origem!", null);
+                saida = new ResponseEntity("Erro", 2, "Já existe uma rota aberta no intervalo de 1 hora!", null);
             }
         }
         catch(Exception ex){
@@ -203,43 +204,33 @@ public class RotaResource {
     protected EntityManager getEntityManager() {
         return em;
     }
-    protected Boolean validaEndOrigem(List<Rota> rotasUsuario, List<Endereco> enderecosEntity)
+    protected Boolean validaHora(List<Rota> rotasUsuario)
     {
-        Boolean retorno = true;
-        Endereco origemEncontrada = null;
+        Date horaAtual = new Date();        
         
-        ////verifica se o usuario tem rota aberta e pega o endereço de origem para comparação
+        //verifica se o usuario tem rota aberta e pega o endereço de origem para comparação
         for(Rota r : rotasUsuario)
         {
            
            if(r.getFlagAberta() == true)
            {
-               //se tiver rota aberta verifica a origem
-               for(Endereco e : r.getEnderecos())
+               long diff = r.getDataRota().getTime() - horaAtual.getTime() ;//em milesegundos
+               int timeInSeconds = (int)diff/1000;
+               //verifica se passou uma hora
+               if(timeInSeconds > 3600)
                {
-                   if(e.getTipo().equals('O'))
-                   {
-                       origemEncontrada = e;
-                   }
+                   return true;
                }
+               else
+               {
+                   return false;
+               }
+
            }
+
+        }
         
-        }
-        //agora pega o endereço de origem que esta tentando criar a rota
-        //e compara a origem 
-        if(origemEncontrada != null){
-            for(Endereco e : enderecosEntity)
-            {
-                if(e.getTipo().equals('O'))
-                {
-                    if(e.getCep().equals(origemEncontrada.getCep()))
-                    {
-                        retorno = false;
-                    }
-                }
-            }
-        }
-        return retorno;
+        return true;
     }
     
 }

@@ -18,9 +18,9 @@ public class RotaEntity {
 	private String dataRota;
 	private Boolean flagAberta;
 	private Short passExistentes;
-        private Usuario administrador;
 	private List<Endereco> enderecos;
 	private List<Usuario> usuarios;
+        private Usuario administrador;
 
     public RotaEntity() {
     }
