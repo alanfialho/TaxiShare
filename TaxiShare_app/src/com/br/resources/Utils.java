@@ -22,15 +22,19 @@ public class Utils {
 		Toast toast = Toast.makeText(context, message, duration);
 		toast.show();
 	}
-	
+
+	public final static void logException(String clazz, String method, String extra, Exception e){
+		Log.i(clazz + " " + method + " " + extra + " taxi", "ex -> " + e + "message -> " + e.getMessage());
+	}
+
 	public final static ProgressDialog setProgreesDialog(ProgressDialog progress, Context context, String title, String message){
-		
+
 		//Exibe janela de carregando
 		progress = new ProgressDialog(context);
 		progress.setTitle(title);
 		progress.setMessage(message);
 		progress.show();
-		
+
 		return progress;
 	}
 }

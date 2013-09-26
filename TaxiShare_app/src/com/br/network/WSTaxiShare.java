@@ -3,34 +3,51 @@ package com.br.network;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 import com.google.gson.JsonParser;
 
 import com.br.entidades.*;
-import com.br.entidades.LoginApp;
-import com.br.entidades.PessoaApp;
+import com.br.resources.Utils;
 
 
 public class WSTaxiShare {
 
 	private static final String URL_WS = "http://192.168.56.1:8080/WS_TaxiShare/";
 
-	public String login(String email, String password) throws Exception {
+	public String login(String email, String password) {
 
 		String resposta = new WSClient().get(URL_WS + "login/login/?login="+ email +"&password="+ password);
 		return resposta;
 	}
 
-	public String getPerguntas() {
+	public ArrayList<String> getPerguntas() throws Exception {
 
 		String resposta = new WSClient().get(URL_WS + "pergunta/findAll");		
-		return resposta;
+		ArrayList<String> perguntas = new ArrayList<String>(); 
 
+		JSONObject jsonResposta = new JSONObject(resposta);
+
+		if (jsonResposta.getInt("errorCode") == 0) {
+			Gson gson = new Gson();
+
+			jsonResposta = jsonResposta.getJSONObject("data");
+			JSONArray array = jsonResposta.getJSONArray("perguntas");
+
+			for (int i = 0; i < array.length(); i++) {
+				PerguntaApp pergunta = gson.fromJson(array.get(i).toString(), PerguntaApp.class);				
+				String opcao = pergunta.getId() + " - " + pergunta.getPergunta();
+				perguntas.add(opcao);
+			}
+		}		
+		return perguntas;
 	}
+
 
 	public String getRotas() throws Exception {
 
@@ -67,7 +84,7 @@ public class WSTaxiShare {
 		}
 		catch(Exception e)
 		{
-			Log.i("WSTaxishare Exception cadastrarLogin taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
+			Utils.logException("WSTaxishare", "cadastrarLogin", "Exception", e);
 		}
 
 		return resposta;
@@ -83,7 +100,7 @@ public class WSTaxiShare {
 		}
 		catch(Exception e)
 		{
-			Log.i("WSTaxishare Exception editarCadastro taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
+			Utils.logException("WSTaxishare", "editarCadastro", "Exception", e);
 		}
 
 		return resposta;
@@ -99,23 +116,15 @@ public class WSTaxiShare {
 		}
 		catch(Exception e)
 		{
-			Log.i("WSTaxishare Exception editarSenha taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
+			Utils.logException("WSTaxishare", "editarSenha", "Exception", e);
 		}
 
 		return resposta;
 	}
 
-	public String checkLogin(String login) throws Exception {
-		String resposta = "";
-		try
-		{
-			resposta = new WSClient().get(URL_WS + "login/checkLogin?login="+ login);
-		}
-		catch(Exception e)
-		{
-			Log.i("WSTaxishare Exception checkLogin taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
-		}
+	public String checkLogin(String login) {
 
+		String resposta = new WSClient().get(URL_WS + "login/checkLogin?login="+ login);
 		return resposta;
 	}
 
@@ -129,7 +138,7 @@ public class WSTaxiShare {
 		}
 		catch(Exception e)
 		{
-			Log.i("WSTaxishare Exception criarRota taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
+			Utils.logException("WSTaxishare", "criarRota", "Exception", e);
 		}
 
 		return resposta;
@@ -145,11 +154,10 @@ public class WSTaxiShare {
 		}
 		catch(Exception e)
 		{
-			Log.i("WSTaxishare Exception participarRota taxi", "Exception -> " + e + " | Message -> " + e.getMessage());
+			Utils.logException("WSTaxishare", "participarRota", "Exception", e);
 		}
 
 		return resposta;
-
 	}
 }
 

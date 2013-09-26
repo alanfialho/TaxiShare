@@ -1,4 +1,3 @@
-
 package com.br.activitys;
 
 import org.json.JSONException;
@@ -10,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,37 +17,37 @@ import com.br.network.WSTaxiShare;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
 
-
 public class LoginActivity extends Activity {
+
+	//Atributos
 	Context context;
-
-	Button btnLogin;
-	Button btnLinkToRegister;
-	Button btnLinkToForgetPassword;
-	EditText loginLogin;
-	EditText loginSenha;
-
+	Button btnLogin, btnLinkToRegister, btnLinkToForgetPassword;
+	EditText loginLogin, loginSenha;
 	SessionManagement session;
+
 	@Override	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//Seta o login layout
 		setContentView(R.layout.login);
+		//Inicializa os atributos
 		setAtributes();
+		//Define as ações dos botões
 		setBtnActions();
+		//Define o contexto como this
 		context = this;
 	}
 
 	private void setBtnActions() {
 		// Evento do botao login
 		btnLogin.setOnClickListener(new View.OnClickListener() {
-
 			public void onClick(View view) {
-				context = view.getContext();
 
 				boolean checkLogin = loginLogin.getText().toString().isEmpty();
 				boolean checkSenha = loginLogin.getText().toString().isEmpty();
-				if(!checkLogin || !checkSenha){
-					loginTask task = new loginTask();
+				//Checa se login e senha foram informados
+				if(!checkLogin && !checkSenha){
+					LoginTask task = new LoginTask();
 					task.execute();
 				}
 				else{
@@ -91,10 +89,11 @@ public class LoginActivity extends Activity {
 		btnLinkToForgetPassword = (Button) findViewById(R.id.login_btn_forget);
 	}
 
-	private class loginTask extends AsyncTask<String, Void, String> {
+	private class LoginTask extends AsyncTask<String, Void, String> {
 
 		ProgressDialog progress;
 		String login, password;
+
 		protected void onPreExecute() {
 			//Inica a popup de load
 			progress = Utils.setProgreesDialog(progress, context, "Efetuando Login", "Aguarde...");
@@ -105,17 +104,11 @@ public class LoginActivity extends Activity {
 
 		@Override
 		protected String doInBackground(String... urls) {
-			String response = "";
 
-			try {
-				
-				WSTaxiShare ws = new WSTaxiShare();
-				response = ws.login(login, password);
-
-			} catch (Exception e) {
-				Log.i("Exception Login taxi", e + "");
-				Utils.gerarToast( context, "Não Foi possível logar");
-			}
+			//Inicializa o WS
+			WSTaxiShare ws = new WSTaxiShare();
+			//Recebe a resposta do login
+			String response = ws.login(login, password);
 
 			return response;
 		}
@@ -124,14 +117,15 @@ public class LoginActivity extends Activity {
 		protected void onPostExecute(String response) {
 
 			try {
+				//Transforma a resposta em json
 				JSONObject json = new JSONObject(response);
-				Log.i("JSON resposta taxi", json + "");
-
+				
+				//Verifica se deu erro
 				if (json.getInt("errorCode") == 0) {
-					Utils.gerarToast( context, json.getString("descricao"));
-
+					Utils.gerarToast(context, json.getString("descricao"));
+					
+					//Pega os dados da resposta
 					JSONObject pessoa = json.getJSONObject("data").getJSONObject("pessoa");
-					Log.i("Testando as paradas aqui", pessoa.toString());
 					String pessoaId = json.getJSONObject("data").getString("id");
 					String nome = pessoa.getString("nome");
 					String email = pessoa.getString("email");
@@ -140,22 +134,21 @@ public class LoginActivity extends Activity {
 					String sexo = pessoa.getString("sexo");
 					String dataNasc = pessoa.getString("dataNascimento");
 					String login = loginLogin.getText().toString();
-
-					Log.i("taxi pessoaid no login", pessoaId);
-					Log.i("taxi login no login", login);
+					
+					//Coloca informações na sessão
 					session.createLoginSession(pessoaId, nome,  email,  sexo,  dataNasc,  ddd,  celular, login);
-
-					Intent intent = new Intent(getApplicationContext(),
-							MainActitity.class);
+					
+					//Inicia a main activity
+					Intent intent = new Intent(getApplicationContext(),	MainActitity.class);
 					startActivity(intent);
 					finish();
 
 				}else{
 					// Erro de login
-					Utils.gerarToast( context, json.getString("descricao"));
+					Utils.gerarToast(context, json.getString("descricao"));
 				}
 			} catch (JSONException e) {
-				Log.i("Exception on post execute taxi", "Exception -> " + e + " Message->" +e.getMessage());
+				Utils.logException("LoginActivity", "LoginTask", "onPostExecute", e);
 			}
 			progress.dismiss();
 		}

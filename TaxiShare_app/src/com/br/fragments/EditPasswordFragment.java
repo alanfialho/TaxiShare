@@ -77,8 +77,6 @@ public class EditPasswordFragment extends Fragment {
 
 		session.checkLogin();
 
-		Log.i("Login Sessao taxi", "Login -> " + sessionedLogin + " Pessoa ->" + sessionedPessoaID);
-
 		return rootView;
 	}
 
@@ -138,27 +136,8 @@ public class EditPasswordFragment extends Fragment {
 
 		@Override
 		protected String doInBackground(String... urls) {
-			String response = "";
-
-			try{
-				Log.i("doInBackground checkPassWord taxi", "URL -> " + urls);
-
-				if(checkEmpty && checkOldAndNew){
-
-					Log.i("Abrindo o WS checkpassword taxi", "");
-					WSTaxiShare ws = new WSTaxiShare();
-					response = ws.login(sessionedLogin, senhaAntiga);
-					Log.i("Retorno do login taxi", response);					
-
-				}
-				else
-					Log.i("Algum check é falso", "Empty -> " + checkEmpty + " Password -> " + checkPassword + " OldAndNew -> " +checkOldAndNew );
-
-			}catch(Exception e){
-				Utils.gerarToast(context,"Erro ao alterar!");
-				Log.i("Excetion check edit password taxi", "Exception -> " + e + " Message -> " + e.getMessage());
-			}
-
+				WSTaxiShare ws = new WSTaxiShare();
+			String response = ws.login(sessionedLogin, senhaAntiga);	
 			return response;
 
 		}
@@ -175,7 +154,7 @@ public class EditPasswordFragment extends Fragment {
 					forgotSenhaAntiga.setError("Campo Obrigatório");
 					forgotSenhaAntiga.requestFocus();
 				}
-					
+
 				if(!checkOldAndNew)
 					forgotNovaSenha.setError("Nova senha deve ser diferente da senha antiga");
 			}

@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,9 +48,7 @@ public class LoginToResetActivity extends Activity {
 
 	TextView lblPergunta;
 
-	Button btnRecuperar;
-	Button btnAlterar;
-	Button btnCheckAnswer;
+	Button btnRecuperar, btnAlterar, btnCheckAnswer;
 
 	LoginApp loginApp;
 
@@ -78,28 +75,21 @@ public class LoginToResetActivity extends Activity {
 		btnRecuperar.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-
 				CheckLoginTask task = new CheckLoginTask();
 				task.execute();
 			}
 		});
 
-
 		// Link para tela de cadastro
 		btnAlterar.setOnClickListener(new View.OnClickListener() {
-
 			public void onClick(View view) {
 				validator.validate();
 			}
 		});
 
-
-
 		btnCheckAnswer.setOnClickListener(new View.OnClickListener() {
-
 			public void onClick(View view) {
 				String resposta = txtResposta.getText().toString();
-				Log.i("Respota Retornada Taxi", loginApp.getResposta());
 				if(resposta.equalsIgnoreCase(loginApp.getResposta())){
 					aQuery.id(R.id.resetPasswordLayout).visible();	
 				}
@@ -132,7 +122,6 @@ public class LoginToResetActivity extends Activity {
 		if(part.equals("login")){
 			aQuery.id(R.id.resetLoginLayout).visibility(View.GONE);
 			aQuery.id(R.id.resetDataLayout).visible();
-
 		}
 		else{
 			aQuery.id(R.id.resetLoginLayout).visible();
@@ -161,38 +150,23 @@ public class LoginToResetActivity extends Activity {
 
 	}
 
-
 	private class CheckLoginTask extends AsyncTask<String, Void, String> {
 
 		ProgressDialog progress;
 		String login;
 
-
 		protected void onPreExecute() {
 			//Inica a popup de load
 			progress = Utils.setProgreesDialog(progress, context, "Verificando Login", "Aguarde...");
 			login = txtLogin.getText().toString(); 
-
 		}
 
 		@Override
 		protected String doInBackground(String... urls) {
 			String response = "";
 			if(login.length() >3){
-				try {
-					//Pegando o email e a senha da tela
-
-					WSTaxiShare ws = new WSTaxiShare();
-
-					Log.i("CheckLoginTask  doInBackground taxi", "Login -> " + login);
-					response = ws.checkLogin(login);
-					Log.i("CheckLoginTask  doInBackground taxi response", response + "");
-
-
-				} catch (Exception e) {
-					Log.i("CheckLoginTask Exception doInBackground taxi", e + "");
-					Utils.gerarToast( context, "Não foi possível checar login");
-				}
+				WSTaxiShare ws = new WSTaxiShare();
+				response = ws.checkLogin(login);
 			}
 			return response;
 		}
@@ -202,17 +176,12 @@ public class LoginToResetActivity extends Activity {
 
 			if(login.length() >3){
 				try {
-
 					JSONObject jsonResposta = new JSONObject(response);
-					Log.i("CheckLoginTask Exception onPostExecute taxi",  "Json resposta -> " + jsonResposta);
-
 
 					if (jsonResposta.getInt("errorCode") == 1) {
 						setInvisiblePart("login");
 
 						JSONObject objetoResposta= jsonResposta.getJSONObject("data");
-						Log.i("CheckLoginTask  doInBackground taxi response data", objetoResposta + "");
-						Log.i("CheckLoginTask  doInBackground taxi response resposta", objetoResposta.getString("resposta"));
 
 						lblPergunta.setText(objetoResposta.getJSONObject("pergunta").getString("pergunta"));
 						loginApp = new LoginApp();
@@ -225,7 +194,7 @@ public class LoginToResetActivity extends Activity {
 						Utils.gerarToast( context, jsonResposta.getString("descricao"));
 					}
 				} catch (Exception e) {
-					Log.i("Exception on post execute taxi", "Exception -> " + e + " Message->" +e.getMessage());
+					Utils.logException("LoginToResetActivity", "CheckLoginTask", "onPostExecute", e);
 				}
 
 			}else{
@@ -239,9 +208,7 @@ public class LoginToResetActivity extends Activity {
 
 		ProgressDialog progress;
 		String resposta;
-		boolean checkResposta;
-		boolean checkEquals;
-		boolean checkEmpty;
+		boolean checkResposta, checkEquals,checkEmpty;
 
 		protected void onPreExecute() {
 			//Inica a popup de load
@@ -259,7 +226,6 @@ public class LoginToResetActivity extends Activity {
 				checkResposta = true;
 			else
 				txtResposta.setError("Resposta Inválida");
-
 
 			if(!resposta2.isEmpty() && !checkNovaSenha.isEmpty() && !checkNovaSenha2.isEmpty()){
 				checkEmpty = true;
@@ -284,11 +250,6 @@ public class LoginToResetActivity extends Activity {
 			try {
 
 				WSTaxiShare ws = new WSTaxiShare();
-
-				Log.i("EditPasswordTask doInBackground taxi", "Login -> " +  loginApp.getLogin()); 
-				Log.i("EditPasswordTask doInBackground taxi", "resposta1 -> " +  loginApp.getResposta() + " resposta2 -> " + resposta);
-
-
 				if(checkEmpty && checkEquals && checkResposta)
 					response = ws.editarSenha(loginApp);
 
@@ -304,12 +265,8 @@ public class LoginToResetActivity extends Activity {
 						response = "{errorCode:1, descricao:Resposta Invalida}";
 				}
 
-
-				Log.i("EditPasswordTask doInBackground taxi response", response + "");
-
-
 			} catch (Exception e) {
-				Log.i("EditPasswordTask doInBackground taxi Exception", e + "");
+				Utils.logException("LoginToResetActivity", "EditPasswordTask", "onPostExecute", e);
 				Utils.gerarToast( context, "Não Foi possível logar");
 			}
 
@@ -322,12 +279,10 @@ public class LoginToResetActivity extends Activity {
 			try {
 
 				JSONObject resposta = new JSONObject(response);
-				Log.i("EditPasswordTask doInBackground taxi resposta", resposta + "");
 
 				if (resposta.getInt("errorCode") == 0) {
 					Utils.gerarToast( context, resposta.getString("descricao"));
-					Intent intent = new Intent(getApplicationContext(),
-							LoginActivity.class);
+					Intent intent = new Intent(getApplicationContext(),	LoginActivity.class);
 					startActivity(intent);
 					finish();
 
@@ -336,10 +291,9 @@ public class LoginToResetActivity extends Activity {
 					Utils.gerarToast( context, resposta.getString("descricao"));
 				}
 			} catch (JSONException e) {
-				Log.i("EditPasswordTask onPostExecute taxi Exception", "Exception -> " + e + " Message->" +e.getMessage());
+				Utils.logException("LoginToResetActivity", "EditPasswordTask", "onPostExecute", e);
 			}
 			progress.dismiss();
 		}
 	}
-
 }

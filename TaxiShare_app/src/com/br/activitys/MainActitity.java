@@ -34,8 +34,6 @@ public class MainActitity extends Activity {
 	private String[] opcoes;
 	private SessionManagement session;
 
-
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
