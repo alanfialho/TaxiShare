@@ -1,6 +1,7 @@
 package com.br.fragments;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,6 +10,9 @@ import org.json.JSONObject;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,27 +25,37 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.br.activitys.R;
+
 import com.br.adapter.RoteAdapter;
 import com.br.entidades.PerguntaApp;
 import com.br.entidades.RotaApp;
+import com.br.network.WSTaxiShare;
 import com.br.resources.Utils;
 import com.google.gson.Gson;
 
 public class ListRoteFragment extends Fragment {
 
 	private static View view;
-	private ListView RoteList;
+	private ListView roteList;
 	public TextView txtEndereco1, txtEndereco2;
-
-
+	Context context;
+	public static List<RotaApp> rotasBuscadas;
 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.rote_list_item, container, false);
+		view = inflater.inflate(R.layout.rote_list_item, container, false);
+		
+		try{
+			FillList questionTask = new FillList();
+			questionTask.execute();
+		}
+		catch (Exception e) {
 
-		fillSearchList(view);
+		}
+		fillSearchList(view, rotasBuscadas);
+		
 
 		return view;
 	}
@@ -50,59 +64,77 @@ public class ListRoteFragment extends Fragment {
 	//Classe que vai segurar os atributos da lista
 
 
-	private void fillSearchList(View view){
+	private void fillSearchList(View view, List<RotaApp> rotasBuscadas){
+		int tamanho = rotasBuscadas.size();
+		RotaApp[] rotasLista = new RotaApp[tamanho];
+		
+		for (int i = 0; i < tamanho; i++){
+			rotasLista[i] = rotasBuscadas.get(i);
+		}
+		
+		
+		
+		 // Pass the folderData to our ListView adapter
+        RoteAdapter adapter = new RoteAdapter (getActivity(),
+                R.layout.rote_list_item, rotasLista);
 
+        // Set the adapter to our ListView
+        roteList = (ListView) view.findViewById(R.id.roteList);
+        roteList.setAdapter(adapter);
+		
+		
+		
 
 	};	
+	
 
 
 
 
+	private class FillList extends AsyncTask<String, Void, String> {
+		ProgressDialog progress;
+		List<RotaApp>rotas = null;
 
+		protected void onPreExecute() {
+			progress = Utils.setProgreesDialog(progress, context, "Carregando", "Aguarde...");
+		}
 
+		@Override
+		protected String doInBackground(String... urls) {
+			String response = "";
 
+			try {
+				WSTaxiShare ws = new WSTaxiShare();
+				rotas = ws.getRotas();
+				response = "{errorCode:0, descricao:Sucesso}";
 
-
-
-
-
-
-
-	public void setEnderecos(String endereco1, String endereco2){
-	}
-
-
-	private void setRotes(String resposta){
-
-		/*
-
-		try {
-			JSONObject json = new JSONObject(resposta);
-
-			Log.i("resposta taxi", resposta);
-
-			if (json.getInt("errorCode") == 0) {
-				Gson gson = new Gson();
-				ArrayList<RotaApp> listaRotas = new ArrayList<RotaApp>(); 
-
-				json = json.getJSONObject("data");
-				JSONArray array = json.getJSONArray("listaRotas");
-
-				for (int i = 0; i < array.length(); i++) {
-					listaRotas.add(gson.fromJson(array.get(i), RotaApp.class));
-				}
-
-
-
-
+			} catch (Exception e) {
+				Utils.logException("ListRoteFragment", "FillList", "onPostExecute", e);
+				response = "{errorCode:1, descricao:Erro ao carregar rotas!}";
 			}
 
-
+			return response;
 		}
-		catch (JSONException e) {
-			Log.i("Exeception onPostExecute fillQuestionSpinner taxi", "Exception -> " + e + "  || Message: -> " + e.getMessage());			
 
-		}*/
+		@Override
+		protected void onPostExecute(String response) {
+			
+			ListRoteFragment.rotasBuscadas = rotas;
+				
+			progress.dismiss();
+		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
 }
 

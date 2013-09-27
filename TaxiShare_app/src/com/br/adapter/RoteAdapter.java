@@ -1,64 +1,61 @@
 package com.br.adapter;
 
 import com.br.activitys.R;
+import com.br.entidades.RotaApp;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class RoteAdapter extends BaseAdapter {
-	private String[] options;
-	private LayoutInflater mInflater;
-	private ViewHolder holder;
+public class RoteAdapter extends ArrayAdapter<RotaApp> {
+
+	Context contexto;
+    int layoutResourceId;
+    RotaApp data[] = null;
 
 
-	static class ViewHolder{
-		private TextView roteInfo;
-	}
 
+	public RoteAdapter(Context contexto, int layoutResourceId, RotaApp[] data) {
 
-	public RoteAdapter(Context context, String[] options) {
-		mInflater = LayoutInflater.from(context);
-		this.options= options; 
-	}
-
-	@Override
-	public int getCount() {
-		return options.length;
-	}
+        super(contexto, layoutResourceId, data);
+        this.layoutResourceId = layoutResourceId;
+        this.contexto = contexto;
+        this.data = data;
+    }
+	
 
 	@Override
-	public Object getItem(int index) {
-		return options[index];
-	}
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-	@Override
-	public long getItemId(int index) {
-		return index;
-	}
+        if(convertView==null){
+            // inflate the listview_item_row.xml parent
+            LayoutInflater inflater = LayoutInflater.from(contexto);
+            convertView = inflater.inflate(layoutResourceId, parent, false);
+        }
+        
+        // get the elements in the layout
+       
+        TextView origem = (TextView) convertView.findViewById(R.id.listItemOrigemInfo);
+        TextView destino = (TextView) convertView.findViewById(R.id.listItemDestinoInfo);
 
-	@Override
-	public View getView(int posicao, View convertView, ViewGroup arg2) {
+        /*
+         * Set the data for the list item. You can also set tags here if you
+         * want.
+         */
+        RotaApp rota = data[position];
 
-		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.rote_list, null);
-			holder = new ViewHolder();
+        
+        origem.setText(rota.getEnderecos().get(0).getRua());
+        destino.setText(rota.getEnderecos().get(1).getRua());
 
-			//holder.roteInfo = (TextView) convertView.findViewById(R.id.txtRoteListOrigem);
+        return convertView;
+    }
 
-			convertView.setTag(holder);
-
-		} else {
-			holder = (ViewHolder) convertView.getTag();
-		}
-
-		holder.roteInfo.setText(options[posicao]);
-
-		return convertView;
-	}
+	
 
 }

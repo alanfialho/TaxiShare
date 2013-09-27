@@ -38,7 +38,7 @@ public class SearchRoteFragment extends Fragment implements OnClickListener{
 	private static View view;
 	private MapView m;
 	private Bundle mBundle;
-	private Button btBusca;
+	private Button btBusca, btLista;
 	private EditText txtEndereco1, txtEndereco2;
 	private Context context;
 	EnderecoApp enderecoOrigem;
@@ -138,6 +138,8 @@ public class SearchRoteFragment extends Fragment implements OnClickListener{
 	public void criaTela(){
 
 		btBusca = (Button) view.findViewById(R.id.btBusca);
+		btLista = (Button) view.findViewById(R.id.btnListaRotas);
+		btLista.setOnClickListener(this);
 		txtEndereco1 = (EditText) view.findViewById(R.id.txtEndereco1);
 		txtEndereco2 = (EditText) view.findViewById(R.id.txtEndereco2);
 
@@ -178,13 +180,17 @@ public class SearchRoteFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
-		if (id == R.id.btBusca) {
-			String e = txtEndereco1.getText().toString();
-			try {
-				procuraEndereco(e);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+		if (id == R.id.btnListaRotas) {
+			Bundle args = new Bundle();
+			
+	
+			FragmentManager fragmentManager = getFragmentManager();
+			FragmentTransaction ftransaction = fragmentManager.beginTransaction();
+			Fragment fragment = new ListRoteFragment();
+			fragment.setArguments(args);
+			ftransaction.replace(R.id.content_frame, fragment);
+			ftransaction.addToBackStack(null);
+			ftransaction.commit();
 		}
 
 

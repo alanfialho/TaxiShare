@@ -195,8 +195,9 @@ containing a value of this type.
         public static final int icon_search=0x7f020020;
     }
     public static final class id {
-        public static final int action_rote_search=0x7f050046;
+        public static final int action_rote_search=0x7f050047;
         public static final int btBusca=0x7f050044;
+        public static final int btnListaRotas=0x7f050046;
         public static final int content_frame=0x7f050024;
         public static final int dliIVImage=0x7f050006;
         public static final int dliLblOption=0x7f050007;

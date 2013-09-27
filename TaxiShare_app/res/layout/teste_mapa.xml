@@ -45,6 +45,14 @@
             android:ems="10"
             android:hint="Digite end. com número" />
 
+        <Button
+            android:id="@+id/btnListaRotas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btBusca"
+            android:layout_centerHorizontal="true"
+            android:text="lista Rotas" />
+
     </RelativeLayout>
 
 </FrameLayout>
