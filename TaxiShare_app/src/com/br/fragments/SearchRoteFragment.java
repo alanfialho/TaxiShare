@@ -10,6 +10,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
@@ -152,6 +153,7 @@ public class SearchRoteFragment extends Fragment implements OnClickListener{
 					ori = procuraEndereco(origem);
 					
 					dest = procuraEndereco(destino);
+
 					
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -187,8 +189,8 @@ public class SearchRoteFragment extends Fragment implements OnClickListener{
 
 
 	}
-	
-	
+
+
 
 	/**
 
