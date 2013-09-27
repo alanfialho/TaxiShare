@@ -28,7 +28,7 @@ public class RoteAdapter extends ArrayAdapter<RotaApp> {
         this.data = data;
     }
 	
-
+	
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
 

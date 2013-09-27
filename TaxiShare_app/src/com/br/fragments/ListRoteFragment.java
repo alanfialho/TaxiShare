@@ -37,16 +37,18 @@ public class ListRoteFragment extends Fragment {
 
 	private static View view;
 	private ListView roteList;
-	public TextView txtEndereco1, txtEndereco2;
 	Context context;
-	public static List<RotaApp> rotasBuscadas;
+	RoteAdapter adapter;
+	//public static List<RotaApp> rotasBuscadas;
 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.rote_list_item, container, false);
+		view = inflater.inflate(R.layout.rote_list, container, false);
 		
+		
+		adapter = null;
 		try{
 			FillList questionTask = new FillList();
 			questionTask.execute();
@@ -54,16 +56,17 @@ public class ListRoteFragment extends Fragment {
 		catch (Exception e) {
 
 		}
-		fillSearchList(view, rotasBuscadas);
+
+		
 		
 
 		return view;
 	}
 
 
-	//Classe que vai segurar os atributos da lista
 
 
+	//Método que adiicona a lista buscada no adapter
 	private void fillSearchList(View view, List<RotaApp> rotasBuscadas){
 		int tamanho = rotasBuscadas.size();
 		RotaApp[] rotasLista = new RotaApp[tamanho];
@@ -75,17 +78,15 @@ public class ListRoteFragment extends Fragment {
 		
 		
 		 // Pass the folderData to our ListView adapter
-        RoteAdapter adapter = new RoteAdapter (getActivity(),
+        adapter = new RoteAdapter (getActivity(),
                 R.layout.rote_list_item, rotasLista);
 
         // Set the adapter to our ListView
         roteList = (ListView) view.findViewById(R.id.roteList);
         roteList.setAdapter(adapter);
-		
-		
-		
 
-	};	
+	}	
+
 	
 
 
@@ -94,6 +95,11 @@ public class ListRoteFragment extends Fragment {
 	private class FillList extends AsyncTask<String, Void, String> {
 		ProgressDialog progress;
 		List<RotaApp>rotas = null;
+		
+		
+		
+		
+		
 
 		protected void onPreExecute() {
 			progress = Utils.setProgreesDialog(progress, context, "Carregando", "Aguarde...");
@@ -119,7 +125,9 @@ public class ListRoteFragment extends Fragment {
 		@Override
 		protected void onPostExecute(String response) {
 			
-			ListRoteFragment.rotasBuscadas = rotas;
+			//chamando o método
+			fillSearchList(view, rotas);
+			Utils.gerarToast(getActivity(), "Rodou");
 				
 			progress.dismiss();
 		}
