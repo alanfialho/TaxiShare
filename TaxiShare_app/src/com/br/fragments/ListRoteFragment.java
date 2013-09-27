@@ -50,11 +50,11 @@ public class ListRoteFragment extends Fragment {
 		
 		adapter = null;
 		try{
-			FillList questionTask = new FillList();
-			questionTask.execute();
+			FillList task = new FillList();
+			task.execute();
 		}
 		catch (Exception e) {
-
+			Log.i("Preenchendo lista Exception taxi", "Exception -> " + e + " || Message -> " + e.getMessage());
 		}
 
 		
@@ -66,7 +66,7 @@ public class ListRoteFragment extends Fragment {
 
 
 
-	//Método que adiicona a lista buscada no adapter
+	//Método que adicicona a lista buscada no adapter
 	private void fillSearchList(View view, List<RotaApp> rotasBuscadas){
 		int tamanho = rotasBuscadas.size();
 		RotaApp[] rotasLista = new RotaApp[tamanho];
