@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.androidquery.AQuery;
 import com.br.entidades.LoginApp;
 import com.br.network.WSTaxiShare;
+import com.br.resources.AESCrypt;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
 import com.br.validation.Rule;
@@ -213,7 +214,18 @@ public class LoginToResetActivity extends Activity {
 		protected void onPreExecute() {
 			//Inica a popup de load
 			progress = Utils.setProgreesDialog(progress, context, "Alterando", "Aguarde...");
-			loginApp.setSenha(txtNovasenha.getText().toString());
+			String senha = txtNovasenha.getText().toString();
+			
+			try {
+				AESCrypt senhaEncripatada = new AESCrypt(senha);
+				loginApp.setSenha(senhaEncripatada.encrypt(senha));
+
+			} catch (Exception e) {
+				Utils.logException("RegisteActivity", "RegisterTask", "onPreExecute", e);
+				loginApp.setSenha(senha);
+
+			}
+			
 			resposta = txtResposta.getText().toString();
 
 			String resposta2 = txtResposta.getText().toString();

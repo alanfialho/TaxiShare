@@ -21,6 +21,7 @@ import android.widget.EditText;
 import com.br.activitys.R;
 import com.br.entidades.LoginApp;
 import com.br.network.WSTaxiShare;
+import com.br.resources.AESCrypt;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
 import com.br.validation.Rule;
@@ -207,7 +208,18 @@ public class EditPasswordFragment extends Fragment {
 					loginApp.setId(resposta.getJSONObject("data").getInt("id"));
 
 					loginApp.setLogin(sessionedLogin);
-					loginApp.setSenha(novaSenha);
+
+					
+					try {
+						AESCrypt senhaEncripatada = new AESCrypt(novaSenha);
+						loginApp.setSenha(senhaEncripatada.encrypt(novaSenha));
+
+					} catch (Exception e) {
+						Utils.logException("RegisteActivity", "RegisterTask", "onPreExecute", e);
+						loginApp.setSenha(novaSenha);
+					}
+					
+					
 
 					Log.i("Dados do login taxi", "ID -> " + loginApp.getId() + " LOGIN -> " + loginApp.getLogin() + " NOVA SENHA -> " + loginApp.getSenha() );
 

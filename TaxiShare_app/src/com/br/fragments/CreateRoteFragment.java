@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONException;
@@ -42,30 +43,24 @@ public class CreateRoteFragment extends Fragment {
 	private double lat, lon, minhaLat, minhaLong;
 
 	Button btnCriarRota;
-	EditText textOrigem;
-	EditText textDestino;
+	EditText textOrigem, textDestino;
 	Spinner spnPessoas;
 	TimePicker tpHorarioSaida;
-	Address ori, dest;
 	EnderecoApp enderecoOrigem, enderecoDestino;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.rote_create, container, false);
 		context = getActivity();
 
-		session = new SessionManagement(rootView.getContext());
+		setAtributes(rootView);
+		setBtnAction();
+		fillFields();
 
 		//Checa se o usuario esta logado
 		session.checkLogin();
 
-		setAtributes(rootView);
-		setBtnAction();
-
-
 		//setUpMapSePreciso()
-
 		return rootView;
 	}
 
@@ -73,50 +68,27 @@ public class CreateRoteFragment extends Fragment {
 	private void setAtributes(View rootView) {
 		session = new SessionManagement(rootView.getContext());
 
-		//Importando os campos da pessoa
-		textOrigem = (EditText) rootView.findViewById(R.id.rote_create_txt_origem);
-		textDestino = (EditText) rootView.findViewById(R.id.rote_create_txt_destino);
-		spnPessoas = (Spinner) rootView.findViewById(R.id.rote_create_sp_pessoas);
-		tpHorarioSaida = (TimePicker) rootView.findViewById(R.id.rote_create_tp_saida);
-
-		Bundle args = getArguments();
-		ori = (Address) args.getParcelable("origemAddress");
-		dest  = (Address) args.getParcelable("destinoAddress");
-		enderecoOrigem = populaEnderecoApp(ori, 'O');
-		enderecoDestino = populaEnderecoApp(dest, 'D');
-		String ruaOri = enderecoOrigem.getRua() + ", " + enderecoOrigem.getNumero() + " - " + enderecoOrigem.getCidade();
-		String ruaDest = enderecoDestino.getRua() + ", " + enderecoDestino.getNumero() + " - " + enderecoDestino.getCidade();
-
-		textOrigem.setText(ruaOri);
-		textDestino.setText(ruaDest);
-
-
 		try {
+			textOrigem = (EditText) rootView.findViewById(R.id.rote_create_txt_origem);
+			textDestino = (EditText) rootView.findViewById(R.id.rote_create_txt_destino);
+			spnPessoas = (Spinner) rootView.findViewById(R.id.rote_create_sp_pessoas);
+			tpHorarioSaida = (TimePicker) rootView.findViewById(R.id.rote_create_tp_saida);
 
-			// Definindo Lista de sexos
+			//Importando botões
+			btnCriarRota = (Button) rootView.findViewById(R.id.rote_create_btn_criar);
+
 			List<String> numeroPessoas = new ArrayList<String>();
 			numeroPessoas.add("0");
 			numeroPessoas.add("1");
 			numeroPessoas.add("2");
 
-
-			// Colocando lista de sexos no spinner
-			ArrayAdapter<String> adapterPessoas = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, numeroPessoas);
+			ArrayAdapter<String> adapterPessoas = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, numeroPessoas);
 			adapterPessoas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spnPessoas.setAdapter(adapterPessoas);		
 
-
 		} catch (Exception e) {
-			Log.i("Preenchendo Sppiners Exception taxi", "Exceptiom -> " + e + " || Message -> " + e.getMessage());
-		}
-
-
-
-
-
-		//Importando botões
-		btnCriarRota = (Button) rootView.findViewById(R.id.rote_create_btn_criar);
-
+			Utils.logException("CreateRoteFragment", "setAtributes", "", e);
+		}		
 	}
 
 	private void setBtnAction() {
@@ -129,32 +101,49 @@ public class CreateRoteFragment extends Fragment {
 		});		
 	}
 
+	private void fillFields(){
+		try{
+			Bundle args = getArguments();
+			
+			Address ori = (Address) args.getParcelable("origemAddress");
+			Address dest  = (Address) args.getParcelable("destinoAddress");
+			
+			enderecoOrigem = populaEnderecoApp(ori, 'O');
+			enderecoDestino = populaEnderecoApp(dest, 'D');
+			
+			String ruaOri = enderecoOrigem.getRua() + ", " + enderecoOrigem.getNumero() + " - " + enderecoOrigem.getCidade();
+			String ruaDest = enderecoDestino.getRua() + ", " + enderecoDestino.getNumero() + " - " + enderecoDestino.getCidade();
+
+			textOrigem.setText(ruaOri);
+			textDestino.setText(ruaDest);
+
+		}catch(Exception e ){
+			Utils.logException("CreateRoteFragment", "fillFields", "", e);
+		}
+	}
 
 	private class CreateRoteTask extends AsyncTask<String, Void, String> {
 
 		ProgressDialog progress;
 		RotaApp rotaApp;
-		
+
 		protected void onPreExecute() {
 			progress = Utils.setProgreesDialog(progress, context, "Criando Rota", "Aguarde...");
-			Log.i("onPreExecute Create Rota taxi", "onPreExecute Create Rota taxi");
-
-
-
+			HashMap<String, String> user = session.getUserDetails();         
 
 			//instaciando a rota e setando valores
 			rotaApp = new RotaApp();
-			List<EnderecoApp> lstEndereco = new ArrayList();
+			List<EnderecoApp> lstEndereco = new ArrayList<EnderecoApp>();
 			lstEndereco.add(enderecoOrigem);
 			lstEndereco.add(enderecoDestino);
 			rotaApp.setEnderecos(lstEndereco);
 			rotaApp.setFlagAberta(true);
-			rotaApp.setPassExistentes(Short.parseShort("2"));
+			rotaApp.setPassExistentes(spnPessoas.getSelectedItemPosition());
 
 			//o usuário que está criando a rota é o administrador
 			//vinculando o idUsuario(login) que provavelmente esta em session
 			LoginApp adm = new LoginApp();
-			adm.setId(1);
+			adm.setId(Integer.parseInt(user.get(SessionManagement.KEY_PESSOAID)));
 			rotaApp.setAdministrador(adm);
 			//horario de saida
 			try
@@ -166,38 +155,28 @@ public class CreateRoteFragment extends Fragment {
 				String dataFormatada = dateFormat.format(data);
 				rotaApp.setDataRota(dataFormatada);
 			}
-			catch(Exception ex)
+			catch(Exception e)
 			{
-				Utils.gerarToast( context, "Erro ao criar rota!");
-				Log.i("Exception criar rota taxi", ex.getMessage() + "");
-
+				Utils.gerarToast(context, "Erro ao criar rota!");
+				Utils.logException("CreateRoteFragment", "CreateRoteTask", "onPreExecute", e);
 			}
 		}
-
-
-
-
 
 		@Override
 		protected String doInBackground(String... urls) {
 			String response = "";
-			//List<RotaApp> list;
 			try
 			{
 				WSTaxiShare ws = new WSTaxiShare();
-				//list = ws.getRotas();
-				
 				response = ws.criarRota(rotaApp);
-
 			}
-			catch(Exception ex)
+			catch(Exception e)
 			{
-				Utils.gerarToast( context, "Erro ao criar rota!");
-				Log.i("Exception criar rota taxi", ex + "");
+				Utils.gerarToast(context, "Erro ao criar rota!");
+				Utils.logException("CreateRoteFragment", "CreateRoteTask", "doInBackground", e);
 			}	
 
 			return response;
-
 		}
 
 		@Override
@@ -205,11 +184,11 @@ public class CreateRoteFragment extends Fragment {
 			progress.dismiss();
 
 			try {
-				JSONObject respostaWsJSON = new JSONObject(response);
-				Utils.gerarToast( context, respostaWsJSON.getString("descricao"));				
+				JSONObject json = new JSONObject(response);
+				Utils.gerarToast(context, json.getString("descricao"));				
 
 			} catch (JSONException e) {
-				Log.i("CreateRoteTask onPostExecute Exception taxi", "Exception -> " + e + "Message -> " + e.getMessage());
+				Utils.logException("CreateRoteFragment", "CreateRoteTask", "onPostExecute", e);
 				Utils.gerarToast( context, "Tente novamente mais tarde!");
 			}
 		}

@@ -1,5 +1,6 @@
 package com.br.network;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,8 @@ public class WSTaxiShare {
 
 	public String login(String email, String password) {
 
-		String resposta = new WSClient().get(URL_WS + "login/login/?login="+ email +"&password="+ password);
+
+		String resposta = new WSClient().get(URL_WS + "login/login/?login="+ email +"&password="+ URLEncoder.encode(password));
 		return resposta;
 	}
 

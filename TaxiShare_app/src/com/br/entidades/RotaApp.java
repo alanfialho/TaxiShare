@@ -7,7 +7,7 @@ public class RotaApp {
 	private int id;
 	private String dataRota;
 	private Boolean flagAberta;
-	private Short passExistentes;
+	private int passExistentes;
 	private List<EnderecoApp> enderecos;
 	private List<LoginApp> usuarios;
 	private LoginApp administrador;
@@ -46,10 +46,10 @@ public class RotaApp {
 	public void setFlagAberta(Boolean flagAberta) {
 		this.flagAberta = flagAberta;
 	}
-	public Short getPassExistentes() {
+	public int getPassExistentes() {
 		return passExistentes;
 	}
-	public void setPassExistentes(Short passExistentes) {
+	public void setPassExistentes(int passExistentes) {
 		this.passExistentes = passExistentes;
 	}
 	public List<EnderecoApp> getEnderecos() {

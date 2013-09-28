@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/roteListItemInfo"
+    android:id="@+id/rote_list_lay_item_info"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -9,7 +9,7 @@
     android:paddingTop="5sp" >
 
     <ListView
-        android:id="@+id/roteList"
+        android:id="@+id/rote_list_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </ListView>

@@ -14,44 +14,57 @@
         android:layout_height="match_parent" >
 
         <EditText
-            android:id="@+id/txtEndereco1"
+            android:id="@+id/teste_mapa_txt_origem"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="34dp"
+            android:layout_marginTop="16dp"
             android:ems="10"
             android:hint="Digite end. com número" >
 
             <requestFocus />
         </EditText>
 
-        <Button
-            android:id="@+id/btBusca"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="25dp"
-            android:text="Busca" />
-
         <EditText
-            android:id="@+id/txtEndereco2"
+            android:id="@+id/teste_mapa_txt_destino"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/txtEndereco1"
-            android:layout_marginTop="26dp"
+            android:layout_below="@+id/teste_mapa_txt_origem"
+            android:layout_marginTop="15dp"
             android:ems="10"
             android:hint="Digite end. com número" />
 
         <Button
-            android:id="@+id/btnListaRotas"
+            android:id="@+id/teste_mapa_btn_buscar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btBusca"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/teste_mapa_txt_destino"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="17dp"
+            android:text="Buscar" />
+
+        <Button
+            android:id="@+id/teste_mapa_btn_procurar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="17dp"
+            android:text="Procurar"
+            />
+
+        <Button
+            android:id="@+id/teste_mapa_btn_criar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/teste_mapa_btn_procurar"
+            android:layout_alignBottom="@+id/teste_mapa_btn_procurar"
             android:layout_centerHorizontal="true"
-            android:text="lista Rotas" />
+            android:text="Criar" />
 
     </RelativeLayout>
 

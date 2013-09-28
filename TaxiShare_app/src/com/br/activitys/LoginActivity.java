@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.br.network.WSTaxiShare;
+import com.br.resources.AESCrypt;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
 
@@ -92,7 +93,7 @@ public class LoginActivity extends Activity {
 	private class LoginTask extends AsyncTask<String, Void, String> {
 
 		ProgressDialog progress;
-		String login, password;
+		String login, password, encriptedPassword;
 
 		protected void onPreExecute() {
 			//Inica a popup de load
@@ -100,6 +101,16 @@ public class LoginActivity extends Activity {
 			//Pegando o email e a senha da tela
 			login = loginLogin.getText().toString();
 			password = loginSenha.getText().toString();
+
+
+			try {
+				AESCrypt senhaEncripatada = new AESCrypt(password);
+				encriptedPassword = senhaEncripatada.encrypt(password);
+
+			} catch (Exception e) {
+				Utils.logException("RegisteActivity", "RegisterTask", "onPreExecute", e);
+				encriptedPassword = password;
+			}	
 		}
 
 		@Override
@@ -108,7 +119,7 @@ public class LoginActivity extends Activity {
 			//Inicializa o WS
 			WSTaxiShare ws = new WSTaxiShare();
 			//Recebe a resposta do login
-			String response = ws.login(login, password);
+			String response = ws.login(login, encriptedPassword);
 
 			return response;
 		}
@@ -119,11 +130,11 @@ public class LoginActivity extends Activity {
 			try {
 				//Transforma a resposta em json
 				JSONObject json = new JSONObject(response);
-				
+
 				//Verifica se deu erro
 				if (json.getInt("errorCode") == 0) {
 					Utils.gerarToast(context, json.getString("descricao"));
-					
+
 					//Pega os dados da resposta
 					JSONObject pessoa = json.getJSONObject("data").getJSONObject("pessoa");
 					String pessoaId = json.getJSONObject("data").getString("id");
@@ -134,10 +145,10 @@ public class LoginActivity extends Activity {
 					String sexo = pessoa.getString("sexo");
 					String dataNasc = pessoa.getString("dataNascimento");
 					String login = loginLogin.getText().toString();
-					
+
 					//Coloca informações na sessão
 					session.createLoginSession(pessoaId, nome,  email,  sexo,  dataNasc,  ddd,  celular, login);
-					
+
 					//Inicia a main activity
 					Intent intent = new Intent(getApplicationContext(),	MainActitity.class);
 					startActivity(intent);

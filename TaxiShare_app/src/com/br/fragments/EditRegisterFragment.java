@@ -222,8 +222,6 @@ public class EditRegisterFragment extends Fragment {
 				String niceMonth = month > 9 ? "" + month : "0"+ month;
 				String dataNascimento = year + "-" +niceMonth+ "-" +day;
 
-				Log.i("DATAAAAAAAAAAAAAAAAAA taxi", dataNascimento);
-
 				String sexo = spinnerSexo.getSelectedItem().toString();				
 
 				//Criando objeto pessoa e objeto login

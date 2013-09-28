@@ -10,6 +10,7 @@ import com.br.entidades.LoginApp;
 import com.br.entidades.PessoaApp;
 import com.br.entidades.PerguntaApp;
 import com.br.network.WSTaxiShare;
+import com.br.resources.AESCrypt;
 import com.br.resources.Utils;
 import com.br.validation.Rule;
 import com.br.validation.Validator;
@@ -260,6 +261,9 @@ public class RegisterActivity extends Activity {
 			String login = textLogin.getText().toString().trim();
 			String resposta = textResposta.getText().toString().trim();
 			String senha = textSenha.getText().toString();
+			
+			
+			
 			// Criando objeto pessoa e objeto login
 			PessoaApp pessoaApp = new PessoaApp();
 			loginApp = new LoginApp();
@@ -278,7 +282,15 @@ public class RegisterActivity extends Activity {
 
 			// Definindo as paradas em login
 			loginApp.setLogin(login);
-			loginApp.setSenha(senha);
+			try {
+				AESCrypt senhaEncripatada = new AESCrypt(senha);
+				loginApp.setSenha(senhaEncripatada.encrypt(senha));
+
+			} catch (Exception e) {
+				Utils.logException("RegisteActivity", "RegisterTask", "onPreExecute", e);
+				loginApp.setSenha(senha);
+
+			}
 			loginApp.setResposta(resposta);
 
 			// Setando a pergunta no login
