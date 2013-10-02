@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/linearLayoutRoteItem"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="left|center"
@@ -8,37 +8,66 @@
     android:paddingLeft="5sp"
     android:paddingTop="5sp" >
 
+    <TextView
+        android:id="@+id/rote_list_item_lbl_origem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Origem"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/rote_list_item_txt_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/rote_list_item_lbl_origem"
+        android:layout_below="@+id/rote_list_item_lbl_origem"
+        android:text="Origem vai aqui"
+        android:textSize="12dp" />
+
+    <TextView
+        android:id="@+id/rote_list_item_lbl_destino"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/rote_list_item_txt_1"
+        android:text="Destino"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/rote_list_item_txt_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/rote_list_item_lbl_destino"
+        android:text="Destino vai aqui"
+        android:textSize="12dp" />
+
     <ImageView
         android:id="@+id/rote_list_item_img_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="6dip"
-        android:maxHeight="20sp"
-        android:maxWidth="20sp"
-        android:src="@drawable/icon_password" />
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/icon_navigation" />
+
+    <ImageView
+        android:id="@+id/rote_list_item_img_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rote_list_item_lbl_passageiros"
+        android:layout_marginRight="61dp"
+        android:layout_toLeftOf="@+id/rote_list_item_img_icon"
+        android:src="@drawable/icon_passageiros" />
 
     <TextView
-        android:id="@+id/rote_list_item_txt_1"
-        android:layout_width="50dp"
+        android:id="@+id/rote_list_item_lbl_passageiros"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?android:attr/activatedBackgroundIndicator"
-        android:gravity="center_vertical"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:textColor="#fff" />
+        android:layout_above="@+id/rote_list_item_txt_1"
+        android:layout_alignRight="@+id/rote_list_item_img_pass"
+        android:text="2 / 4"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <TextView
-        android:id="@+id/rote_list_item_txt_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/activatedBackgroundIndicator"
-        android:gravity="center_vertical"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:textColor="#fff" />
-
-</LinearLayout>
+</RelativeLayout>

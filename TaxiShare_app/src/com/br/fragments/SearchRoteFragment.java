@@ -150,11 +150,11 @@ public class SearchRoteFragment extends Fragment{
 	public void setAtributes(View rootView){
 
 
-		mapView = (MapView) rootView.findViewById(R.id.map);
+		mapView = (MapView) rootView.findViewById(R.id.rote_details_map);
 		mapView.onCreate(mBundle);
 
 		if (googleMap == null) {
-			googleMap = ((MapView) rootView.findViewById(R.id.map)).getMap();
+			googleMap = ((MapView) rootView.findViewById(R.id.rote_details_map)).getMap();
 			if (googleMap != null) {
 				//				setUpMap();
 			}
@@ -254,7 +254,8 @@ public class SearchRoteFragment extends Fragment{
 		btnLista.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				Bundle args = new Bundle();
-
+				
+				
 				FragmentManager fragmentManager = getFragmentManager();
 				FragmentTransaction ftransaction = fragmentManager.beginTransaction();
 				Fragment fragment = new ListRoteFragment();
