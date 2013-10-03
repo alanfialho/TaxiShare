@@ -119,14 +119,14 @@ public class SearchRoteFragment extends Fragment{
 	public List<Address>  getListaDeEnderecos(String endereco) throws IOException {
 		// esse Geocoder aqui é quem vai traduzir o endereço de String para coordenadas double
 		Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
-
+		
 		//este Adress aqui recebe um retorno do metodo geoCoder.getFromLocationName vc manipula este retorno pra pega as coordenadas
 		List<Address> enderecos = null;  
 
 		// o numero um aqui é a quantidade maxima de resultados que vc quer receber
 		enderecos = geoCoder.getFromLocationName(endereco, 5);
 
-
+		
 
 		//		Address address = enderecos.get(0);
 

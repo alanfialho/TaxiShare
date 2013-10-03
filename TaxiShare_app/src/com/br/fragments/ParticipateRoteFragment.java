@@ -27,7 +27,7 @@ public class ParticipateRoteFragment extends Fragment{
 	private MapView mapView;
 	private Bundle mBundle;
 	private Button btnParticipa;
-	private TextView lblOrigem, lblDestino, lblPassageiros;
+	private TextView lblOrigem, lblDestino, lblPassageiros, lblAdm;
 	private Context context;
 	private RotaApp rota;
 	
@@ -114,14 +114,19 @@ public class ParticipateRoteFragment extends Fragment{
 		}
 		Bundle args = getArguments();
 		rota = args.getParcelable("rota");
-		btnParticipa = (Button) rootView.findViewById(R.id.rote_details_btn_participar);
-		lblOrigem = (TextView) rootView.findViewById(R.id.rote_details_txt_origem_info);
-		lblDestino = (TextView) rootView.findViewById(R.id.rote_details_txt_destino_info);
-		lblPassageiros = (TextView) rootView.findViewById(R.id.rote_details_txt_passageiros_info);
 		
-		lblOrigem.setText(rota.getEnderecos().get(0).getRua());
-		lblDestino.setText(rota.getEnderecos().get(1).getRua());
-		lblPassageiros.setText(rota.getPassExistentes() + "");
+		lblOrigem = (TextView) rootView.findViewById(R.id.rote_details_lbl_origem_info);
+		lblDestino = (TextView) rootView.findViewById(R.id.rote_details_lbl_destino_info);
+		lblPassageiros = (TextView) rootView.findViewById(R.id.rote_details_lbl_passageiros_info);
+		lblAdm = (TextView) rootView.findViewById(R.id.rote_details_lbl_adm_nome);
+		btnParticipa = (Button) rootView.findViewById(R.id.rote_details_btn_participar);
+		
+		lblOrigem.setText(rota.getEnderecos().get(0).getRua() + ", " + rota.getEnderecos().get(0).getNumero() + " - " + rota.getEnderecos().get(0).getCidade());
+		lblDestino.setText(rota.getEnderecos().get(1).getRua() + ", " + rota.getEnderecos().get(1).getNumero() + " - " + rota.getEnderecos().get(1).getCidade());
+		int passageiro =  4 - rota.getPassExistentes();
+		lblPassageiros.setText(passageiro + "");
+		//lblAdm.setText(rota.getAdministrador().getLogin().toUpperCase());
+		
 
 	}
 
