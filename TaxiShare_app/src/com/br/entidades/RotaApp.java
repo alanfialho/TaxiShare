@@ -2,10 +2,7 @@ package com.br.entidades;
 
 import java.util.List;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-public class RotaApp implements Parcelable {
+public class RotaApp {
 
 	private int id;
 	private String dataRota;
@@ -74,18 +71,6 @@ public class RotaApp implements Parcelable {
 
 	public void setAdministrador(LoginApp administrador) {
 		this.administrador = administrador;
-	}
-
-	@Override
-	public int describeContents() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void writeToParcel(Parcel arg0, int arg1) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 
