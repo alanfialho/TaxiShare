@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/rote_users_list_item_partcipa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/rote_users_list_item_lbl_origem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/rote_users_list_item_partcipa"
+        android:text="Origem"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/rote_users_list_item_lbl_origem_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/rote_users_list_item_lbl_origem"
+        android:text="Origem vai aqui"
+        android:textSize="12dp" />
+
+    <TextView
+        android:id="@+id/rote_users_list_item_lbl_destino"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/rote_users_list_item_lbl_origem_info"
+        android:text="Destino"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/rote_users_list_item_lbl_destino_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/rote_users_list_item_lbl_destino"
+        android:text="Destino vai aqui"
+        android:textSize="12dp" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/rote_users_list_item_lbl_destino_info"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/icon_navigation" />
+
+</RelativeLayout>
