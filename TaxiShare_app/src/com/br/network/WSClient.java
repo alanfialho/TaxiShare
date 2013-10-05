@@ -76,14 +76,19 @@ public class WSClient {
 		return result;
 	}
 
-	public final String put(String url) {
+	public final String put(String url, String json) {
 
 		String resultCode = "";
 		String result = "";
-		HttpPut httput = new HttpPut(url);
-		HttpResponse response;
-
+		
 		try {
+			
+			HttpPut httput = new HttpPut(url);
+			httput.setHeader("Content-type", "application/json");
+			StringEntity sEntity = new StringEntity(json, "UTF-8");
+			httput.setEntity(sEntity);
+			
+			HttpResponse response;
 			response = HttpClientSingleton.getHttpClientInstace().execute(httput);
 			HttpEntity entity = response.getEntity();
 

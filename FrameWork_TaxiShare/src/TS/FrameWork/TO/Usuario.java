@@ -5,9 +5,7 @@
 package TS.FrameWork.TO;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,7 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonBackReference;
 
 /**
  *
@@ -42,8 +40,10 @@ public class Usuario implements Serializable {
     @JoinColumn(name="idPergunta")
     private Pergunta pergunta;
     @ManyToMany(mappedBy = "usuarios")
-    private List<Rota> rotas;
+    @JsonBackReference
+    private  List<Rota> rotas;
     @OneToMany(mappedBy = "administrador")
+    @JsonBackReference
     private List<Rota> rotasAdm;
 
     public Usuario()

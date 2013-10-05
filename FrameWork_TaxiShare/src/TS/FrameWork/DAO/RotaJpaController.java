@@ -12,6 +12,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import org.hibernate.Hibernate;
+
 
 public class RotaJpaController implements Serializable {
 
@@ -74,15 +76,6 @@ public class RotaJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             Rota rota = em.find(Rota.class, id);
-            //elimina recursividade gerada pelo relacionamento ManyToMany
-            if(rota != null)
-            {
-                for(Usuario u: rota.getUsuarios())
-                {
-                    u.setRotas(null);
-                }
-                rota.getAdministrador().setRotasAdm(null);
-            }
             return rota;
         } catch(Exception ex){
             throw ex;
@@ -106,22 +99,7 @@ public class RotaJpaController implements Serializable {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
             }
-            
             rotas = q.getResultList();
-            //eliminando recursividade
-            if(rotas != null)
-            {
-                for(Rota rota : rotas)
-                {
-                  for(Usuario u: rota.getUsuarios())
-                  {
-                    if(u != null)
-                      u.setRotas(null);
-                  }
-                  if(rota.getAdministrador() != null)
-                    rota.getAdministrador().setRotasAdm(null);  
-                }
-            }
             
             return rotas;
             

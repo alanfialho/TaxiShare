@@ -19,7 +19,7 @@ public class RotaEntity {
 	private Boolean flagAberta;
 	private Short passExistentes;
 	private List<Endereco> enderecos;
-	private List<Usuario> usuarios;
+        private List<Usuario> usuarios;
         private Usuario administrador;
 
     public RotaEntity() {

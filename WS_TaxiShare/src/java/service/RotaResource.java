@@ -10,9 +10,9 @@ import TS.FrameWork.DAO.UsuarioJpaController;
 import TS.FrameWork.TO.Endereco;
 import TS.FrameWork.TO.Usuario;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import entities.ResponseEntity;
 import entities.RotaEntity;
-import entities.UsuarioEntity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +26,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.hibernate.Hibernate;
+import util.TsExclusionStrategy;
+
 
 /**
  *
@@ -83,9 +87,12 @@ public class RotaResource {
     }
     
     @GET
-    @Path("find/{id}")
+    @Path("findById/{id}")
     @Produces({"application/json"})
     public String find(@PathParam("id") Integer id) {
+        
+        ObjectMapper jax = new ObjectMapper();
+        String json = "";
         ResponseEntity saida;
         RotaJpaController rotaDAO = new RotaJpaController(getEntityManager());
         Rota rota = null;
@@ -94,32 +101,43 @@ public class RotaResource {
         {
             rota = rotaDAO.findRota(id);
             if(rota != null)
+            {   
                 saida = new ResponseEntity("Sucesso", 0, "Rota encontrada!", rota);
-            else
+            }
+            else{
                 saida = new ResponseEntity("Sucesso", 2, "Rota não encontrada!", null);
+            }
         }
         catch(Exception ex) 
         {
            System.out.println("ERRRO --> " + ex.getMessage());
-           saida = new ResponseEntity("Erro", 1, "Não foi possivel realizar operação, tente mais tarde!", null);  
+           saida = new ResponseEntity("Erro", 1, "Não foi possivel realizar operação, tente mais tarde!", null);
         }
-        
-        return new Gson().toJson(saida);
+        //serializa o JSON pelo Jackson para eliminar a recursividade de relacionamentos bidirecionais
+        try
+        {
+            json = jax.writeValueAsString(saida);
+        }
+        catch(Exception ex)
+        {
+            System.out.println("ERRRO --> " + ex.getMessage());
+        }
+        return json;
     }
     
     @GET
     @Path("/findAll")
     @Produces({"application/json"})
-    public String findAll() {
+    public String findAll(){
         ResponseEntity saida;
         RotaJpaController rotaDAO = new RotaJpaController(getEntityManager());
         List<Rota> rotas = null;
-        
         try
         {
             rotas = rotaDAO.findRotaEntities();
-            if(rotas != null && rotas.size() > 0)
+            if(rotas != null && rotas.size() > 0){
                 saida = new ResponseEntity("Sucesso", 0, "Rotas encontradas!", rotas);
+            }
             else
                 saida = new ResponseEntity("Sucesso", 2, "Rotas não encontradas!", null);
         }
@@ -128,8 +146,14 @@ public class RotaResource {
            System.out.println("ERRRO --> " + ex.getMessage());
            saida = new ResponseEntity("Erro", 1, "Não foi possivel realizar operação, tente mais tarde!", null);  
         }
+        //elimina os usuarios na serialização do objeto
+        //ideal é usar o detach da JPA no objeto mas não foi possivel devido aos problemas com jar
+        Gson gson = new GsonBuilder()
+                .setExclusionStrategies(new TsExclusionStrategy(Usuario.class))
+                .serializeNulls()
+                .create();
         
-        return new Gson().toJson(saida);
+        return gson.toJson(saida);
     }
     
     
@@ -137,7 +161,7 @@ public class RotaResource {
     @Path("/joinIn/{idRota}/{idUsuario}")
     @Produces("application/json")
     @Consumes("application/json")
-    public String joinIn(@PathParam("idRota")int idRota, @PathParam("idUsuario")int idUsuario) {
+    public String joinIn(@PathParam("idRota")int idRota, @PathParam("idUsuario")int idUsuario, Endereco endereco) {
         
         ResponseEntity saida = null;
         Rota rota = null;
@@ -184,8 +208,18 @@ public class RotaResource {
                 throw new Exception("Erro");
             }
             
+            if(endereco.getId() != 0)
+            {
+                saida = new ResponseEntity("Erro", 8, "Endereco inválido!", null);
+                throw new Exception("Erro");
+            }
             if(saida == null){
                 rota.getUsuarios().add(usuario);
+                rota.getEnderecos().add(endereco);
+                //soma 1 no passageiro existente
+                short aux = (short)(rota.getPassExistentes() + 1);
+                rota.setPassExistentes(aux);
+                //atualiza a rota
                 rotaDAO.edit(rota);
                 saida = new ResponseEntity("Sucesso", 0, "Participação concluida com sucesso!", null);
             }        
@@ -217,15 +251,10 @@ public class RotaResource {
                long diff = r.getDataRota().getTime() - horaAtual.getTime() ;//em milesegundos
                int timeInSeconds = (int)diff/1000;
                //verifica se passou uma hora
-               if(timeInSeconds > 3600)
-               {
-                   return true;
-               }
-               else
+               if(timeInSeconds < 3600)
                {
                    return false;
                }
-
            }
 
         }
