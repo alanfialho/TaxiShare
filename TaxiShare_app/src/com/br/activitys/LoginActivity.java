@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.br.network.WSTaxiShare;
 import com.br.resources.AESCrypt;
@@ -26,7 +25,6 @@ public class LoginActivity extends Activity {
 	Button btnLogin, btnLinkToRegister, btnLinkToForgetPassword;
 	EditText loginLogin, loginSenha;
 	SessionManagement session;
-	private ImageView img;
 
 	@Override	
 	public void onCreate(Bundle savedInstanceState) {
@@ -84,17 +82,12 @@ public class LoginActivity extends Activity {
 
 		//Pegando os campos da tela
 		loginLogin = (EditText) findViewById(R.id.login_txt_login);
-		loginSenha = (EditText) findViewById(R.id.login_txt_senha);
-		loginLogin.requestFocus();
-		
+		loginSenha = (EditText) findViewById(R.id.login_senha);
 
 		//Botoes e erro
 		btnLogin = (Button) findViewById(R.id.login_btn_login);
 		btnLinkToRegister = (Button) findViewById(R.id.login_btn_register);
 		btnLinkToForgetPassword = (Button) findViewById(R.id.login_btn_forget);
-		img = (ImageView) findViewById(R.id.imageView1);
-		
-		img.setImageResource(R.drawable.logopretoamarelo);
 	}
 
 	private class LoginTask extends AsyncTask<String, Void, String> {

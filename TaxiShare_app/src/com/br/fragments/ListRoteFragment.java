@@ -1,17 +1,26 @@
 package com.br.fragments;
 
+import java.io.Serializable;
 import java.util.List;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+
 import com.br.activitys.R;
 
 import com.br.adapter.MenuAdapter;
@@ -19,6 +28,7 @@ import com.br.adapter.RoteAdapter;
 import com.br.entidades.RotaApp;
 import com.br.network.WSTaxiShare;
 import com.br.resources.Utils;
+
 
 public class ListRoteFragment extends Fragment {
 
@@ -41,7 +51,7 @@ public class ListRoteFragment extends Fragment {
 		catch (Exception e) {
 			Utils.logException("ListRoteFragment", "onCreateView", "", e);
 		}
-
+		setListAction();
 		return rootView;
 	}
 
@@ -49,6 +59,29 @@ public class ListRoteFragment extends Fragment {
 		RoteAdapter roteAdapter = new RoteAdapter(context, rotas);		
 		roteList = (ListView) rootView.findViewById(R.id.rote_list_list_view);
 		roteList.setAdapter(roteAdapter);
+		roteList.setOnItemClickListener(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				
+				
+				//Passando a rota selecionada para tela de detalhes.
+				Bundle args = new Bundle();
+				RotaApp rotinha = (RotaApp) roteList.getAdapter().getItem(arg2);
+				args.putParcelable("rota", rotinha);
+				FragmentManager fragmentManager = getFragmentManager();
+				FragmentTransaction ftransaction = fragmentManager.beginTransaction();
+				Fragment fragment = new ParticipateRoteFragment();
+				fragment.setArguments(args);
+				ftransaction.replace(R.id.content_frame, fragment);
+				ftransaction.addToBackStack(null);
+				ftransaction.commit();
+				
+				
+			}
+			
+		});
 
 	}
 	
@@ -89,6 +122,10 @@ public class ListRoteFragment extends Fragment {
 		}
 
 		
+	}
+	
+	private void setListAction() {
+
 	}
 	
 }

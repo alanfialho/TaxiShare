@@ -119,14 +119,14 @@ public class SearchRoteFragment extends Fragment{
 	public List<Address>  getListaDeEnderecos(String endereco) throws IOException {
 		// esse Geocoder aqui é quem vai traduzir o endereço de String para coordenadas double
 		Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
-		
+
 		//este Adress aqui recebe um retorno do metodo geoCoder.getFromLocationName vc manipula este retorno pra pega as coordenadas
 		List<Address> enderecos = null;  
 
 		// o numero um aqui é a quantidade maxima de resultados que vc quer receber
 		enderecos = geoCoder.getFromLocationName(endereco, 5);
 
-		
+
 
 		//		Address address = enderecos.get(0);
 
@@ -150,11 +150,11 @@ public class SearchRoteFragment extends Fragment{
 	public void setAtributes(View rootView){
 
 
-		mapView = (MapView) rootView.findViewById(R.id.map);
+		mapView = (MapView) rootView.findViewById(R.id.rote_details_map);
 		mapView.onCreate(mBundle);
 
 		if (googleMap == null) {
-			googleMap = ((MapView) rootView.findViewById(R.id.map)).getMap();
+			googleMap = ((MapView) rootView.findViewById(R.id.rote_details_map)).getMap();
 			if (googleMap != null) {
 				//				setUpMap();
 			}
@@ -254,7 +254,8 @@ public class SearchRoteFragment extends Fragment{
 		btnLista.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				Bundle args = new Bundle();
-
+				
+				
 				FragmentManager fragmentManager = getFragmentManager();
 				FragmentTransaction ftransaction = fragmentManager.beginTransaction();
 				Fragment fragment = new ListRoteFragment();
