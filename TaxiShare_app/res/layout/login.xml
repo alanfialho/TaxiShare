@@ -1,89 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffff" >
+    android:background="@drawable/backamarelo" >
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="49dp"
+        android:src="@drawable/logopretoamarelo" />
+
+    <EditText
+        android:id="@+id/login_txt_senha"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/login_btn_login"
+        android:layout_alignRight="@+id/login_btn_login"
+        android:layout_below="@+id/imageView1"
+        android:layout_marginTop="135dp"
+        android:background="@drawable/edittext"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Digite sua senha"
+        android:inputType="textPassword"
+        android:maxLength="16"
+        android:maxLines="1"
+        android:padding="8dip"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/login_txt_login"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@+id/login_txt_senha"
+        android:layout_alignLeft="@+id/login_txt_senha"
+        android:layout_alignRight="@+id/login_txt_senha"
+        android:layout_marginBottom="58dp"
+        android:background="@drawable/edittext"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Digite seu login"
+        android:maxLength="12"
+        android:maxLines="1"
+        android:padding="8dip"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/login_btn_login"
+        android:layout_width="280dp"
+        android:layout_height="41dp"
+        android:layout_below="@+id/login_txt_senha"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/botaologin" />
+
+    <Button
+        android:id="@+id/login_btn_forget"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:padding="10dip" >
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/login_btn_login"
+        android:layout_marginTop="13dp"
+        android:background="@null"
+        android:text="Esqueci minha senha!"
+        android:textColor="#000000"
+        android:textSize="14dp" />
 
-        <!-- View Title Label -->
+    <Button
+        android:id="@+id/login_btn_register"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/login_btn_forget"
+        android:layout_marginTop="33dp"
+        android:background="@null"
+        android:text="Não tem cadastro? Cadastre-se!"
+        android:textColor="#000000"
+        android:textSize="14dp" />
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dip"
-            android:text="LOGIN"
-            android:textSize="25dip"
-            android:textStyle="bold" />
-        <!-- Email Label -->
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Login" />
-
-        <!-- Email TextField -->
-
-        <EditText
-            android:id="@+id/login_txt_login"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:maxLength="12"
-            android:maxLines="1" />
-
-        <!-- Password Label -->
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dip"
-            android:text="Senha" />
-
-        <!-- Password TextField -->
-
-        <EditText
-            android:id="@+id/login_senha"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:maxLength="16"
-            android:maxLines="1" />
-
-        <!-- Login Button -->
-
-        <Button
-            android:id="@+id/login_btn_login"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:text="Login" />
-
-        <!-- Link to Registration Screen -->
-
-        <Button
-            android:id="@+id/login_btn_register"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dip"
-            android:background="@null"
-            android:text="Não tem cadastro? Cadastre-se!"
-            android:textColor="#21dbd4"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/login_btn_forget"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dip"
-            android:background="@null"
-            android:text="Esqueci minha senha!"
-            android:textColor="#21dbd4"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-</ScrollView>
+</RelativeLayout>
