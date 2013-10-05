@@ -5,6 +5,7 @@ import com.br.fragments.CreateRoteFragment;
 import com.br.fragments.EditPasswordFragment;
 import com.br.fragments.EditRegisterFragment;
 import com.br.fragments.SearchRoteFragment;
+import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
 
 import android.app.Activity;
@@ -88,13 +89,10 @@ public class MainActitity extends Activity {
 			selectItem(0);
 		}
 
-		
+
 		//Seta fragmento home no content frame HENRIQUE
-		Fragment fragment = new SearchRoteFragment();
-		Bundle args = new Bundle();
-		fragment.setArguments(args);
-		FragmentManager fragmentManager = getFragmentManager();
-		fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+		Utils.changeFragment(getFragmentManager(), new SearchRoteFragment(), null);
+
 	}
 
 	@Override
@@ -157,14 +155,11 @@ public class MainActitity extends Activity {
 	}
 
 	private void selectItem(int position) {
-		
+
 		//HENRIQUE
 		//É aqui que a parada esta trocando de tela, são essas 4 linhas, mas a linha de case que define o framegment, mais as 2 la em baixo.
 
-		Bundle args = new Bundle();
-		FragmentManager fragmentManager = getFragmentManager();
-		FragmentTransaction ftransaction = fragmentManager.beginTransaction();
-		Fragment fragment = new Fragment();
+		Fragment fragment = new Fragment();		
 		switch(position) {
 
 		case 0:
@@ -183,12 +178,7 @@ public class MainActitity extends Activity {
 			session.logoutUser();
 		}
 
-
-		fragment.setArguments(args);
-		ftransaction.replace(R.id.content_frame, fragment);
-		//Essa linha coloca ele como back, ou seja, deixa ele no botão voltar.
-		ftransaction.addToBackStack(null);
-		ftransaction.commit();
+		Utils.changeFragment(getFragmentManager(), fragment, null);
 
 		// update selected item and title, then close the drawer
 		listaMenuLateral.setItemChecked(position, true);

@@ -62,27 +62,16 @@ public class ListRoteFragment extends Fragment {
 		roteList.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {			
 				
+				RotaApp rotinha = (RotaApp) roteList.getAdapter().getItem(position);
 				
-				//Passando a rota selecionada para tela de detalhes.
+				//Passando a rota selecionada para tela de detalhes.			
 				Bundle args = new Bundle();
-				RotaApp rotinha = (RotaApp) roteList.getAdapter().getItem(arg2);
-				args.putParcelable("rota", rotinha);
-				FragmentManager fragmentManager = getFragmentManager();
-				FragmentTransaction ftransaction = fragmentManager.beginTransaction();
-				Fragment fragment = new ParticipateRoteFragment();
-				fragment.setArguments(args);
-				ftransaction.replace(R.id.content_frame, fragment);
-				ftransaction.addToBackStack(null);
-				ftransaction.commit();
-				
-				
-			}
-			
+				args.putParcelable("rota", rotinha);				
+				Utils.changeFragment(getFragmentManager(), new ParticipateRoteFragment(), args);				
+			}			
 		});
-
 	}
 	
 
@@ -113,15 +102,9 @@ public class ListRoteFragment extends Fragment {
 
 		@Override
 		protected void onPostExecute(String response) {
-
-			//chamando o método
 			fillSearchList(rotas);
-			Utils.gerarToast(getActivity(), "Rodou");
-
 			progress.dismiss();
-		}
-
-		
+		}		
 	}
 	
 	private void setListAction() {

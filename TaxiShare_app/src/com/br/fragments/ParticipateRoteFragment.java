@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.androidquery.AQuery;
 import com.br.activitys.R;
 import com.br.entidades.RotaApp;
+import com.br.resources.MapUtils;
 import com.br.resources.Utils;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -35,8 +36,6 @@ public class ParticipateRoteFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.rote_details, container, false);
 		context = getActivity();
-
-
 		try {
 			MapsInitializer.initialize(getActivity());
 		} catch (GooglePlayServicesNotAvailableException e) {
@@ -44,62 +43,20 @@ public class ParticipateRoteFragment extends Fragment{
 		}
 
 		setAtributes(rootView);
-		setBtnAction();
-		setaZoom();
+		MapUtils mapUtils = new MapUtils(context, googleMap);
+		
+		double destinoLatitude = Double.parseDouble(rota.getEnderecos().get(1).getLatitude());
+		double destinoLongitude = Double.parseDouble(rota.getEnderecos().get(1).getLongitude());
+
+		double origemLatitude = Double.parseDouble(rota.getEnderecos().get(0).getLatitude());
+		double origemLongitude = Double.parseDouble(rota.getEnderecos().get(0).getLongitude());
+
+			
+		mapUtils.execute(destinoLatitude, destinoLongitude, origemLatitude, origemLongitude);
+		
 		return rootView;	
 	}
 
-	private void setBtnAction() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-
-
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		mapView.onResume();
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		mapView.onPause();
-	}
-
-	@Override
-	public void onDestroy() {
-		mapView.onDestroy();
-		super.onDestroy();
-	}
-
-
-	private void adicionaMarcador(LatLng lat) {
-		
-		googleMap.addMarker(new MarkerOptions().position(lat).title("Marker"));
-		
-
-	}
-
-	public void setaZoom(){
-		//Location myLocation = googleMap.getMyLocation();
-		
-		double lat = Double.parseDouble(rota.getEnderecos().get(1).getLatitude());
-		double lon = Double.parseDouble(rota.getEnderecos().get(1).getLongitude());
-		LatLng myLatLng = new LatLng(lat, lon);
-		googleMap.getProjection();
-		//Adiciona a latitude e longitude da minha localização a um objeto LatLng
-
-		//Move a camera do mapa para a minha localização de acordo com o objeto LatLng gerado
-		googleMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
-		googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-		adicionaMarcador(myLatLng);
-
-	}
-	
 	public void setAtributes(View rootView){
 
 
@@ -130,4 +87,21 @@ public class ParticipateRoteFragment extends Fragment{
 
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		mapView.onResume();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		mapView.onPause();
+	}
+
+	@Override
+	public void onDestroy() {
+		mapView.onDestroy();
+		super.onDestroy();
+	}
 }

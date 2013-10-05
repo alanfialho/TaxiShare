@@ -18,18 +18,40 @@ import com.br.network.WSTaxiShare;
 import com.br.resources.AESCrypt;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
+import com.br.validation.Rule;
+import com.br.validation.Validator;
+import com.br.validation.Validator.ValidationListener;
+import com.br.validation.annotation.Password;
+import com.br.validation.annotation.Regex;
+import com.br.validation.annotation.Required;
+import com.br.validation.annotation.TextRule;
 
 public class LoginActivity extends Activity {
 
 	//Atributos
 	Context context;
 	Button btnLogin, btnLinkToRegister, btnLinkToForgetPassword;
-	EditText loginLogin, loginSenha;
+	Validator validator;
+	
+	@Required(order = 1, message="Informe o seu login")
+	@TextRule(order=2, minLength=4, message="Deve conter no minimo 4 caracteres")
+	@Regex(order=3, pattern="[A-Za-z0-9]+", message="Deve conter apenas letras e numeros")
+	EditText loginLogin;
+	
+	@Required(order = 4, message="Digite a sua senha")
+	@Password(order=5)
+	@TextRule(order=6, minLength=6, message="Senha invalida")
+	EditText loginSenha;
+	
 	SessionManagement session;
 	private ImageView img;
 
 	@Override	
 	public void onCreate(Bundle savedInstanceState) {
+		
+		//Retira a actionBar da tela de login
+		setTheme(android.R.style.Theme_Holo_Light_NoActionBar_Fullscreen);
+		
 		super.onCreate(savedInstanceState);
 		//Seta o login layout
 		setContentView(R.layout.login);
@@ -39,23 +61,20 @@ public class LoginActivity extends Activity {
 		setBtnActions();
 		//Define o contexto como this
 		context = this;
+		
+		//Criando listner
+		ValidationListner validationListner = new ValidationListner();
+
+		//Instanciando Validation
+		validator = new Validator(this);
+		validator.setValidationListener(validationListner);
 	}
 
 	private void setBtnActions() {
 		// Evento do botao login
 		btnLogin.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-
-				boolean checkLogin = loginLogin.getText().toString().isEmpty();
-				boolean checkSenha = loginLogin.getText().toString().isEmpty();
-				//Checa se login e senha foram informados
-				if(!checkLogin && !checkSenha){
-					LoginTask task = new LoginTask();
-					task.execute();
-				}
-				else{
-					Utils.gerarToast(context, "Preencha Login e Senha!");
-				}
+				validator.validate();
 			}
 		});
 
@@ -97,6 +116,33 @@ public class LoginActivity extends Activity {
 		img.setImageResource(R.drawable.logopretoamarelo);
 	}
 
+	//subclasse que define a acao de validacao
+		private class ValidationListner implements ValidationListener {
+
+			//quando a validação estiver correta;
+			public void onValidationSucceeded() {
+				LoginTask task = new LoginTask();
+				task.execute();
+			}
+
+			public void onValidationFailed(View failedView, Rule<?> failedRule) {
+
+				//recupera a mensagem de validação
+				String message = failedRule.getFailureMessage();
+
+				//Se o erro esteja em um editText
+				if (failedView instanceof EditText) {
+					//coloca o cursor no campo com erro
+					failedView.requestFocus();
+					//seta a mensagem de erro
+					((EditText) failedView).setError(message);
+				} else {
+					//Se não, gera um toast com a mensagem
+					Utils.gerarToast(failedView.getContext(), message);
+				}
+			}
+		}
+	
 	private class LoginTask extends AsyncTask<String, Void, String> {
 
 		ProgressDialog progress;
