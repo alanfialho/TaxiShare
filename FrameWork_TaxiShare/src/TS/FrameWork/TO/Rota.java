@@ -25,6 +25,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 
 /**
  *
@@ -48,20 +50,23 @@ public class Rota implements Serializable {
     @Column(name = "pass_existentes")
     private Short passExistentes;
     
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "rota_endereco", joinColumns = {
         @JoinColumn(name = "id_rota", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "id_endereco", referencedColumnName = "id")})
     private List<Endereco> enderecos;
     
-    @ManyToMany(fetch = FetchType.LAZY,  cascade={CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
+    @ManyToMany(cascade={CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "rota_usuario", joinColumns = {
                     @JoinColumn(name = "id_rota", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
                     @JoinColumn(name = "id_usuario", referencedColumnName = "id", nullable = false)})
+    @JsonManagedReference
     private List<Usuario> usuarios;
     
-    @ManyToOne
+    
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "id_usuario_adm")
+    @JsonManagedReference
     private Usuario administrador;
 
     public Rota() {
@@ -113,7 +118,7 @@ public class Rota implements Serializable {
         this.passExistentes = passExistentes;
     }
 
-    @XmlTransient
+    
     public List<Endereco> getEnderecos() {
         return enderecos;
     }
@@ -125,7 +130,6 @@ public class Rota implements Serializable {
     /**
      * @return the usuarios
      */
-    @XmlTransient
     public List<Usuario> getUsuarios() {
         return usuarios;
     }

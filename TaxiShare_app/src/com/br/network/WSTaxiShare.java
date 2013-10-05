@@ -62,7 +62,7 @@ public class WSTaxiShare {
 			
 			Gson gson = new Gson();
 			JsonArray array = parser.parse(jsonResposta.getJSONArray("data").toString()).getAsJsonArray();
-
+			
 			for (int i = 0; i < array.size(); i++) {
 				rotas.add(gson.fromJson(array.get(i), RotaApp.class));
 			}
@@ -70,6 +70,23 @@ public class WSTaxiShare {
 		return rotas;
 
 	}
+	
+	public RotaApp detailRota(int id) throws Exception {
+
+		String resposta = new WSClient().get(URL_WS + "rota/findById/" + id);		
+		JSONObject jsonResposta = new JSONObject(resposta);
+		RotaApp rota = new RotaApp();
+		
+		if (jsonResposta.getInt("errorCode") == 0) {
+			
+			Gson gson = new Gson();
+			rota = gson.fromJson(jsonResposta.getJSONObject("data").toString(),RotaApp.class);
+			
+		}		
+		return rota;
+
+	}
+
 
 	public List<PessoaApp> getListaPessoa() throws Exception {
 
@@ -160,13 +177,15 @@ public class WSTaxiShare {
 		return resposta;
 	}
 
-	public String participarRota(int idRota, int idUsuario) throws Exception {
+	public String participarRota(int idRota, int idUsuario, EnderecoApp endereco) throws Exception {
 
 		String resposta = "";
 
 		try
 		{
-			resposta = new WSClient().put(URL_WS + "rota/joinIn/" + idRota + "/" + idUsuario);
+			Gson gson = new Gson();
+			String enderecoJson = gson.toJson(endereco);
+			resposta = new WSClient().put(URL_WS + "rota/joinIn/" + idRota + "/" + idUsuario, enderecoJson);
 		}
 		catch(Exception e)
 		{

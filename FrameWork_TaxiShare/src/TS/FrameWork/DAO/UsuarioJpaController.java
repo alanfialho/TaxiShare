@@ -94,17 +94,6 @@ public class UsuarioJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             Usuario usuario = em.find(Usuario.class, id);
-            //elimina recursividade gerada pelo relacionamento ManyToMany
-            if(usuario != null){
-                for(Rota r: usuario.getRotas())
-                {
-                    r.setUsuarios(null);
-                }
-                for(Rota r: usuario.getRotasAdm())
-                {
-                    r.setAdministrador(null);
-                }
-            }
             return usuario;
         } catch(Exception ex){
             throw ex;
