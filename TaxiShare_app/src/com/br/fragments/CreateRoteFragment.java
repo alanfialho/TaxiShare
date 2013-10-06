@@ -11,6 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Address;
@@ -104,13 +106,13 @@ public class CreateRoteFragment extends Fragment {
 	private void fillFields(){
 		try{
 			Bundle args = getArguments();
-			
+
 			Address ori = (Address) args.getParcelable("origemAddress");
 			Address dest  = (Address) args.getParcelable("destinoAddress");
-			
+
 			enderecoOrigem = populaEnderecoApp(ori, 'O');
 			enderecoDestino = populaEnderecoApp(dest, 'D');
-			
+
 			String ruaOri = enderecoOrigem.getRua() + ", " + enderecoOrigem.getNumero() + " - " + enderecoOrigem.getCidade();
 			String ruaDest = enderecoDestino.getRua() + ", " + enderecoDestino.getNumero() + " - " + enderecoDestino.getCidade();
 
@@ -185,6 +187,14 @@ public class CreateRoteFragment extends Fragment {
 
 			try {
 				JSONObject json = new JSONObject(response);
+				if(json.getInt("errorCode") == 0){
+
+					//Passando a rota selecionada para tela de detalhes.
+					Bundle args = new Bundle();
+					args.putParcelable("rota", rotaApp);
+					Utils.changeFragment(getFragmentManager(), new ParticipateRoteFragment(), args);
+				}
+
 				Utils.gerarToast(context, json.getString("descricao"));				
 
 			} catch (JSONException e) {

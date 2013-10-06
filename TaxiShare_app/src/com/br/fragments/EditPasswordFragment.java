@@ -6,7 +6,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -253,13 +252,8 @@ public class EditPasswordFragment extends Fragment {
 				JSONObject resposta2 = new JSONObject(response);
 				if(resposta2.getInt("errorCode")== 0){
 					Utils.gerarToast( context, resposta2.getString("descricao"));
-
-					Fragment fragment = new SearchRoteFragment();
-					Bundle args = new Bundle();
-					fragment.setArguments(args);
-
-					FragmentManager fragmentManager = getFragmentManager();
-					fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+			
+					Utils.changeFragment(getFragmentManager(), new SearchRoteFragment(), null);
 				}
 				else{
 					Utils.gerarToast( context, resposta2.getString("descricao"));

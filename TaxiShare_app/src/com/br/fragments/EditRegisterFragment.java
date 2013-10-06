@@ -268,20 +268,15 @@ public class EditRegisterFragment extends Fragment {
 				JSONObject respostaWsJSON = new JSONObject(response);
 				if(respostaWsJSON.getInt("errorCode") == 0){
 
-					session.createLoginSession(pessoaID, pessoaApp.getNome(),  pessoaApp.getEmail(), pessoaApp.getSexo(),  pessoaApp.getDataNascimento(), pessoaApp.getDdd(),  pessoaApp.getCelular(), sessionedLogin);
-					Fragment fragment = new SearchRoteFragment();
-					Bundle args = new Bundle();
-					fragment.setArguments(args);
-
-					FragmentManager fragmentManager = getFragmentManager();
-					fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+					session.createLoginSession(pessoaID, pessoaApp.getNome(),  pessoaApp.getEmail(), pessoaApp.getSexo(),  pessoaApp.getDataNascimento(), pessoaApp.getDdd(),  pessoaApp.getCelular(), sessionedLogin);				
+					Utils.changeFragment(getFragmentManager(), new SearchRoteFragment(), null);
 				}
 
-				Utils.gerarToast( context, respostaWsJSON.getString("descricao"));
+				Utils.gerarToast(context, respostaWsJSON.getString("descricao"));
 
 
 			} catch (Exception e) {
-				Log.i(" EditRegisterTask onPostExecute Exception taxi", "Exception -> " + e + "Message -> " + e.getMessage());
+				Utils.logException("EditRegisterTask", "EditRegisterTask",  "onPostExecute",e);
 				Utils.gerarToast( context, "Tente novamente mais tarde!");
 			}
 		}
