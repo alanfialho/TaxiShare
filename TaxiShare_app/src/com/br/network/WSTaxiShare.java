@@ -86,6 +86,22 @@ public class WSTaxiShare {
 		return rota;
 
 	}
+	
+	public LoginApp myRotes(int id) throws Exception {
+
+		String resposta = new WSClient().get(URL_WS + "login/myRotes/" + id);		
+		JSONObject jsonResposta = new JSONObject(resposta);
+		LoginApp login = new LoginApp();
+		
+		if (jsonResposta.getInt("errorCode") == 0) {
+			
+			Gson gson = new Gson();
+			login = gson.fromJson(jsonResposta.getJSONObject("data").toString(),LoginApp.class);
+			
+		}		
+		return login;
+
+	}
 
 
 	public List<PessoaApp> getListaPessoa() throws Exception {

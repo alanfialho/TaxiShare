@@ -186,7 +186,7 @@ public class RotaResource {
                 saida = new ResponseEntity("Erro", 4, "Rota não encontrada!", null);
                 throw new Exception("Erro");
             }
-            else if(rota.getUsuarios().size() == 4){
+            else if(rota.getUsuarios().size() == 3){
                 saida = new ResponseEntity("Erro", 5, "Rota já esta lotada!", null);
                 throw new Exception("Erro");
             }

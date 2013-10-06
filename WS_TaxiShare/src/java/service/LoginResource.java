@@ -27,6 +27,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
+import util.Utils;
 
 /**
  *
@@ -121,6 +122,36 @@ public class LoginResource {
             usuario = usuarioDAO.findUsuario(id);
             if(usuario != null)
                 saida = new ResponseEntity("Sucesso", 0, "Usuario encontrada!", usuario);
+            else
+                saida = new ResponseEntity("Sucesso", 2, "Usuario não encontrado!", null);
+        }
+        catch(Exception ex) 
+        {
+           System.out.println("ERRRO --> " + ex.getMessage());
+           saida = new ResponseEntity("Erro", 1, "Não foi possivel realizar operação, tente mais tarde!", null);  
+        }
+        
+        return new Gson().toJson(saida);
+    }
+    
+    @GET
+    @Path("/myRotes/{id}")
+    @Produces("application/json")
+    public String myRotes(@PathParam("id") int id) {
+        
+        ResponseEntity saida;
+        UsuarioJpaController usuarioDAO = new UsuarioJpaController(getEntityManager());
+        Usuario usuario = null;
+        
+        try
+        {
+            usuario = usuarioDAO.findUsuario(id);
+            if(usuario != null){
+                //elimina recursão das listas(jeito certo a se fazer)
+                usuario.setRotas(Utils.solveRecursion(usuario.getRotas()));
+                usuario.setRotasAdm(Utils.solveRecursion(usuario.getRotasAdm()));
+                saida = new ResponseEntity("Sucesso", 0, "Usuario encontrada!", usuario);
+            }
             else
                 saida = new ResponseEntity("Sucesso", 2, "Usuario não encontrado!", null);
         }
