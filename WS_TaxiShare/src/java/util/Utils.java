@@ -35,5 +35,35 @@ public class Utils {
         notRecursive = gson.fromJson(json, type);
         return notRecursive;
     }
+    public static List<Usuario> solveRecursionRotas(List<Usuario> recursive)
+    {
+        List<Usuario> notRecursive = new ArrayList();
+        Gson gson = new GsonBuilder()
+                .setExclusionStrategies(new TsExclusionStrategy(Rota.class))
+                .setDateFormat("MMM/dd/yyyy")
+                .serializeNulls()
+                .create();
+        String json = "";
+        Type type = new TypeToken<List<Usuario>>(){}.getType();
+        
+        json = gson.toJson(recursive);
+        notRecursive = gson.fromJson(json, type);
+        return notRecursive;
+    }
     
+    public static Usuario solveRecursionRotas(Usuario recursive)
+    {
+        Usuario notRecursive = new Usuario();
+        Gson gson = new GsonBuilder()
+                .setExclusionStrategies(new TsExclusionStrategy(Rota.class))
+                .serializeNulls()
+                .setDateFormat("MMM-dd-yyyy")
+                .create();
+        String json = "";
+        
+        json = gson.toJson(recursive);
+        notRecursive = gson.fromJson(json, Usuario.class);
+        return notRecursive;
+    }
+
 }

@@ -25,7 +25,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import org.codehaus.jackson.annotate.JsonManagedReference;
 
 
 /**
@@ -60,13 +59,13 @@ public class Rota implements Serializable {
     @JoinTable(name = "rota_usuario", joinColumns = {
                     @JoinColumn(name = "id_rota", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
                     @JoinColumn(name = "id_usuario", referencedColumnName = "id", nullable = false)})
-    @JsonManagedReference
+    
     private List<Usuario> usuarios;
     
     
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "id_usuario_adm")
-    @JsonManagedReference
+    
     private Usuario administrador;
 
     public Rota() {

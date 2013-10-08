@@ -16,7 +16,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.codehaus.jackson.annotate.JsonBackReference;
 
 /**
  *
@@ -40,10 +39,8 @@ public class Usuario implements Serializable {
     @JoinColumn(name="idPergunta")
     private Pergunta pergunta;
     @ManyToMany(mappedBy = "usuarios")
-    @JsonBackReference
     private  List<Rota> rotas;
     @OneToMany(mappedBy = "administrador")
-    @JsonBackReference
     private List<Rota> rotasAdm;
 
     public Usuario()

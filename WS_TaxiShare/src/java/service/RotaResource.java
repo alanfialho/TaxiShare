@@ -26,9 +26,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.Hibernate;
 import util.TsExclusionStrategy;
+import util.Utils;
 
 
 /**
@@ -91,8 +91,7 @@ public class RotaResource {
     @Produces({"application/json"})
     public String find(@PathParam("id") Integer id) {
         
-        ObjectMapper jax = new ObjectMapper();
-        String json = "";
+        
         ResponseEntity saida;
         RotaJpaController rotaDAO = new RotaJpaController(getEntityManager());
         Rota rota = null;
@@ -101,7 +100,9 @@ public class RotaResource {
         {
             rota = rotaDAO.findRota(id);
             if(rota != null)
-            {   
+            {
+                rota.setUsuarios(Utils.solveRecursionRotas(rota.getUsuarios()));
+                rota.setAdministrador(Utils.solveRecursionRotas(rota.getAdministrador()));
                 saida = new ResponseEntity("Sucesso", 0, "Rota encontrada!", rota);
             }
             else{
@@ -113,16 +114,8 @@ public class RotaResource {
            System.out.println("ERRRO --> " + ex.getMessage());
            saida = new ResponseEntity("Erro", 1, "Não foi possivel realizar operação, tente mais tarde!", null);
         }
-        //serializa o JSON pelo Jackson para eliminar a recursividade de relacionamentos bidirecionais
-        try
-        {
-            json = jax.writeValueAsString(saida);
-        }
-        catch(Exception ex)
-        {
-            System.out.println("ERRRO --> " + ex.getMessage());
-        }
-        return json;
+        
+        return new Gson().toJson(saida);
     }
     
     @GET
