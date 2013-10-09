@@ -49,8 +49,7 @@ public class LoginActivity extends Activity {
 	@Override	
 	public void onCreate(Bundle savedInstanceState) {
 		
-		//Retira a actionBar da tela de login
-		setTheme(android.R.style.Theme_Holo_Light_NoActionBar_Fullscreen);
+		
 		
 		super.onCreate(savedInstanceState);
 		//Seta o login layout
@@ -111,7 +110,7 @@ public class LoginActivity extends Activity {
 		btnLogin = (Button) findViewById(R.id.login_btn_login);
 		btnLinkToRegister = (Button) findViewById(R.id.login_btn_register);
 		btnLinkToForgetPassword = (Button) findViewById(R.id.login_btn_forget);
-		img = (ImageView) findViewById(R.id.imageView1);
+		img = (ImageView) findViewById(R.id.rote_users_list_item_icon);
 		
 		img.setImageResource(R.drawable.logopretoamarelo);
 	}

@@ -8,7 +8,7 @@
         android:layout_height="208dp" >
 
         <com.google.android.gms.maps.MapView
-            android:id="@+id/rote_details_map"
+            android:id="@+id/rote_users_details_map"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
         </com.google.android.gms.maps.MapView>
@@ -23,43 +23,43 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/rote_details_lbl_passageiros_info"
+            android:id="@+id/rote_users_details_lbl_passageiros_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/rote_details_lbl_passageiros"
-            android:layout_toRightOf="@+id/rote_details_lbl_passageiros"
+            android:layout_alignBottom="@+id/rote_users_details_lbl_passageiros"
+            android:layout_toRightOf="@+id/rote_users_details_lbl_passageiros"
             android:text="Small Text"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <Button
-            android:id="@+id/rote_details_btn_participar"
+            android:id="@+id/rote_users_details_btn_sair"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="36dp"
-            android:text="Participar" />
+            android:text="Sair da Rota" />
 
         <TextView
-            android:id="@+id/rote_details_lbl_adm"
+            android:id="@+id/rote_users_details_lbl_adm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/rote_details_lbl_passageiros"
+            android:layout_below="@+id/rote_users_details_lbl_passageiros"
             android:text="Administrador: "
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/rote_details_lbl_adm_nome"
+            android:id="@+id/rote_users_details_lbl_adm_nome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/rote_details_lbl_adm"
-            android:layout_toRightOf="@+id/rote_details_lbl_adm"
+            android:layout_alignBottom="@+id/rote_users_details_lbl_adm"
+            android:layout_toRightOf="@+id/rote_users_details_lbl_adm"
             android:text="Small Text"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
-            android:id="@+id/rote_details_lbl_origem"
+            android:id="@+id/rote_users_details_lbl_origem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -68,57 +68,57 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/rote_details_lbl_origem_info"
+            android:id="@+id/rote_users_details_lbl_origem_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/rote_details_lbl_origem"
+            android:layout_below="@+id/rote_users_details_lbl_origem"
             android:text="Small Text"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
-            android:id="@+id/rote_details_lbl_destino"
+            android:id="@+id/rote_users_details_lbl_destino"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/rote_details_lbl_origem_info"
+            android:layout_below="@+id/rote_users_details_lbl_origem_info"
             android:text="Destino"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/rote_details_lbl_destino_info"
+            android:id="@+id/rote_users_details_lbl_destino_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/rote_details_lbl_destino"
+            android:layout_below="@+id/rote_users_details_lbl_destino"
             android:text="Small Text"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
-            android:id="@+id/rote_details_lbl_passageiros"
+            android:id="@+id/rote_users_details_lbl_passageiros"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/rote_details_lbl_destino_info"
+            android:layout_below="@+id/rote_users_details_lbl_destino_info"
             android:text="Lugares disponiveis: "
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/rote_details_lbl_hora"
+            android:id="@+id/rote_users_details_lbl_hora"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/rote_details_lbl_adm"
+            android:layout_below="@+id/rote_users_details_lbl_adm"
             android:text="Saida: "
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/rote_details_lbl_hora_info"
+            android:id="@+id/rote_users_details_lbl_hora_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/rote_details_lbl_hora"
-            android:layout_alignBottom="@+id/rote_details_lbl_hora"
-            android:layout_toRightOf="@+id/rote_details_lbl_hora"
+            android:layout_alignBaseline="@+id/rote_users_details_lbl_hora"
+            android:layout_alignBottom="@+id/rote_users_details_lbl_hora"
+            android:layout_toRightOf="@+id/rote_users_details_lbl_hora"
             android:text="Small Text"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 

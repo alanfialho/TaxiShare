@@ -1,5 +1,14 @@
 package com.br.fragments;
 
+import com.br.activitys.R;
+import com.br.entidades.RotaApp;
+import com.br.resources.MapUtils;
+import com.br.resources.Utils;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -7,31 +16,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.androidquery.AQuery;
-import com.br.activitys.R;
-import com.br.entidades.RotaApp;
-import com.br.resources.MapUtils;
-import com.br.resources.Utils;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-public class ParticipateRoteFragment extends Fragment{
+public class DetailsUserListRoteFragment extends Fragment{
 	private GoogleMap googleMap;
 	private MapView mapView;
 	private Bundle mBundle;
-	private Button btnParticipa;
+	private Button btnSairRota;
 	private TextView lblOrigem, lblDestino, lblPassageiros, lblAdm, lblHora;
 	private Context context;
 	private RotaApp rota;
-	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.rote_details, container, false);
@@ -56,15 +50,15 @@ public class ParticipateRoteFragment extends Fragment{
 		
 		return rootView;	
 	}
-
+	
 	public void setAtributes(View rootView){
 
 
-		mapView = (MapView) rootView.findViewById(R.id.rote_details_map);
+		mapView = (MapView) rootView.findViewById(R.id.rote_users_details_map);
 		mapView.onCreate(mBundle);
 
 		if (googleMap == null) {
-			googleMap = ((MapView) rootView.findViewById(R.id.rote_details_map)).getMap();
+			googleMap = ((MapView) rootView.findViewById(R.id.rote_users_details_map)).getMap();
 			if (googleMap != null) {
 				//				setUpMap();
 			}
@@ -72,12 +66,12 @@ public class ParticipateRoteFragment extends Fragment{
 		Bundle args = getArguments();
 		rota = args.getParcelable("rota");
 		
-		lblOrigem = (TextView) rootView.findViewById(R.id.rote_details_lbl_origem_info);
-		lblDestino = (TextView) rootView.findViewById(R.id.rote_details_lbl_destino_info);
-		lblPassageiros = (TextView) rootView.findViewById(R.id.rote_details_lbl_passageiros_info);
-		lblAdm = (TextView) rootView.findViewById(R.id.rote_details_lbl_adm_nome);
-		lblHora = (TextView) rootView.findViewById(R.id.rote_details_lbl_hora_info);
-		btnParticipa = (Button) rootView.findViewById(R.id.rote_details_btn_participar);
+		lblOrigem = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_origem_info);
+		lblDestino = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_destino_info);
+		lblPassageiros = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_passageiros_info);
+		lblAdm = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_adm_nome);
+		lblHora = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_hora_info);
+		btnSairRota = (Button) rootView.findViewById(R.id.rote_users_details_btn_sair);
 		
 		lblOrigem.setText(rota.getEnderecos().get(0).getRua() + ", " + rota.getEnderecos().get(0).getNumero() + " - " + rota.getEnderecos().get(0).getCidade());
 		lblDestino.setText(rota.getEnderecos().get(1).getRua() + ", " + rota.getEnderecos().get(1).getNumero() + " - " + rota.getEnderecos().get(1).getCidade());
@@ -108,3 +102,6 @@ public class ParticipateRoteFragment extends Fragment{
 		super.onDestroy();
 	}
 }
+
+	
+
