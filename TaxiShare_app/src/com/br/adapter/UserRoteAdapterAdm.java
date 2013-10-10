@@ -1,5 +1,6 @@
 package com.br.adapter;
 
+import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import com.br.activitys.R;
 
 import com.br.entidades.LoginApp;
 import com.br.entidades.RotaApp;
+import com.br.sessions.SessionManagement;
 
 
 public class UserRoteAdapterAdm extends BaseAdapter {
@@ -23,6 +26,9 @@ public class UserRoteAdapterAdm extends BaseAdapter {
 	private List<RotaApp> rotas;
 	private LayoutInflater mInflater;
 	private ViewHolder holder;
+	private SessionManagement session;
+	private int id;
+	
 
 	public static final Integer[] images = { R.drawable.icon_search,
 		R.drawable.icon_profile, R.drawable.icon_password, R.drawable.icon_locate, R.drawable.icon_logout, R.drawable.icon_navigation, R.drawable.icon_passageiros};
@@ -37,6 +43,8 @@ public class UserRoteAdapterAdm extends BaseAdapter {
 	public UserRoteAdapterAdm (Context context, LoginApp login) {
 		mInflater = LayoutInflater.from(context);
 		this.rotas = login.getRotasAdm();
+		this.rotas.addAll(login.getRotas());
+		
 	}
 
 	
@@ -69,18 +77,28 @@ public class UserRoteAdapterAdm extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		
+		//HashMap<String, String> user = session.getUserDetails();
+		id = 1;
+		String tipo = "";
 		RotaApp r = rotas.get(posicao);
 		String origem = r.getEnderecos().get(0).getRua() + ", " + r.getEnderecos().get(0).getNumero() + " - " + r.getEnderecos().get(0).getBairro();
 		String destino = r.getEnderecos().get(1).getRua() + ", " + r.getEnderecos().get(1).getNumero() + " - " + r.getEnderecos().get(1).getBairro();
-		String tipo = "Administrador";
+		if (id == 1){
+			tipo = "Administrador";
+			holder.option4.setTextColor(Color.RED);
+		}
+		else{
+			tipo = "Participante";
+			holder.option4.setTextColor(Color.GREEN);
+		}
+		
 		//String passageiros = login.getRotasAdm().get(0).getPassExistentes() + " / 4";
 		
 		holder.option1.setText(origem);
 		holder.option2.setText(destino);
 		//holder.option3.setText(passageiros);
 		holder.option4.setText(tipo);
-		holder.option4.setTextColor(Color.RED);
+		
 		
 
 		holder.img1.setImageResource(images[5]);

@@ -54,9 +54,11 @@ public class UserListRoteFragment extends Fragment{
 	
 	
 	private void fillSearchList(LoginApp login) {
-		UserRoteAdapterAdm roteAdapter = new UserRoteAdapterAdm (context, login);		
+		UserRoteAdapterAdm roteAdapter = new UserRoteAdapterAdm (context, login);
+		
 		roteListAdm = (ListView) rootView.findViewById(R.id.rote_users_list_view);
 		roteListAdm.setAdapter(roteAdapter);
+		
 		
 		
 
