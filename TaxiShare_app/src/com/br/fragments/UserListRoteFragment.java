@@ -32,14 +32,15 @@ public class UserListRoteFragment extends Fragment{
 	private ListView roteListAdm, roteListParticipate;
 	Context context;
 	RoteAdapter adapterAdm, adapterParticipate;
-	SessionManagement session;
+	private SessionManagement session;
+	private int id;
 	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.rote_users_list, container, false);
 		context = getActivity();
-		
+		session = new SessionManagement(rootView.getContext());
 		try{
 			FillRoteListTask task = new FillRoteListTask();
 			task.execute();
@@ -74,13 +75,14 @@ public class UserListRoteFragment extends Fragment{
 
 		@Override
 		protected String doInBackground(String... urls) {
-			
+			HashMap<String, String> user = session.getUserDetails();
+			id = Integer.parseInt(user.get(SessionManagement.KEY_PESSOAID));
 			
 			String response = "";
 
 			try {
 				WSTaxiShare ws = new WSTaxiShare();
-				login = ws.myRotes(1);
+				login = ws.myRotes(id);
 				response = "{errorCode:0, descricao:Sucesso}";
 
 			} catch (Exception e) {

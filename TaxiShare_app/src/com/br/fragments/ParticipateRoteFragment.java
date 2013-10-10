@@ -1,7 +1,11 @@
 package com.br.fragments;
 
+import java.util.HashMap;
+
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +16,14 @@ import android.widget.TextView;
 
 import com.androidquery.AQuery;
 import com.br.activitys.R;
+import com.br.entidades.EnderecoApp;
+import com.br.entidades.LoginApp;
 import com.br.entidades.RotaApp;
+
+import com.br.network.WSTaxiShare;
 import com.br.resources.MapUtils;
 import com.br.resources.Utils;
+import com.br.sessions.SessionManagement;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,6 +40,8 @@ public class ParticipateRoteFragment extends Fragment{
 	private TextView lblOrigem, lblDestino, lblPassageiros, lblAdm, lblHora;
 	private Context context;
 	private RotaApp rota;
+	private SessionManagement session;
+	private int id, rotaId;
 	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,6 +54,7 @@ public class ParticipateRoteFragment extends Fragment{
 		}
 
 		setAtributes(rootView);
+		setBtnAction();
 		MapUtils mapUtils = new MapUtils(context, googleMap);
 		
 		double destinoLatitude = Double.parseDouble(rota.getEnderecos().get(1).getLatitude());
@@ -58,7 +70,7 @@ public class ParticipateRoteFragment extends Fragment{
 	}
 
 	public void setAtributes(View rootView){
-
+		session = new SessionManagement(rootView.getContext());
 
 		mapView = (MapView) rootView.findViewById(R.id.rote_details_map);
 		mapView.onCreate(mBundle);
@@ -84,11 +96,65 @@ public class ParticipateRoteFragment extends Fragment{
 		int passageiro =  4 - rota.getPassExistentes();
 		lblPassageiros.setText(passageiro + "");
 		lblHora.setText(rota.getDataRota().toString());
-		
-		
-		
 
 	}
+
+	public void setBtnAction(){
+		btnParticipa.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				//Utils.gerarToast(context, "teste");
+				try{
+					PartcipaRotaTask task = new PartcipaRotaTask();
+					task.execute();
+				}
+				catch (Exception e) {
+					Utils.logException("ParticipateRoteFragment", "onCreateView", "", e);
+				}
+			}});
+
+	}
+
+
+
+	private class PartcipaRotaTask extends AsyncTask<String, Void, String> {
+		ProgressDialog progress;
+
+
+		protected void onPreExecute() {
+			progress = Utils.setProgreesDialog(progress, context, "Carregando", "Aguarde...");
+		}
+
+		@Override
+		protected String doInBackground(String... urls) {
+			HashMap<String, String> user = session.getUserDetails();
+			EnderecoApp endereco = rota.getEnderecos().get(0);
+			id = Integer.parseInt(user.get(SessionManagement.KEY_PESSOAID));
+			rotaId = rota.getId();
+			String response = "";
+
+			try {
+				WSTaxiShare ws = new WSTaxiShare();
+				response = ws.participarRota(rotaId, id, endereco);
+				
+				
+
+			} catch (Exception e) {
+				Utils.logException("UserListRoteFragment", "FillList", "onPostExecute", e);
+				response = "{errorCode:1, descricao:Erro ao carregar rotas!}";
+			}
+
+			return response;
+		}
+
+		@Override
+		protected void onPostExecute(String response) {
+			Utils.gerarToast(context, "Entrou na rota");
+			progress.dismiss();
+		}		
+	}
+	
+	
+	
 
 	@Override
 	public void onResume() {
