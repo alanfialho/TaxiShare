@@ -210,5 +210,27 @@ public class WSTaxiShare {
 
 		return resposta;
 	}
+	
+	public List<RotaApp> getRotasPerimetro(List<PerimetroApp> perimetros) throws Exception {
+
+		Gson gson = new Gson();
+		String json = gson.toJson(perimetros);
+		String resposta = new WSClient().post(URL_WS + "rota/findByPerimeter", json);		
+		
+		JSONObject jsonResposta = new JSONObject(resposta);
+		ArrayList<RotaApp> rotas = new ArrayList<RotaApp>();
+		JsonParser parser = new JsonParser();
+
+		if (jsonResposta.getInt("errorCode") == 0) {
+			
+			JsonArray array = parser.parse(jsonResposta.getJSONArray("data").toString()).getAsJsonArray();
+			for (int i = 0; i < array.size(); i++) {
+				rotas.add(gson.fromJson(array.get(i), RotaApp.class));
+			}
+		}		
+		return rotas;
+
+	}
+
 }
 

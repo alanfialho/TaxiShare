@@ -8,6 +8,7 @@ import TS.FrameWork.TO.Rota;
 import TS.FrameWork.DAO.RotaJpaController;
 import TS.FrameWork.DAO.UsuarioJpaController;
 import TS.FrameWork.TO.Endereco;
+import TS.FrameWork.TO.Perimetro;
 import TS.FrameWork.TO.Usuario;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -133,6 +134,44 @@ public class RotaResource {
             }
             else
                 saida = new ResponseEntity("Sucesso", 2, "Rotas não encontradas!", null);
+        }
+        catch(Exception ex) 
+        {
+           System.out.println("ERRRO --> " + ex.getMessage());
+           saida = new ResponseEntity("Erro", 1, "Não foi possivel realizar operação, tente mais tarde!", null);  
+        }
+        //elimina os usuarios na serialização do objeto
+        //ideal é usar o detach da JPA no objeto mas não foi possivel devido aos problemas com jar
+        Gson gson = new GsonBuilder()
+                .setExclusionStrategies(new TsExclusionStrategy(Usuario.class))
+                .serializeNulls()
+                .create();
+        
+        return gson.toJson(saida);
+    }
+    
+    @POST
+    @Path("/findByPerimeter")
+    @Produces({"application/json"})
+    public String findByPerimeter(List<Perimetro> perimetros){
+        ResponseEntity saida;
+        RotaJpaController rotaDAO = new RotaJpaController(getEntityManager());
+        List<Rota> rotas = null;
+        try
+        {
+            //perimetros igual a dois por causa da origem e destino
+            if(perimetros != null && perimetros.size() == 2){
+                rotas = rotaDAO.findByPerimeter(perimetros.get(0), perimetros.get(1));
+                if(rotas != null && rotas.size() > 0){
+                    saida = new ResponseEntity("Sucesso", 0, "Rotas encontradas!", rotas);
+                }
+                else
+                    saida = new ResponseEntity("Sucesso", 2, "Rotas não encontradas!", null);
+            }
+            else
+            {
+                saida = new ResponseEntity("Erro", 3, "Perimetros inválidos!", null);
+            }
         }
         catch(Exception ex) 
         {

@@ -136,7 +136,7 @@ public class EditPasswordFragment extends Fragment {
 
 		@Override
 		protected String doInBackground(String... urls) {
-				WSTaxiShare ws = new WSTaxiShare();
+			WSTaxiShare ws = new WSTaxiShare();
 			String response = ws.login(sessionedLogin, senhaAntiga);	
 			return response;
 

@@ -1,5 +1,8 @@
 package com.br.activitys;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.br.entidades.PerimetroApp;
+import com.br.entidades.RotaApp;
 import com.br.network.WSTaxiShare;
 import com.br.resources.AESCrypt;
 import com.br.resources.Utils;
@@ -171,9 +176,20 @@ public class LoginActivity extends Activity {
 
 			//Inicializa o WS
 			WSTaxiShare ws = new WSTaxiShare();
+			//List<PerimetroApp> perimetros = new ArrayList();
+			//PerimetroApp origem = new PerimetroApp(-22.0000000,-19.000000,-37.000000,-36.00000);
+			//PerimetroApp destino = new PerimetroApp(-46.000000,-45.00000,-66.000000,-64.0000000);
+			//perimetros.add(origem);
+			//perimetros.add(destino);
+			
+			//try
+			//{
+			//	List<RotaApp> rotas = ws.getRotasPerimetro(perimetros);
+			//}
+			//catch(Exception ex){}
 			//Recebe a resposta do login
 			String response = ws.login(login, encriptedPassword);
-
+				
 			return response;
 		}
 

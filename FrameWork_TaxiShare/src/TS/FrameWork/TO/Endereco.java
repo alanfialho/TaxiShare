@@ -48,9 +48,9 @@ public class Endereco implements Serializable {
     @Column(name = "tipo")
     private Character tipo;
     @Column(name = "longitude")
-    private String longitude;
+    private double longitude;
     @Column(name = "latitude")
-    private String latitude;
+    private double latitude;
     
     public Endereco() {
     }
@@ -156,28 +156,28 @@ public class Endereco implements Serializable {
     /**
      * @return the longitude
      */
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
     /**
      * @param longitude the longitude to set
      */
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
     /**
      * @return the latitude
      */
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
     /**
      * @param latitude the latitude to set
      */
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 

@@ -5,14 +5,13 @@
 package TS.FrameWork.DAO;
 
 import TS.FrameWork.DAO.exceptions.NonexistentEntityException;
+import TS.FrameWork.TO.Perimetro;
 import TS.FrameWork.TO.Rota;
-import TS.FrameWork.TO.Usuario;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
-import org.hibernate.Hibernate;
 
 
 public class RotaJpaController implements Serializable {
@@ -101,6 +100,35 @@ public class RotaJpaController implements Serializable {
             }
             rotas = q.getResultList();
             
+            return rotas;
+            
+        } catch(Exception ex) {
+            throw ex;
+        }
+    }
+    
+    public List<Rota> findByPerimeter(Perimetro origem, Perimetro destino) {
+        EntityManager em = getEntityManager();
+        try {
+            List<Rota> rotas;
+            Query q = em.createQuery("SELECT distinct r "
+                                    + "FROM Rota as r "
+                                    + "JOIN r.enderecos as e "     
+                                    + "WHERE ((e.latitude between "+origem.getCima()+" and "+origem.getBaixo()+") "
+                                    + "OR (e.latitude between "+destino.getCima()+" and "+destino.getBaixo()+")) "
+                                    + "AND ((e.longitude between "+origem.getEsquerda()+" and "+origem.getDireita()+") "
+                                    + "OR (e.longitude between " +destino.getEsquerda()+" and "+destino.getDireita()+")) "    
+                                    + "AND r.flagAberta = 1");
+//                    .setParameter("lat1", origem.getCima())
+//                    .setParameter("lat2", origem.getBaixo())
+//                    .setParameter("lat3", destino.getCima())
+//                    .setParameter("lat4", destino.getBaixo())
+//                    .setParameter("long1", origem.getEsquerda())
+//                    .setParameter("long2", origem.getDireita())
+//                    .setParameter("long3", destino.getEsquerda())
+//                    .setParameter("long4", destino.getDireita());
+                    
+            rotas = q.getResultList();
             return rotas;
             
         } catch(Exception ex) {
