@@ -33,7 +33,7 @@ public class SearchRoteFragment extends Fragment {
 	AQuery aQuery;
 	private MapView mapView;
 	private Bundle mBundle;
-	private Button btnBusca, btnLista, btnCriar;
+	private Button btnBusca, btnLista, btnCriar, btnMinhasRotas;
 	private EditText txtEndereco1;
 	private EditText txtEndereco2;
 	private Context context;
@@ -111,6 +111,7 @@ public class SearchRoteFragment extends Fragment {
 		googleMap.setTrafficEnabled(true);
 		btnBusca = (Button) rootView.findViewById(R.id.teste_mapa_btn_buscar);
 		btnLista = (Button) rootView.findViewById(R.id.teste_mapa_btn_procurar);
+		btnMinhasRotas = (Button) rootView.findViewById(R.id.teste_mapa_minhas_rotas);
 		btnCriar = (Button) rootView.findViewById(R.id.teste_mapa_btn_criar);
 
 		txtEndereco1 = (EditText) rootView.findViewById(R.id.teste_mapa_txt_origem);
@@ -202,6 +203,11 @@ public class SearchRoteFragment extends Fragment {
 		btnLista.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				Utils.changeFragment(getFragmentManager(),  new ListRoteFragment(), null);
+			}});
+		
+		btnMinhasRotas.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				Utils.changeFragment(getFragmentManager(),  new UserListRoteFragment(), null);
 			}});
 
 		btnCriar.setOnClickListener(new View.OnClickListener() {

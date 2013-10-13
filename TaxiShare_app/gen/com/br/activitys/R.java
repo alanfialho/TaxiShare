@@ -205,9 +205,9 @@ containing a value of this type.
     }
     public static final class id {
         public static final int FrameLayout1=0x7f05003e;
-        public static final int LinearLayout1=0x7f050052;
+        public static final int LinearLayout1=0x7f050060;
         public static final int RelativeLayout1=0x7f050013;
-        public static final int action_rote_search=0x7f05005e;
+        public static final int action_rote_search=0x7f05006d;
         public static final int content_frame=0x7f050026;
         public static final int dliIVImage=0x7f050006;
         public static final int dliLblOption=0x7f050007;
@@ -224,7 +224,6 @@ containing a value of this type.
         public static final int edit_reg_txt_email=0x7f05000d;
         public static final int edit_reg_txt_nome=0x7f05000c;
         public static final int hybrid=0x7f050004;
-        public static final int imageView1=0x7f050014;
         public static final int left_drawer=0x7f050027;
         public static final int linearLayoutItem=0x7f050005;
         public static final int login_btn_forget=0x7f050018;
@@ -272,33 +271,49 @@ containing a value of this type.
         public static final int rote_details_lbl_adm_nome=0x7f050044;
         public static final int rote_details_lbl_destino=0x7f050047;
         public static final int rote_details_lbl_destino_info=0x7f050048;
+        public static final int rote_details_lbl_hora=0x7f050049;
+        public static final int rote_details_lbl_hora_info=0x7f05004a;
         public static final int rote_details_lbl_origem=0x7f050045;
         public static final int rote_details_lbl_origem_info=0x7f050046;
         public static final int rote_details_lbl_passageiros=0x7f050041;
         public static final int rote_details_lbl_passageiros_info=0x7f050040;
         public static final int rote_details_map=0x7f05003f;
-        public static final int rote_list_item_img_icon=0x7f05004f;
-        public static final int rote_list_item_img_pass=0x7f050050;
-        public static final int rote_list_item_lbl_destino=0x7f05004d;
-        public static final int rote_list_item_lbl_origem=0x7f05004b;
-        public static final int rote_list_item_lbl_passageiros=0x7f050051;
-        public static final int rote_list_item_txt_1=0x7f05004c;
-        public static final int rote_list_item_txt_2=0x7f05004e;
-        public static final int rote_list_lay_item_info=0x7f050049;
-        public static final int rote_list_list_view=0x7f05004a;
-        public static final int rote_users_list_item_lbl_destino=0x7f050057;
-        public static final int rote_users_list_item_lbl_destino_info=0x7f050058;
-        public static final int rote_users_list_item_lbl_origem=0x7f050055;
-        public static final int rote_users_list_item_lbl_origem_info=0x7f050056;
-        public static final int rote_users_list_item_partcipa=0x7f050054;
-        public static final int rote_users_list_view=0x7f050053;
+        public static final int rote_list_item_img_icon=0x7f050051;
+        public static final int rote_list_item_img_pass=0x7f050052;
+        public static final int rote_list_item_lbl_destino=0x7f05004f;
+        public static final int rote_list_item_lbl_origem=0x7f05004d;
+        public static final int rote_list_item_lbl_passageiros=0x7f050053;
+        public static final int rote_list_item_txt_1=0x7f05004e;
+        public static final int rote_list_item_txt_2=0x7f050050;
+        public static final int rote_list_lay_item_info=0x7f05004b;
+        public static final int rote_list_list_view=0x7f05004c;
+        public static final int rote_users_details_btn_sair=0x7f050057;
+        public static final int rote_users_details_lbl_adm=0x7f050058;
+        public static final int rote_users_details_lbl_adm_nome=0x7f050059;
+        public static final int rote_users_details_lbl_destino=0x7f05005c;
+        public static final int rote_users_details_lbl_destino_info=0x7f05005d;
+        public static final int rote_users_details_lbl_hora=0x7f05005e;
+        public static final int rote_users_details_lbl_hora_info=0x7f05005f;
+        public static final int rote_users_details_lbl_origem=0x7f05005a;
+        public static final int rote_users_details_lbl_origem_info=0x7f05005b;
+        public static final int rote_users_details_lbl_passageiros=0x7f050056;
+        public static final int rote_users_details_lbl_passageiros_info=0x7f050055;
+        public static final int rote_users_details_map=0x7f050054;
+        public static final int rote_users_list_item_icon=0x7f050014;
+        public static final int rote_users_list_item_lbl_destino=0x7f050065;
+        public static final int rote_users_list_item_lbl_destino_info=0x7f050066;
+        public static final int rote_users_list_item_lbl_origem=0x7f050063;
+        public static final int rote_users_list_item_lbl_origem_info=0x7f050064;
+        public static final int rote_users_list_item_tipo=0x7f050062;
+        public static final int rote_users_list_view=0x7f050061;
         public static final int satellite=0x7f050002;
         public static final int terrain=0x7f050003;
-        public static final int teste_mapa_btn_buscar=0x7f05005b;
-        public static final int teste_mapa_btn_criar=0x7f05005d;
-        public static final int teste_mapa_btn_procurar=0x7f05005c;
-        public static final int teste_mapa_txt_destino=0x7f05005a;
-        public static final int teste_mapa_txt_origem=0x7f050059;
+        public static final int teste_mapa_btn_buscar=0x7f050069;
+        public static final int teste_mapa_btn_criar=0x7f05006b;
+        public static final int teste_mapa_btn_procurar=0x7f05006a;
+        public static final int teste_mapa_minhas_rotas=0x7f05006c;
+        public static final int teste_mapa_txt_destino=0x7f050068;
+        public static final int teste_mapa_txt_origem=0x7f050067;
     }
     public static final class layout {
         public static final int drawer_list_item=0x7f030000;
@@ -312,9 +327,10 @@ containing a value of this type.
         public static final int rote_details=0x7f030008;
         public static final int rote_list=0x7f030009;
         public static final int rote_list_item=0x7f03000a;
-        public static final int rote_users_list=0x7f03000b;
-        public static final int rote_users_list_item=0x7f03000c;
-        public static final int teste_mapa=0x7f03000d;
+        public static final int rote_users_details=0x7f03000b;
+        public static final int rote_users_list=0x7f03000c;
+        public static final int rote_users_list_item=0x7f03000d;
+        public static final int teste_mapa=0x7f03000e;
     }
     public static final class menu {
         public static final int main=0x7f0a0000;

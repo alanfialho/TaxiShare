@@ -6,7 +6,7 @@
     android:background="@drawable/backamarelo" >
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/rote_users_list_item_icon"
         android:layout_width="95dp"
         android:layout_height="95dp"
         android:layout_alignParentTop="true"
@@ -20,7 +20,7 @@
         android:layout_height="40dp"
         android:layout_alignLeft="@+id/login_btn_login"
         android:layout_alignRight="@+id/login_btn_login"
-        android:layout_below="@+id/imageView1"
+        android:layout_below="@+id/rote_users_list_item_icon"
         android:layout_marginTop="135dp"
         android:background="@drawable/edittext"
         android:ems="10"

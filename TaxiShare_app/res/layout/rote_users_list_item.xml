@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/rote_users_list_item_partcipa"
+        android:id="@+id/rote_users_list_item_tipo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/rote_users_list_item_partcipa"
+        android:layout_below="@+id/rote_users_list_item_tipo"
         android:text="Origem"
         android:textSize="14dp" />
 
@@ -51,7 +51,7 @@
         android:textSize="12dp" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/rote_users_list_item_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/rote_users_list_item_lbl_destino_info"

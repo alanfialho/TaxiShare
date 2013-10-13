@@ -5,6 +5,7 @@ import com.br.fragments.CreateRoteFragment;
 import com.br.fragments.EditPasswordFragment;
 import com.br.fragments.EditRegisterFragment;
 import com.br.fragments.SearchRoteFragment;
+import com.br.fragments.UserListRoteFragment;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
 
@@ -172,7 +173,7 @@ public class MainActitity extends Activity {
 			fragment = new EditPasswordFragment();
 			break;
 		case 3:
-			fragment = new CreateRoteFragment();
+			fragment = new SearchRoteFragment();
 			break;
 		case 4:
 			session.logoutUser();
