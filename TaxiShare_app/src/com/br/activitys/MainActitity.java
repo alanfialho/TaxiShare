@@ -176,6 +176,9 @@ public class MainActitity extends Activity {
 			fragment = new SearchRoteFragment();
 			break;
 		case 4:
+			fragment = new UserListRoteFragment	();
+			break;
+		case 5:
 			session.logoutUser();
 		}
 

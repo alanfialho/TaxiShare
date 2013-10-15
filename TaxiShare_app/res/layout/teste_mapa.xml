@@ -66,14 +66,6 @@
             android:layout_centerHorizontal="true"
             android:text="Criar" />
 
-        <Button
-            android:id="@+id/teste_mapa_minhas_rotas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/teste_mapa_btn_procurar"
-            android:layout_alignLeft="@+id/teste_mapa_btn_procurar"
-            android:text="Minhas Rotas" />
-
     </RelativeLayout>
 
 </FrameLayout>

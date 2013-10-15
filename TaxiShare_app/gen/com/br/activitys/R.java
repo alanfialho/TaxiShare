@@ -207,7 +207,7 @@ containing a value of this type.
         public static final int FrameLayout1=0x7f05003e;
         public static final int LinearLayout1=0x7f050060;
         public static final int RelativeLayout1=0x7f050013;
-        public static final int action_rote_search=0x7f05006d;
+        public static final int action_rote_search=0x7f05006c;
         public static final int content_frame=0x7f050026;
         public static final int dliIVImage=0x7f050006;
         public static final int dliLblOption=0x7f050007;
@@ -311,7 +311,6 @@ containing a value of this type.
         public static final int teste_mapa_btn_buscar=0x7f050069;
         public static final int teste_mapa_btn_criar=0x7f05006b;
         public static final int teste_mapa_btn_procurar=0x7f05006a;
-        public static final int teste_mapa_minhas_rotas=0x7f05006c;
         public static final int teste_mapa_txt_destino=0x7f050068;
         public static final int teste_mapa_txt_origem=0x7f050067;
     }
@@ -495,7 +494,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraBearing
+          @attr name com.br.activitys:cameraBearing
         */
         public static final int MapAttrs_cameraBearing = 1;
         /**
@@ -509,7 +508,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraTargetLat
+          @attr name com.br.activitys:cameraTargetLat
         */
         public static final int MapAttrs_cameraTargetLat = 2;
         /**
@@ -523,7 +522,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraTargetLng
+          @attr name com.br.activitys:cameraTargetLng
         */
         public static final int MapAttrs_cameraTargetLng = 3;
         /**
@@ -537,7 +536,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraTilt
+          @attr name com.br.activitys:cameraTilt
         */
         public static final int MapAttrs_cameraTilt = 4;
         /**
@@ -551,7 +550,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraZoom
+          @attr name com.br.activitys:cameraZoom
         */
         public static final int MapAttrs_cameraZoom = 5;
         /**
@@ -571,7 +570,7 @@ containing a value of this type.
 <tr><td><code>terrain</code></td><td>3</td><td></td></tr>
 <tr><td><code>hybrid</code></td><td>4</td><td></td></tr>
 </table>
-          @attr name android:mapType
+          @attr name com.br.activitys:mapType
         */
         public static final int MapAttrs_mapType = 0;
         /**
@@ -585,7 +584,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiCompass
+          @attr name com.br.activitys:uiCompass
         */
         public static final int MapAttrs_uiCompass = 6;
         /**
@@ -599,7 +598,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiRotateGestures
+          @attr name com.br.activitys:uiRotateGestures
         */
         public static final int MapAttrs_uiRotateGestures = 7;
         /**
@@ -613,7 +612,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiScrollGestures
+          @attr name com.br.activitys:uiScrollGestures
         */
         public static final int MapAttrs_uiScrollGestures = 8;
         /**
@@ -627,7 +626,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiTiltGestures
+          @attr name com.br.activitys:uiTiltGestures
         */
         public static final int MapAttrs_uiTiltGestures = 9;
         /**
@@ -641,7 +640,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiZoomControls
+          @attr name com.br.activitys:uiZoomControls
         */
         public static final int MapAttrs_uiZoomControls = 10;
         /**
@@ -655,7 +654,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiZoomGestures
+          @attr name com.br.activitys:uiZoomGestures
         */
         public static final int MapAttrs_uiZoomGestures = 11;
         /**
@@ -669,7 +668,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:useViewLifecycle
+          @attr name com.br.activitys:useViewLifecycle
         */
         public static final int MapAttrs_useViewLifecycle = 12;
         /**
@@ -683,7 +682,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:zOrderOnTop
+          @attr name com.br.activitys:zOrderOnTop
         */
         public static final int MapAttrs_zOrderOnTop = 13;
     };

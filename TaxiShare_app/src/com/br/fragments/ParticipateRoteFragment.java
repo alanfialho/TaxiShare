@@ -62,7 +62,6 @@ public class ParticipateRoteFragment extends Fragment{
 
 		double origemLatitude = Double.parseDouble(rota.getEnderecos().get(0).getLatitude());
 		double origemLongitude = Double.parseDouble(rota.getEnderecos().get(0).getLongitude());
-
 			
 		mapUtils.execute(destinoLatitude, destinoLongitude, origemLatitude, origemLongitude);
 		

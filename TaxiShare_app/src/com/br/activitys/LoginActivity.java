@@ -176,7 +176,7 @@ public class LoginActivity extends Activity {
 			//Inicializa o WS
 			WSTaxiShare ws = new WSTaxiShare();
 			//List<PerimetroApp> perimetros = new ArrayList();
-			//PerimetroApp origem = new PerimetroApp(-22.0000000,-19.000000,-37.000000,-36.00000);
+			PerimetroApp origem = new PerimetroApp(-22.0000000,-19.000000,-37.000000,-36.00000);
 			//PerimetroApp destino = new PerimetroApp(-46.000000,-45.00000,-66.000000,-64.0000000);
 			//perimetros.add(origem);
 			//perimetros.add(destino);

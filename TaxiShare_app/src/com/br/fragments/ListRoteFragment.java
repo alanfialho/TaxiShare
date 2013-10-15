@@ -8,6 +8,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -36,6 +37,7 @@ public class ListRoteFragment extends Fragment {
 	private ListView roteList;
 	Context context;
 	RoteAdapter adapter;
+	Address destination;
 	//public static List<RotaApp> rotasBuscadas;
 
 

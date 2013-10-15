@@ -49,7 +49,6 @@ public class SearchRoteFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.teste_mapa, container, false);
 		context = getActivity();
 
-
 		try {
 			MapsInitializer.initialize(getActivity());
 		} catch (GooglePlayServicesNotAvailableException e) {
@@ -111,7 +110,7 @@ public class SearchRoteFragment extends Fragment {
 		googleMap.setTrafficEnabled(true);
 		btnBusca = (Button) rootView.findViewById(R.id.teste_mapa_btn_buscar);
 		btnLista = (Button) rootView.findViewById(R.id.teste_mapa_btn_procurar);
-		btnMinhasRotas = (Button) rootView.findViewById(R.id.teste_mapa_minhas_rotas);
+//		btnMinhasRotas = (Button) rootView.findViewById(R.id.teste_mapa_minhas_rotas);
 		btnCriar = (Button) rootView.findViewById(R.id.teste_mapa_btn_criar);
 
 		txtEndereco1 = (EditText) rootView.findViewById(R.id.teste_mapa_txt_origem);
@@ -152,24 +151,36 @@ public class SearchRoteFragment extends Fragment {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								//Seta o endereço bonitinho no text
+								ori = origemLista.get(which);
 								//Apresenta a janela de escolha do destino
 								popupDestino.show();
-							}
+							}	
 						});					
 
 						//Define os itens e coloca ação no click do destino
 						popupDestino.setItems(enderecosDestino, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								ori = origemLista.get(which);
+								
 								dest = destinoLista.get(which);
 
 								double origemLatitude = ori.getLatitude();
 								double origemLongitude = ori.getLongitude();
+								
+																
 								double destinoLatitude = dest.getLatitude();
-								double destinoLongitude = dest.getLongitude();
+								double destinoLongitude = dest.getLongitude();		
+//								
+//								double origemLatitude2 = origemLatitude + (180/Math.PI)*(1000/6378137);
+//								double origemLongitude2 = origemLongitude + (180/Math.PI)*(0/6378137)/Math.cos(origemLatitude);
+								
+								//AQUI NOS VAMOS BUSCAR AS ROTAS FILTRADAS CERTINHO, PORÉM ENQUANTO ISSO NÃO ROLA, ESTOU PUCHANDO A LISTA TOTAL
+								//E PASSANDO O ENDERECO DE DESTINO DO PEÃO
+								Bundle args = new Bundle();
+								args.putParcelable("destinoAddress", dest);								
+								Utils.changeFragment(getFragmentManager(), new ListRoteFragment(), args);
 
-								mapUtils.execute(destinoLatitude, destinoLongitude, origemLatitude, origemLongitude);
+//								mapUtils.execute(destinoLatitude, destinoLongitude, origemLatitude, origemLongitude);
 							}
 						});
 
@@ -192,23 +203,21 @@ public class SearchRoteFragment extends Fragment {
 
 					aQuery.id(R.id.teste_mapa_btn_procurar).visible();	
 
-
-
 				} catch (Exception e) {
 					Utils.gerarToast(context, "Nenhum Endereço Encontrado");
 				}
 			}
 		});
 
-		btnLista.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-				Utils.changeFragment(getFragmentManager(),  new ListRoteFragment(), null);
-			}});
+//		btnLista.setOnClickListener(new View.OnClickListener() {
+//			public void onClick(View view) {
+//				
+//			}});
 		
-		btnMinhasRotas.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-				Utils.changeFragment(getFragmentManager(),  new UserListRoteFragment(), null);
-			}});
+//		btnMinhasRotas.setOnClickListener(new View.OnClickListener() {
+//			public void onClick(View view) {
+//				Utils.changeFragment(getFragmentManager(),  new UserListRoteFragment(), null);
+//			}});
 
 		btnCriar.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
