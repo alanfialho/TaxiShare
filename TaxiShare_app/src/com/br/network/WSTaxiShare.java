@@ -211,7 +211,7 @@ public class WSTaxiShare {
 		return resposta;
 	}
 	
-	public List<RotaApp> getRotasPerimetro(List<PerimetroApp> perimetros) throws Exception {
+	public ArrayList<RotaApp> getRotasPerimetro(List<PerimetroApp> perimetros) throws Exception {
 
 		Gson gson = new Gson();
 		String json = gson.toJson(perimetros);
