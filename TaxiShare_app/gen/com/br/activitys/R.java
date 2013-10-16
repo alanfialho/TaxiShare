@@ -207,7 +207,7 @@ containing a value of this type.
         public static final int FrameLayout1=0x7f05003e;
         public static final int LinearLayout1=0x7f050060;
         public static final int RelativeLayout1=0x7f050013;
-        public static final int action_rote_search=0x7f05006c;
+        public static final int action_rote_search=0x7f05006a;
         public static final int content_frame=0x7f050026;
         public static final int dliIVImage=0x7f050006;
         public static final int dliLblOption=0x7f050007;
@@ -309,8 +309,6 @@ containing a value of this type.
         public static final int satellite=0x7f050002;
         public static final int terrain=0x7f050003;
         public static final int teste_mapa_btn_buscar=0x7f050069;
-        public static final int teste_mapa_btn_criar=0x7f05006b;
-        public static final int teste_mapa_btn_procurar=0x7f05006a;
         public static final int teste_mapa_txt_destino=0x7f050068;
         public static final int teste_mapa_txt_origem=0x7f050067;
     }

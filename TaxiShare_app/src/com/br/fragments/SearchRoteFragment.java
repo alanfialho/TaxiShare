@@ -116,9 +116,7 @@ public class SearchRoteFragment extends Fragment {
 
 		googleMap.setTrafficEnabled(true);
 		btnBusca = (Button) rootView.findViewById(R.id.teste_mapa_btn_buscar);
-		btnLista = (Button) rootView.findViewById(R.id.teste_mapa_btn_procurar);
-		//		btnMinhasRotas = (Button) rootView.findViewById(R.id.teste_mapa_minhas_rotas);
-		btnCriar = (Button) rootView.findViewById(R.id.teste_mapa_btn_criar);
+
 
 		txtEndereco1 = (EditText) rootView.findViewById(R.id.teste_mapa_txt_origem);
 		txtEndereco2 = (EditText) rootView.findViewById(R.id.teste_mapa_txt_destino);
@@ -176,6 +174,10 @@ public class SearchRoteFragment extends Fragment {
 								dest = destinoLista.get(which);
 
 								//Agora definimos as longitudes e latitudes da origem e destino
+								String textoOrigem = ori.getThoroughfare() + ", " + ori.getSubThoroughfare() + " - " + ori.getSubLocality();
+								String textoDestino = dest.getThoroughfare() + ", " + dest.getSubThoroughfare() + " - " + dest.getSubLocality();
+								txtEndereco1.setText(textoOrigem);
+								txtEndereco2.setText(textoDestino);
 								double origemLatitude = ori.getLatitude();
 								double origemLongitude = ori.getLongitude();
 
@@ -214,20 +216,10 @@ public class SearchRoteFragment extends Fragment {
 			}
 		});
 
-		//		btnLista.setOnClickListener(new View.OnClickListener() {
-		//			public void onClick(View view) {
-		//				
-		//			}});
+	
 
 
-		btnCriar.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-				Bundle args = new Bundle();
-				//Leva os 2 Address para a fragment de criação de rotas
-				args.putParcelable("origemAddress", ori);
-				args.putParcelable("destinoAddress", dest);
-				Utils.changeFragment(getFragmentManager(),  new CreateRoteFragment(), args);
-			}});
+		
 	}	
 
 	//Só estamos usando esse metodo, ele retorna os 4 pontos para montar o perimetro.
@@ -320,7 +312,7 @@ public class SearchRoteFragment extends Fragment {
 
 			try {
 				JSONObject jsonResposta = new JSONObject(response);
-				
+
 				//Checamos se a resposta teve sucesso e se retornou uma lista de rotas
 				if(jsonResposta.getInt("errorCode")==0 && rotas.size() > 0){
 					//Caso tenha retornado, passamos a lista para o proximo fragment
@@ -330,7 +322,10 @@ public class SearchRoteFragment extends Fragment {
 				}
 				else{
 					//Caso contrario, informaos que nenhuma rota foi encontrada.
-					Utils.gerarToast(context, "Nenhuma rota encontrada!");
+					//Utils.gerarToast(context, "Nenhuma rota encontrada!");
+					questionaCriaRota();
+
+
 				}
 			} catch (Exception e) {
 				Utils.logException("SearchRoteFragment", "RouteListTask", "onPostExecute", e);
@@ -379,4 +374,49 @@ public class SearchRoteFragment extends Fragment {
 		mapView.onDestroy();
 		super.onDestroy();
 	}
+
+	public void questionaCriaRota(){
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				context);
+
+		// set title
+		alertDialogBuilder.setTitle("Rota não encontrada");
+
+		// set dialog message
+		alertDialogBuilder
+		.setMessage("Não foram encontradas rotas, deseja criar uma com os endereços da busca?")
+		.setCancelable(false)
+		.setPositiveButton("Criar",new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog,int id) {
+				Bundle args = new Bundle();
+				//Leva os 2 Address para a fragment de criação de rotas
+				args.putParcelable("origemAddress", ori);
+				args.putParcelable("destinoAddress", dest);
+				Utils.changeFragment(getFragmentManager(),  new CreateRoteFragment(), args);
+
+			}
+		})
+		.setNegativeButton("Não",new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog,int id) {
+				// if this button is clicked, just close
+				// the dialog box and do nothing
+				dialog.cancel();
+			}
+		});
+
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
+	}
+
+
+
+
+
+
 }
+
+

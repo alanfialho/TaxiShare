@@ -10,9 +10,11 @@ import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -173,21 +175,21 @@ public class MainActitity extends Activity {
 			fragment = new EditPasswordFragment();
 			break;
 		case 3:
-			fragment = new SearchRoteFragment();
-			break;
-		case 4:
 			fragment = new UserListRoteFragment	();
 			break;
-		case 5:
-			session.logoutUser();
+		case 4:
+			questionaLogout();
 		}
 
-		Utils.changeFragment(getFragmentManager(), fragment, null);
+		if (position != 4)
+		{
+			Utils.changeFragment(getFragmentManager(), fragment, null);
 
-		// update selected item and title, then close the drawer
-		listaMenuLateral.setItemChecked(position, true);
-		setTitle(opcoes[position]);
-		menuLateral.closeDrawer(listaMenuLateral);
+			// update selected item and title, then close the drawer
+			listaMenuLateral.setItemChecked(position, true);
+			setTitle(opcoes[position]);
+			menuLateral.closeDrawer(listaMenuLateral);
+		}
 	}
 
 	@Override
@@ -213,6 +215,41 @@ public class MainActitity extends Activity {
 		super.onConfigurationChanged(newConfig);
 		// Pass any configuration change to the drawer toggles
 		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+	
+	
+	//Metodo que chama chama popup questionando se user deseja sair do app
+	public void questionaLogout(){
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				this);
+
+		// Titulo
+		alertDialogBuilder.setTitle("Logout");
+
+		// Adiciona a mensagem na caixa
+		alertDialogBuilder
+		.setMessage("Deseja realmente sair do aplicativo?")
+		.setCancelable(false)
+		.setPositiveButton("Sim",new DialogInterface.OnClickListener() {
+			//Ação se o usuario clicar em "sim"
+			public void onClick(DialogInterface dialog,int id) {
+				session.logoutUser();
+
+			}
+		}) //Ação se o usuario clicar em "sim"
+		.setNegativeButton("Não",new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog,int id) {
+				
+				dialog.cancel();
+			}
+		});
+
+		// Cria a caixa de dialogo
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// mostra
+		alertDialog.show();
 	}
 
 }

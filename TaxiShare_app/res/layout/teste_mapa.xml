@@ -38,33 +38,11 @@
 
         <Button
             android:id="@+id/teste_mapa_btn_buscar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/teste_mapa_txt_destino"
-            android:layout_marginRight="14dp"
-            android:layout_marginTop="17dp"
-            android:text="Buscar" />
-
-        <Button
-            android:id="@+id/teste_mapa_btn_procurar"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="30dp"
-            android:layout_marginLeft="17dp"
-            android:text="Procurar"
-            />
-
-        <Button
-            android:id="@+id/teste_mapa_btn_criar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/teste_mapa_btn_procurar"
-            android:layout_alignBottom="@+id/teste_mapa_btn_procurar"
-            android:layout_centerHorizontal="true"
-            android:text="Criar" />
+            android:layout_marginBottom="62dp"
+            android:text="Buscar" />
 
     </RelativeLayout>
 

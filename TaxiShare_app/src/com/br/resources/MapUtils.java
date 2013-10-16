@@ -40,8 +40,7 @@ public class MapUtils {
 		Marker mark = googleMap.addMarker(new MarkerOptions()
 		.position(new LatLng(latitude, longitude))
 		.title(title)
-		.snippet(snippet)
-		.draggable(true));
+		.snippet(snippet));
 
 		if(zoom)
 			setaZoom(latitude, longitude);
