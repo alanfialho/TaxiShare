@@ -40,9 +40,9 @@ public class ListRoteFragment extends Fragment {
 		context = getActivity();
 		Bundle args = getArguments();
 		ArrayList<RotaApp> rotas = args.getParcelable("rotas");
+		
 
-		fillSearchList(rotas);
-	
+		fillSearchList(rotas);	
 
 		setListAction();
 		return rootView;
