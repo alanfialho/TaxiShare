@@ -32,8 +32,7 @@ public class MapUtils {
 	public void execute(double destinoLatitude, double destinoLongitude, double origemLatitude, double origemLongitude){
 		String url = makeURL(origemLatitude, origemLongitude, destinoLatitude, destinoLongitude);
 		connectAsyncTask task = new connectAsyncTask(url);
-		task.execute();
-		
+		task.execute();		
 	}
 
 	public Marker setMarker(double latitude, double longitude, String title, String snippet, boolean zoom) {
@@ -41,8 +40,7 @@ public class MapUtils {
 		Marker mark = googleMap.addMarker(new MarkerOptions()
 		.position(new LatLng(latitude, longitude))
 		.title(title)
-		.snippet(snippet)
-		.draggable(true));
+		.snippet(snippet));
 
 		if(zoom)
 			setaZoom(latitude, longitude);

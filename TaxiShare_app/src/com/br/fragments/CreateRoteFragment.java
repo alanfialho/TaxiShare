@@ -11,14 +11,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,9 +37,6 @@ public class CreateRoteFragment extends Fragment {
 
 	Context context;
 	SessionManagement session;
-	//	private GoogleMap mapa;
-	//	private Marker marcador;
-	private double lat, lon, minhaLat, minhaLong;
 
 	Button btnCriarRota;
 	EditText textOrigem, textDestino;
@@ -62,7 +56,6 @@ public class CreateRoteFragment extends Fragment {
 		//Checa se o usuario esta logado
 		session.checkLogin();
 
-		//setUpMapSePreciso()
 		return rootView;
 	}
 

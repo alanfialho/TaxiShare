@@ -1,14 +1,20 @@
 package com.br.fragments;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +24,9 @@ import android.widget.EditText;
 import com.androidquery.AQuery;
 import com.br.activitys.R;
 import com.br.entidades.EnderecoApp;
+import com.br.entidades.PerimetroApp;
+import com.br.entidades.RotaApp;
+import com.br.network.WSTaxiShare;
 import com.br.resources.MapUtils;
 import com.br.resources.Utils;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -36,7 +45,7 @@ public class SearchRoteFragment extends Fragment {
 	private Button btnBusca, btnLista, btnCriar, btnMinhasRotas;
 	private EditText txtEndereco1;
 	private EditText txtEndereco2;
-	private Context context;
+	public Context context;
 	EnderecoApp enderecoOrigem;
 	EnderecoApp enderecoDestino;
 	Address ori, dest;
@@ -48,7 +57,6 @@ public class SearchRoteFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.teste_mapa, container, false);
 		context = getActivity();
-
 
 		try {
 			MapsInitializer.initialize(getActivity());
@@ -71,8 +79,6 @@ public class SearchRoteFragment extends Fragment {
 		// o numero um aqui é a quantidade maxima de resultados que vc quer receber
 		enderecos = geoCoder.getFromLocationName(endereco, 5);
 
-		//		Address address = enderecos.get(0);
-
 		return enderecos;
 	}
 
@@ -88,7 +94,7 @@ public class SearchRoteFragment extends Fragment {
 			String bairro = address.getSubLocality() != null ? address.getSubLocality() : "Sem bairro" ;
 			String cidade = address.getLocality() != null ? address.getLocality() : "Sem cidade" ;
 			String estado = address.getAdminArea() != null ? address.getAdminArea() : "Sem estado";
-			
+
 			strEnderecos[i] = endereco + ", " + numero + ", " + bairro + " - " + cidade + " / " + estado ;		
 		}	
 
@@ -110,9 +116,7 @@ public class SearchRoteFragment extends Fragment {
 
 		googleMap.setTrafficEnabled(true);
 		btnBusca = (Button) rootView.findViewById(R.id.teste_mapa_btn_buscar);
-		btnLista = (Button) rootView.findViewById(R.id.teste_mapa_btn_procurar);
-		btnMinhasRotas = (Button) rootView.findViewById(R.id.teste_mapa_minhas_rotas);
-		btnCriar = (Button) rootView.findViewById(R.id.teste_mapa_btn_criar);
+
 
 		txtEndereco1 = (EditText) rootView.findViewById(R.id.teste_mapa_txt_origem);
 		txtEndereco2 = (EditText) rootView.findViewById(R.id.teste_mapa_txt_destino);
@@ -123,23 +127,26 @@ public class SearchRoteFragment extends Fragment {
 	}
 
 	public void setBtnAction(){
+		//acao do botao buscar
 		btnBusca.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 
+				//pega o texto dos campos
 				String origem = txtEndereco1.getText().toString();
 				String destino = txtEndereco2.getText().toString();
 
 				try {
-
+					//recebe uma lista de endereços com objetos ADDRESS
 					origemLista = getListaDeEnderecos(origem);
 					destinoLista = getListaDeEnderecos(destino);
 
-					//Define as listas de enderecos
+					//Converte para uma lista de strings formatadas
 					final CharSequence[] enderecosOrigem = getListaConvertida(origemLista);
 					final CharSequence[] enderecosDestino = getListaConvertida(destinoLista);
 
+					//Checa se houve retorno para os dois endereços
 					if(enderecosOrigem.length > 0 && enderecosDestino.length >0){
-						//Cria os popUps
+						//Cria os 2 popUps
 						AlertDialog.Builder popupOrigem = new AlertDialog.Builder(context);
 						final AlertDialog.Builder popupDestino = new AlertDialog.Builder(context);
 
@@ -147,36 +154,48 @@ public class SearchRoteFragment extends Fragment {
 						popupOrigem.setTitle("Selecione Origem");
 						popupDestino.setTitle("Selecione Destino");
 
-						//Define os itens e coloca ação no click da origem
+						//Define os itens da lista e coloca ação no click da origem
 						popupOrigem.setItems(enderecosOrigem, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								//Seta o endereço bonitinho no text
-								//Apresenta a janela de escolha do destino
+								//Define o objeto origem de acordo com a escolha na lista
+								ori = origemLista.get(which);
+								//Passa a bola para janela de escolha do destino
 								popupDestino.show();
-							}
+							}	
 						});					
 
-						//Define os itens e coloca ação no click do destino
+						//Define os itens da lista e coloca ação no click do destino
 						popupDestino.setItems(enderecosDestino, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								ori = origemLista.get(which);
+
+								//Define o objeto destino de acordo com a escolha na lista
 								dest = destinoLista.get(which);
 
+								//Agora definimos as longitudes e latitudes da origem e destino
+								String textoOrigem = ori.getThoroughfare() + ", " + ori.getSubThoroughfare() + " - " + ori.getSubLocality();
+								String textoDestino = dest.getThoroughfare() + ", " + dest.getSubThoroughfare() + " - " + dest.getSubLocality();
+								txtEndereco1.setText(textoOrigem);
+								txtEndereco2.setText(textoDestino);
 								double origemLatitude = ori.getLatitude();
 								double origemLongitude = ori.getLongitude();
-								double destinoLatitude = dest.getLatitude();
-								double destinoLongitude = dest.getLongitude();
 
-								mapUtils.execute(destinoLatitude, destinoLongitude, origemLatitude, origemLongitude);
+								double destinoLatitude = dest.getLatitude();
+								double destinoLongitude = dest.getLongitude();		
+
+								//Executa uma async task que ira no ws pegar a lista de rotas
+								RouteListTask task = new RouteListTask(origemLatitude, origemLongitude, destinoLatitude, destinoLongitude);
+								task.execute();								
 							}
 						});
 
-						//Mostra a popup de origem
+						//Mostra a popup de origem primeiro
 						popupOrigem.show();
 					}
+					//Se um endereço não deu retorno
 					else{
+						//seta o erro aonde a busca não deu retorno
 						if(enderecosOrigem.length <= 0){
 							txtEndereco1.setError("Seja mais especifico");
 							txtEndereco1.setFocusable(true);
@@ -190,33 +209,152 @@ public class SearchRoteFragment extends Fragment {
 						Utils.gerarToast(context, "Sem resultados");
 					}
 
-					aQuery.id(R.id.teste_mapa_btn_procurar).visible();	
-
-
-
 				} catch (Exception e) {
+					Utils.logException("SerachRoteFragment", "setBtnActions", "", e);
 					Utils.gerarToast(context, "Nenhum Endereço Encontrado");
 				}
 			}
 		});
 
-		btnLista.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-				Utils.changeFragment(getFragmentManager(),  new ListRoteFragment(), null);
-			}});
-		
-		btnMinhasRotas.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-				Utils.changeFragment(getFragmentManager(),  new UserListRoteFragment(), null);
-			}});
+	
 
-		btnCriar.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-				Bundle args = new Bundle();
-				args.putParcelable("origemAddress", ori);
-				args.putParcelable("destinoAddress", dest);
-				Utils.changeFragment(getFragmentManager(),  new CreateRoteFragment(), args);
-			}});
+
+		
+	}	
+
+	//Só estamos usando esse metodo, ele retorna os 4 pontos para montar o perimetro.
+	private double[] getBoundingBox(final double pLatitude, final double pLongitude, final int pDistanceInMeters) {
+
+		final double[] boundingBox = new double[4];
+
+		final double latRadian = Math.toRadians(pLatitude);
+
+		final double degLatKm = 110.574235;
+		final double degLongKm = 110.572833 * Math.cos(latRadian);
+		final double deltaLat = pDistanceInMeters / 1000.0 / degLatKm;
+		final double deltaLong = pDistanceInMeters / 1000.0 /
+				degLongKm;
+
+		final double minLat = pLatitude - deltaLat;
+		final double minLong = pLongitude - deltaLong;
+		final double maxLat = pLatitude + deltaLat;
+		final double maxLong = pLongitude + deltaLong;
+
+		boundingBox[0] = minLat;
+		boundingBox[1] = minLong;
+		boundingBox[2] = maxLat;
+		boundingBox[3] = maxLong;
+
+		return boundingBox;
+	}
+
+	private class RouteListTask extends AsyncTask<String, Void, String> {
+		ProgressDialog progress;
+
+		double latitudeOrigem, longitudeOrigem;
+		double latitudeDestino, longitudeDestino;
+
+		double[]  pontosOrigem, pontosDestino;
+		PerimetroApp perimetroOrigem, perimetroDestino;
+
+		//Lista com os 2 objetos de perimetros que iremos montar
+		List<PerimetroApp> perimetros;
+
+		//ArrayList que vai receber a lista de rotas do WS
+		ArrayList<RotaApp> rotas;
+
+		//Construtor da task, que recebe a lat/long de origem e destino
+		public RouteListTask(double latitudeOrigem, double longitudeOrigem, double latitudeDestino, double longitudeDestino){
+			this.latitudeOrigem = latitudeOrigem;
+			this.longitudeOrigem = longitudeOrigem;
+			this.latitudeDestino = latitudeDestino;
+			this.longitudeDestino = longitudeDestino;
+		}
+
+		protected void onPreExecute() {
+			progress = Utils.setProgreesDialog(progress, context, "Buscando listas", "Aguarde...");
+			perimetros = new ArrayList<PerimetroApp>();
+
+			//Recebe os 4 pontos base para criar o perimetro (defini 1000 e 2000 depois temos que ver como vai ficar)
+			pontosOrigem = getBoundingBox(latitudeOrigem, longitudeOrigem, 1000);
+			pontosDestino = getBoundingBox(latitudeDestino, longitudeDestino, 2000);
+
+			//Instancia o objeto perimetro com os dados certinhos, que foram retornados acima.
+			perimetroOrigem = new PerimetroApp(pontosOrigem[2], pontosOrigem[0], pontosOrigem[1], pontosOrigem[3]); 
+			perimetroDestino = new PerimetroApp(pontosDestino[2], pontosDestino[0], pontosDestino[1], pontosDestino[3]);
+
+			//Adicionamos na lista de permitros os dois itens que são usados no WS posteriormente
+			perimetros.add(perimetroOrigem);
+			perimetros.add(perimetroDestino);
+		}
+
+		@Override
+		protected String doInBackground(String... urls) {
+
+			String response = "";
+
+			WSTaxiShare ws = new WSTaxiShare();
+			try {
+				//Aqui passamos a lista de perimetros para o WS fazer a busca e retornar a lista de rotas
+				rotas = ws.getRotasPerimetro(perimetros);
+				response = "{errorCode:0, descricao:Sucesso}";
+
+			} catch (Exception e) {
+				response = "{errorCode:1, descricao:Erro ao carregar rotas!}";
+				Utils.logException("SearchRoteFragment", "RouteListTask", "doInBackground", e);
+			}
+
+			return response;
+		}
+
+		@Override
+		protected void onPostExecute(String response) {
+
+			try {
+				JSONObject jsonResposta = new JSONObject(response);
+
+				//Checamos se a resposta teve sucesso e se retornou uma lista de rotas
+				if(jsonResposta.getInt("errorCode")==0 && rotas.size() > 0){
+					//Caso tenha retornado, passamos a lista para o proximo fragment
+					Bundle args = new Bundle();
+					args.putParcelableArrayList("rotas",rotas);								
+					Utils.changeFragment(getFragmentManager(), new ListRoteFragment(), args);
+				}
+				else{
+					//Caso contrario, informaos que nenhuma rota foi encontrada.
+					//Utils.gerarToast(context, "Nenhuma rota encontrada!");
+					questionaCriaRota();
+
+
+				}
+			} catch (Exception e) {
+				Utils.logException("SearchRoteFragment", "RouteListTask", "onPostExecute", e);
+			}
+
+			//ISSO AQUI É O TESTE QUE MARCA OS PONTOS NO MAPA, VOU DEIXAR PARA TESTARMOS QUALQUER COISA.
+			//			LatLng latlng1 = new LatLng(perimetroOrigem.getCima(), perimetroOrigem.getEsquerda());
+			//			LatLng latlng2 = new LatLng(perimetroOrigem.getCima(), perimetroOrigem.getDireita());
+			//			LatLng latlng3 = new LatLng(perimetroOrigem.getBaixo(), perimetroOrigem.getEsquerda());
+			//			LatLng latlng4 = new LatLng(perimetroOrigem.getBaixo(), perimetroOrigem.getDireita());
+			//			
+			//			LatLng latlng10 = new LatLng(perimetroDestino.getCima(), perimetroDestino.getEsquerda());
+			//			LatLng latlng20 = new LatLng(perimetroDestino.getCima(), perimetroDestino.getDireita());
+			//			LatLng latlng30 = new LatLng(perimetroDestino.getBaixo(), perimetroDestino.getEsquerda());
+			//			LatLng latlng40 = new LatLng(perimetroDestino.getBaixo(), perimetroDestino.getDireita());
+			//			
+			//			
+			//			googleMap.addMarker(new MarkerOptions().position(latlng1).title("Origem 1"));
+			//			googleMap.addMarker(new MarkerOptions().position(latlng2).title("Origem 2"));
+			//			googleMap.addMarker(new MarkerOptions().position(latlng3).title("Origem 3"));
+			//			googleMap.addMarker(new MarkerOptions().position(latlng4).title("Origem 4"));
+			//			
+			//			googleMap.addMarker(new MarkerOptions().position(latlng10).title("Destino 1"));
+			//			googleMap.addMarker(new MarkerOptions().position(latlng20).title("Destino 2"));
+			//			googleMap.addMarker(new MarkerOptions().position(latlng30).title("Destino 3"));
+			//			googleMap.addMarker(new MarkerOptions().position(latlng40).title("Destino 4"));
+
+			progress.dismiss();
+		}		
 	}
 
 	@Override
@@ -236,4 +374,49 @@ public class SearchRoteFragment extends Fragment {
 		mapView.onDestroy();
 		super.onDestroy();
 	}
+
+	public void questionaCriaRota(){
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				context);
+
+		// set title
+		alertDialogBuilder.setTitle("Rota não encontrada");
+
+		// set dialog message
+		alertDialogBuilder
+		.setMessage("Não foram encontradas rotas, deseja criar uma com os endereços da busca?")
+		.setCancelable(false)
+		.setPositiveButton("Criar",new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog,int id) {
+				Bundle args = new Bundle();
+				//Leva os 2 Address para a fragment de criação de rotas
+				args.putParcelable("origemAddress", ori);
+				args.putParcelable("destinoAddress", dest);
+				Utils.changeFragment(getFragmentManager(),  new CreateRoteFragment(), args);
+
+			}
+		})
+		.setNegativeButton("Não",new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog,int id) {
+				// if this button is clicked, just close
+				// the dialog box and do nothing
+				dialog.cancel();
+			}
+		});
+
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
+	}
+
+
+
+
+
+
 }
+
+

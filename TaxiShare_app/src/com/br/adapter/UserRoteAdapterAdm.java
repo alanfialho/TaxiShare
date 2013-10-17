@@ -1,6 +1,5 @@
 package com.br.adapter;
 
-import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,6 +25,7 @@ public class UserRoteAdapterAdm extends BaseAdapter {
 	private LayoutInflater mInflater;
 	private ViewHolder holder;
 	private SessionManagement session;
+	private List<RotaApp> rotasAdm;
 	private int id;
 	
 
@@ -42,14 +41,10 @@ public class UserRoteAdapterAdm extends BaseAdapter {
 
 	public UserRoteAdapterAdm (Context context, LoginApp login) {
 		mInflater = LayoutInflater.from(context);
-		this.rotas = login.getRotasAdm();
-		this.rotas.addAll(login.getRotas());
-		
+		this.rotas = login.getRotas();
+		this.rotasAdm = login.getRotasAdm();
+		this.rotas.addAll(rotasAdm);
 	}
-
-	
-
-	
 
 	@Override
 	public long getItemId(int index) {
@@ -83,7 +78,7 @@ public class UserRoteAdapterAdm extends BaseAdapter {
 		RotaApp r = rotas.get(posicao);
 		String origem = r.getEnderecos().get(0).getRua() + ", " + r.getEnderecos().get(0).getNumero() + " - " + r.getEnderecos().get(0).getBairro();
 		String destino = r.getEnderecos().get(1).getRua() + ", " + r.getEnderecos().get(1).getNumero() + " - " + r.getEnderecos().get(1).getBairro();
-		if (id == 1){
+		if (posicao > rotas.size()){
 			tipo = "Administrador";
 			holder.option4.setTextColor(Color.RED);
 		}
@@ -98,12 +93,9 @@ public class UserRoteAdapterAdm extends BaseAdapter {
 		holder.option2.setText(destino);
 		//holder.option3.setText(passageiros);
 		holder.option4.setText(tipo);
-		
-		
 
 		holder.img1.setImageResource(images[5]);
 		
-
 		return convertView;
 	}
 

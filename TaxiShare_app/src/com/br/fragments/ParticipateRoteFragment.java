@@ -11,13 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.androidquery.AQuery;
 import com.br.activitys.R;
 import com.br.entidades.EnderecoApp;
-import com.br.entidades.LoginApp;
 import com.br.entidades.RotaApp;
 
 import com.br.network.WSTaxiShare;
@@ -25,12 +22,9 @@ import com.br.resources.MapUtils;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 public class ParticipateRoteFragment extends Fragment{
 	private GoogleMap googleMap;
@@ -62,7 +56,6 @@ public class ParticipateRoteFragment extends Fragment{
 
 		double origemLatitude = Double.parseDouble(rota.getEnderecos().get(0).getLatitude());
 		double origemLongitude = Double.parseDouble(rota.getEnderecos().get(0).getLongitude());
-
 			
 		mapUtils.execute(destinoLatitude, destinoLongitude, origemLatitude, origemLongitude);
 		
@@ -111,10 +104,7 @@ public class ParticipateRoteFragment extends Fragment{
 					Utils.logException("ParticipateRoteFragment", "onCreateView", "", e);
 				}
 			}});
-
 	}
-
-
 
 	private class PartcipaRotaTask extends AsyncTask<String, Void, String> {
 		ProgressDialog progress;
@@ -127,7 +117,7 @@ public class ParticipateRoteFragment extends Fragment{
 		@Override
 		protected String doInBackground(String... urls) {
 			HashMap<String, String> user = session.getUserDetails();
-			EnderecoApp endereco = rota.getEnderecos().get(0);
+			EnderecoApp endereco = rota.getEnderecos().get(1);
 			id = Integer.parseInt(user.get(SessionManagement.KEY_PESSOAID));
 			rotaId = rota.getId();
 			String response = "";
@@ -135,14 +125,10 @@ public class ParticipateRoteFragment extends Fragment{
 			try {
 				WSTaxiShare ws = new WSTaxiShare();
 				response = ws.participarRota(rotaId, id, endereco);
-				
-				
-
-			} catch (Exception e) {
+							} catch (Exception e) {
 				Utils.logException("UserListRoteFragment", "FillList", "onPostExecute", e);
 				response = "{errorCode:1, descricao:Erro ao carregar rotas!}";
 			}
-
 			return response;
 		}
 
@@ -153,9 +139,6 @@ public class ParticipateRoteFragment extends Fragment{
 		}		
 	}
 	
-	
-	
-
 	@Override
 	public void onResume() {
 		super.onResume();

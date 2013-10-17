@@ -1,29 +1,23 @@
 package com.br.fragments;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.br.activitys.R;
 
-import com.br.adapter.MenuAdapter;
 import com.br.adapter.RoteAdapter;
 import com.br.entidades.RotaApp;
 import com.br.network.WSTaxiShare;
@@ -36,6 +30,7 @@ public class ListRoteFragment extends Fragment {
 	private ListView roteList;
 	Context context;
 	RoteAdapter adapter;
+	Address destination;
 	//public static List<RotaApp> rotasBuscadas;
 
 
@@ -43,14 +38,12 @@ public class ListRoteFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.rote_list, container, false);
 		context = getActivity();
+		Bundle args = getArguments();
+		ArrayList<RotaApp> rotas = args.getParcelable("rotas");
 		
-		try{
-			FillRoteListTask task = new FillRoteListTask();
-			task.execute();
-		}
-		catch (Exception e) {
-			Utils.logException("ListRoteFragment", "onCreateView", "", e);
-		}
+
+		fillSearchList(rotas);	
+
 		setListAction();
 		return rootView;
 	}
