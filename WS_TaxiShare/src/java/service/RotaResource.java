@@ -58,8 +58,8 @@ public class RotaResource {
         {
             //find para carregar as rotas do usuario
             Usuario usuario = usuarioDAO.findUsuario(entity.getAdministrador().getId());
-            if(validaHora(usuario.getRotasAdm()))
-            {
+            //if(validaHora(usuario.getRotasAdm(), entity.getDataRota()))
+            //{
                 //De para entity/rota
                 rota.setEnderecos(entity.getEnderecos());
                 rota.setFlagAberta(entity.getFlagAberta());
@@ -73,11 +73,11 @@ public class RotaResource {
 
                 rotaDAO.create(rota);
                 saida = new ResponseEntity("Sucesso", 0, "Rota criada com sucesso!", null);
-            }
-            else
-            {
-                saida = new ResponseEntity("Erro", 2, "Já existe uma rota aberta no intervalo de 1 hora!", null);
-            }
+           // }
+            //else
+            //{
+            //    saida = new ResponseEntity("Erro", 2, "Já existe uma rota aberta no intervalo de 1 hora!", null);
+            //}
         }
         catch(Exception ex){
             System.out.println("ERRRO --> " + ex.getMessage());
@@ -270,23 +270,37 @@ public class RotaResource {
     protected EntityManager getEntityManager() {
         return em;
     }
-    protected Boolean validaHora(List<Rota> rotasUsuario)
+    protected Boolean validaHora(List<Rota> rotasUsuario, String dt)
     {
-        Date horaAtual = new Date();        
         
-        //verifica se o usuario tem rota aberta e pega o endereço de origem para comparação
+        //verifica se o usuario tem rota aberta e pega a data da rota para comparação
         for(Rota r : rotasUsuario)
         {
            
            if(r.getFlagAberta() == true)
            {
-               long diff = r.getDataRota().getTime() - horaAtual.getTime() ;//em milesegundos
-               int timeInSeconds = (int)diff/1000;
-               //verifica se passou uma hora
-               if(timeInSeconds < 3600)
+               SimpleDateFormat format = new SimpleDateFormat ("dd/MM/yyyy HH:mm");
+               
+               try
                {
-                   return false;
+                   String dataFormatada = format.format(r.getDataRota());
+                   Date dataAgendamento = format.parse(dt);
+                   Date dataRota = format.parse(dataFormatada);
+                   long time1 = dataAgendamento.getTime();
+                   long time2 = dataRota.getTime();
+                   long diff =  time1 - time2 ;//em milesegundos
+                   int timeInSeconds = (int)diff/1000;
+                   //verifica se passou uma hora
+                   if(timeInSeconds < 3600)
+                   {
+                        return false;
+                   }
                }
+               catch(Exception ex)
+               {
+
+               }
+               
            }
 
         }
