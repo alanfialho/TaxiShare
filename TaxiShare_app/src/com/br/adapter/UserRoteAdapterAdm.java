@@ -1,7 +1,10 @@
 package com.br.adapter;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
 =======
 >>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
 import java.util.List;
@@ -13,7 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
 =======
 >>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
 import android.widget.BaseAdapter;
@@ -54,9 +60,15 @@ public class UserRoteAdapterAdm extends BaseAdapter {
 	public UserRoteAdapterAdm (Context context, LoginApp login) {
 		mInflater = LayoutInflater.from(context);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		this.rotas = login.getRotasAdm();
 		
 		
+=======
+		this.rotas = login.getRotas();
+		this.rotasAdm = login.getRotasAdm();
+		this.rotas.addAll(rotasAdm);
+>>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
 =======
 		this.rotas = login.getRotas();
 		this.rotasAdm = login.getRotasAdm();
@@ -94,8 +106,11 @@ public class UserRoteAdapterAdm extends BaseAdapter {
 		String origem = r.getEnderecos().get(0).getRua() + ", " + r.getEnderecos().get(0).getNumero() + " - " + r.getEnderecos().get(0).getBairro();
 		String destino = r.getEnderecos().get(1).getRua() + ", " + r.getEnderecos().get(1).getNumero() + " - " + r.getEnderecos().get(1).getBairro();
 <<<<<<< HEAD
+<<<<<<< HEAD
 	
 =======
+=======
+>>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
 		if (posicao > rotas.size()){
 			tipo = "Administrador";
 			holder.option4.setTextColor(Color.RED);
@@ -112,10 +127,14 @@ public class UserRoteAdapterAdm extends BaseAdapter {
 		holder.option2.setText(destino);
 		//holder.option3.setText(passageiros);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		holder.option4.setText("Administrador");
 		holder.option4.setTextColor(Color.RED);
 		
 		
+=======
+		holder.option4.setText(tipo);
+>>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
 =======
 		holder.option4.setText(tipo);
 >>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf

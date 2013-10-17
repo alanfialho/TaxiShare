@@ -137,12 +137,15 @@ public class ParticipateRoteFragment extends Fragment{
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public void setaMarcadores(){
 		
 		
 	}
 
 
+=======
+>>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
 =======
 >>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
 	private class PartcipaRotaTask extends AsyncTask<String, Void, String> {
@@ -165,6 +168,7 @@ public class ParticipateRoteFragment extends Fragment{
 				WSTaxiShare ws = new WSTaxiShare();
 				response = ws.participarRota(rotaId, id, endereco);
 <<<<<<< HEAD
+<<<<<<< HEAD
 				
 				
 
@@ -172,6 +176,8 @@ public class ParticipateRoteFragment extends Fragment{
 				Utils.logException("ParticipateRoteFragment", "FillList", "onPostExecute", e);
 				response = "{errorCode:1, descricao:Erro ao participar rota!}";
 =======
+=======
+>>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
 							} catch (Exception e) {
 				Utils.logException("UserListRoteFragment", "FillList", "onPostExecute", e);
 				response = "{errorCode:1, descricao:Erro ao carregar rotas!}";
@@ -187,6 +193,7 @@ public class ParticipateRoteFragment extends Fragment{
 		}		
 	}
 	
+<<<<<<< HEAD
 <<<<<<< HEAD
 	
 	private class DetalhesRotaTask extends AsyncTask<String, Void, String> {
@@ -228,6 +235,8 @@ public class ParticipateRoteFragment extends Fragment{
 	
 	
 
+=======
+>>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
 =======
 >>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
 	@Override
