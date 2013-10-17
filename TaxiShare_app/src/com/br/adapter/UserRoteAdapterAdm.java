@@ -1,12 +1,6 @@
 package com.br.adapter;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
-=======
->>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
 import java.util.List;
 
 import android.content.Context;
@@ -15,13 +9,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
-=======
->>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,13 +26,7 @@ public class UserRoteAdapterAdm extends BaseAdapter {
 	private List<RotaApp> rotas;
 	private LayoutInflater mInflater;
 	private ViewHolder holder;
-<<<<<<< HEAD
 
-=======
-	private SessionManagement session;
-	private List<RotaApp> rotasAdm;
-	private int id;
->>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
 	
 
 	public static final Integer[] images = { R.drawable.icon_search,
@@ -59,21 +41,9 @@ public class UserRoteAdapterAdm extends BaseAdapter {
 
 	public UserRoteAdapterAdm (Context context, LoginApp login) {
 		mInflater = LayoutInflater.from(context);
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 		this.rotas = login.getRotasAdm();
-		
-		
-=======
-		this.rotas = login.getRotas();
-		this.rotasAdm = login.getRotasAdm();
-		this.rotas.addAll(rotasAdm);
->>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
-=======
-		this.rotas = login.getRotas();
-		this.rotasAdm = login.getRotasAdm();
-		this.rotas.addAll(rotasAdm);
->>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
+
 	}
 
 	@Override
@@ -105,39 +75,16 @@ public class UserRoteAdapterAdm extends BaseAdapter {
 		RotaApp r = rotas.get(posicao);
 		String origem = r.getEnderecos().get(0).getRua() + ", " + r.getEnderecos().get(0).getNumero() + " - " + r.getEnderecos().get(0).getBairro();
 		String destino = r.getEnderecos().get(1).getRua() + ", " + r.getEnderecos().get(1).getNumero() + " - " + r.getEnderecos().get(1).getBairro();
-<<<<<<< HEAD
-<<<<<<< HEAD
-	
-=======
-=======
->>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
-		if (posicao > rotas.size()){
-			tipo = "Administrador";
-			holder.option4.setTextColor(Color.RED);
-		}
-		else{
-			tipo = "Participante";
-			holder.option4.setTextColor(Color.GREEN);
-		}
-		
->>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
+
 		//String passageiros = login.getRotasAdm().get(0).getPassExistentes() + " / 4";
 		
 		holder.option1.setText(origem);
 		holder.option2.setText(destino);
 		//holder.option3.setText(passageiros);
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 		holder.option4.setText("Administrador");
 		holder.option4.setTextColor(Color.RED);
-		
-		
-=======
-		holder.option4.setText(tipo);
->>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
-=======
-		holder.option4.setText(tipo);
->>>>>>> 6ac7cfe4a6eb309539fc714806e3cd95f4fc8bbf
+
 
 		holder.img1.setImageResource(images[5]);
 		
