@@ -38,7 +38,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class UserListRoteFragment extends Fragment{
 	
 	private static View rootView;
-	private ListView roteListAdm, roteListParticipate;
+	private ListView roteList;
 	Context context;
 	RoteAdapter adapterAdm, adapterParticipate;
 	private SessionManagement session;
@@ -69,18 +69,26 @@ public class UserListRoteFragment extends Fragment{
 		merge.addAdapter(adapterAdm);
 		merge.addAdapter(adapterParticipate);
 		
-		roteListAdm = (ListView) rootView.findViewById(R.id.rote_users_list_view);
-		roteListAdm.setAdapter(merge);
+		roteList = (ListView) rootView.findViewById(R.id.rote_users_list_view);
+		roteList.setAdapter(merge);
 		
-		roteListAdm.setOnItemClickListener(new OnItemClickListener(){
+		roteList.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {			
 				
-				RotaApp rotinha = (RotaApp) roteListAdm.getAdapter().getItem(position);
-				String telefone = "11982467715"; 
+				RotaApp rotinha = (RotaApp) roteList.getAdapter().getItem(position);
+				Bundle args = new Bundle();
+				args.putParcelable("rota", rotinha);				
+				Utils.changeFragment(getFragmentManager(), new DetailsUserListRoteFragment(), args);
 				
-				entraEmContato(telefone);
+				
+				
+				
+				
+				//String telefone = "11982467715"; 
+				
+				//entraEmContato(telefone);
 				
 				//Envia sms pro numero do adm
 				

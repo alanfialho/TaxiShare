@@ -62,11 +62,11 @@ public class ParticipateRoteFragment extends Fragment{
 	public void setAtributes(View rootView){
 		session = new SessionManagement(rootView.getContext());
 
-		mapView = (MapView) rootView.findViewById(R.id.rote_details_map);
+		mapView = (MapView) rootView.findViewById(R.id.rote_detail_map);
 		mapView.onCreate(mBundle);
 
 		if (googleMap == null) {
-			googleMap = ((MapView) rootView.findViewById(R.id.rote_details_map)).getMap();
+			googleMap = ((MapView) rootView.findViewById(R.id.rote_detail_map)).getMap();
 			if (googleMap != null) {
 				//				setUpMap();
 			}
@@ -110,14 +110,15 @@ public class ParticipateRoteFragment extends Fragment{
 		String end = r.getEnderecos().get(1).getRua();
 		mapUtils.setMarker(latitudes[0], longitudes[0], adm, end, true);
 		
-		
-		//Interao numero de participantes na rota e seta marcadores para cada um deles.
-		for (int i = 1; i <= participantes; i++){
-			latitudes[i] = Double.parseDouble(r.getEnderecos().get(i + 2).getLatitude());
-			longitudes[i] = Double.parseDouble(r.getEnderecos().get(i + 2).getLongitude());
-			String titulo = r.getUsuarios().get(i - 1).getLogin();
-			String rua = r.getEnderecos().get(i + 2).getRua() + ", " + r.getEnderecos().get(i + 2).getNumero() + " - " + r.getEnderecos().get(i + 2).getBairro();
-			mapUtils.setMarker(latitudes[i], longitudes[i], titulo, rua, false);
+		if (participantes > 0){
+			//Interao numero de participantes na rota e seta marcadores para cada um deles.
+			for (int i = 1; i <= participantes; i++){
+				latitudes[i] = Double.parseDouble(r.getEnderecos().get(i + 2).getLatitude());
+				longitudes[i] = Double.parseDouble(r.getEnderecos().get(i + 2).getLongitude());
+				String titulo = r.getUsuarios().get(i - 1).getLogin();
+				String rua = r.getEnderecos().get(i + 2).getRua() + ", " + r.getEnderecos().get(i + 2).getNumero() + " - " + r.getEnderecos().get(i + 2).getBairro();
+				mapUtils.setMarker(latitudes[i], longitudes[i], titulo, rua, false);
+			}
 		}
 		
 	}

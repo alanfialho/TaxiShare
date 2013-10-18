@@ -110,11 +110,11 @@ public class SearchRoteFragment extends Fragment {
 
 	public void setAtributes(View rootView){
 
-		mapView = (MapView) rootView.findViewById(R.id.rote_details_map);
+		mapView = (MapView) rootView.findViewById(R.id.rote_search_map);
 		mapView.onCreate(mBundle);
 
 		if (googleMap == null) {
-			googleMap = ((MapView) rootView.findViewById(R.id.rote_details_map)).getMap();
+			googleMap = ((MapView) rootView.findViewById(R.id.rote_search_map)).getMap();
 			if (googleMap != null) {
 				//				setUpMap();
 			}
