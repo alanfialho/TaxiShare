@@ -30,4 +30,11 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>res/values-v11</name>
+			<type>2</type>
+			<locationURI>PARENT-4-PROJECT_LOC/AppData/Local/Temp/Rar$DRa0.866/res/values-v11</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

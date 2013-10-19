@@ -33,9 +33,10 @@ public class ParticipateRoteFragment extends Fragment{
 	private Button btnParticipa;
 	private TextView lblOrigem, lblDestino, lblPassageiros, lblAdm, lblHora;
 	private Context context;
-	private RotaApp rota;
+	private RotaApp rota, rotaDetalhe;
 	private SessionManagement session;
 	private int id, rotaId;
+	MapUtils mapUtils;
 	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,18 +47,14 @@ public class ParticipateRoteFragment extends Fragment{
 		} catch (GooglePlayServicesNotAvailableException e) {
 			Utils.logException("ParticipateRoteFragment", "onCreateView", "", e);
 		}
-
+		
+		mapUtils = new MapUtils(context, googleMap);
 		setAtributes(rootView);
 		setBtnAction();
-		MapUtils mapUtils = new MapUtils(context, googleMap);
+		setMarcadores(rotaDetalhe);
 		
-		double destinoLatitude = Double.parseDouble(rota.getEnderecos().get(1).getLatitude());
-		double destinoLongitude = Double.parseDouble(rota.getEnderecos().get(1).getLongitude());
-
-		double origemLatitude = Double.parseDouble(rota.getEnderecos().get(0).getLatitude());
-		double origemLongitude = Double.parseDouble(rota.getEnderecos().get(0).getLongitude());
-			
-		mapUtils.execute(destinoLatitude, destinoLongitude, origemLatitude, origemLongitude);
+		
+		
 		
 		return rootView;	
 	}
@@ -65,17 +62,25 @@ public class ParticipateRoteFragment extends Fragment{
 	public void setAtributes(View rootView){
 		session = new SessionManagement(rootView.getContext());
 
-		mapView = (MapView) rootView.findViewById(R.id.rote_details_map);
+		mapView = (MapView) rootView.findViewById(R.id.rote_detail_map);
 		mapView.onCreate(mBundle);
 
 		if (googleMap == null) {
-			googleMap = ((MapView) rootView.findViewById(R.id.rote_details_map)).getMap();
+			googleMap = ((MapView) rootView.findViewById(R.id.rote_detail_map)).getMap();
 			if (googleMap != null) {
 				//				setUpMap();
 			}
 		}
 		Bundle args = getArguments();
 		rota = args.getParcelable("rota");
+		
+		try{
+			DetalhesRotaTask task = new DetalhesRotaTask();
+			task.execute();
+		}
+		catch (Exception e) {
+			Utils.logException("ParticipateRoteFragment", "onCreateView", "", e);
+		}
 		
 		lblOrigem = (TextView) rootView.findViewById(R.id.rote_details_lbl_origem_info);
 		lblDestino = (TextView) rootView.findViewById(R.id.rote_details_lbl_destino_info);
@@ -91,6 +96,32 @@ public class ParticipateRoteFragment extends Fragment{
 		lblHora.setText(rota.getDataRota().toString());
 
 	}
+	
+	//Seta os marcadores no mapa
+	public void setMarcadores(RotaApp r){
+		int participantes = r.getUsuarios().size();
+		double[] latitudes = new double[participantes + 1];
+		double[] longitudes = new double[participantes + 1];
+		
+		//seta o marcador do ADM e da Zoom
+		latitudes[0] = Double.parseDouble(r.getEnderecos().get(1).getLatitude());
+		longitudes[0] = Double.parseDouble(r.getEnderecos().get(1).getLongitude());
+		String adm = r.getAdministrador().getLogin();
+		String end = r.getEnderecos().get(1).getRua();
+		mapUtils.setMarker(latitudes[0], longitudes[0], adm, end, true);
+		
+		if (participantes > 0){
+			//Interao numero de participantes na rota e seta marcadores para cada um deles.
+			for (int i = 1; i <= participantes; i++){
+				latitudes[i] = Double.parseDouble(r.getEnderecos().get(i + 2).getLatitude());
+				longitudes[i] = Double.parseDouble(r.getEnderecos().get(i + 2).getLongitude());
+				String titulo = r.getUsuarios().get(i - 1).getLogin();
+				String rua = r.getEnderecos().get(i + 2).getRua() + ", " + r.getEnderecos().get(i + 2).getNumero() + " - " + r.getEnderecos().get(i + 2).getBairro();
+				mapUtils.setMarker(latitudes[i], longitudes[i], titulo, rua, false);
+			}
+		}
+		
+	}
 
 	public void setBtnAction(){
 		btnParticipa.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +136,7 @@ public class ParticipateRoteFragment extends Fragment{
 				}
 			}});
 	}
+
 
 	private class PartcipaRotaTask extends AsyncTask<String, Void, String> {
 		ProgressDialog progress;
@@ -125,9 +157,13 @@ public class ParticipateRoteFragment extends Fragment{
 			try {
 				WSTaxiShare ws = new WSTaxiShare();
 				response = ws.participarRota(rotaId, id, endereco);
-							} catch (Exception e) {
-				Utils.logException("UserListRoteFragment", "FillList", "onPostExecute", e);
-				response = "{errorCode:1, descricao:Erro ao carregar rotas!}";
+
+				
+
+			} catch (Exception e) {
+				Utils.logException("ParticipateRoteFragment", "FillList", "onPostExecute", e);
+				response = "{errorCode:1, descricao:Erro ao participar rota!}";
+
 			}
 			return response;
 		}
@@ -139,6 +175,44 @@ public class ParticipateRoteFragment extends Fragment{
 		}		
 	}
 	
+
+	private class DetalhesRotaTask extends AsyncTask<String, Void, String> {
+		ProgressDialog progress;
+
+
+		protected void onPreExecute() {
+			progress = Utils.setProgreesDialog(progress, context, "Carregando", "Aguarde...");
+		}
+
+		@Override
+		protected String doInBackground(String... urls) {
+			
+			rotaId = rota.getId();
+			String response = "";
+
+			try {
+				WSTaxiShare ws = new WSTaxiShare();
+				rotaDetalhe = ws.detailRota(rotaId);
+				response = "{errorCode:0, descricao:Sucesso}";
+				
+				
+
+			} catch (Exception e) {
+				Utils.logException("ParticipateRoteFragment", "FillList", "onPostExecute", e);
+				response = "{errorCode:1, descricao:Erro pegar detalhes rota!}";
+			}
+
+			return response;
+		}
+
+		@Override
+		protected void onPostExecute(String response) {
+			
+			progress.dismiss();
+		}		
+	}
+	
+
 	@Override
 	public void onResume() {
 		super.onResume();

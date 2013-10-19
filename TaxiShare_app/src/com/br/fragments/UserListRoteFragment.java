@@ -6,12 +6,14 @@ import java.util.List;
 import com.br.activitys.R;
 import com.br.adapter.RoteAdapter;
 import com.br.adapter.UserRoteAdapterAdm;
+import com.br.adapter.UserRoteAdapterParticipate;
 import com.br.entidades.LoginApp;
 import com.br.entidades.RotaApp;
 
 import com.br.network.WSTaxiShare;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
+import com.commonsware.cwac.merge.MergeAdapter;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -20,6 +22,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.MergeCursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,7 +38,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class UserListRoteFragment extends Fragment{
 	
 	private static View rootView;
-	private ListView roteListAdm, roteListParticipate;
+	private ListView roteList;
 	Context context;
 	RoteAdapter adapterAdm, adapterParticipate;
 	private SessionManagement session;
@@ -60,20 +63,32 @@ public class UserListRoteFragment extends Fragment{
 	
 	
 	private void fillSearchList(LoginApp login) {
-		UserRoteAdapterAdm roteAdapter = new UserRoteAdapterAdm (context, login);
+		UserRoteAdapterAdm adapterAdm = new UserRoteAdapterAdm (context, login);
+		UserRoteAdapterParticipate adapterParticipate = new UserRoteAdapterParticipate (context, login);
+		MergeAdapter merge = new MergeAdapter();
+		merge.addAdapter(adapterAdm);
+		merge.addAdapter(adapterParticipate);
 		
-		roteListAdm = (ListView) rootView.findViewById(R.id.rote_users_list_view);
-		roteListAdm.setAdapter(roteAdapter);
+		roteList = (ListView) rootView.findViewById(R.id.rote_users_list_view);
+		roteList.setAdapter(merge);
 		
-		roteListAdm.setOnItemClickListener(new OnItemClickListener(){
+		roteList.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {			
 				
-				RotaApp rotinha = (RotaApp) roteListAdm.getAdapter().getItem(position);
-				String telefone = "11982467715"; 
+				RotaApp rotinha = (RotaApp) roteList.getAdapter().getItem(position);
+				Bundle args = new Bundle();
+				args.putParcelable("rota", rotinha);				
+				Utils.changeFragment(getFragmentManager(), new DetailsUserListRoteFragment(), args);
 				
-				entraEmContato(telefone);
+				
+				
+				
+				
+				//String telefone = "11982467715"; 
+				
+				//entraEmContato(telefone);
 				
 				//Envia sms pro numero do adm
 				

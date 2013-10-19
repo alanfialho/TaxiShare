@@ -13,7 +13,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,9 +33,11 @@ import com.br.network.WSTaxiShare;
 import com.br.resources.MapUtils;
 import com.br.resources.Utils;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.LatLng;
 
 
 public class SearchRoteFragment extends Fragment {
@@ -65,6 +70,7 @@ public class SearchRoteFragment extends Fragment {
 		}
 
 		setAtributes(rootView);
+		centerMapOnMyLocation();
 		setBtnAction();
 		return rootView;	
 	}
@@ -104,11 +110,11 @@ public class SearchRoteFragment extends Fragment {
 
 	public void setAtributes(View rootView){
 
-		mapView = (MapView) rootView.findViewById(R.id.rote_details_map);
+		mapView = (MapView) rootView.findViewById(R.id.rote_search_map);
 		mapView.onCreate(mBundle);
 
 		if (googleMap == null) {
-			googleMap = ((MapView) rootView.findViewById(R.id.rote_details_map)).getMap();
+			googleMap = ((MapView) rootView.findViewById(R.id.rote_search_map)).getMap();
 			if (googleMap != null) {
 				//				setUpMap();
 			}
@@ -410,6 +416,32 @@ public class SearchRoteFragment extends Fragment {
 
 		// show it
 		alertDialog.show();
+	}
+	
+	private void centerMapOnMyLocation() {
+		String contexto = Context.LOCATION_SERVICE;
+		LocationManager locationManager = (LocationManager) context.getSystemService(contexto);
+
+        // Creating a criteria object to retrieve provider
+        Criteria criteria = new Criteria();
+
+        // Getting the name of the best provider
+        String provider = locationManager.getBestProvider(criteria, true);
+
+        // Getting Current Location
+        Location location = locationManager.getLastKnownLocation(provider);
+	    
+	   
+	    LatLng myLocation = null;
+	  
+	    
+	    if (location != null) {
+	        myLocation = new LatLng(location.getLatitude(),
+	                location.getLongitude());
+	        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+		            16));
+	    }
+	    
 	}
 
 
