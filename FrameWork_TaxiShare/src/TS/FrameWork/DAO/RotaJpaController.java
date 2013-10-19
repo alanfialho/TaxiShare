@@ -114,8 +114,8 @@ public class RotaJpaController implements Serializable {
             Query q = em.createQuery("SELECT distinct r "
                                     + "FROM Rota as r "
                                     + "JOIN r.enderecos as e "     
-                                    + "WHERE ((e.latitude between "+origem.getCima()+" and "+origem.getBaixo()+") "
-                                    + "OR (e.latitude between "+destino.getCima()+" and "+destino.getBaixo()+")) "
+                                    + "WHERE ((e.latitude between "+origem.getBaixo()+" and "+origem.getCima()+") "
+                                    + "OR (e.latitude between "+destino.getBaixo()+" and "+destino.getCima()+")) "
                                     + "AND ((e.longitude between "+origem.getEsquerda()+" and "+origem.getDireita()+") "
                                     + "OR (e.longitude between " +destino.getEsquerda()+" and "+destino.getDireita()+")) "    
                                     + "AND r.flagAberta = 1");

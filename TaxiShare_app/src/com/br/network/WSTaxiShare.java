@@ -231,6 +231,25 @@ public class WSTaxiShare {
 		return rotas;
 
 	}
+	
+	public String sairRota(int idRota, int idUsuario, EnderecoApp endereco) throws Exception {
+
+		String resposta = "";
+
+		try
+		{
+			Gson gson = new Gson();
+			String enderecoJson = gson.toJson(endereco);
+			resposta = new WSClient().put(URL_WS + "rota/exitRote/" + idRota + "/" + idUsuario, enderecoJson);
+		}
+		catch(Exception e)
+		{
+			Utils.logException("WSTaxishare", "sairrRota", "Exception", e);
+		}
+
+		return resposta;
+	}
+
 
 }
 

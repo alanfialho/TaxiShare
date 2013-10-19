@@ -290,6 +290,7 @@ public class LoginResource {
         }
 
     }
+    
     protected EntityManager getEntityManager() {
         return em;
     }

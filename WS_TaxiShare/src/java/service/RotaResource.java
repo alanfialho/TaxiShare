@@ -58,29 +58,31 @@ public class RotaResource {
         {
             //find para carregar as rotas do usuario
             Usuario usuario = usuarioDAO.findUsuario(entity.getAdministrador().getId());
-            //if(validaHora(usuario.getRotasAdm(), entity.getDataRota()))
-            //{
+            if(validaHora(usuario.getRotasAdm(), entity.getDataRota()))
+            {
                 //De para entity/rota
                 rota.setEnderecos(entity.getEnderecos());
                 rota.setFlagAberta(entity.getFlagAberta());
-                rota.setPassExistentes(entity.getPassExistentes());
+                //soma 1 no passageiro existente
+                short aux = (short)(entity.getPassExistentes() + 1);
+                rota.setPassExistentes(aux);
                 rota.setAdministrador(usuario);
 
                 //trata a data
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy HH:mm");
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                 java.sql.Date data = new java.sql.Date(format.parse(entity.getDataRota()).getTime());
                 rota.setDataRota(data);
 
                 rotaDAO.create(rota);
                 saida = new ResponseEntity("Sucesso", 0, "Rota criada com sucesso!", null);
-           // }
-            //else
-            //{
-            //    saida = new ResponseEntity("Erro", 2, "Já existe uma rota aberta no intervalo de 1 hora!", null);
-            //}
+            }
+            else
+            {
+                saida = new ResponseEntity("Erro", 2, "Já existe uma rota aberta no intervalo de 1 hora!", null);
+            }
         }
         catch(Exception ex){
-            System.out.println("ERRRO --> " + ex.getMessage());
+            System.out.println("ERRRO createRote(): " + ex.getMessage());
             saida = new ResponseEntity("Erro", 1, "Não foi possivel realizar operação, tente mais tarde!", null);
         }
         
@@ -218,7 +220,7 @@ public class RotaResource {
                 saida = new ResponseEntity("Erro", 4, "Rota não encontrada!", null);
                 throw new Exception("Erro");
             }
-            else if(rota.getUsuarios().size() == 3){
+            else if(rota.getUsuarios().size() == 4){
                 saida = new ResponseEntity("Erro", 5, "Rota já esta lotada!", null);
                 throw new Exception("Erro");
             }
@@ -266,44 +268,137 @@ public class RotaResource {
         
         return new Gson().toJson(saida);
     }
+    
+    @PUT
+    @Path("/exitRote/{idRota}/{idUsuario}")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String exitRote(@PathParam("idRota")int idRota, @PathParam("idUsuario")int idUsuario, Endereco endereco)
+    {
+        ResponseEntity saida = null;
+        Rota rota = null;
+        Usuario usuario = null;
+        RotaJpaController rotaDAO = new RotaJpaController(getEntityManager());
+        UsuarioJpaController usuarioDAO = new UsuarioJpaController(getEntityManager());
+        
+        try
+        {
+
+            if(idRota <= 0){
+                saida = new ResponseEntity("Erro", 2, "Rota inválida!", null);
+                throw new Exception("Erro");
+            }        
+            if(idUsuario <= 0){
+                saida = new ResponseEntity("Erro", 3, "Usuário inválido!", null);
+                throw new Exception("Erro");
+            }
+            //validações referente a rota
+            rota = rotaDAO.findRota(idRota);
+            if(rota == null){
+                saida = new ResponseEntity("Erro", 4, "Rota não encontrada!", null);
+                throw new Exception("Erro");
+            }
+            else
+            {
+                //verifica se o usuário já se encontra na rota
+                Boolean ok = false;
+                for(Usuario u : rota.getUsuarios())
+                {
+                    if(u.getId() == idUsuario)
+                         ok = true;
+                }
+                if(!ok)
+                {
+                        saida = new ResponseEntity("Erro", 6, "O usuário não é participante desta rota", null);
+                        throw new Exception("Erro");
+                }
+                    
+            }
+
+            usuario = usuarioDAO.findUsuario(idUsuario);
+            if(usuario == null){
+                saida = new ResponseEntity("Erro", 7, "Usuario não encontrado!", null);
+                throw new Exception("Erro");
+            }
+            
+            if(endereco.getId() != 0)
+            {
+                saida = new ResponseEntity("Erro", 8, "Endereco inválido!", null);
+                throw new Exception("Erro");
+            }
+            if(saida == null){
+                rota.getUsuarios().remove(usuario);
+                rota.getEnderecos().remove(endereco);
+                //diminui 1 no passageiro existente
+                short aux = (short)(rota.getPassExistentes() - 1);
+                rota.setPassExistentes(aux);
+                //atualiza a rota
+                rotaDAO.edit(rota); 
+                saida = new ResponseEntity("Sucesso", 0, "Saiu da rota com sucesso!", null);
+            }        
+        }
+        catch(Exception ex){
+            if (!ex.getMessage().equals("Erro"))
+            {
+                System.out.println("ERRRO --> " + ex.getMessage());
+                saida = new ResponseEntity("Erro", 1, "Não foi possivel realizar operação, tente mais tarde!", null);
+            }
+        }
+        
+        return new Gson().toJson(saida);
+    }
  
     protected EntityManager getEntityManager() {
         return em;
     }
-    protected Boolean validaHora(List<Rota> rotasUsuario, String dt)
+    protected Boolean validaHora(List<Rota> rotasAdm, String dt)
     {
-        
-        //verifica se o usuario tem rota aberta e pega a data da rota para comparação
-        for(Rota r : rotasUsuario)
+        //se não for maior que zero significa que é a primeira rota
+        if (rotasAdm.size() > 0)
         {
-           
-           if(r.getFlagAberta() == true)
-           {
-               SimpleDateFormat format = new SimpleDateFormat ("dd/MM/yyyy HH:mm");
-               
-               try
-               {
-                   String dataFormatada = format.format(r.getDataRota());
-                   Date dataAgendamento = format.parse(dt);
-                   Date dataRota = format.parse(dataFormatada);
-                   long time1 = dataAgendamento.getTime();
-                   long time2 = dataRota.getTime();
-                   long diff =  time1 - time2 ;//em milesegundos
-                   int timeInSeconds = (int)diff/1000;
-                   //verifica se passou uma hora
-                   if(timeInSeconds < 3600)
-                   {
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            
+            for(Rota r : rotasAdm)
+            {
+                try
+                {
+                    //Horario que está tentando cadastrar a rota
+                    Date dataAgendamento = format.parse(dt);
+                    //Horario das rotas na base
+                    String aux = format.format(r.getDataRota());
+                    Date dataRota = format.parse(aux);
+                    
+                    //faz a diferença entre horarios 
+                    long diff = dataAgendamento.getTime() - dataRota.getTime();
+                    if(diff == 0)
                         return false;
-                   }
-               }
-               catch(Exception ex)
-               {
-
-               }
-               
-           }
-
+                    
+                    long seconds = diff/1000;
+                    //quando o horario do agendamento é posterior do horario de uma rota cadastrada
+                    if(seconds > 0 && seconds < 3600)
+                        return false;
+                    //quando o horario do agendamento é antes do horário de uma rota cadastrada
+                    if(seconds < 0)
+                    {
+                        
+                        if(seconds > -3600)
+                            return false;
+                        //agora compara com a data atual para fechar intervalo de uma hora
+                        long diffNow = dataAgendamento.getTime() - new Date().getTime(); 
+                        long nowInSeconds = diffNow/1000;
+                        if(nowInSeconds < 3600)
+                            return false;
+                        
+                    }
+                    
+                }
+                catch(Exception ex)
+                {
+                    System.out.println("ERRRO validaHora(): " + ex.getMessage());
+                }
+            }
         }
+     
         
         return true;
     }

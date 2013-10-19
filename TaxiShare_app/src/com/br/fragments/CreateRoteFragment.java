@@ -143,7 +143,7 @@ public class CreateRoteFragment extends Fragment {
 			//horario de saida
 			try
 			{
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				Calendar cal = Calendar.getInstance();
 				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), tpHorarioSaida.getCurrentHour(), tpHorarioSaida.getCurrentMinute());
 				Date data = cal.getTime();
