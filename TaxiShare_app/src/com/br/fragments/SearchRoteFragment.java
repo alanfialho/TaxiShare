@@ -200,8 +200,8 @@ public class SearchRoteFragment extends Fragment {
 								double destinoLongitude = dest.getLongitude();		
 
 								//Executa uma async task que ira no ws pegar a lista de rotas
-								RouteListTask task = new RouteListTask(origemLatitude, origemLongitude, destinoLatitude, destinoLongitude);
-								//FindAll task = new FindAll();
+								//RouteListTask task = new RouteListTask(origemLatitude, origemLongitude, destinoLatitude, destinoLongitude);
+								FindAll task = new FindAll();
 								task.execute();								
 							}
 						});
