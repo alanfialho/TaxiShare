@@ -2,11 +2,7 @@ package com.br.fragments;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -25,7 +21,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,13 +29,11 @@ import android.widget.EditText;
 import com.androidquery.AQuery;
 import com.br.activitys.R;
 import com.br.entidades.EnderecoApp;
-import com.br.entidades.LoginApp;
 import com.br.entidades.PerimetroApp;
 import com.br.entidades.RotaApp;
 import com.br.network.WSTaxiShare;
 import com.br.resources.MapUtils;
 import com.br.resources.Utils;
-import com.br.sessions.SessionManagement;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -56,7 +49,7 @@ public class SearchRoteFragment extends Fragment {
 	AQuery aQuery;
 	private MapView mapView;
 	private Bundle mBundle;
-	private Button btnBusca, btnLista, btnCriar, btnMinhasRotas;
+	private Button btnBusca;
 	private EditText txtEndereco1;
 	private EditText txtEndereco2;
 	public Context context;
@@ -200,8 +193,8 @@ public class SearchRoteFragment extends Fragment {
 								double destinoLongitude = dest.getLongitude();		
 
 								//Executa uma async task que ira no ws pegar a lista de rotas
-								//RouteListTask task = new RouteListTask(origemLatitude, origemLongitude, destinoLatitude, destinoLongitude);
-								FindAll task = new FindAll();
+								RouteListTask task = new RouteListTask(origemLatitude, origemLongitude, destinoLatitude, destinoLongitude);
+//								FindAll task = new FindAll();
 								task.execute();								
 							}
 						});
@@ -333,6 +326,7 @@ public class SearchRoteFragment extends Fragment {
 				if(jsonResposta.getInt("errorCode")==0 && rotas.size() > 0){
 					//Caso tenha retornado, passamos a lista para o proximo fragment
 					Bundle args = new Bundle();
+					args.putParcelable("destinoAddress", dest);
 					args.putParcelableArrayList("rotas",rotas);								
 					Utils.changeFragment(getFragmentManager(), new ListRoteFragment(), args);
 				}
@@ -450,8 +444,7 @@ public class SearchRoteFragment extends Fragment {
 	                location.getLongitude());
 	        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
 		            16));
-	    }
-	    
+	    }	    
 	}
 
 	private class FindAll extends AsyncTask<String, Void, String> {
@@ -461,7 +454,6 @@ public class SearchRoteFragment extends Fragment {
 
 		protected void onPreExecute() {
 			progress = Utils.setProgreesDialog(progress, context, "Criando Rota", "Aguarde...");
-			
 		}
 
 		@Override
@@ -505,10 +497,6 @@ public class SearchRoteFragment extends Fragment {
 			}
 		}
 	}
-
-
-
-
 }
 
 

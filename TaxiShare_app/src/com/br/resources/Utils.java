@@ -1,8 +1,6 @@
 package com.br.resources;
 
 import com.br.activitys.R;
-import com.br.fragments.ParticipateRoteFragment;
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;

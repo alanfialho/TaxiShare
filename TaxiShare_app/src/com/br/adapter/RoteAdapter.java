@@ -3,7 +3,6 @@ package com.br.adapter;
 import java.util.List;
 
 import com.br.activitys.R;
-import com.br.entidades.EnderecoApp;
 import com.br.entidades.RotaApp;
 
 import android.content.Context;
@@ -68,7 +67,6 @@ public class RoteAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-
 		
 		RotaApp r = rotas.get(posicao);
 		String origem = r.getEnderecos().get(0).getRua() + ", " + r.getEnderecos().get(0).getNumero() + " - " + r.getEnderecos().get(0).getBairro();
@@ -84,5 +82,4 @@ public class RoteAdapter extends BaseAdapter {
 
 		return convertView;
 	}
-
 }

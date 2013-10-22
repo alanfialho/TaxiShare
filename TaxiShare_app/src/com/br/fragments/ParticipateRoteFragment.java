@@ -38,9 +38,8 @@ public class ParticipateRoteFragment extends Fragment{
 	private SessionManagement session;
 	private Address destino;
 	private int id, rotaId;
-	MapUtils mapUtils;
-	
-	
+	MapUtils mapUtils;	
+
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.rote_details, container, false);
 		context = getActivity();
@@ -49,15 +48,12 @@ public class ParticipateRoteFragment extends Fragment{
 		} catch (GooglePlayServicesNotAvailableException e) {
 			Utils.logException("ParticipateRoteFragment", "onCreateView", "", e);
 		}
-		
+
 		mapUtils = new MapUtils(context, googleMap);
 		setAtributes(rootView);
 		setBtnAction();
 		//setMarcadores(rotaDetalhe);
-		
-		
-		
-		
+
 		return rootView;	
 	}
 
@@ -76,7 +72,7 @@ public class ParticipateRoteFragment extends Fragment{
 		Bundle args = getArguments();
 		rota = args.getParcelable("rota");
 		destino = args.getParcelable("destinoAddress");
-		
+
 		try{
 			DetalhesRotaTask task = new DetalhesRotaTask();
 			task.execute();
@@ -84,35 +80,34 @@ public class ParticipateRoteFragment extends Fragment{
 		catch (Exception e) {
 			Utils.logException("ParticipateRoteFragment", "onCreateView", "", e);
 		}
-		
+
 		lblOrigem = (TextView) rootView.findViewById(R.id.rote_details_lbl_origem_info);
 		lblDestino = (TextView) rootView.findViewById(R.id.rote_details_lbl_destino_info);
 		lblPassageiros = (TextView) rootView.findViewById(R.id.rote_details_lbl_passageiros_info);
 		lblAdm = (TextView) rootView.findViewById(R.id.rote_details_lbl_adm_nome);
 		lblHora = (TextView) rootView.findViewById(R.id.rote_details_lbl_hora_info);
 		btnParticipa = (Button) rootView.findViewById(R.id.rote_details_btn_participar);
-		
+
 		lblOrigem.setText(rota.getEnderecos().get(0).getRua() + ", " + rota.getEnderecos().get(0).getNumero() + " - " + rota.getEnderecos().get(0).getCidade());
 		lblDestino.setText(rota.getEnderecos().get(1).getRua() + ", " + rota.getEnderecos().get(1).getNumero() + " - " + rota.getEnderecos().get(1).getCidade());
 		int passageiro =  4 - rota.getPassExistentes();
 		lblPassageiros.setText(passageiro + "");
 		lblHora.setText(rota.getDataRota().toString());
-
 	}
-	
+
 	//Seta os marcadores no mapa
 	public void setMarcadores(RotaApp r){
 		int participantes = r.getUsuarios().size();
 		double[] latitudes = new double[participantes + 1];
 		double[] longitudes = new double[participantes + 1];
-		
+
 		//seta o marcador do ADM e da Zoom
 		latitudes[0] = Double.parseDouble(r.getEnderecos().get(1).getLatitude());
 		longitudes[0] = Double.parseDouble(r.getEnderecos().get(1).getLongitude());
 		String adm = r.getAdministrador().getLogin();
 		String end = r.getEnderecos().get(1).getRua();
 		mapUtils.setMarker(latitudes[0], longitudes[0], adm, end, true);
-		
+
 		if (participantes > 0){
 			//Interao numero de participantes na rota e seta marcadores para cada um deles.
 			for (int i = 1; i <= participantes; i++){
@@ -123,7 +118,6 @@ public class ParticipateRoteFragment extends Fragment{
 				mapUtils.setMarker(latitudes[i], longitudes[i], titulo, rua, false);
 			}
 		}
-		
 	}
 
 	public void setBtnAction(){
@@ -139,7 +133,6 @@ public class ParticipateRoteFragment extends Fragment{
 				}
 			}});
 	}
-
 
 	private class ParticipaRotaTask extends AsyncTask<String, Void, String> {
 		ProgressDialog progress;
@@ -161,12 +154,9 @@ public class ParticipateRoteFragment extends Fragment{
 				WSTaxiShare ws = new WSTaxiShare();
 				response = ws.participarRota(rotaId, id, endereco);
 
-				
-
 			} catch (Exception e) {
 				Utils.logException("ParticipateRoteFragment", "FillList", "onPostExecute", e);
 				response = "{errorCode:1, descricao:Erro ao participar rota!}";
-
 			}
 			return response;
 		}
@@ -179,11 +169,10 @@ public class ParticipateRoteFragment extends Fragment{
 			progress.dismiss();
 		}		
 	}
-	
+
 
 	private class DetalhesRotaTask extends AsyncTask<String, Void, String> {
 		ProgressDialog progress;
-
 
 		protected void onPreExecute() {
 			progress = Utils.setProgreesDialog(progress, context, "Carregando", "Aguarde...");
@@ -191,7 +180,7 @@ public class ParticipateRoteFragment extends Fragment{
 
 		@Override
 		protected String doInBackground(String... urls) {
-			
+
 			rotaId = rota.getId();
 			String response = "";
 
@@ -200,8 +189,6 @@ public class ParticipateRoteFragment extends Fragment{
 				rotaDetalhe = ws.detailRota(rotaId);
 				response = "{errorCode:0, descricao:Sucesso}";
 				
-				
-
 			} catch (Exception e) {
 				Utils.logException("ParticipateRoteFragment", "FillList", "onPostExecute", e);
 				response = "{errorCode:1, descricao:Erro pegar detalhes rota!}";
@@ -212,12 +199,10 @@ public class ParticipateRoteFragment extends Fragment{
 
 		@Override
 		protected void onPostExecute(String response) {
-			
 			progress.dismiss();
 		}		
 	}
-	
-	
+
 	public EnderecoApp criaEnderecoDestino(Address address){
 		EnderecoApp endereco = new EnderecoApp();
 
@@ -234,10 +219,8 @@ public class ParticipateRoteFragment extends Fragment{
 		endereco.setTipo('D');
 
 		return endereco;
-
-
 	}
-	
+
 
 	@Override
 	public void onResume() {

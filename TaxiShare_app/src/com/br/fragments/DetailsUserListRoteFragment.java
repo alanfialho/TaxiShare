@@ -48,16 +48,10 @@ public class DetailsUserListRoteFragment extends Fragment{
 		mapUtils = new MapUtils(context, googleMap);
 		setAtributes(rootView);
 		
-		
-		
-		
-		
 		return rootView;	
 	}
 	
 	public void setAtributes(View rootView){
-
-
 		mapView = (MapView) rootView.findViewById(R.id.rote_users_details_map);
 		mapView.onCreate(mBundle);
 
@@ -90,10 +84,6 @@ public class DetailsUserListRoteFragment extends Fragment{
 		int passageiro =  4 - rota.getPassExistentes();
 		lblPassageiros.setText(passageiro + "");
 		lblHora.setText(rota.getDataRota().toString());
-		
-		
-		
-
 	}
 
 	public void setMarcadores(){
@@ -125,7 +115,6 @@ public class DetailsUserListRoteFragment extends Fragment{
 	private class DetalhesRotaTask extends AsyncTask<String, Void, String> {
 		ProgressDialog progress;
 
-
 		protected void onPreExecute() {
 			progress = Utils.setProgreesDialog(progress, context, "Carregando", "Aguarde...");
 		}
@@ -141,8 +130,6 @@ public class DetailsUserListRoteFragment extends Fragment{
 				rotaDetalhe = ws.detailRota(rotaId);
 				response = "{errorCode:0, descricao:Sucesso}";
 				
-				
-
 			} catch (Exception e) {
 				Utils.logException("DetailsUserListRoteFragment", "FillList", "onPostExecute", e);
 				response = "{errorCode:1, descricao:Erro pegar detalhes rota!}";
@@ -153,7 +140,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 		@Override
 		protected void onPostExecute(String response) {
-			setMarcadores();
+//			setMarcadores();
 			progress.dismiss();
 		}		
 	}
@@ -182,7 +169,6 @@ public class DetailsUserListRoteFragment extends Fragment{
 		//Move a camera do mapa para a minha localização de acordo com o objeto LatLng gerado
 		googleMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
 		googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-
 	}
 
 	@Override
@@ -203,6 +189,3 @@ public class DetailsUserListRoteFragment extends Fragment{
 		super.onDestroy();
 	}
 }
-
-	
-

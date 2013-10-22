@@ -152,6 +152,7 @@ public class LoginResource {
                 usuario.setRotasAdm(Utils.solveRecursion(usuario.getRotasAdm()));
                 saida = new ResponseEntity("Sucesso", 0, "Usuario encontrada!", usuario);
             }
+            //teste
             else
                 saida = new ResponseEntity("Sucesso", 2, "Usuario não encontrado!", null);
         }
