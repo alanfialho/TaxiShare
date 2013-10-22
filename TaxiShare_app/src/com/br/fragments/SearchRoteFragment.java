@@ -1,10 +1,16 @@
 package com.br.fragments;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
@@ -19,6 +25,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +34,13 @@ import android.widget.EditText;
 import com.androidquery.AQuery;
 import com.br.activitys.R;
 import com.br.entidades.EnderecoApp;
+import com.br.entidades.LoginApp;
 import com.br.entidades.PerimetroApp;
 import com.br.entidades.RotaApp;
 import com.br.network.WSTaxiShare;
 import com.br.resources.MapUtils;
 import com.br.resources.Utils;
+import com.br.sessions.SessionManagement;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -192,6 +201,7 @@ public class SearchRoteFragment extends Fragment {
 
 								//Executa uma async task que ira no ws pegar a lista de rotas
 								RouteListTask task = new RouteListTask(origemLatitude, origemLongitude, destinoLatitude, destinoLongitude);
+								//FindAll task = new FindAll();
 								task.execute();								
 							}
 						});
@@ -444,7 +454,57 @@ public class SearchRoteFragment extends Fragment {
 	    
 	}
 
+	private class FindAll extends AsyncTask<String, Void, String> {
 
+		ProgressDialog progress;
+		List<RotaApp> listaRota;
+
+		protected void onPreExecute() {
+			progress = Utils.setProgreesDialog(progress, context, "Criando Rota", "Aguarde...");
+			
+		}
+
+		@Override
+		protected String doInBackground(String... urls) {
+			String response = "";
+			try
+			{
+				WSTaxiShare ws = new WSTaxiShare();
+				listaRota = ws.getRotas();
+				response = "{errorCode:0, descricao:Sucesso}";
+			}
+			catch(Exception e)
+			{
+				Utils.gerarToast(context, "Erro ao criar rota!");
+				Utils.logException("CreateRoteFragment", "CreateRoteTask", "doInBackground", e);
+			}	
+
+			return response;
+		}
+
+		@Override
+		protected void onPostExecute(String response) {
+			progress.dismiss();
+
+			try {
+				JSONObject json = new JSONObject(response);
+				if(json.getInt("errorCode") == 0){
+
+					//Passando a rota selecionada para tela de detalhes.
+					Bundle args = new Bundle();
+					args.putSerializable("rotas", (Serializable) listaRota);
+					args.putParcelable("destinoAddress", dest);
+					Utils.changeFragment(getFragmentManager(), new ListRoteFragment(), args);
+				}
+
+				Utils.gerarToast(context, json.getString("descricao"));				
+
+			} catch (JSONException e) {
+				Utils.logException("SearchRoteFragment", "FindAll", "onPostExecute", e);
+				response = "{errorCode:1, descricao:Erro ao carregar rotas!}";
+			}
+		}
+	}
 
 
 

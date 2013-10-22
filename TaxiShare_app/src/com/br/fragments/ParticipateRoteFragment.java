@@ -5,6 +5,7 @@ import java.util.HashMap;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ public class ParticipateRoteFragment extends Fragment{
 	private Context context;
 	private RotaApp rota, rotaDetalhe;
 	private SessionManagement session;
+	private Address destino;
 	private int id, rotaId;
 	MapUtils mapUtils;
 	
@@ -51,7 +53,7 @@ public class ParticipateRoteFragment extends Fragment{
 		mapUtils = new MapUtils(context, googleMap);
 		setAtributes(rootView);
 		setBtnAction();
-		setMarcadores(rotaDetalhe);
+		//setMarcadores(rotaDetalhe);
 		
 		
 		
@@ -73,6 +75,7 @@ public class ParticipateRoteFragment extends Fragment{
 		}
 		Bundle args = getArguments();
 		rota = args.getParcelable("rota");
+		destino = args.getParcelable("destinoAddress");
 		
 		try{
 			DetalhesRotaTask task = new DetalhesRotaTask();
@@ -128,7 +131,7 @@ public class ParticipateRoteFragment extends Fragment{
 			public void onClick(View view) {
 				//Utils.gerarToast(context, "teste");
 				try{
-					PartcipaRotaTask task = new PartcipaRotaTask();
+					ParticipaRotaTask task = new ParticipaRotaTask();
 					task.execute();
 				}
 				catch (Exception e) {
@@ -138,7 +141,7 @@ public class ParticipateRoteFragment extends Fragment{
 	}
 
 
-	private class PartcipaRotaTask extends AsyncTask<String, Void, String> {
+	private class ParticipaRotaTask extends AsyncTask<String, Void, String> {
 		ProgressDialog progress;
 
 
@@ -149,7 +152,7 @@ public class ParticipateRoteFragment extends Fragment{
 		@Override
 		protected String doInBackground(String... urls) {
 			HashMap<String, String> user = session.getUserDetails();
-			EnderecoApp endereco = rota.getEnderecos().get(1);
+			EnderecoApp endereco = criaEnderecoDestino(destino);
 			id = Integer.parseInt(user.get(SessionManagement.KEY_PESSOAID));
 			rotaId = rota.getId();
 			String response = "";
@@ -210,6 +213,27 @@ public class ParticipateRoteFragment extends Fragment{
 			
 			progress.dismiss();
 		}		
+	}
+	
+	
+	public EnderecoApp criaEnderecoDestino(Address address){
+		EnderecoApp endereco = new EnderecoApp();
+
+		endereco.setRua(address.getThoroughfare());
+		endereco.setNumero(Integer.parseInt(address.getSubThoroughfare()));
+		endereco.setBairro(address.getSubLocality());
+		endereco.setCidade(address.getLocality());
+		endereco.setEstado(address.getAdminArea());
+		endereco.setPais(address.getCountryName());
+		endereco.setLatitude(Double.toString(address.getLatitude()));
+		endereco.setLongitude(Double.toString(address.getLongitude()));
+		endereco.setUf("SP");
+		endereco.setCep(address.getPostalCode());
+		endereco.setTipo('D');
+
+		return endereco;
+
+
 	}
 	
 

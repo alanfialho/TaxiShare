@@ -48,7 +48,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 		mapUtils = new MapUtils(context, googleMap);
 		setAtributes(rootView);
 		
-		setMarcadores();
+		
 		
 		
 		
@@ -106,16 +106,16 @@ public class DetailsUserListRoteFragment extends Fragment{
 		latitudes[0] = Double.parseDouble(rotaDetalhe.getEnderecos().get(1).getLatitude());
 		longitudes[0] = Double.parseDouble(rotaDetalhe.getEnderecos().get(1).getLongitude());
 		String adm = rotaDetalhe.getAdministrador().getLogin();
-		String end = rotaDetalhe.getEnderecos().get(1).getRua();
+		String end = rotaDetalhe.getEnderecos().get(1).getRua() + ", " + rotaDetalhe.getEnderecos().get(1).getNumero() + " - " + rotaDetalhe.getEnderecos().get(1).getBairro();
 		setMarker(latitudes[0], longitudes[0], adm, end, true);
 
 		if (participantes > 0){
 			//Interao numero de participantes na rota e seta marcadores para cada um deles.
 			for (int i = 1; i <= participantes; i++){
-				latitudes[i] = Double.parseDouble(rotaDetalhe.getEnderecos().get(i + 2).getLatitude());
-				longitudes[i] = Double.parseDouble(rotaDetalhe.getEnderecos().get(i + 2).getLongitude());
+				latitudes[i] = Double.parseDouble(rotaDetalhe.getEnderecos().get(i + 1).getLatitude());
+				longitudes[i] = Double.parseDouble(rotaDetalhe.getEnderecos().get(i + 1).getLongitude());
 				String titulo = rotaDetalhe.getUsuarios().get(i - 1).getLogin();
-				String rua = rotaDetalhe.getEnderecos().get(i + 2).getRua() + ", " + rotaDetalhe.getEnderecos().get(i + 2).getNumero() + " - " + rotaDetalhe.getEnderecos().get(i + 2).getBairro();
+				String rua = rotaDetalhe.getEnderecos().get(i + 1).getRua() + ", " + rotaDetalhe.getEnderecos().get(i + 1).getNumero() + " - " + rotaDetalhe.getEnderecos().get(i + 1).getBairro();
 				setMarker(latitudes[i], longitudes[i], titulo, rua, false);
 			}
 		}
@@ -153,7 +153,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 		@Override
 		protected void onPostExecute(String response) {
-			
+			setMarcadores();
 			progress.dismiss();
 		}		
 	}
@@ -165,6 +165,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 		.position(new LatLng(latitude, longitude))
 		.title(title)
 		.snippet(snippet));
+		mark.showInfoWindow();
 
 		if(zoom)
 			setaZoom(latitude, longitude);

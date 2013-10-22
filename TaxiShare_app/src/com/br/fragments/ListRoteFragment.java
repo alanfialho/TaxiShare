@@ -39,7 +39,8 @@ public class ListRoteFragment extends Fragment {
 		rootView = inflater.inflate(R.layout.rote_list, container, false);
 		context = getActivity();
 		Bundle args = getArguments();
-		ArrayList<RotaApp> rotas = args.getParcelable("rotas");
+		List<RotaApp> rotas = (List<RotaApp>) args.getSerializable("rotas");
+		destination = args.getParcelable("destinoAddress");
 		
 
 		fillSearchList(rotas);	
@@ -61,7 +62,8 @@ public class ListRoteFragment extends Fragment {
 				
 				//Passando a rota selecionada para tela de detalhes.			
 				Bundle args = new Bundle();
-				args.putParcelable("rota", rotinha);				
+				args.putParcelable("rota", rotinha);
+				args.putParcelable("destinoAddress", destination);
 				Utils.changeFragment(getFragmentManager(), new ParticipateRoteFragment(), args);				
 			}			
 		});
