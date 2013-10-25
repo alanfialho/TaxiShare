@@ -4,12 +4,13 @@
     <string name="app_name">TaxiShare</string>
     <string name="action_settings">Opcoes</string>
     <string name="hello_world">Hello world!</string>
-     <string name="drawer_open">Abrir Menu</string>
+    <string name="drawer_open">Abrir Menu</string>
     <string name="drawer_close">Fechar Menu</string>
     <string name="action_websearch">Web search</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     <string name="googleMapsAPIKeyRelease">AIzaSyCC2dxz8w56-xpEclrSf7UUf42kaaqWeA8</string>
     <string name="googleMapsAPIKeyDebug">AIzaSyCC2dxz8w56-xpEclrSf7UUf42kaaqWeA8</string>
+
     <string-array name="menu_options">
         <item>Buscar Rota</item>
         <item>Editar Perfil</item>
@@ -17,11 +18,10 @@
         <item>Minhas Rotas</item>
         <item>Logout</item>
     </string-array>
-     <string-array name="enderecos">
+    <string-array name="enderecos">
         <item>Rua cervinho, 191</item>
         <item>Rua Cague, 666</item>
         <item>Rua fodase, 69</item>
-       
     </string-array>
     <string-array name="numero_pessoas">
         <item>1</item>
@@ -29,5 +29,7 @@
         <item>3</item>
         <item>4</item>
     </string-array>
+
+    <string name="title_activity_intro">IntroActivity</string>
 
 </resources>

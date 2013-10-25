@@ -185,7 +185,7 @@ public class CreateRoteFragment extends Fragment {
 					//Passando a rota selecionada para tela de detalhes.
 					Bundle args = new Bundle();
 					args.putParcelable("rota", rotaApp);
-					Utils.changeFragment(getFragmentManager(), new DetailsUserListRoteFragment(), args);
+					Utils.changeFragment(getFragmentManager(), new UserListRoteFragment(), args);
 				}
 
 				Utils.gerarToast(context, json.getString("descricao"));				

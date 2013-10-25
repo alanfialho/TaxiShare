@@ -62,7 +62,7 @@ public class SearchRoteFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.teste_mapa, container, false);
+		View rootView = inflater.inflate(R.layout.rote_search, container, false);
 		context = getActivity();
 
 		try {

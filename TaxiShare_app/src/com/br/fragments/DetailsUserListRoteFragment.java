@@ -124,6 +124,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 		latitudes[0] = Double.parseDouble(rotaDetalhe.getEnderecos().get(1).getLatitude());
 		longitudes[0] = Double.parseDouble(rotaDetalhe.getEnderecos().get(1).getLongitude());
 		String adm = rotaDetalhe.getAdministrador().getLogin();
+		lblAdm.setText(adm);
 		logins.add(adm);
 		//Aqui codigo que recupe telefone do ADM
 		telefones.add("123456789");

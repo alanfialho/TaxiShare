@@ -21,7 +21,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="16dp"
             android:ems="10"
-            android:hint="Digite end. com número" >
+            android:hint="Digite end. com número" 
+            android:singleLine="true">
 
             <requestFocus />
         </EditText>
@@ -34,7 +35,8 @@
             android:layout_below="@+id/teste_mapa_txt_origem"
             android:layout_marginTop="15dp"
             android:ems="10"
-            android:hint="Digite end. com número" />
+            android:hint="Digite end. com número" 
+            android:singleLine="true"/>
 
         <Button
             android:id="@+id/teste_mapa_btn_buscar"
