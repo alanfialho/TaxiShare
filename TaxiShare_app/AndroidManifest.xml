@@ -131,7 +131,8 @@
         </activity>
         <activity
             android:name="com.br.activitys.LoginActivity"
-            android:configChanges="keyboardHidden|orientation"
+            
+            android:windowSoftInputMode="adjustResize|adjustPan"
             android:label="TaxiShare"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
