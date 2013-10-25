@@ -1,7 +1,11 @@
 package com.br.fragments;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.br.activitys.R;
 import com.br.entidades.RotaApp;
+
 
 import com.br.network.WSTaxiShare;
 import com.br.resources.MapUtils;
@@ -15,9 +19,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,13 +38,16 @@ public class DetailsUserListRoteFragment extends Fragment{
 	private GoogleMap googleMap;
 	private MapView mapView;
 	private Bundle mBundle;
-	private Button btnSairRota;
+	private Button btnSairRota, btnSms, btnLigar;
 	private TextView lblOrigem, lblDestino, lblPassageiros, lblAdm, lblHora;
 	private Context context;
 	private RotaApp rota, rotaDetalhe;
 	private MapUtils mapUtils;
 	private int rotaId;
-	
+	private List<String> logins, telefones;
+	private int selecionado;
+
+
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.rote_users_details, container, false);
 		context = getActivity();
@@ -47,10 +58,11 @@ public class DetailsUserListRoteFragment extends Fragment{
 		}
 		mapUtils = new MapUtils(context, googleMap);
 		setAtributes(rootView);
-		
+		setBtnAction();
+
 		return rootView;	
 	}
-	
+
 	public void setAtributes(View rootView){
 		mapView = (MapView) rootView.findViewById(R.id.rote_users_details_map);
 		mapView.onCreate(mBundle);
@@ -63,7 +75,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 		}
 		Bundle args = getArguments();
 		rota = args.getParcelable("rota");
-		
+
 		try{
 			DetalhesRotaTask task = new DetalhesRotaTask();
 			task.execute();
@@ -71,14 +83,16 @@ public class DetailsUserListRoteFragment extends Fragment{
 		catch (Exception e) {
 			Utils.logException("DetailsUserListRoteFragment", "onCreateView", "", e);
 		}
-		
+
 		lblOrigem = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_origem_info);
 		lblDestino = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_destino_info);
 		lblPassageiros = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_passageiros_info);
 		lblAdm = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_adm_nome);
 		lblHora = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_hora_info);
 		btnSairRota = (Button) rootView.findViewById(R.id.rote_users_details_btn_sair);
-		
+		btnSms = (Button) rootView.findViewById(R.id.rote_users_details_btn_sms);
+		btnLigar = (Button) rootView.findViewById(R.id.rote_users_details_btn_ligar);
+
 		lblOrigem.setText(rota.getEnderecos().get(0).getRua() + ", " + rota.getEnderecos().get(0).getNumero() + " - " + rota.getEnderecos().get(0).getCidade());
 		lblDestino.setText(rota.getEnderecos().get(1).getRua() + ", " + rota.getEnderecos().get(1).getNumero() + " - " + rota.getEnderecos().get(1).getCidade());
 		int passageiro =  4 - rota.getPassExistentes();
@@ -86,8 +100,22 @@ public class DetailsUserListRoteFragment extends Fragment{
 		lblHora.setText(rota.getDataRota().toString());
 	}
 
+	public void setBtnAction(){
+		btnSms.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				popupSms();
+			}});
+		btnLigar.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				popupLigar();
+			}});
+
+	}
+
 	public void setMarcadores(){
 		int participantes = 0;
+		logins = new ArrayList();
+		telefones = new ArrayList();
 		participantes += rotaDetalhe.getUsuarios().size();
 		double[] latitudes = new double[participantes + 1];
 		double[] longitudes = new double[participantes + 1];
@@ -96,6 +124,9 @@ public class DetailsUserListRoteFragment extends Fragment{
 		latitudes[0] = Double.parseDouble(rotaDetalhe.getEnderecos().get(1).getLatitude());
 		longitudes[0] = Double.parseDouble(rotaDetalhe.getEnderecos().get(1).getLongitude());
 		String adm = rotaDetalhe.getAdministrador().getLogin();
+		logins.add(adm);
+		//Aqui codigo que recupe telefone do ADM
+		telefones.add("123456789");
 		String end = rotaDetalhe.getEnderecos().get(1).getRua() + ", " + rotaDetalhe.getEnderecos().get(1).getNumero() + " - " + rotaDetalhe.getEnderecos().get(1).getBairro();
 		setMarker(latitudes[0], longitudes[0], adm, end, true);
 
@@ -105,13 +136,16 @@ public class DetailsUserListRoteFragment extends Fragment{
 				latitudes[i] = Double.parseDouble(rotaDetalhe.getEnderecos().get(i + 1).getLatitude());
 				longitudes[i] = Double.parseDouble(rotaDetalhe.getEnderecos().get(i + 1).getLongitude());
 				String titulo = rotaDetalhe.getUsuarios().get(i - 1).getLogin();
+				logins.add(titulo);
+				//Aqui codigo que recupera telefone do participante
+				telefones.add("000000" + i);
 				String rua = rotaDetalhe.getEnderecos().get(i + 1).getRua() + ", " + rotaDetalhe.getEnderecos().get(i + 1).getNumero() + " - " + rotaDetalhe.getEnderecos().get(i + 1).getBairro();
 				setMarker(latitudes[i], longitudes[i], titulo, rua, false);
 			}
 		}
 	}
 
-	
+
 	private class DetalhesRotaTask extends AsyncTask<String, Void, String> {
 		ProgressDialog progress;
 
@@ -121,7 +155,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 		@Override
 		protected String doInBackground(String... urls) {
-			
+
 			rotaId = rota.getId();
 			String response = "";
 
@@ -129,7 +163,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 				WSTaxiShare ws = new WSTaxiShare();
 				rotaDetalhe = ws.detailRota(rotaId);
 				response = "{errorCode:0, descricao:Sucesso}";
-				
+
 			} catch (Exception e) {
 				Utils.logException("DetailsUserListRoteFragment", "FillList", "onPostExecute", e);
 				response = "{errorCode:1, descricao:Erro pegar detalhes rota!}";
@@ -140,12 +174,12 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 		@Override
 		protected void onPostExecute(String response) {
-//			setMarcadores();
+			setMarcadores();
 			progress.dismiss();
 		}		
 	}
-	
-	
+
+
 	public Marker setMarker(double latitude, double longitude, String title, String snippet, boolean zoom) {
 		//		googleMap.addMarker(new MarkerOptions().position(new LatLng(-23.489839, -46.410520)).title("Marker"));
 		Marker mark = googleMap.addMarker(new MarkerOptions()
@@ -159,7 +193,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 		return mark;
 	}
-	
+
 	private void setaZoom(double latitude, double longitude){
 		//Location myLocation = googleMap.getMyLocation();
 		LatLng myLatLng = new LatLng(latitude, longitude);
@@ -170,6 +204,129 @@ public class DetailsUserListRoteFragment extends Fragment{
 		googleMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
 		googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 	}
+
+	private void popupSms(){
+		final ArrayList mSelectedItems = new ArrayList();  // Where we track the selected items
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		final CharSequence[] items = logins.toArray(new CharSequence[logins.size()]); 
+
+		// Set the dialog title
+		builder.setTitle("Mandar SMS para...")
+		// Specify the list array, the items to be selected by default (null for none),
+		// and the listener through which to receive callbacks when items are selected
+		.setMultiChoiceItems(items, null,
+				new DialogInterface.OnMultiChoiceClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which,
+					boolean isChecked) {
+				if (isChecked) {
+					// If the user checked the item, add it to the selected items
+					mSelectedItems.add(which);
+				} else if (mSelectedItems.contains(which)) {
+					// Else, if the item is already in the array, remove it 
+					mSelectedItems.remove(Integer.valueOf(which));
+				}
+			}
+		})
+		// Set the action buttons
+		.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				// User clicked OK, so save the mSelectedItems results somewhere
+				// or return them to the component that opened the dialog
+				enviaSms(mSelectedItems);
+			}
+		})
+		.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
+		});
+
+		AlertDialog alertDialog = builder.create();
+
+		// show it
+		alertDialog.show();
+	}
+
+	private void popupLigar(){
+		final CharSequence[] items = logins.toArray(new CharSequence[logins.size()]);
+
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setTitle("Ligar para...");
+		builder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				selecionado = which;
+			}
+		});
+		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				efetuarLigacao(selecionado);
+			}
+		});
+		builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
+		});
+		AlertDialog alertDialog = builder.create();
+
+		// show it
+		alertDialog.show();
+	}
+
+	private void enviaSms(ArrayList c){
+		String separator = "; ";
+		if(android.os.Build.MANUFACTURER.equalsIgnoreCase("samsung")){
+			separator = ", ";
+		}
+		String tels = "";
+
+		for (int i = 0; i < c.size(); i++){
+			for (int j = 0; j < logins.size(); j++){
+				if(Integer.parseInt(c.get(i).toString()) == j){
+					if(tels.isEmpty()){
+						tels += telefones.get(j);
+					}
+					else{
+						tels += separator + telefones.get(j);
+					}
+
+				}
+			}
+		}
+
+		Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+
+		smsIntent.putExtra("sms_body", "");
+		smsIntent.putExtra("address", tels);
+		smsIntent.setType("vnd.android-dir/mms-sms");
+
+		startActivity(smsIntent);
+
+	}
+
+	private void efetuarLigacao(int l){
+		String tel = "";
+		for (int i = 0; i < logins.size(); i++){
+			if (i == l){
+				tel = telefones.get(i);
+			}
+		}
+
+		String phoneCallUri = "tel:" + tel;
+		Intent phoneCallIntent = new Intent(Intent.ACTION_CALL);
+		phoneCallIntent.setData(Uri.parse(phoneCallUri));
+		startActivity(phoneCallIntent);
+	}
+
+
+
 
 	@Override
 	public void onResume() {

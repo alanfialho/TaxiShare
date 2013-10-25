@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rote_list_lay_item_info"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -11,7 +11,18 @@
     <ListView
         android:id="@+id/rote_list_list_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" >
+
     </ListView>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/rote_list_btn_criar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentLeft="false"
+        android:layout_below="@id/rote_list_list_view"
+        android:text="Criar Rota" />
+
+</RelativeLayout>

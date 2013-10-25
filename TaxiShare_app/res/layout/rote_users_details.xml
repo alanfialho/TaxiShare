@@ -122,6 +122,25 @@
             android:text="Small Text"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
+        <Button
+            android:id="@+id/rote_users_details_btn_ligar"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/rote_users_details_btn_sair"
+            android:layout_alignBottom="@+id/rote_users_details_btn_sair"
+            android:layout_toRightOf="@+id/rote_users_details_btn_sair"
+            android:background="@drawable/icon_telefonar" />
+
+        <Button
+            android:id="@+id/rote_users_details_btn_sms"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/rote_users_details_btn_sair"
+            android:layout_toLeftOf="@+id/rote_users_details_btn_sair"
+            android:background="@drawable/icon_sms" />
+
     </RelativeLayout>
 
 </FrameLayout>
