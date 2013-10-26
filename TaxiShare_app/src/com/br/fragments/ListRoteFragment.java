@@ -1,6 +1,5 @@
 package com.br.fragments;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Fragment;

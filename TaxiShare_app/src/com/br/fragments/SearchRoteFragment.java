@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
 import com.androidquery.AQuery;
 import com.br.activitys.R;
 import com.br.entidades.EnderecoApp;
@@ -142,93 +143,108 @@ public class SearchRoteFragment extends Fragment {
 				//pega o texto dos campos
 				String origem = txtEndereco1.getText().toString();
 				String destino = txtEndereco2.getText().toString();
+				
+				boolean origemNumberTest = origem.matches(".*\\d.*") ;
+				boolean destinoNumberTest = destino.matches(".*\\d.*") ;
+				
+				if(!origemNumberTest){
+					txtEndereco1.setError("Informe o endereço com número");
+				}
+				if(!destinoNumberTest){
+					txtEndereco2.setError("Informe o endereço com número");
+				}
+				
+				if(origemNumberTest && destinoNumberTest){
+					try {
+						//recebe uma lista de endereços com objetos ADDRESS
+						origemLista = getListaDeEnderecos(origem);
+						destinoLista = getListaDeEnderecos(destino);
 
-				try {
-					//recebe uma lista de endereços com objetos ADDRESS
-					origemLista = getListaDeEnderecos(origem);
-					destinoLista = getListaDeEnderecos(destino);
+						//Converte para uma lista de strings formatadas
+						final CharSequence[] enderecosOrigem = getListaConvertida(origemLista);
+						final CharSequence[] enderecosDestino = getListaConvertida(destinoLista);
 
-					//Converte para uma lista de strings formatadas
-					final CharSequence[] enderecosOrigem = getListaConvertida(origemLista);
-					final CharSequence[] enderecosDestino = getListaConvertida(destinoLista);
+						//Checa se houve retorno para os dois endereços
+						if(enderecosOrigem.length > 0 && enderecosDestino.length >0){
+							//Cria os 2 popUps
+							AlertDialog.Builder popupOrigem = new AlertDialog.Builder(context);
+							final AlertDialog.Builder popupDestino = new AlertDialog.Builder(context);
 
-					//Checa se houve retorno para os dois endereços
-					if(enderecosOrigem.length > 0 && enderecosDestino.length >0){
-						//Cria os 2 popUps
-						AlertDialog.Builder popupOrigem = new AlertDialog.Builder(context);
-						final AlertDialog.Builder popupDestino = new AlertDialog.Builder(context);
+							//Seta os titulos
+							popupOrigem.setTitle("Selecione Origem");
+							popupDestino.setTitle("Selecione Destino");
 
-						//Seta os titulos
-						popupOrigem.setTitle("Selecione Origem");
-						popupDestino.setTitle("Selecione Destino");
+							//Define os itens da lista e coloca ação no click da origem
+							popupOrigem.setItems(enderecosOrigem, new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									//Define o objeto origem de acordo com a escolha na lista
+									ori = origemLista.get(which);
+									//Passa a bola para janela de escolha do destino
+									popupDestino.show();
+								}	
+							});					
 
-						//Define os itens da lista e coloca ação no click da origem
-						popupOrigem.setItems(enderecosOrigem, new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								//Define o objeto origem de acordo com a escolha na lista
-								ori = origemLista.get(which);
-								//Passa a bola para janela de escolha do destino
-								popupDestino.show();
-							}	
-						});					
+							//Define os itens da lista e coloca ação no click do destino
+							popupDestino.setItems(enderecosDestino, new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
 
-						//Define os itens da lista e coloca ação no click do destino
-						popupDestino.setItems(enderecosDestino, new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
+									//Define o objeto destino de acordo com a escolha na lista
+									dest = destinoLista.get(which);
 
-								//Define o objeto destino de acordo com a escolha na lista
-								dest = destinoLista.get(which);
+									String enderecoOrigem = ori.getThoroughfare();
+									String numeroOrigem = ori.getSubThoroughfare() != null ? ori.getSubThoroughfare() : "" ;
+									String cidadeOrigem = ori.getLocality() != null ? ori.getLocality() : "" ;
 
-								//Agora definimos as longitudes e latitudes da origem e destino
-								String textoOrigem = ori.getThoroughfare() + ", " + ori.getSubThoroughfare() + " - " + ori.getSubLocality();
-								String textoDestino = dest.getThoroughfare() + ", " + dest.getSubThoroughfare() + " - " + dest.getSubLocality();
-								txtEndereco1.setText(textoOrigem);
-								txtEndereco2.setText(textoDestino);
-								double origemLatitude = ori.getLatitude();
-								double origemLongitude = ori.getLongitude();
+									String enderecoDestino = dest.getThoroughfare();
+									String numeroDestino = dest.getSubThoroughfare() != null ? dest.getSubThoroughfare() : "" ;
+									String cidadeDestino = dest.getLocality() != null ? dest.getLocality() : "" ;
 
-								double destinoLatitude = dest.getLatitude();
-								double destinoLongitude = dest.getLongitude();		
+									//Agora definimos as longitudes e latitudes da origem e destino
+									String textoOrigem = enderecoOrigem + ", " + numeroOrigem + " - " + cidadeOrigem;
+									String textoDestino = enderecoDestino + ", " + numeroDestino + " - " + cidadeDestino;
+									txtEndereco1.setText(textoOrigem);
+									txtEndereco2.setText(textoDestino);
+									double origemLatitude = ori.getLatitude();
+									double origemLongitude = ori.getLongitude();
 
-								//Executa uma async task que ira no ws pegar a lista de rotas
-								RouteListTask task = new RouteListTask(origemLatitude, origemLongitude, destinoLatitude, destinoLongitude);
-//								FindAll task = new FindAll();
-								task.execute();								
+									double destinoLatitude = dest.getLatitude();
+									double destinoLongitude = dest.getLongitude();		
+
+									//Executa uma async task que ira no ws pegar a lista de rotas
+									RouteListTask task = new RouteListTask(origemLatitude, origemLongitude, destinoLatitude, destinoLongitude);
+									//								FindAll task = new FindAll();
+									task.execute();								
+								}
+							});
+
+							//Mostra a popup de origem primeiro
+							popupOrigem.show();
+						}
+						//Se um endereço não deu retorno
+						else{
+							//seta o erro aonde a busca não deu retorno
+							if(enderecosOrigem.length <= 0){
+								txtEndereco1.setError("Seja mais especifico");
+								txtEndereco1.setFocusable(true);
 							}
-						});
 
-						//Mostra a popup de origem primeiro
-						popupOrigem.show();
-					}
-					//Se um endereço não deu retorno
-					else{
-						//seta o erro aonde a busca não deu retorno
-						if(enderecosOrigem.length <= 0){
-							txtEndereco1.setError("Seja mais especifico");
-							txtEndereco1.setFocusable(true);
+							if(enderecosOrigem.length <= 0){
+								txtEndereco1.setError("Seja mais especifico");
+								txtEndereco1.setFocusable(true);
+							}
+
+							Utils.gerarToast(context, "Sem resultados");
 						}
 
-						if(enderecosOrigem.length <= 0){
-							txtEndereco1.setError("Seja mais especifico");
-							txtEndereco1.setFocusable(true);
-						}
-
-						Utils.gerarToast(context, "Sem resultados");
+					} catch (Exception e) {
+						Utils.logException("SerachRoteFragment", "setBtnActions", "", e);
+						Utils.gerarToast(context, "Nenhum Endereço Encontrado, Verifque sua conexão");
 					}
-
-				} catch (Exception e) {
-					Utils.logException("SerachRoteFragment", "setBtnActions", "", e);
-					Utils.gerarToast(context, "Nenhum Endereço Encontrado");
 				}
 			}
 		});
-
-	
-
-
-		
 	}	
 
 	//Só estamos usando esse metodo, ele retorna os 4 pontos para montar o perimetro.
@@ -285,8 +301,8 @@ public class SearchRoteFragment extends Fragment {
 			perimetros = new ArrayList<PerimetroApp>();
 
 			//Recebe os 4 pontos base para criar o perimetro (defini 1000 e 2000 depois temos que ver como vai ficar)
-			pontosOrigem = getBoundingBox(latitudeOrigem, longitudeOrigem, 1000);
-			pontosDestino = getBoundingBox(latitudeDestino, longitudeDestino, 2000);
+			pontosOrigem = getBoundingBox(latitudeOrigem, longitudeOrigem, 500);
+			pontosDestino = getBoundingBox(latitudeDestino, longitudeDestino, 1000);
 
 			//Instancia o objeto perimetro com os dados certinhos, que foram retornados acima.
 			perimetroOrigem = new PerimetroApp(pontosOrigem[2], pontosOrigem[0], pontosOrigem[1], pontosOrigem[3]); 
@@ -341,27 +357,27 @@ public class SearchRoteFragment extends Fragment {
 				Utils.logException("SearchRoteFragment", "RouteListTask", "onPostExecute", e);
 			}
 
-			//ISSO AQUI É O TESTE QUE MARCA OS PONTOS NO MAPA, VOU DEIXAR PARA TESTARMOS QUALQUER COISA.
-			//			LatLng latlng1 = new LatLng(perimetroOrigem.getCima(), perimetroOrigem.getEsquerda());
-			//			LatLng latlng2 = new LatLng(perimetroOrigem.getCima(), perimetroOrigem.getDireita());
-			//			LatLng latlng3 = new LatLng(perimetroOrigem.getBaixo(), perimetroOrigem.getEsquerda());
-			//			LatLng latlng4 = new LatLng(perimetroOrigem.getBaixo(), perimetroOrigem.getDireita());
-			//			
-			//			LatLng latlng10 = new LatLng(perimetroDestino.getCima(), perimetroDestino.getEsquerda());
-			//			LatLng latlng20 = new LatLng(perimetroDestino.getCima(), perimetroDestino.getDireita());
-			//			LatLng latlng30 = new LatLng(perimetroDestino.getBaixo(), perimetroDestino.getEsquerda());
-			//			LatLng latlng40 = new LatLng(perimetroDestino.getBaixo(), perimetroDestino.getDireita());
-			//			
-			//			
-			//			googleMap.addMarker(new MarkerOptions().position(latlng1).title("Origem 1"));
-			//			googleMap.addMarker(new MarkerOptions().position(latlng2).title("Origem 2"));
-			//			googleMap.addMarker(new MarkerOptions().position(latlng3).title("Origem 3"));
-			//			googleMap.addMarker(new MarkerOptions().position(latlng4).title("Origem 4"));
-			//			
-			//			googleMap.addMarker(new MarkerOptions().position(latlng10).title("Destino 1"));
-			//			googleMap.addMarker(new MarkerOptions().position(latlng20).title("Destino 2"));
-			//			googleMap.addMarker(new MarkerOptions().position(latlng30).title("Destino 3"));
-			//			googleMap.addMarker(new MarkerOptions().position(latlng40).title("Destino 4"));
+			//			ISSO AQUI É O TESTE QUE MARCA OS PONTOS NO MAPA, VOU DEIXAR PARA TESTARMOS QUALQUER COISA.
+			//						LatLng latlng1 = new LatLng(perimetroOrigem.getCima(), perimetroOrigem.getEsquerda());
+			//						LatLng latlng2 = new LatLng(perimetroOrigem.getCima(), perimetroOrigem.getDireita());
+			//						LatLng latlng3 = new LatLng(perimetroOrigem.getBaixo(), perimetroOrigem.getEsquerda());
+			//						LatLng latlng4 = new LatLng(perimetroOrigem.getBaixo(), perimetroOrigem.getDireita());
+			//						
+			//						LatLng latlng10 = new LatLng(perimetroDestino.getCima(), perimetroDestino.getEsquerda());
+			//						LatLng latlng20 = new LatLng(perimetroDestino.getCima(), perimetroDestino.getDireita());
+			//						LatLng latlng30 = new LatLng(perimetroDestino.getBaixo(), perimetroDestino.getEsquerda());
+			//						LatLng latlng40 = new LatLng(perimetroDestino.getBaixo(), perimetroDestino.getDireita());
+			//						
+			//						
+			//						googleMap.addMarker(new MarkerOptions().position(latlng1).title("Origem 1"));
+			//						googleMap.addMarker(new MarkerOptions().position(latlng2).title("Origem 2"));
+			//						googleMap.addMarker(new MarkerOptions().position(latlng3).title("Origem 3"));
+			//						googleMap.addMarker(new MarkerOptions().position(latlng4).title("Origem 4"));
+			//						
+			//						googleMap.addMarker(new MarkerOptions().position(latlng10).title("Destino 1"));
+			//						googleMap.addMarker(new MarkerOptions().position(latlng20).title("Destino 2"));
+			//						googleMap.addMarker(new MarkerOptions().position(latlng30).title("Destino 3"));
+			//						googleMap.addMarker(new MarkerOptions().position(latlng40).title("Destino 4"));
 
 			progress.dismiss();
 		}		
@@ -421,30 +437,30 @@ public class SearchRoteFragment extends Fragment {
 		// show it
 		alertDialog.show();
 	}
-	
+
 	private void centerMapOnMyLocation() {
 		String contexto = Context.LOCATION_SERVICE;
 		LocationManager locationManager = (LocationManager) context.getSystemService(contexto);
 
-        // Creating a criteria object to retrieve provider
-        Criteria criteria = new Criteria();
+		// Creating a criteria object to retrieve provider
+		Criteria criteria = new Criteria();
 
-        // Getting the name of the best provider
-        String provider = locationManager.getBestProvider(criteria, true);
+		// Getting the name of the best provider
+		String provider = locationManager.getBestProvider(criteria, true);
 
-        // Getting Current Location
-        Location location = locationManager.getLastKnownLocation(provider);
-	    
-	   
-	    LatLng myLocation = null;
-	  
-	    
-	    if (location != null) {
-	        myLocation = new LatLng(location.getLatitude(),
-	                location.getLongitude());
-	        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
-		            16));
-	    }	    
+		// Getting Current Location
+		Location location = locationManager.getLastKnownLocation(provider);
+
+
+		LatLng myLocation = null;
+
+
+		if (location != null) {
+			myLocation = new LatLng(location.getLatitude(),
+					location.getLongitude());
+			googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+					16));
+		}	    
 	}
 
 	private class FindAll extends AsyncTask<String, Void, String> {
