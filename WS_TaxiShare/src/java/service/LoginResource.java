@@ -62,7 +62,7 @@ public class LoginResource {
                 if (login.getSenha().equals(password)) {
 
                     //Pegando a pessoa do login
-                    Pessoa pessoa = login.getNovaPessoa();
+                    Pessoa pessoa = login.getPessoa();
 
                     SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
                     String date = formater.format(pessoa.getDataNascimento());
@@ -245,7 +245,7 @@ public class LoginResource {
             login.setLogin(entity.getLogin());
             login.setSenha(entity.getSenha());
             login.setPergunta(pergunta);
-            login.setNovaPessoa(pessoa);
+            login.setPessoa(pessoa);
             login.setResposta(entity.getResposta());
 
             System.out.println("Login --> " + login.toString());

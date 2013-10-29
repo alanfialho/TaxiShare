@@ -34,7 +34,7 @@ public class Usuario implements Serializable {
     private String resposta;
     @OneToOne
     @JoinColumn(name = "idPessoa")
-    private Pessoa novaPessoa;
+    private Pessoa pessoa;
     @OneToOne
     @JoinColumn(name="idPergunta")
     private Pergunta pergunta;
@@ -52,11 +52,11 @@ public class Usuario implements Serializable {
         this.id = id;
     }
 
-    public Usuario(String login, String senha, String resposta, Pessoa novaPessoa, Pergunta pergunta, List<Rota> rotas) {
+    public Usuario(String login, String senha, String resposta, Pessoa pessoa, Pergunta pergunta, List<Rota> rotas) {
         this.login = login;
         this.senha = senha;
         this.resposta = resposta;
-        this.novaPessoa = novaPessoa;
+        this.pessoa = pessoa;
         this.pergunta = pergunta;
         this.rotas = rotas;
     }
@@ -95,12 +95,12 @@ public class Usuario implements Serializable {
         this.resposta = resposta;
     }
 
-    public Pessoa getNovaPessoa() {
-        return novaPessoa;
+    public Pessoa getPessoa() {
+        return pessoa;
     }
 
-    public void setNovaPessoa(Pessoa novaPessoa) {
-        this.novaPessoa = novaPessoa;
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
     public Pergunta getPergunta() {
