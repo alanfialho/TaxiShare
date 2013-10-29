@@ -86,7 +86,7 @@ public class SearchRoteFragment extends Fragment {
 		List<Address> enderecos = null;  
 
 		// o numero um aqui é a quantidade maxima de resultados que vc quer receber
-		enderecos = geoCoder.getFromLocationName(endereco, 5);
+		enderecos = geoCoder.getFromLocationName(endereco, 99);
 
 		return enderecos;
 	}
