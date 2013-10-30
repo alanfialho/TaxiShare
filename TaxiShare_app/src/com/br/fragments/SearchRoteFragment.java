@@ -34,6 +34,7 @@ import com.br.entidades.EnderecoApp;
 import com.br.entidades.PerimetroApp;
 import com.br.entidades.RotaApp;
 import com.br.network.WSTaxiShare;
+import com.br.resources.GpsTracker;
 import com.br.resources.MapUtils;
 import com.br.resources.Utils;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -61,12 +62,13 @@ public class SearchRoteFragment extends Fragment {
 	List<Address> destinoLista;
 	List<Address> origemLista;
 	MapUtils mapUtils;
+	GpsTracker gps;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.rote_search, container, false);
 		context = getActivity();
-
+		gps = new GpsTracker(context);
 		try {
 			MapsInitializer.initialize(getActivity());
 		} catch (GooglePlayServicesNotAvailableException e) {
@@ -76,7 +78,7 @@ public class SearchRoteFragment extends Fragment {
 		setAtributes(rootView);
 		centerMapOnMyLocation();
 		setBtnAction();
-		verificaGPS();
+		
 		return rootView;	
 	}
 
@@ -126,11 +128,11 @@ public class SearchRoteFragment extends Fragment {
 		}
 
 		googleMap.setTrafficEnabled(true);
-		btnBusca = (Button) rootView.findViewById(R.id.teste_mapa_btn_buscar);
+		btnBusca = (Button) rootView.findViewById(R.id.rote_search_btn_buscar);
 
 
-		txtEndereco1 = (EditText) rootView.findViewById(R.id.teste_mapa_txt_origem);
-		txtEndereco2 = (EditText) rootView.findViewById(R.id.teste_mapa_txt_destino);
+		txtEndereco1 = (EditText) rootView.findViewById(R.id.rote_search_txt_origem);
+		txtEndereco2 = (EditText) rootView.findViewById(R.id.rote_search_txt_destino);
 		aQuery = new AQuery(rootView.getContext());	
 
 		mapUtils = new MapUtils(context, googleMap);
@@ -473,30 +475,24 @@ public class SearchRoteFragment extends Fragment {
     }
 
 
-	private void centerMapOnMyLocation() {
-		String contexto = Context.LOCATION_SERVICE;
-		LocationManager locationManager = (LocationManager) context.getSystemService(contexto);
-
-		// Creating a criteria object to retrieve provider
-		Criteria criteria = new Criteria();
-
-		// Getting the name of the best provider
-		String provider = locationManager.getBestProvider(criteria, true);
-
-		// Getting Current Location
-		Location location = locationManager.getLastKnownLocation(provider);
+    private void centerMapOnMyLocation() {
 
 
-		LatLng myLocation = null;
+    	if(gps.canGetLocation()){
+
+    		double latitude = gps.getLatitude();
+    		double longitude = gps.getLongitude();
+    		LatLng myLocation = null;
 
 
-		if (location != null) {
-			myLocation = new LatLng(location.getLatitude(),
-					location.getLongitude());
-			googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
-					16));
-		}	    
-	}
+    		myLocation = new LatLng(latitude,
+    				longitude);
+    		googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+    				16));
+    	}	  else {
+    		gps.showSettingsAlert();
+    	}
+    }
 
 	private class FindAll extends AsyncTask<String, Void, String> {
 

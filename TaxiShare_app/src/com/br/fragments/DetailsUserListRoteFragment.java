@@ -15,6 +15,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -201,10 +202,15 @@ public class DetailsUserListRoteFragment extends Fragment{
 		LatLng myLatLng = new LatLng(latitude, longitude);
 		googleMap.getProjection();
 		//Adiciona a latitude e longitude da minha localização a um objeto LatLng
+		CameraPosition cp = new CameraPosition.Builder()
+		   .target(new LatLng(myLatLng.latitude, myLatLng.longitude))// centro do mapa para uma lat e long
+		   .zoom(12)          // muda a orientação da camera para leste
+		   .tilt(34)             // ângulo de visão da câmera para 45 graus
+		   .build();             // cria um CameraPosition a partir do builder   
 
 		//Move a camera do mapa para a minha localização de acordo com o objeto LatLng gerado
 		googleMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
-		googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+		googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cp));
 	}
 
 	private void popupSms(){

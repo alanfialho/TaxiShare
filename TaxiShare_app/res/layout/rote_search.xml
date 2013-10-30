@@ -13,38 +13,45 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <EditText
-            android:id="@+id/teste_mapa_txt_origem"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="16dp"
-            android:ems="10"
-            android:hint="Digite end. com número" 
-            android:singleLine="true">
-
-            <requestFocus />
-        </EditText>
-
-        <EditText
-            android:id="@+id/teste_mapa_txt_destino"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/teste_mapa_txt_origem"
-            android:layout_marginTop="15dp"
-            android:ems="10"
-            android:hint="Digite end. com número" 
-            android:singleLine="true"/>
-
         <Button
-            android:id="@+id/teste_mapa_btn_buscar"
+            android:id="@+id/rote_search_btn_buscar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="62dp"
             android:text="Buscar" />
+
+        <EditText
+            android:id="@+id/rote_search_txt_destino"
+            android:layout_width="310dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/rote_search_txt_origem"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edittext"
+            android:ems="10"
+            android:hint="Digite end. com número"
+            android:padding="8dip"
+            android:singleLine="true"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/rote_search_txt_origem"
+            android:layout_width="310dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/edittext"
+            android:ems="10"
+            android:hint="Digite end. com número"
+            android:maxLines="1"
+            android:padding="8dip"
+            android:singleLine="true"
+            android:textSize="20dp" >
+
+            <requestFocus />
+        </EditText>
 
     </RelativeLayout>
 

@@ -229,7 +229,7 @@ public class MainActitity extends Activity {
 
 		// Adiciona a mensagem na caixa
 		alertDialogBuilder
-		.setMessage("Deseja realmente sair do aplicativo?")
+		.setMessage("Deseja efetuar logoff do aplicativo?")
 		.setCancelable(false)
 		.setPositiveButton("Sim",new DialogInterface.OnClickListener() {
 			//Ação se o usuario clicar em "sim"

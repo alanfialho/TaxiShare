@@ -439,7 +439,10 @@ containing a value of this type.
         public static final int rote_list_item_txt_2=0x7f050051;
         public static final int rote_list_lay_item_info=0x7f05004b;
         public static final int rote_list_list_view=0x7f05004c;
+        public static final int rote_search_btn_buscar=0x7f050056;
         public static final int rote_search_map=0x7f050055;
+        public static final int rote_search_txt_destino=0x7f050057;
+        public static final int rote_search_txt_origem=0x7f050058;
         public static final int rote_users_details_btn_ligar=0x7f050065;
         public static final int rote_users_details_btn_sair=0x7f05005c;
         public static final int rote_users_details_btn_sms=0x7f050066;
@@ -463,9 +466,6 @@ containing a value of this type.
         public static final int rote_users_list_view=0x7f050068;
         public static final int satellite=0x7f050002;
         public static final int terrain=0x7f050003;
-        public static final int teste_mapa_btn_buscar=0x7f050058;
-        public static final int teste_mapa_txt_destino=0x7f050057;
-        public static final int teste_mapa_txt_origem=0x7f050056;
     }
     public static final class layout {
         public static final int activity_intro=0x7f030000;

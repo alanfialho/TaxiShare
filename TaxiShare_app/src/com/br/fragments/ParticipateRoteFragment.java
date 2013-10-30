@@ -23,9 +23,14 @@ import com.br.resources.MapUtils;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class ParticipateRoteFragment extends Fragment{
 	private GoogleMap googleMap;
@@ -52,7 +57,7 @@ public class ParticipateRoteFragment extends Fragment{
 		mapUtils = new MapUtils(context, googleMap);
 		setAtributes(rootView);
 		setBtnAction();
-		//setMarcadores(rotaDetalhe);
+		
 
 		return rootView;	
 	}
@@ -105,8 +110,9 @@ public class ParticipateRoteFragment extends Fragment{
 		latitudes[0] = Double.parseDouble(r.getEnderecos().get(1).getLatitude());
 		longitudes[0] = Double.parseDouble(r.getEnderecos().get(1).getLongitude());
 		String adm = r.getAdministrador().getLogin();
+		lblAdm.setText(adm);
 		String end = r.getEnderecos().get(1).getRua();
-		mapUtils.setMarker(latitudes[0], longitudes[0], adm, end, true);
+		setMarker(latitudes[0], longitudes[0], adm, end, true);
 
 		if (participantes > 0){
 			//Interao numero de participantes na rota e seta marcadores para cada um deles.
@@ -115,9 +121,39 @@ public class ParticipateRoteFragment extends Fragment{
 				longitudes[i] = Double.parseDouble(r.getEnderecos().get(i + 2).getLongitude());
 				String titulo = r.getUsuarios().get(i - 1).getLogin();
 				String rua = r.getEnderecos().get(i + 2).getRua() + ", " + r.getEnderecos().get(i + 2).getNumero() + " - " + r.getEnderecos().get(i + 2).getBairro();
-				mapUtils.setMarker(latitudes[i], longitudes[i], titulo, rua, false);
+				setMarker(latitudes[i], longitudes[i], titulo, rua, false);
 			}
 		}
+	}
+	
+	public Marker setMarker(double latitude, double longitude, String title, String snippet, boolean zoom) {
+		//		googleMap.addMarker(new MarkerOptions().position(new LatLng(-23.489839, -46.410520)).title("Marker"));
+		Marker mark = googleMap.addMarker(new MarkerOptions()
+		.position(new LatLng(latitude, longitude))
+		.title(title)
+		.snippet(snippet));
+		mark.showInfoWindow();
+
+		if(zoom)
+			setaZoom(latitude, longitude);
+
+		return mark;
+	}
+
+	private void setaZoom(double latitude, double longitude){
+		//Location myLocation = googleMap.getMyLocation();
+		LatLng myLatLng = new LatLng(latitude, longitude);
+		googleMap.getProjection();
+		//Adiciona a latitude e longitude da minha localização a um objeto LatLng
+		CameraPosition cp = new CameraPosition.Builder()
+		   .target(new LatLng(myLatLng.latitude, myLatLng.longitude))// centro do mapa para uma lat e long
+		   .zoom(12)          // muda a orientação da camera para leste
+		   .tilt(34)             // ângulo de visão da câmera para 45 graus
+		   .build();             // cria um CameraPosition a partir do builder   
+
+		//Move a camera do mapa para a minha localização de acordo com o objeto LatLng gerado
+		googleMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
+		googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cp));
 	}
 
 	public void setBtnAction(){
@@ -199,6 +235,7 @@ public class ParticipateRoteFragment extends Fragment{
 
 		@Override
 		protected void onPostExecute(String response) {
+			setMarcadores(rotaDetalhe);
 			progress.dismiss();
 		}		
 	}
