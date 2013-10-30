@@ -124,10 +124,11 @@ public class DetailsUserListRoteFragment extends Fragment{
 		latitudes[0] = Double.parseDouble(rotaDetalhe.getEnderecos().get(1).getLatitude());
 		longitudes[0] = Double.parseDouble(rotaDetalhe.getEnderecos().get(1).getLongitude());
 		String adm = rotaDetalhe.getAdministrador().getLogin();
+		
 		lblAdm.setText(adm);
 		logins.add(adm);
-		//Aqui codigo que recupe telefone do ADM
-		telefones.add("123456789");
+		String telefoneAdm = rotaDetalhe.getAdministrador().getPessoa().getCelular();
+		telefones.add(telefoneAdm);
 		String end = rotaDetalhe.getEnderecos().get(1).getRua() + ", " + rotaDetalhe.getEnderecos().get(1).getNumero() + " - " + rotaDetalhe.getEnderecos().get(1).getBairro();
 		setMarker(latitudes[0], longitudes[0], adm, end, true);
 
@@ -138,8 +139,8 @@ public class DetailsUserListRoteFragment extends Fragment{
 				longitudes[i] = Double.parseDouble(rotaDetalhe.getEnderecos().get(i + 1).getLongitude());
 				String titulo = rotaDetalhe.getUsuarios().get(i - 1).getLogin();
 				logins.add(titulo);
-				//Aqui codigo que recupera telefone do participante
-				telefones.add("000000" + i);
+				String telefoneParticipante = rotaDetalhe.getUsuarios().get(i - 1).getPessoa().getCelular();
+				telefones.add(telefoneParticipante);
 				String rua = rotaDetalhe.getEnderecos().get(i + 1).getRua() + ", " + rotaDetalhe.getEnderecos().get(i + 1).getNumero() + " - " + rotaDetalhe.getEnderecos().get(i + 1).getBairro();
 				setMarker(latitudes[i], longitudes[i], titulo, rua, false);
 			}

@@ -14,6 +14,7 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -75,6 +76,7 @@ public class SearchRoteFragment extends Fragment {
 		setAtributes(rootView);
 		centerMapOnMyLocation();
 		setBtnAction();
+		verificaGPS();
 		return rootView;	
 	}
 
@@ -437,6 +439,39 @@ public class SearchRoteFragment extends Fragment {
 		// show it
 		alertDialog.show();
 	}
+	
+	public void verificaGPS(){
+		String contexto = Context.LOCATION_SERVICE;
+		LocationManager locationManager = (LocationManager) context.getSystemService(contexto);
+
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+        	showGPSDisabledAlertToUser();
+        }
+   
+    }
+
+    private void showGPSDisabledAlertToUser(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setMessage("Seu gps está desligado. Gostaria de liga-lo?")
+        .setCancelable(false)
+        .setPositiveButton("Sim",
+                new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int id){
+                Intent callGPSSettingIntent = new Intent(
+                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(callGPSSettingIntent);
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Não",
+                new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int id){
+                dialog.cancel();
+            }
+        });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
 
 	private void centerMapOnMyLocation() {
 		String contexto = Context.LOCATION_SERVICE;

@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -51,6 +52,7 @@ public class LoginActivity extends Activity {
 	
 	SessionManagement session;
 	private ImageView img;
+	private boolean doubleBackToExitPressedOnce;
 
 	@Override	
 	public void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,26 @@ public class LoginActivity extends Activity {
 		validator = new Validator(this);
 		validator.setValidationListener(validationListner);
 	}
+	
+	//Se pressionado o botão "back" 2x, o app encerra
+	@Override
+    public void onBackPressed() {
+        
+		if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Utils.gerarToast(this, "Pressione novamente para sair do app");
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+             doubleBackToExitPressedOnce=false;   
+
+            }
+        }, 2000);
+    } 
 
 	private void setBtnActions() {
 		// Evento do botao login
