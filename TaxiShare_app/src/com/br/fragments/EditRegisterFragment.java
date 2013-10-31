@@ -170,6 +170,7 @@ public class EditRegisterFragment extends Fragment {
 
 		//Importando os campos da pessoa
 		textNome = (EditText) rootView.findViewById(R.id.edit_reg_txt_nome);
+		textNome.requestFocus();
 		textEmail = (EditText) rootView.findViewById(R.id.edit_reg_txt_email);
 		textDDD = (EditText) rootView.findViewById(R.id.edit_reg_txt_ddd);
 		spinnerSexo = (Spinner) rootView.findViewById(R.id.edit_reg_sp_sexo);

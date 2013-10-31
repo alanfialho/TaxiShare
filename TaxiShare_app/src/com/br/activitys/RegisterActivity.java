@@ -122,6 +122,7 @@ public class RegisterActivity extends Activity {
 	private void setAtributes() {
 		// Importando os campos da pessoa
 		textNome = (EditText) findViewById(R.id.register_txt_nome);
+		textNome.requestFocus();
 		textEmail = (EditText) findViewById(R.id.register_txt_email);
 		textSenha = (EditText) findViewById(R.id.register_txt_senha);
 		textSenha2 = (EditText) findViewById(R.id.register_txt_senha2);

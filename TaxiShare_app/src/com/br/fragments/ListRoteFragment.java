@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -52,6 +53,8 @@ public class ListRoteFragment extends Fragment {
 		RoteAdapter roteAdapter = new RoteAdapter(context, rotas);		
 		roteList = (ListView) rootView.findViewById(R.id.rote_list_list_view);
 		roteList.setAdapter(roteAdapter);
+		roteList.setDivider(new ColorDrawable(0xFFfbad25));
+		roteList.setDividerHeight(2);
 		roteList.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override

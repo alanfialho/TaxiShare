@@ -95,6 +95,7 @@ public class EditPasswordFragment extends Fragment {
 
 		//Importando os campos da pessoa
 		forgotSenhaAntiga = (EditText) rootView.findViewById(R.id.edit_pass_senha_antiga);
+		forgotSenhaAntiga.requestFocus();
 		forgotNovaSenha = (EditText) rootView.findViewById(R.id.edit_pass_nova_senha);
 		forgotNovaSenha2 = (EditText) rootView.findViewById(R.id.edit_pass_nova_senha_2);
 

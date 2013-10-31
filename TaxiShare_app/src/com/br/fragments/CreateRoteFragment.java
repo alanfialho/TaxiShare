@@ -68,6 +68,7 @@ public class CreateRoteFragment extends Fragment {
 			textDestino = (EditText) rootView.findViewById(R.id.rote_create_txt_destino);
 			spnPessoas = (Spinner) rootView.findViewById(R.id.rote_create_sp_pessoas);
 			tpHorarioSaida = (TimePicker) rootView.findViewById(R.id.rote_create_tp_saida);
+			
 
 			//Importando botões
 			btnCriarRota = (Button) rootView.findViewById(R.id.rote_create_btn_criar);

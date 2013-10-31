@@ -18,7 +18,8 @@
         android:layout_height="wrap_content"
         android:ems="10" 
         android:enabled="false"
-        android:focusable="false">
+        android:focusable="false"
+        style="@style/EditTextTaxiShare">
 
         <requestFocus />
     </EditText>
@@ -36,7 +37,8 @@
         android:layout_height="wrap_content"
         android:ems="10" 
         android:enabled="false"
-        android:focusable="false"/>
+        android:focusable="false"
+        style="@style/EditTextTaxiShare"/>
 
     <TextView
         android:id="@+id/rote_create_lbl_pessoas"
@@ -49,7 +51,8 @@
         android:id="@+id/rote_create_sp_pessoas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:prompt="@array/numero_pessoas" />
+        android:prompt="@array/numero_pessoas" 
+        style="@style/SpinnerTaxiShare"/>
 
     <TextView
         android:id="@+id/rote_create_lbl_saida"

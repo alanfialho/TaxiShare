@@ -32,7 +32,8 @@
         <EditText
             android:id="@+id/edit_reg_txt_nome"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" 
+            style="@style/EditTextTaxiShare"/>
 
         <!-- LABEL DO NICK -->
 
@@ -52,7 +53,8 @@
         <EditText
             android:id="@+id/edit_reg_txt_email"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" 
+            style="@style/EditTextTaxiShare"/>
 
         <!-- LABEL DO SEXO -->
 
@@ -66,7 +68,8 @@
         <Spinner
             android:id="@+id/edit_reg_sp_sexo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" 
+            style="@style/SpinnerTaxiShare"/>
 
         <!-- LABEL DO DDD -->
 
@@ -83,7 +86,8 @@
             android:layout_height="wrap_content"
             android:hint="Ex: 11"
             android:inputType="number"
-            android:maxLength="2" />
+            android:maxLength="2" 
+            style="@style/EditTextTaxiShare"/>
 
         <!-- LABEL DO CELULAR -->
 
@@ -100,7 +104,8 @@
             android:layout_height="wrap_content"
             android:hint="Ex: 999999999"
             android:inputType="number"
-            android:maxLength="9" />
+            android:maxLength="9" 
+            style="@style/EditTextTaxiShare"/>
 
         <!-- LABEL DA DATA NASCIMENTO -->
 

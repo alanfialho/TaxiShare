@@ -23,6 +23,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.MergeCursor;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -71,6 +74,8 @@ public class UserListRoteFragment extends Fragment{
 		
 		roteList = (ListView) rootView.findViewById(R.id.rote_users_list_view);
 		roteList.setAdapter(merge);
+		roteList.setDivider(new ColorDrawable(0xFFfbad25));
+		roteList.setDividerHeight(2);
 		
 		roteList.setOnItemClickListener(new OnItemClickListener(){
 

@@ -34,7 +34,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:maxLength="50" />
+            android:maxLength="50" 
+            style="@style/EditTextTaxiShare"/>
 
         <!-- LABEL DO EMAIL -->
 
@@ -51,7 +52,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textEmailAddress"
-            android:maxLength="30" />
+            android:maxLength="30" 
+            style="@style/EditTextTaxiShare"/>
 
         <!-- LABEL DO SEXO -->
 
@@ -65,7 +67,8 @@
         <Spinner
             android:id="@+id/register_sp_sexo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" 
+            style="@style/SpinnerTaxiShare"  />
 
         <!-- LABEL DO DDD -->
 
@@ -82,7 +85,8 @@
             android:layout_height="wrap_content"
             android:hint="Ex: 11"
             android:inputType="number"
-            android:maxLength="2" />
+            android:maxLength="2" 
+            style="@style/EditTextTaxiShare"/>
 
         <!-- LABEL DO CELULAR -->
 
@@ -99,7 +103,8 @@
             android:layout_height="wrap_content"
             android:hint="Ex: 999999999"
             android:inputType="number"
-            android:maxLength="9" />
+            android:maxLength="9" 
+            style="@style/EditTextTaxiShare"/>
 
         <!-- LABEL DA DATA NASCIMENTO -->
 
@@ -131,7 +136,8 @@
             android:id="@+id/register_txt_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:maxLength="12" />
+            android:maxLength="12" 
+            style="@style/EditTextTaxiShare"/>
 
         <!-- LABEL DA SENHA -->
 
@@ -149,7 +155,8 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:maxLength="16"
-            android:maxLines="1" />
+            android:maxLines="1" 
+            style="@style/EditTextTaxiShare"/>
 
         <!-- LABEL DA CONFIRMACAO SENHA -->
 
@@ -167,7 +174,8 @@
             android:layout_height="wrap_content"
             android:maxLength="16"
             android:maxLines="1"
-            android:password="true" />
+            android:password="true" 
+            style="@style/EditTextTaxiShare"/>
 
         <!-- LABEL DA PERGUNTA -->
 
@@ -181,7 +189,8 @@
         <Spinner
             android:id="@+id/register_sp_pergunta"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" 
+            style="@style/SpinnerTaxiShare"/>
 
         <!-- LABEL DA RESPOSTA -->
 
@@ -196,7 +205,8 @@
             android:id="@+id/register_txt_resposta"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:maxLength="50" />
+            android:maxLength="50" 
+            style="@style/EditTextTaxiShare"/>
 
         <!-- Error message -->
 
