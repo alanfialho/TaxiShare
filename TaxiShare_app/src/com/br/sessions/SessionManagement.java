@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.br.activitys.LoginActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -97,6 +98,7 @@ public class SessionManagement {
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		_context.startActivity(i);
+		
 	}
 
 	// Verifica se o usuario esta logado
