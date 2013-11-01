@@ -15,6 +15,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -143,7 +144,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 				String telefoneParticipante = rotaDetalhe.getUsuarios().get(i - 1).getPessoa().getCelular();
 				telefones.add(telefoneParticipante);
 				String rua = rotaDetalhe.getEnderecos().get(i + 1).getRua() + ", " + rotaDetalhe.getEnderecos().get(i + 1).getNumero() + " - " + rotaDetalhe.getEnderecos().get(i + 1).getBairro();
-				setMarker(latitudes[i], longitudes[i], titulo, rua, false);
+				setMarker(latitudes[i], longitudes[i], titulo, rua, false).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_destino_verde));
 			}
 		}
 	}
@@ -188,6 +189,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 		Marker mark = googleMap.addMarker(new MarkerOptions()
 		.position(new LatLng(latitude, longitude))
 		.title(title)
+		.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_destino_azul))
 		.snippet(snippet));
 		mark.showInfoWindow();
 

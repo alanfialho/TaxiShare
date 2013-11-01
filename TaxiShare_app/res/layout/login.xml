@@ -50,15 +50,18 @@
         android:padding="8dip"
         android:textSize="20dp"
         android:singleLine="true" />
-
+    
     <Button
         android:id="@+id/login_btn_login"
-        android:layout_width="280dp"
-        android:layout_height="41dp"
+        style="@style/BtnTaxi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/login_txt_senha"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
-        android:background="@drawable/botaologin" />
+        android:text="Logar"
+        android:textColor="@android:color/white"
+        android:textSize="20dp"/>
 
     <Button
         android:id="@+id/login_btn_forget"

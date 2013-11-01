@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.androidquery.AQuery;
 import com.br.activitys.R;
@@ -42,7 +43,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 public class SearchRoteFragment extends Fragment {
@@ -56,6 +60,7 @@ public class SearchRoteFragment extends Fragment {
 	private EditText txtEndereco1;
 	private EditText txtEndereco2;
 	public Context context;
+	private ImageView caixaTexto;
 	EnderecoApp enderecoOrigem;
 	EnderecoApp enderecoDestino;
 	Address ori, dest;
@@ -78,8 +83,26 @@ public class SearchRoteFragment extends Fragment {
 		setAtributes(rootView);
 		centerMapOnMyLocation();
 		setBtnAction();
+		setMarker();
+	
 		
 		return rootView;	
+	}
+	
+	public Marker setMarker() {
+		double latitude = gps.getLatitude();
+		double longitude = gps.getLongitude();
+		
+		//		googleMap.addMarker(new MarkerOptions().position(new LatLng(-23.489839, -46.410520)).title("Marker"));
+		
+		Marker mark = googleMap.addMarker(new MarkerOptions()
+		.position(new LatLng(latitude, longitude))
+		.title("Voce está aqui!")
+		.icon(BitmapDescriptorFactory.fromResource(R.drawable.maker_azul)));
+		
+		mark.showInfoWindow();
+
+		return mark;
 	}
 
 	public List<Address>  getListaDeEnderecos(String endereco) throws IOException {
@@ -129,7 +152,7 @@ public class SearchRoteFragment extends Fragment {
 
 		googleMap.setTrafficEnabled(true);
 		btnBusca = (Button) rootView.findViewById(R.id.rote_search_btn_buscar);
-
+		caixaTexto = (ImageView) rootView.findViewById(R.id.rote_search_img_texto);
 
 		txtEndereco1 = (EditText) rootView.findViewById(R.id.rote_search_txt_origem);
 		txtEndereco2 = (EditText) rootView.findViewById(R.id.rote_search_txt_destino);
@@ -391,6 +414,8 @@ public class SearchRoteFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		mapView.onResume();
+		centerMapOnMyLocation();
+		
 	}
 
 	@Override
@@ -442,57 +467,26 @@ public class SearchRoteFragment extends Fragment {
 		alertDialog.show();
 	}
 	
-	public void verificaGPS(){
-		String contexto = Context.LOCATION_SERVICE;
-		LocationManager locationManager = (LocationManager) context.getSystemService(contexto);
-
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-        	showGPSDisabledAlertToUser();
-        }
-   
-    }
-
-    private void showGPSDisabledAlertToUser(){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setMessage("Seu gps está desligado. Gostaria de liga-lo?")
-        .setCancelable(false)
-        .setPositiveButton("Sim",
-                new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int id){
-                Intent callGPSSettingIntent = new Intent(
-                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(callGPSSettingIntent);
-            }
-        });
-        alertDialogBuilder.setNegativeButton("Não",
-                new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int id){
-                dialog.cancel();
-            }
-        });
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
-    }
 
 
-    private void centerMapOnMyLocation() {
+	private void centerMapOnMyLocation() {
+
+		if(gps.canGetLocation()){
+
+			double latitude = gps.getLatitude();
+			double longitude = gps.getLongitude();
+			LatLng myLocation = null;
 
 
-    	if(gps.canGetLocation()){
+			myLocation = new LatLng(latitude,
+					longitude);
+			googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
+					16));
+		}	  else {
+			gps.showSettingsAlert();
+		}
 
-    		double latitude = gps.getLatitude();
-    		double longitude = gps.getLongitude();
-    		LatLng myLocation = null;
-
-
-    		myLocation = new LatLng(latitude,
-    				longitude);
-    		googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
-    				16));
-    	}	  else {
-    		gps.showSettingsAlert();
-    	}
-    }
+	}
 
 	private class FindAll extends AsyncTask<String, Void, String> {
 

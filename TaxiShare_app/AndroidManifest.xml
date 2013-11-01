@@ -112,7 +112,8 @@
             <activity
             android:name="com.br.fragments.DetailsUserListRoteFragment"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait" 
+            android:theme="@style/TaxiShare">
 
         </activity>
         <activity
@@ -134,6 +135,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:label="TaxiShare"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
 >
         </activity>

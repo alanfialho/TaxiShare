@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -136,6 +137,7 @@ public class LoginActivity extends Activity {
 
 		//Botoes e erro
 		btnLogin = (Button) findViewById(R.id.login_btn_login);
+		btnLogin.setTextColor(Color.WHITE);
 		btnLinkToRegister = (Button) findViewById(R.id.login_btn_register);
 		btnLinkToForgetPassword = (Button) findViewById(R.id.login_btn_forget);
 		img = (ImageView) findViewById(R.id.rote_users_list_item_icon);

@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.MergeCursor;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
@@ -31,12 +32,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 
 public class UserListRoteFragment extends Fragment{
 	
@@ -76,36 +81,31 @@ public class UserListRoteFragment extends Fragment{
 		roteList.setAdapter(merge);
 		roteList.setDivider(new ColorDrawable(0xFFfbad25));
 		roteList.setDividerHeight(2);
-		
-		roteList.setOnItemClickListener(new OnItemClickListener(){
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {			
-				
-				RotaApp rotinha = (RotaApp) roteList.getAdapter().getItem(position);
-				Bundle args = new Bundle();
-				args.putParcelable("rota", rotinha);				
-				Utils.changeFragment(getFragmentManager(), new DetailsUserListRoteFragment(), args);
-				
-				
-				
-				
-				
-				//String telefone = "11982467715"; 
-				
-				//entraEmContato(telefone);
-				
-				//Envia sms pro numero do adm
-				
-				
-								
-			}			
-		});
-		
-		
-		
-
+		if(roteList.getCount() == 0){
 			
+			LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.rote_user_list_layout_linear);
+			linearLayout.removeView(roteList);
+			TextView txt1 = new TextView(context);
+			txt1.setText("Voce ainda não esta em nenhuma Rota");
+			txt1.setGravity(Gravity.CENTER);
+			txt1.setTextSize(14);
+			txt1.setTextColor(Color.GRAY);
+			LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		    llp.setMargins(100, 400, 0, 0); // llp.setMargins(left, top, right, bottom);
+		    txt1.setLayoutParams(llp);
+			linearLayout.addView(txt1);
+
+		}else {
+			roteList.setOnItemClickListener(new OnItemClickListener(){
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1, int position,long arg3) {			
+					RotaApp rotinha = (RotaApp) roteList.getAdapter().getItem(position);
+					Bundle args = new Bundle();
+					args.putParcelable("rota", rotinha);				
+					Utils.changeFragment(getFragmentManager(), new DetailsUserListRoteFragment(), args);
+				}			
+			});
+		}
 	}
 	
 	public void mandaSMS(String telefone) {
