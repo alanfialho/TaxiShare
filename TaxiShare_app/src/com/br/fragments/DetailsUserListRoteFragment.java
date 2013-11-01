@@ -1,15 +1,19 @@
 package com.br.fragments;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.br.activitys.R;
+import com.br.entidades.EnderecoApp;
 import com.br.entidades.RotaApp;
+
 
 
 import com.br.network.WSTaxiShare;
 import com.br.resources.MapUtils;
 import com.br.resources.Utils;
+import com.br.sessions.SessionManagement;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -45,10 +49,10 @@ public class DetailsUserListRoteFragment extends Fragment{
 	private Context context;
 	private RotaApp rota, rotaDetalhe;
 	private MapUtils mapUtils;
-	private int rotaId;
+	private int rotaId, id;
 	private List<String> logins, telefones;
 	private int selecionado;
-
+	private SessionManagement session;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.rote_users_details, container, false);
@@ -69,6 +73,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 		mapView = (MapView) rootView.findViewById(R.id.rote_users_details_map);
 		mapView.onCreate(mBundle);
 
+
 		if (googleMap == null) {
 			googleMap = ((MapView) rootView.findViewById(R.id.rote_users_details_map)).getMap();
 			if (googleMap != null) {
@@ -85,6 +90,8 @@ public class DetailsUserListRoteFragment extends Fragment{
 		catch (Exception e) {
 			Utils.logException("DetailsUserListRoteFragment", "onCreateView", "", e);
 		}
+
+		session = new SessionManagement(rootView.getContext());
 
 		lblOrigem = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_origem_info);
 		lblDestino = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_destino_info);
@@ -113,7 +120,13 @@ public class DetailsUserListRoteFragment extends Fragment{
 			}});
 		btnSairRota.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				
+				try{
+					SairRotaTask task = new SairRotaTask();
+					task.execute();
+				}
+				catch (Exception e) {
+					Utils.logException("DetailsUserListRoteFragment", "onCreateView", "", e);
+				}
 			}});
 
 	}
@@ -130,7 +143,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 		latitudes[0] = Double.parseDouble(rotaDetalhe.getEnderecos().get(1).getLatitude());
 		longitudes[0] = Double.parseDouble(rotaDetalhe.getEnderecos().get(1).getLongitude());
 		String adm = rotaDetalhe.getAdministrador().getLogin();
-		
+
 		lblAdm.setText(adm);
 		logins.add(adm);
 		String telefoneAdm = rotaDetalhe.getAdministrador().getPessoa().getCelular();
@@ -209,10 +222,10 @@ public class DetailsUserListRoteFragment extends Fragment{
 		googleMap.getProjection();
 		//Adiciona a latitude e longitude da minha localização a um objeto LatLng
 		CameraPosition cp = new CameraPosition.Builder()
-		   .target(new LatLng(myLatLng.latitude, myLatLng.longitude))// centro do mapa para uma lat e long
-		   .zoom(12)          // muda a orientação da camera para leste
-		   .tilt(34)             // ângulo de visão da câmera para 45 graus
-		   .build();             // cria um CameraPosition a partir do builder   
+		.target(new LatLng(myLatLng.latitude, myLatLng.longitude))// centro do mapa para uma lat e long
+		.zoom(11)          // muda a orientação da camera para leste
+		.tilt(34)             // ângulo de visão da câmera para 45 graus
+		.build();             // cria um CameraPosition a partir do builder   
 
 		//Move a camera do mapa para a minha localização de acordo com o objeto LatLng gerado
 		googleMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
@@ -339,7 +352,50 @@ public class DetailsUserListRoteFragment extends Fragment{
 		startActivity(phoneCallIntent);
 	}
 
+	private class SairRotaTask extends AsyncTask<String, Void, String> {
+		ProgressDialog progress;
+		String userName = "";
 
+		protected void onPreExecute() {
+			progress = Utils.setProgreesDialog(progress, context, "Carregando", "Aguarde...");
+		}
+
+		@Override
+		protected String doInBackground(String... urls) {
+			HashMap<String, String> user = session.getUserDetails();
+
+			userName = user.get(SessionManagement.KEY_LOGIN);
+			rotaId = rotaDetalhe.getId();
+			id = Integer.parseInt(user.get(SessionManagement.KEY_PESSOAID));
+			String response = "";
+			EnderecoApp endereco = null;
+			for(int i = 0; i < logins.size(); i++){
+				if (userName.equals(logins.get(i))){
+					endereco = rotaDetalhe.getEnderecos().get(i + 1);
+				}
+			}
+
+
+
+			try {
+				WSTaxiShare ws = new WSTaxiShare();
+				response = ws.sairRota(rotaId, id, endereco);
+
+			} catch (Exception e) {
+				Utils.logException("DetailsUserListRoteFragment", "FillList", "onPostExecute", e);
+				response = "{errorCode:1, descricao:Erro ao sair da rota!}";
+			}
+			return response;
+		}
+
+		@Override
+		protected void onPostExecute(String response) {
+			Utils.gerarToast(context, "Saiu da rota");
+			Bundle args = new Bundle();
+			Utils.changeFragment(getFragmentManager(), new UserListRoteFragment(), args);
+			progress.dismiss();
+		}		
+	}
 
 
 	@Override

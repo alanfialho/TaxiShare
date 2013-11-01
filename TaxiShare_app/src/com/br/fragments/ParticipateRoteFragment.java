@@ -148,7 +148,7 @@ public class ParticipateRoteFragment extends Fragment{
 		//Adiciona a latitude e longitude da minha localização a um objeto LatLng
 		CameraPosition cp = new CameraPosition.Builder()
 		   .target(new LatLng(myLatLng.latitude, myLatLng.longitude))// centro do mapa para uma lat e long
-		   .zoom(12)          // muda a orientação da camera para leste
+		   .zoom(11)          // muda a orientação da camera para leste
 		   .tilt(34)             // ângulo de visão da câmera para 45 graus
 		   .build();             // cria um CameraPosition a partir do builder   
 
