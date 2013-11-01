@@ -102,7 +102,8 @@ public class ParticipateRoteFragment extends Fragment{
 
 	//Seta os marcadores no mapa
 	public void setMarcadores(RotaApp r){
-		int participantes = r.getUsuarios().size();
+		int participantes = 0;
+		participantes += r.getUsuarios().size();
 		double[] latitudes = new double[participantes + 1];
 		double[] longitudes = new double[participantes + 1];
 
@@ -117,10 +118,10 @@ public class ParticipateRoteFragment extends Fragment{
 		if (participantes > 0){
 			//Interao numero de participantes na rota e seta marcadores para cada um deles.
 			for (int i = 1; i <= participantes; i++){
-				latitudes[i] = Double.parseDouble(r.getEnderecos().get(i + 2).getLatitude());
-				longitudes[i] = Double.parseDouble(r.getEnderecos().get(i + 2).getLongitude());
+				latitudes[i] = Double.parseDouble(r.getEnderecos().get(i + 1).getLatitude());
+				longitudes[i] = Double.parseDouble(r.getEnderecos().get(i + 1).getLongitude());
 				String titulo = r.getUsuarios().get(i - 1).getLogin();
-				String rua = r.getEnderecos().get(i + 2).getRua() + ", " + r.getEnderecos().get(i + 2).getNumero() + " - " + r.getEnderecos().get(i + 2).getBairro();
+				String rua = r.getEnderecos().get(i + 1).getRua() + ", " + r.getEnderecos().get(i + 1).getNumero() + " - " + r.getEnderecos().get(i + 1).getBairro();
 				setMarker(latitudes[i], longitudes[i], titulo, rua, false);
 			}
 		}
