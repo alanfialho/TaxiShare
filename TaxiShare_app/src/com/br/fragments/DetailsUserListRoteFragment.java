@@ -111,6 +111,10 @@ public class DetailsUserListRoteFragment extends Fragment{
 			public void onClick(View view) {
 				popupLigar();
 			}});
+		btnSairRota.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				
+			}});
 
 	}
 

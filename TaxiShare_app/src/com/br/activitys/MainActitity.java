@@ -15,6 +15,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -235,6 +236,11 @@ public class MainActitity extends Activity {
 			//Ação se o usuario clicar em "sim"
 			public void onClick(DialogInterface dialog,int id) {
 				session.logoutUser();
+				Intent i = new Intent(MainActitity.this, LoginActivity.class);
+				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(i);
+				finish();
 
 			}
 		}) //Ação se o usuario clicar em "sim"
