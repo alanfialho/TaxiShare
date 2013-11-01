@@ -35,7 +35,8 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:maxLength="50" 
-            style="@style/EditTextTaxiShare"/>
+            style="@style/EditTextTaxiShare"
+            android:singleLine="true"/>
 
         <!-- LABEL DO EMAIL -->
 
@@ -53,7 +54,8 @@
             android:ems="10"
             android:inputType="textEmailAddress"
             android:maxLength="30" 
-            style="@style/EditTextTaxiShare"/>
+            style="@style/EditTextTaxiShare"
+            android:singleLine="true"/>
 
         <!-- LABEL DO SEXO -->
 
@@ -86,7 +88,8 @@
             android:hint="Ex: 11"
             android:inputType="number"
             android:maxLength="2" 
-            style="@style/EditTextTaxiShare"/>
+            style="@style/EditTextTaxiShare"
+            android:singleLine="true"/>
 
         <!-- LABEL DO CELULAR -->
 
@@ -104,7 +107,8 @@
             android:hint="Ex: 999999999"
             android:inputType="number"
             android:maxLength="9" 
-            style="@style/EditTextTaxiShare"/>
+            style="@style/EditTextTaxiShare"
+            android:singleLine="true"/>
 
         <!-- LABEL DA DATA NASCIMENTO -->
 
@@ -137,7 +141,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:maxLength="12" 
-            style="@style/EditTextTaxiShare"/>
+            style="@style/EditTextTaxiShare"
+            android:singleLine="true"/>
 
         <!-- LABEL DA SENHA -->
 
@@ -156,7 +161,8 @@
             android:inputType="textPassword"
             android:maxLength="16"
             android:maxLines="1" 
-            style="@style/EditTextTaxiShare"/>
+            style="@style/EditTextTaxiShare"
+            android:singleLine="true"/>
 
         <!-- LABEL DA CONFIRMACAO SENHA -->
 
@@ -175,7 +181,8 @@
             android:maxLength="16"
             android:maxLines="1"
             android:password="true" 
-            style="@style/EditTextTaxiShare"/>
+            style="@style/EditTextTaxiShare"
+            android:singleLine="true"/>
 
         <!-- LABEL DA PERGUNTA -->
 
@@ -206,7 +213,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:maxLength="50" 
-            style="@style/EditTextTaxiShare"/>
+            style="@style/EditTextTaxiShare"
+            android:singleLine="true"/>
 
         <!-- Error message -->
 

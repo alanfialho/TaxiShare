@@ -20,7 +20,6 @@
             android:textSize="25dip"
             android:textStyle="bold" />
 
-       
         <LinearLayout
             android:id="@+id/resetLoginLayout"
             android:layout_width="match_parent"
@@ -35,10 +34,11 @@
 
             <EditText
                 android:id="@+id/reset_pass_txt_login"
+                style="@style/EditTextTaxiShare"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:maxLines="1" >
+                android:singleLine="true" >
 
                 <requestFocus />
             </EditText>
@@ -73,10 +73,12 @@
 
             <EditText
                 android:id="@+id/reset_pass_txt_resposta"
+                style="@style/EditTextTaxiShare"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:singleLine="true" />
 
             <Button
                 android:id="@+id/reset_pass_btn_checar"
@@ -88,8 +90,8 @@
                 android:id="@+id/resetPasswordLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" 
-                android:visibility="gone">
+                android:orientation="vertical"
+                android:visibility="gone" >
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -99,11 +101,13 @@
 
                 <EditText
                     android:id="@+id/reset_pass_nova_senha"
+                    style="@style/EditTextTaxiShare"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="textPassword"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:singleLine="true" />
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -113,11 +117,13 @@
 
                 <EditText
                     android:id="@+id/reset_pass_nova_senha2"
+                    style="@style/EditTextTaxiShare"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="textPassword"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:singleLine="true" />
 
                 <Button
                     android:id="@+id/reset_pass_btn_alterar2"
@@ -126,9 +132,7 @@
                     android:layout_marginTop="20dip"
                     android:text="Alterar Senha" />
             </LinearLayout>
-
         </LinearLayout>
-
     </LinearLayout>
 
 </ScrollView>
