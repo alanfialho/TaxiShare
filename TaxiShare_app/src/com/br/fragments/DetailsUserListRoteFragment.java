@@ -374,9 +374,6 @@ public class DetailsUserListRoteFragment extends Fragment{
 					endereco = rotaDetalhe.getEnderecos().get(i + 1);
 				}
 			}
-
-
-
 			try {
 				WSTaxiShare ws = new WSTaxiShare();
 				response = ws.sairRota(rotaId, id, endereco);

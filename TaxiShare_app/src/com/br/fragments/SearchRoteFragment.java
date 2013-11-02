@@ -14,12 +14,8 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -84,7 +80,6 @@ public class SearchRoteFragment extends Fragment {
 		centerMapOnMyLocation();
 		setBtnAction();
 		setMarker();
-	
 		
 		return rootView;	
 	}
@@ -167,6 +162,9 @@ public class SearchRoteFragment extends Fragment {
 		btnBusca.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 
+				ProgressDialog progress = null;
+				progress = Utils.setProgreesDialog(progress, context, "Buscando endereço", "Aguarde...");
+				
 				//pega o texto dos campos
 				String origem = txtEndereco1.getText().toString();
 				String destino = txtEndereco2.getText().toString();
@@ -183,6 +181,8 @@ public class SearchRoteFragment extends Fragment {
 				
 				if(origemNumberTest && destinoNumberTest){
 					try {
+
+
 						//recebe uma lista de endereços com objetos ADDRESS
 						origemLista = getListaDeEnderecos(origem);
 						destinoLista = getListaDeEnderecos(destino);
@@ -245,9 +245,11 @@ public class SearchRoteFragment extends Fragment {
 									task.execute();								
 								}
 							});
-
+						
+							
 							//Mostra a popup de origem primeiro
-							popupOrigem.show();
+							popupOrigem.show();						
+						
 						}
 						//Se um endereço não deu retorno
 						else{
@@ -264,6 +266,9 @@ public class SearchRoteFragment extends Fragment {
 
 							Utils.gerarToast(context, "Sem resultados");
 						}
+						
+						//Esconde o progress
+						progress.dismiss();
 
 					} catch (Exception e) {
 						Utils.logException("SerachRoteFragment", "setBtnActions", "", e);

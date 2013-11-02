@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class CreateRoteFragment extends Fragment {
 			textDestino = (EditText) rootView.findViewById(R.id.rote_create_txt_destino);
 			spnPessoas = (Spinner) rootView.findViewById(R.id.rote_create_sp_pessoas);
 			tpHorarioSaida = (TimePicker) rootView.findViewById(R.id.rote_create_tp_saida);
-			
+
 
 			//Importando botões
 			btnCriarRota = (Button) rootView.findViewById(R.id.rote_create_btn_criar);
@@ -144,11 +145,33 @@ public class CreateRoteFragment extends Fragment {
 			//horario de saida
 			try
 			{
+				//Instancia uma nova data
+				Date date = new Date(); 
+				Calendar calendar = GregorianCalendar.getInstance(); 
+				
+				//Seta a data no calendario
+				calendar.setTime(date);   
+				
+				//Pegando a hora e minuto da rota e do celular
+				int hour = calendar.get(Calendar.HOUR_OF_DAY); 
+				int minute = calendar.get(Calendar.MINUTE); 
+				int roteHour = tpHorarioSaida.getCurrentHour();
+				int roteMinute = tpHorarioSaida.getCurrentMinute();
+				
+				//Parada para formarmatar a data
 				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-				Calendar cal = Calendar.getInstance();
-				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), tpHorarioSaida.getCurrentHour(), tpHorarioSaida.getCurrentMinute());
-				Date data = cal.getTime();
-				String dataFormatada = dateFormat.format(data);
+				
+				//Seta no calendario o ano, mes e os horarios da rota
+				calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), roteHour, roteMinute);
+
+				//Checa se a rota fica para o outro dia
+				//Quando o horario da rota for menor do que o horario atual
+				if(roteHour < hour || (roteHour == hour && roteMinute < minute)){
+					calendar.add(Calendar.DATE, 1);
+				}			
+
+				date = calendar.getTime();
+				String dataFormatada = dateFormat.format(date);
 				rotaApp.setDataRota(dataFormatada);
 			}
 			catch(Exception e)

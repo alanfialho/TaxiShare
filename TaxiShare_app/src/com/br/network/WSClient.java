@@ -38,11 +38,11 @@ public class WSClient {
 				Log.i("WSClient if entity not null taxi", "Result: " + result);
 
 				if(!resultCode.equals("200"))					
-					result = "{errorCode: 1, descricao: Falha de rede!}";
+					result = "{\"errorCode\": 1, \"descricao\": \"Falha de rede!\"}";
 			}
 		} catch (Exception e) {
 			Log.i("Exception WSClient get taxi", "Exception ->" + e);
-			result = "{errorCode: 1, descricao: Falha de rede!}";
+			result = "{\"errorCode\": 1, \"descricao\": \"Falha de rede!\"}";
 		}
 		return result;
 	}
@@ -67,11 +67,11 @@ public class WSClient {
 				instream.close();
 				
 				if(!resultCode.equals("200"))					
-					result = "{errorCode: 1, descricao: Falha de rede!}";
+					result = "{\"errorCode\": 1, \"descricao\": \"Falha de rede!\"}";
 			}
 
 		} catch (Exception e) {
-			result = "{errorCode: 1, descricao: Falha de rede!}";
+			result = "{\"errorCode\": 1, \"descricao\": \"Falha de rede!\"}";
 		}
 		return result;
 	}
@@ -99,10 +99,10 @@ public class WSClient {
 				instream.close();
 				
 				if(!resultCode.equals("200"))					
-					result = "{errorCode: 1, descricao: Falha de rede!}";
+					result = "{\"errorCode\": 1, \"descricao\": \"Falha de rede!\"}";
 			}
 		} catch (Exception e) {
-			result = "{errorCode: 1, descricao: Falha de rede!}";
+			result = "{\"errorCode\": 1, \"descricao\": \"Falha de rede!\"}";
 		}
 		return result;
 	}
