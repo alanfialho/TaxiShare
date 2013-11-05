@@ -80,21 +80,21 @@ public class SearchRoteFragment extends Fragment {
 		centerMapOnMyLocation();
 		setBtnAction();
 		setMarker();
-		
+
 		return rootView;	
 	}
-	
+
 	public Marker setMarker() {
 		double latitude = gps.getLatitude();
 		double longitude = gps.getLongitude();
-		
+
 		//		googleMap.addMarker(new MarkerOptions().position(new LatLng(-23.489839, -46.410520)).title("Marker"));
-		
+
 		Marker mark = googleMap.addMarker(new MarkerOptions()
 		.position(new LatLng(latitude, longitude))
 		.title("Voce está aqui!")
 		.icon(BitmapDescriptorFactory.fromResource(R.drawable.maker_azul)));
-		
+
 		mark.showInfoWindow();
 
 		return mark;
@@ -164,21 +164,21 @@ public class SearchRoteFragment extends Fragment {
 
 				ProgressDialog progress = null;
 				progress = Utils.setProgreesDialog(progress, context, "Buscando endereço", "Aguarde...");
-				
+
 				//pega o texto dos campos
 				String origem = txtEndereco1.getText().toString();
 				String destino = txtEndereco2.getText().toString();
-				
+
 				boolean origemNumberTest = origem.matches(".*\\d.*") ;
 				boolean destinoNumberTest = destino.matches(".*\\d.*") ;
-				
+
 				if(!origemNumberTest){
 					txtEndereco1.setError("Informe o endereço com número");
 				}
 				if(!destinoNumberTest){
 					txtEndereco2.setError("Informe o endereço com número");
 				}
-				
+
 				if(origemNumberTest && destinoNumberTest){
 					try {
 
@@ -245,11 +245,11 @@ public class SearchRoteFragment extends Fragment {
 									task.execute();								
 								}
 							});
-						
-							
+
+
 							//Mostra a popup de origem primeiro
 							popupOrigem.show();						
-						
+
 						}
 						//Se um endereço não deu retorno
 						else{
@@ -266,15 +266,13 @@ public class SearchRoteFragment extends Fragment {
 
 							Utils.gerarToast(context, "Sem resultados");
 						}
-						
-						//Esconde o progress
-						progress.dismiss();
 
 					} catch (Exception e) {
 						Utils.logException("SerachRoteFragment", "setBtnActions", "", e);
 						Utils.gerarToast(context, "Nenhum Endereço Encontrado, Verifque sua conexão");
 					}
 				}
+				progress.dismiss();
 			}
 		});
 	}	
@@ -420,7 +418,7 @@ public class SearchRoteFragment extends Fragment {
 		super.onResume();
 		mapView.onResume();
 		centerMapOnMyLocation();
-		
+
 	}
 
 	@Override
@@ -471,7 +469,7 @@ public class SearchRoteFragment extends Fragment {
 		// show it
 		alertDialog.show();
 	}
-	
+
 
 
 	private void centerMapOnMyLocation() {

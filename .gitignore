@@ -72,3 +72,4 @@ local.properties
 nbbuild.xml
 build.xml
 manifest.mf
+/Teste/rest-sample-module/nbproject/private/

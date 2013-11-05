@@ -1,7 +1,6 @@
 package com.br.activitys;
 
 import com.br.adapter.MenuAdapter;
-import com.br.fragments.CreateRoteFragment;
 import com.br.fragments.EditPasswordFragment;
 import com.br.fragments.EditRegisterFragment;
 import com.br.fragments.SearchRoteFragment;
