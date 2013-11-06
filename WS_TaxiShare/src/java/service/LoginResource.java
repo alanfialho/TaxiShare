@@ -178,7 +178,7 @@ public class LoginResource {
             Usuario login = (Usuario) loginDao.findLogin(loginInfo);
             if (login != null) {
                 //Retorna um json informando que o login ja existe
-                login.setSenha("");
+//                login.setSenha("");
                 Usuario loginRetorno = new Usuario();
                 loginRetorno.setId(login.getId());
                 loginRetorno.setPergunta(login.getPergunta());
