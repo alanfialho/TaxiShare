@@ -1,9 +1,146 @@
-.links{
-    a{
-      clear:  both;
-    }
+body {
+	background: #FFF;
+	font-family: Georgia, Times New Roman, Times, serif;
+	font-size: 30px;
+	text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
-.texto{
-    font: larger;
+h1 {
+	font-size: 60px;
+	font-weight: normal;
+	margin: 0;
+    font-family: 'Chelsea Market', Georgia, serif;
+    color: #000;
+	line-height: 1;
+}
+
+h2 {
+	font-size: 70px;
+	font-weight: normal;
+	margin: 0;
+	color: #FFB000;
+    font-family: 'Chelsea Market', Georgia, serif;
+	text-transform: lowercase;
+}
+
+h3 {
+	font-size: 40px;
+	font-weight: normal;
+	margin: 0;
+    margin-top: 40px;
+	text-transform: lowercase;
+}
+
+p {
+	width: 960px;
+	margin: 40px auto;
+	color: #000;
+    line-height: 200%;
+}
+
+a, a:visited {
+	color: #000;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+ul {
+	list-style: none;
+}
+
+.download {
+	padding: 10px;
+}
+
+pre {
+	font-size: 18px;
+}
+
+blockquote {
+	text-align: left;
+	width: 720px;
+	margin: 10px auto;
+	background: #C5C3DE;
+	border: solid 2px #69697A;
+	padding: 0 40px;
+}
+
+code {
+    background-color: #000;
+	font-style: normal;
+    border-radius: 10px;
+    color: white;
+    padding: 5px 15px;
+    font-family: menlo, monospace;
+}
+
+/*----------------------------------------  BLOCKS */
+
+.scrollblock {
+	position: relative;
+	margin: 0;
+	width: 100%;
+    color: white;
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.scrollblock h2 {
+
+}
+
+.block-intro {
+background-color:#348fd4
+}
+
+.block-dois {
+background-color:#ffc19f;    
+
+}
+.block-servicos {
+background-color:#fff8c9;    
+    color:black;
+
+}
+
+.block-tres {
+background-color:#cc4037
+}
+
+.tower {
+    display: block;
+    width: 180px;
+    height: 260px;
+    position: absolute;
+    top: 330px;
+    right: 0;
+    background: #FFF url(../img/git-tower.png) no-repeat;
+}
+
+.cheatsheet {
+    display: block;
+    width: 180px;
+    height: 250px;
+    position: absolute;
+    top: 346px;
+    left: 0;
+    background: #FFF url(../img/cheatsheet.png) no-repeat;
+}
+
+.announcement {
+    margin-bottom: 40px;
+}
+
+.announcement img {
+    border-radius: 4px;
+}
+
+.imgs img{
+    
 }
