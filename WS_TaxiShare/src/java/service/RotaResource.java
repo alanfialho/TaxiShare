@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
 import TS.FrameWork.TO.Rota;
@@ -31,11 +27,6 @@ import org.hibernate.Hibernate;
 import util.TsExclusionStrategy;
 import util.Utils;
 
-
-/**
- *
- * @author alan
- */
 @Stateless
 @Path("/rota")
 public class RotaResource {
@@ -190,7 +181,6 @@ public class RotaResource {
         return gson.toJson(saida);
     }
     
-    
     @PUT
     @Path("/joinIn/{idRota}/{idUsuario}")
     @Produces("application/json")
@@ -273,8 +263,7 @@ public class RotaResource {
     @Path("/exitRote/{idRota}/{idUsuario}")
     @Produces("application/json")
     @Consumes("application/json")
-    public String exitRote(@PathParam("idRota")int idRota, @PathParam("idUsuario")int idUsuario, Endereco endereco)
-    {
+    public String exitRote(@PathParam("idRota")int idRota, @PathParam("idUsuario")int idUsuario, Endereco endereco)    {
         ResponseEntity saida = null;
         Rota rota = null;
         Usuario usuario = null;
@@ -351,8 +340,8 @@ public class RotaResource {
     protected EntityManager getEntityManager() {
         return em;
     }
-    protected Boolean validaHora(List<Rota> rotasAdm, String dt)
-    {
+    
+    protected Boolean validaHora(List<Rota> rotasAdm, String dt)    {
         //se não for maior que zero significa que é a primeira rota
         if (rotasAdm.size() > 0)
         {

@@ -132,7 +132,7 @@
         </activity>
         <activity
             android:name="com.br.activitys.LoginActivity"
-            
+            android:windowSoftInputMode="adjustPan"
             android:label="TaxiShare"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation"

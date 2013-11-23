@@ -60,7 +60,7 @@ public class PessoaResource {
         catch (Exception ex) 
         {
             System.out.println("ERRRO --> " + ex.getMessage());
-            saida = new ResponseEntity("Erro", 1, "Não foi possivel realizar operação, tente mais tarde!", null);
+            saida = new ResponseEntity("Erro", 1, ex.getMessage(), null);
             System.out.println("create pessoa resource exception -> " + ex + " -- Message -> " + ex.getMessage());
         }
         
@@ -121,7 +121,7 @@ public class PessoaResource {
         catch(Exception ex)
         {
             System.out.println("ERRRO --> " + ex.getMessage());
-            saida = new ResponseEntity("Erro", 1, "Não foi possivel realizar operação, tente mais tarde!", null);
+            saida = new ResponseEntity("Erro", 1, ex.getMessage(), null);
         }
 
         //Retorna um json completo com os dados das pessoas
