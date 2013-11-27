@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,7 +16,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Address;
-import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,8 +24,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
 import com.br.activitys.R;
 import com.br.entidades.EnderecoApp;
 import com.br.entidades.PerimetroApp;
@@ -102,15 +103,16 @@ public class SearchRoteFragment extends Fragment {
 
 	public List<Address>  getListaDeEnderecos(String endereco) throws IOException {
 		// esse Geocoder aqui é quem vai traduzir o endereço de String para coordenadas double
-		Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
+		com.br.resources.Geocoder geocoder = new com.br.resources.Geocoder(context, Locale.getDefault() );
 
 		//este Adress aqui recebe um retorno do metodo geoCoder.getFromLocationName vc manipula este retorno pra pega as coordenadas
 		List<Address> enderecos = null;  
 
 		// o numero um aqui é a quantidade maxima de resultados que vc quer receber
-		enderecos = geoCoder.getFromLocationName(endereco, 99);
-
-		return enderecos;
+		enderecos = geocoder.getAddresses(endereco);
+		Utils.gerarToast(context, "ENDERECOS  " + enderecos.size());
+		
+				return enderecos;
 	}
 
 	public CharSequence[] getListaConvertida(List<Address> enderecos){
@@ -190,6 +192,8 @@ public class SearchRoteFragment extends Fragment {
 						//Converte para uma lista de strings formatadas
 						final CharSequence[] enderecosOrigem = getListaConvertida(origemLista);
 						final CharSequence[] enderecosDestino = getListaConvertida(destinoLista);
+						
+						Utils.gerarToast(context, "origem! " + origemLista.size() + " -- destino " + destinoLista.size());
 
 						//Checa se houve retorno para os dois endereços
 						if(enderecosOrigem.length > 0 && enderecosDestino.length >0){
@@ -269,7 +273,7 @@ public class SearchRoteFragment extends Fragment {
 
 					} catch (Exception e) {
 						Utils.logException("SerachRoteFragment", "setBtnActions", "", e);
-						Utils.gerarToast(context, "Nenhum Endereço Encontrado, Verifque sua conexão");
+						Utils.gerarToast(context, "erro maldito -> " +  e);
 					}
 				}
 				progress.dismiss();
