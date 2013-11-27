@@ -80,7 +80,7 @@ public class SearchRoteFragment extends Fragment {
 		centerMapOnMyLocation();
 		setBtnAction();
 		setMarker();
-
+		
 		return rootView;	
 	}
 
@@ -109,7 +109,7 @@ public class SearchRoteFragment extends Fragment {
 
 		// o numero um aqui é a quantidade maxima de resultados que vc quer receber
 		enderecos = geoCoder.getFromLocationName(endereco, 99);
-
+		
 		return enderecos;
 	}
 
