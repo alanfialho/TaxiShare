@@ -18,11 +18,11 @@ import com.androidquery.callback.AjaxStatus;
 public class Geocoder {
 
 	private Context context;
-	private Locale locale;
+	private Locale loocale;
 
 	public Geocoder(Context context, Locale locale) {
 		this.context = context;
-		this.locale = locale;
+		this.loocale = locale;
 	}
 
 	public List<Address> getAddresses(String address) {
