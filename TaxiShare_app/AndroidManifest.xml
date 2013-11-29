@@ -33,7 +33,7 @@
         android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAxWJ1vsyVB4Vexy7hwsV0TGlH7mzqEWDg" />
+            android:value="AIzaSyA4r65xiFATtatfmPoBIetBKZo6y1j8P8I" />
 
         <activity
             android:name="com.br.activitys.IntroActivity"

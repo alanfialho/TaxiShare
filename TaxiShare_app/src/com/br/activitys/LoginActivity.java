@@ -18,6 +18,7 @@ import android.widget.ImageView;
 
 import com.br.network.WSTaxiShare;
 import com.br.resources.AESCrypt;
+import com.br.resources.TesteENum;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
 import com.br.validation.Rule;
@@ -97,6 +98,8 @@ public class LoginActivity extends Activity {
 		btnLogin.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				validator.validate();
+//				TesteENum teste = new TesteENum();
+//				teste.teste();
 			}
 		});
 

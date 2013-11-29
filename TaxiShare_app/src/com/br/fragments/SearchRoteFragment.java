@@ -102,15 +102,15 @@ public class SearchRoteFragment extends Fragment {
 	}
 
 	public List<Address>  getListaDeEnderecos(String endereco) throws IOException {
+			//este Adress aqui recebe um retorno do metodo geoCoder.getFromLocationName vc manipula este retorno pra pega as coordenadas
+		List<Address> enderecos = new ArrayList<Address>(); 
+		
 		// esse Geocoder aqui é quem vai traduzir o endereço de String para coordenadas double
-		com.br.resources.Geocoder geocoder = new com.br.resources.Geocoder(context, Locale.getDefault() );
-
-		//este Adress aqui recebe um retorno do metodo geoCoder.getFromLocationName vc manipula este retorno pra pega as coordenadas
-		List<Address> enderecos = null;  
+		com.br.resources.Geocoder geocoder = new com.br.resources.Geocoder(context);
 
 		// o numero um aqui é a quantidade maxima de resultados que vc quer receber
-		enderecos = geocoder.getAddresses(endereco);
-		Utils.gerarToast(context, "ENDERECOS  " + enderecos.size());
+		geocoder.getAddresses(endereco);
+		
 		
 				return enderecos;
 	}
@@ -147,7 +147,7 @@ public class SearchRoteFragment extends Fragment {
 			}
 		}
 
-		googleMap.setTrafficEnabled(true);
+//		googleMap.setTrafficEnabled(true);
 		btnBusca = (Button) rootView.findViewById(R.id.rote_search_btn_buscar);
 		caixaTexto = (ImageView) rootView.findViewById(R.id.rote_search_img_texto);
 
@@ -192,8 +192,6 @@ public class SearchRoteFragment extends Fragment {
 						//Converte para uma lista de strings formatadas
 						final CharSequence[] enderecosOrigem = getListaConvertida(origemLista);
 						final CharSequence[] enderecosDestino = getListaConvertida(destinoLista);
-						
-						Utils.gerarToast(context, "origem! " + origemLista.size() + " -- destino " + destinoLista.size());
 
 						//Checa se houve retorno para os dois endereços
 						if(enderecosOrigem.length > 0 && enderecosDestino.length >0){
@@ -493,58 +491,7 @@ public class SearchRoteFragment extends Fragment {
 			gps.showSettingsAlert();
 		}
 
-	}
-
-	private class FindAll extends AsyncTask<String, Void, String> {
-
-		ProgressDialog progress;
-		List<RotaApp> listaRota;
-
-		protected void onPreExecute() {
-			progress = Utils.setProgreesDialog(progress, context, "Criando Rota", "Aguarde...");
-		}
-
-		@Override
-		protected String doInBackground(String... urls) {
-			String response = "";
-			try
-			{
-				WSTaxiShare ws = new WSTaxiShare();
-				listaRota = ws.getRotas();
-				response = "{errorCode:0, descricao:Sucesso}";
-			}
-			catch(Exception e)
-			{
-				Utils.gerarToast(context, "Erro ao criar rota!");
-				Utils.logException("CreateRoteFragment", "CreateRoteTask", "doInBackground", e);
-			}	
-
-			return response;
-		}
-
-		@Override
-		protected void onPostExecute(String response) {
-			progress.dismiss();
-
-			try {
-				JSONObject json = new JSONObject(response);
-				if(json.getInt("errorCode") == 0){
-
-					//Passando a rota selecionada para tela de detalhes.
-					Bundle args = new Bundle();
-					args.putSerializable("rotas", (Serializable) listaRota);
-					args.putParcelable("destinoAddress", dest);
-					Utils.changeFragment(getFragmentManager(), new ListRoteFragment(), args);
-				}
-
-				Utils.gerarToast(context, json.getString("descricao"));				
-
-			} catch (JSONException e) {
-				Utils.logException("SearchRoteFragment", "FindAll", "onPostExecute", e);
-				response = "{errorCode:1, descricao:Erro ao carregar rotas!}";
-			}
-		}
-	}
+	}	
 }
 
 
