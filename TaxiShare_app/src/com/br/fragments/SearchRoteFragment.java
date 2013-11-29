@@ -81,7 +81,7 @@ public class SearchRoteFragment extends Fragment {
 		centerMapOnMyLocation();
 		setBtnAction();
 		setMarker();
-
+		
 		return rootView;	
 	}
 
@@ -109,10 +109,12 @@ public class SearchRoteFragment extends Fragment {
 		com.br.resources.Geocoder geocoder = new com.br.resources.Geocoder(context);
 
 		// o numero um aqui é a quantidade maxima de resultados que vc quer receber
+
 		geocoder.getAddresses(endereco);
 		
 		
 				return enderecos;
+
 	}
 
 	public CharSequence[] getListaConvertida(List<Address> enderecos){
