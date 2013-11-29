@@ -35,6 +35,7 @@ public class Geocoder {
 
 		aq.ajax(url, JSONObject.class, new AjaxCallback<JSONObject>() {
 
+			
 			@Override
 			public void callback(String url, JSONObject json, AjaxStatus status) {
 
@@ -127,7 +128,9 @@ public class Geocoder {
 			}//Fim do callback
 		});//Fim do AQUERY
 		
+	
 		return addresses;
+		
 	}	
 }
 
