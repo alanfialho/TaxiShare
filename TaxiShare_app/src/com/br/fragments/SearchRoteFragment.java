@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,7 +16,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Address;
-import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,8 +24,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
 import com.br.activitys.R;
 import com.br.entidades.EnderecoApp;
 import com.br.entidades.PerimetroApp;
@@ -102,16 +103,17 @@ public class SearchRoteFragment extends Fragment {
 	}
 
 	public List<Address>  getListaDeEnderecos(String endereco) throws IOException {
+			//este Adress aqui recebe um retorno do metodo geoCoder.getFromLocationName vc manipula este retorno pra pega as coordenadas
+		List<Address> enderecos = new ArrayList<Address>(); 
+		
 		// esse Geocoder aqui é quem vai traduzir o endereço de String para coordenadas double
-		Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
-
-		//este Adress aqui recebe um retorno do metodo geoCoder.getFromLocationName vc manipula este retorno pra pega as coordenadas
-		List<Address> enderecos = null;  
+		com.br.resources.Geocoder geocoder = new com.br.resources.Geocoder(context);
 
 		// o numero um aqui é a quantidade maxima de resultados que vc quer receber
-		enderecos = geoCoder.getFromLocationName(endereco, 99);
 		
-		return enderecos;
+		
+				return geocoder.getAddresses(endereco);
+
 	}
 
 	public CharSequence[] getListaConvertida(List<Address> enderecos){
@@ -146,7 +148,7 @@ public class SearchRoteFragment extends Fragment {
 			}
 		}
 
-		googleMap.setTrafficEnabled(true);
+//		googleMap.setTrafficEnabled(true);
 		btnBusca = (Button) rootView.findViewById(R.id.rote_search_btn_buscar);
 		caixaTexto = (ImageView) rootView.findViewById(R.id.rote_search_img_texto);
 
@@ -270,7 +272,7 @@ public class SearchRoteFragment extends Fragment {
 
 					} catch (Exception e) {
 						Utils.logException("SerachRoteFragment", "setBtnActions", "", e);
-						Utils.gerarToast(context, "Nenhum Endereço Encontrado, Verifque sua conexão");
+						Utils.gerarToast(context, "erro maldito -> " +  e);
 					}
 				}
 				progress.dismiss();
@@ -490,58 +492,7 @@ public class SearchRoteFragment extends Fragment {
 			gps.showSettingsAlert();
 		}
 
-	}
-
-	private class FindAll extends AsyncTask<String, Void, String> {
-
-		ProgressDialog progress;
-		List<RotaApp> listaRota;
-
-		protected void onPreExecute() {
-			progress = Utils.setProgreesDialog(progress, context, "Criando Rota", "Aguarde...");
-		}
-
-		@Override
-		protected String doInBackground(String... urls) {
-			String response = "";
-			try
-			{
-				WSTaxiShare ws = new WSTaxiShare();
-				listaRota = ws.getRotas();
-				response = "{errorCode:0, descricao:Sucesso}";
-			}
-			catch(Exception e)
-			{
-				Utils.gerarToast(context, "Erro ao criar rota!");
-				Utils.logException("CreateRoteFragment", "CreateRoteTask", "doInBackground", e);
-			}	
-
-			return response;
-		}
-
-		@Override
-		protected void onPostExecute(String response) {
-			progress.dismiss();
-
-			try {
-				JSONObject json = new JSONObject(response);
-				if(json.getInt("errorCode") == 0){
-
-					//Passando a rota selecionada para tela de detalhes.
-					Bundle args = new Bundle();
-					args.putSerializable("rotas", (Serializable) listaRota);
-					args.putParcelable("destinoAddress", dest);
-					Utils.changeFragment(getFragmentManager(), new ListRoteFragment(), args);
-				}
-
-				Utils.gerarToast(context, json.getString("descricao"));				
-
-			} catch (JSONException e) {
-				Utils.logException("SearchRoteFragment", "FindAll", "onPostExecute", e);
-				response = "{errorCode:1, descricao:Erro ao carregar rotas!}";
-			}
-		}
-	}
+	}	
 }
 
 
