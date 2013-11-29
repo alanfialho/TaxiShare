@@ -33,6 +33,7 @@ import com.br.entidades.RotaApp;
 import com.br.network.WSTaxiShare;
 import com.br.resources.GpsTracker;
 import com.br.resources.MapUtils;
+
 import com.br.resources.Utils;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -182,7 +183,7 @@ public class SearchRoteFragment extends Fragment {
 				if(origemNumberTest && destinoNumberTest){
 					try {
 
-
+						
 						//recebe uma lista de endereços com objetos ADDRESS
 						origemLista = getListaDeEnderecos(origem);
 						destinoLista = getListaDeEnderecos(destino);
