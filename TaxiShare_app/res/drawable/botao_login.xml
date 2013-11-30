@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    
+    <item android:drawable="@drawable/botaologinpress" android:state_pressed="true"/>
+    <item android:drawable="@drawable/botaologinfocused" android:state_enabled="true" android:state_focused="true"/>
+    <item android:drawable="@drawable/botaologin" android:state_enabled="true"/>
+    <item android:drawable="@drawable/botaologinfocused" android:state_focused="true"/>
+    <item android:drawable="@drawable/botaologin"/>
+
+</selector>

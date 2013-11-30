@@ -19,6 +19,8 @@
         android:ems="10" 
         android:enabled="false"
         android:focusable="false"
+        android:singleLine="true"
+        android:maxLines="1"
         style="@style/EditTextTaxiShare">
 
         <requestFocus />
@@ -38,6 +40,8 @@
         android:ems="10" 
         android:enabled="false"
         android:focusable="false"
+        android:singleLine="true"
+        android:maxLines="1"
         style="@style/EditTextTaxiShare"/>
 
     <TextView
@@ -68,8 +72,10 @@
 
     <Button
         android:id="@+id/rote_create_btn_criar"
+        style="@style/BtnTaxi"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Criar" />
+        android:text="Criar"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

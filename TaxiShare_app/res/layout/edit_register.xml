@@ -129,7 +129,9 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:text="Salvar Alterações" />
+            android:text="Salvar Alterações" 
+            android:textColor="@android:color/white"
+            style="@style/BtnTaxi"/>
 
         <!-- BOTAO DE VOLTAR -->
     </LinearLayout>

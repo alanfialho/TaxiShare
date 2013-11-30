@@ -45,10 +45,12 @@
 
             <Button
                 android:id="@+id/reset_pass_btn_recuperar"
+                style="@style/BtnTaxi"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dip"
-                android:text="Recuperar" />
+                android:text="Recuperar"
+                android:textColor="@android:color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -82,9 +84,11 @@
 
             <Button
                 android:id="@+id/reset_pass_btn_checar"
+                style="@style/BtnTaxi"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Alterar Senha" />
+                android:text="Alterar Senha"
+                android:textColor="@android:color/white" />
 
             <LinearLayout
                 android:id="@+id/resetPasswordLayout"
@@ -127,10 +131,12 @@
 
                 <Button
                     android:id="@+id/reset_pass_btn_alterar2"
+                    style="@style/BtnTaxi"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dip"
-                    android:text="Alterar Senha" />
+                    android:text="Alterar Senha"
+                    android:textColor="@android:color/white" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
