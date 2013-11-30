@@ -19,7 +19,11 @@ import android.content.res.Configuration;
 import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.sax.TextElementListener;
+=======
+import android.util.Log;
+>>>>>>> b1241699c1f3ffdab7e24c1780357ea5fcc09640
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,12 +116,15 @@ public class SearchRoteFragment extends Fragment {
 		List<Address> enderecos = new ArrayList<Address>(); 
 		
 		// esse Geocoder aqui é quem vai traduzir o endereço de String para coordenadas double
-		com.br.resources.Geocoder geocoder = new com.br.resources.Geocoder(context);
+		android.location.Geocoder geocoder = new android.location.Geocoder(context);
 
 		// o numero um aqui é a quantidade maxima de resultados que vc quer receber
+		//endereco.replace(" ", "+");
+		//String url = "http://maps.googleapis.com/maps/api/geocode/json?address=" + endereco + "&sensor=true";
+		enderecos = geocoder.getFromLocationName(endereco, 10000);
+				//geocoder.getAddresses(endereco);
 		
-		
-				return geocoder.getAddresses(endereco);
+		return enderecos;
 
 	}
 
