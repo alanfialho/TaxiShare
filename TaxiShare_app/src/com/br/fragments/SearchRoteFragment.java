@@ -19,11 +19,11 @@ import android.content.res.Configuration;
 import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
-<<<<<<< HEAD
+
 import android.sax.TextElementListener;
-=======
+
 import android.util.Log;
->>>>>>> b1241699c1f3ffdab7e24c1780357ea5fcc09640
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
