@@ -11,7 +11,6 @@ import com.br.entidades.RotaApp;
 
 
 import com.br.network.WSTaxiShare;
-import com.br.resources.MapUtils;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -48,8 +47,6 @@ public class DetailsUserListRoteFragment extends Fragment{
 	private TextView lblOrigem, lblDestino, lblPassageiros, lblAdm, lblHora;
 	private Context context;
 	private RotaApp rota, rotaDetalhe;
-	private MapUtils mapUtils;
-	private int rotaId, id;
 	private List<String> logins, telefones;
 	private int selecionado;
 	private SessionManagement session;
@@ -62,7 +59,6 @@ public class DetailsUserListRoteFragment extends Fragment{
 		} catch (GooglePlayServicesNotAvailableException e) {
 			Utils.logException("DetailsUserListRoteFragment", "onCreateView", "", e);
 		}
-		mapUtils = new MapUtils(context, googleMap);
 		setAtributes(rootView);
 		setBtnAction();
 
@@ -133,8 +129,8 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 	public void setMarcadores(){
 		int participantes = 0;
-		logins = new ArrayList();
-		telefones = new ArrayList();
+		logins = new ArrayList<String>();
+		telefones = new ArrayList<String>();
 		participantes += rotaDetalhe.getUsuarios().size();
 		double[] latitudes = new double[participantes + 1];
 		double[] longitudes = new double[participantes + 1];
@@ -169,6 +165,8 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 	private class DetalhesRotaTask extends AsyncTask<String, Void, String> {
 		ProgressDialog progress;
+		int rotaId;
+
 
 		protected void onPreExecute() {
 			progress = Utils.setProgreesDialog(progress, context, "Carregando", "Aguarde...");
@@ -233,7 +231,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 	}
 
 	private void popupSms(){
-		final ArrayList mSelectedItems = new ArrayList();  // Where we track the selected items
+		final ArrayList<Integer> mSelectedItems = new ArrayList<Integer>();  // Where we track the selected items
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		final CharSequence[] items = logins.toArray(new CharSequence[logins.size()]); 
 
@@ -307,7 +305,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 		alertDialog.show();
 	}
 
-	private void enviaSms(ArrayList c){
+	private void enviaSms(ArrayList<Integer> c){
 		String separator = "; ";
 		if(android.os.Build.MANUFACTURER.equalsIgnoreCase("samsung")){
 			separator = ", ";
@@ -354,19 +352,20 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 	private class SairRotaTask extends AsyncTask<String, Void, String> {
 		ProgressDialog progress;
-		String userName = "";
+		String userName;
+		int rotaId, id;
 
 		protected void onPreExecute() {
 			progress = Utils.setProgreesDialog(progress, context, "Carregando", "Aguarde...");
+			HashMap<String, String> user = session.getUserDetails();
+			userName = user.get(SessionManagement.KEY_LOGIN);
+			rotaId = rotaDetalhe.getId();
+			id = Integer.parseInt(user.get(SessionManagement.KEY_PESSOAID));
 		}
 
 		@Override
 		protected String doInBackground(String... urls) {
-			HashMap<String, String> user = session.getUserDetails();
 
-			userName = user.get(SessionManagement.KEY_LOGIN);
-			rotaId = rotaDetalhe.getId();
-			id = Integer.parseInt(user.get(SessionManagement.KEY_PESSOAID));
 			String response = "";
 			EnderecoApp endereco = null;
 			for(int i = 0; i < logins.size(); i++){
@@ -387,7 +386,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 		@Override
 		protected void onPostExecute(String response) {
-			Utils.gerarToast(context, "Saiu da rota");
+			Utils.gerarToast(context, response);
 			Bundle args = new Bundle();
 			Utils.changeFragment(getFragmentManager(), new UserListRoteFragment(), args);
 			progress.dismiss();

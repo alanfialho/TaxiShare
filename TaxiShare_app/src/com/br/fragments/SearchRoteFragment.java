@@ -1,13 +1,8 @@
 package com.br.fragments;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
@@ -18,16 +13,12 @@ import android.content.DialogInterface;
 import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxCallback;
-import com.androidquery.callback.AjaxStatus;
 import com.br.activitys.R;
 import com.br.entidades.EnderecoApp;
 import com.br.entidades.PerimetroApp;
@@ -59,7 +50,6 @@ public class SearchRoteFragment extends Fragment {
 	private EditText txtEndereco1;
 	private EditText txtEndereco2;
 	public Context context;
-	private ImageView caixaTexto;
 	EnderecoApp enderecoOrigem;
 	EnderecoApp enderecoDestino;
 	Address ori, dest;
@@ -83,7 +73,7 @@ public class SearchRoteFragment extends Fragment {
 		centerMapOnMyLocation();
 		setBtnAction();
 		setMarker();
-		
+
 		return rootView;	
 	}
 
@@ -104,20 +94,15 @@ public class SearchRoteFragment extends Fragment {
 	}
 
 	public List<Address>  getListaDeEnderecos(String endereco) throws IOException {
-			//este Adress aqui recebe um retorno do metodo geoCoder.getFromLocationName vc manipula este retorno pra pega as coordenadas
+		//este Adress aqui recebe um retorno do metodo geoCoder.getFromLocationName vc manipula este retorno pra pega as coordenadas
 		List<Address> enderecos = new ArrayList<Address>(); 
-		
+
 		// esse Geocoder aqui é quem vai traduzir o endereço de String para coordenadas double
 		android.location.Geocoder geocoder = new android.location.Geocoder(context);
 
-		// o numero um aqui é a quantidade maxima de resultados que vc quer receber
-		//endereco.replace(" ", "+");
-		//String url = "http://maps.googleapis.com/maps/api/geocode/json?address=" + endereco + "&sensor=true";
 		enderecos = geocoder.getFromLocationName(endereco, 10000);
-				//geocoder.getAddresses(endereco);
-		
-		return enderecos;
 
+		return enderecos;
 	}
 
 	public CharSequence[] getListaConvertida(List<Address> enderecos){
@@ -148,16 +133,16 @@ public class SearchRoteFragment extends Fragment {
 		if (googleMap == null) {
 			googleMap = ((MapView) rootView.findViewById(R.id.rote_search_map)).getMap();
 			if (googleMap != null) {
-				//				setUpMap();
 			}
 		}
 
-//		googleMap.setTrafficEnabled(true);
 		btnBusca = (Button) rootView.findViewById(R.id.rote_search_btn_buscar);
-		caixaTexto = (ImageView) rootView.findViewById(R.id.rote_search_img_texto);
 
 		txtEndereco1 = (EditText) rootView.findViewById(R.id.rote_search_txt_origem);
 		txtEndereco2 = (EditText) rootView.findViewById(R.id.rote_search_txt_destino);
+
+		txtEndereco1.setText("rua quata 300");
+		txtEndereco2.setText("rua cervinho 191");
 		aQuery = new AQuery(rootView.getContext());	
 
 		mapUtils = new MapUtils(context, googleMap);
@@ -189,7 +174,6 @@ public class SearchRoteFragment extends Fragment {
 				if(origemNumberTest && destinoNumberTest){
 					try {
 
-						
 						//recebe uma lista de endereços com objetos ADDRESS
 						origemLista = getListaDeEnderecos(origem);
 						destinoLista = getListaDeEnderecos(destino);
@@ -248,13 +232,12 @@ public class SearchRoteFragment extends Fragment {
 
 									//Executa uma async task que ira no ws pegar a lista de rotas
 									RouteListTask task = new RouteListTask(origemLatitude, origemLongitude, destinoLatitude, destinoLongitude);
-									//								FindAll task = new FindAll();
 									task.execute();								
 								}
 							});
 
-
 							//Mostra a popup de origem primeiro
+							progress.dismiss();
 							popupOrigem.show();						
 
 						}
@@ -276,10 +259,9 @@ public class SearchRoteFragment extends Fragment {
 
 					} catch (Exception e) {
 						Utils.logException("SerachRoteFragment", "setBtnActions", "", e);
-						Utils.gerarToast(context, "erro maldito -> " +  e);
+						Utils.gerarToast(context, "Falha de rede! Tente novamente mais tarde.");
 					}
 				}
-				progress.dismiss();
 			}
 		});
 	}	
@@ -294,8 +276,7 @@ public class SearchRoteFragment extends Fragment {
 		final double degLatKm = 110.574235;
 		final double degLongKm = 110.572833 * Math.cos(latRadian);
 		final double deltaLat = pDistanceInMeters / 1000.0 / degLatKm;
-		final double deltaLong = pDistanceInMeters / 1000.0 /
-				degLongKm;
+		final double deltaLong = pDistanceInMeters / 1000.0 / degLongKm;
 
 		final double minLat = pLatitude - deltaLat;
 		final double minLong = pLongitude - deltaLong;

@@ -18,7 +18,6 @@ import android.widget.ImageView;
 
 import com.br.network.WSTaxiShare;
 import com.br.resources.AESCrypt;
-import com.br.resources.TesteENum;
 import com.br.resources.Utils;
 import com.br.sessions.SessionManagement;
 import com.br.validation.Rule;
@@ -52,9 +51,6 @@ public class LoginActivity extends Activity {
 
 	@Override	
 	public void onCreate(Bundle savedInstanceState) {
-		
-		
-		
 		super.onCreate(savedInstanceState);
 		//Seta o login layout
 		setContentView(R.layout.login);
@@ -98,8 +94,6 @@ public class LoginActivity extends Activity {
 		btnLogin.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				validator.validate();
-//				TesteENum teste = new TesteENum();
-//				teste.teste();
 			}
 		});
 
@@ -129,6 +123,8 @@ public class LoginActivity extends Activity {
 		//Pegando os campos da tela
 		loginLogin = (EditText) findViewById(R.id.login_txt_login);
 		loginSenha = (EditText) findViewById(R.id.login_txt_senha);
+		loginLogin.setText("alan");
+		loginSenha.setText("123456");
 		loginLogin.requestFocus();
 		
 
@@ -179,8 +175,7 @@ public class LoginActivity extends Activity {
 			progress = Utils.setProgreesDialog(progress, context, "Efetuando Login", "Aguarde...");
 			//Pegando o email e a senha da tela
 			login = loginLogin.getText().toString();
-			password = loginSenha.getText().toString();
-
+			password = loginSenha.getText().toString().replace(" ", "");
 
 			try {
 				AESCrypt senhaEncripatada = new AESCrypt(password);
@@ -197,18 +192,6 @@ public class LoginActivity extends Activity {
 
 			//Inicializa o WS
 			WSTaxiShare ws = new WSTaxiShare();
-			//List<PerimetroApp> perimetros = new ArrayList();
-//			PerimetroApp origem = new PerimetroApp(-22.0000000,-19.000000,-37.000000,-36.00000);
-			//PerimetroApp destino = new PerimetroApp(-46.000000,-45.00000,-66.000000,-64.0000000);
-			//perimetros.add(origem);
-			//perimetros.add(destino);
-			
-			//try
-			//{
-			//	List<RotaApp> rotas = ws.getRotasPerimetro(perimetros);
-			//}
-			//catch(Exception ex){}
-			//Recebe a resposta do login
 			String response = ws.login(login, encriptedPassword);
 				
 			return response;
