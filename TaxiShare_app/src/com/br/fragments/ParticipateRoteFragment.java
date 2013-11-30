@@ -74,6 +74,7 @@ public class ParticipateRoteFragment extends Fragment{
 				//				setUpMap();
 			}
 		}
+		googleMap.getUiSettings().setZoomControlsEnabled(false);
 		Bundle args = getArguments();
 		rota = args.getParcelable("rota");
 		destino = args.getParcelable("destinoAddress");

@@ -15,15 +15,20 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.sax.TextElementListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
@@ -34,7 +39,6 @@ import com.br.entidades.RotaApp;
 import com.br.network.WSTaxiShare;
 import com.br.resources.GpsTracker;
 import com.br.resources.MapUtils;
-
 import com.br.resources.Utils;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -82,6 +86,7 @@ public class SearchRoteFragment extends Fragment {
 		centerMapOnMyLocation();
 		setBtnAction();
 		setMarker();
+		verificaTamanhoTela();
 		
 		return rootView;	
 	}
@@ -149,6 +154,7 @@ public class SearchRoteFragment extends Fragment {
 		}
 
 //		googleMap.setTrafficEnabled(true);
+		googleMap.getUiSettings().setZoomControlsEnabled(false);
 		btnBusca = (Button) rootView.findViewById(R.id.rote_search_btn_buscar);
 		caixaTexto = (ImageView) rootView.findViewById(R.id.rote_search_img_texto);
 
@@ -492,7 +498,30 @@ public class SearchRoteFragment extends Fragment {
 			gps.showSettingsAlert();
 		}
 
-	}	
+	}
+	
+	private void verificaTamanhoTela(){
+		int screenSize = getResources().getConfiguration().screenLayout &Configuration.SCREENLAYOUT_SIZE_MASK;
+		  switch(screenSize) {
+		      case Configuration.SCREENLAYOUT_SIZE_LARGE:
+		        //Toast.makeText(context, "Large screen",Toast.LENGTH_LONG).show();
+		         break;
+		       case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+		          //Toast.makeText(context, "Normal screen",Toast.LENGTH_LONG).show();
+		          txtEndereco1.setTextSize(14);
+		          txtEndereco2.setTextSize(14);
+		         
+		           break;
+		       case Configuration.SCREENLAYOUT_SIZE_SMALL:
+		           //Toast.makeText(context, "Small screen",Toast.LENGTH_LONG).show();
+		           break;
+		       default:
+		           //Toast.makeText(context, "Screen size is neither large, normal or small" , Toast.LENGTH_LONG).show();
+
+		 }
+	}
 }
+
+
 
 

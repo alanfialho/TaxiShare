@@ -12,6 +12,11 @@
         -->
 </style>
 
+    <style name="BtnTaxiLogin" parent="@android:style/Widget.Button">
+            <item name="android:background">@drawable/botao_login</item>
+            
+        </style>
+        
     <style name="BtnTaxi" parent="@android:style/Widget.Button">
             <item name="android:background">@drawable/botao</item>
             

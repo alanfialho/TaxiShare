@@ -53,7 +53,7 @@
     
     <Button
         android:id="@+id/login_btn_login"
-        style="@style/BtnTaxi"
+        style="@style/BtnTaxiLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_txt_senha"

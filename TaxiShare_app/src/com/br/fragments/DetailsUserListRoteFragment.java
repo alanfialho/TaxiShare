@@ -80,6 +80,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 				//				setUpMap();
 			}
 		}
+		googleMap.getUiSettings().setZoomControlsEnabled(false);
 		Bundle args = getArguments();
 		rota = args.getParcelable("rota");
 

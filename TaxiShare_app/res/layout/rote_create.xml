@@ -70,6 +70,8 @@
         android:id="@+id/rote_create_btn_criar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Criar" />
+        android:text="Criar" 
+        android:textColor="@android:color/white"
+            style="@style/BtnTaxi"/>
 
 </LinearLayout>
