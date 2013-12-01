@@ -480,10 +480,10 @@ containing a value of this type.
         public static final int left_drawer=0x7f050028;
         public static final int linearLayoutItem=0x7f050005;
         public static final int login_btn_forget=0x7f050019;
-        public static final int login_btn_login=0x7f050017;
+        public static final int login_btn_login=0x7f050018;
         public static final int login_btn_register=0x7f05001a;
-        public static final int login_txt_login=0x7f050018;
-        public static final int login_txt_senha=0x7f050016;
+        public static final int login_txt_login=0x7f050016;
+        public static final int login_txt_senha=0x7f050017;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
         public static final int register_btn_login=0x7f050035;

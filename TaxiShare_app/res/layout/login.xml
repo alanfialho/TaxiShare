@@ -15,7 +15,6 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
 
-<<<<<<< HEAD
             <ImageView
                 android:id="@+id/rote_users_list_item_icon"
                 android:layout_width="95dp"
@@ -24,37 +23,24 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="49dp"
                 android:src="@drawable/logopretoamarelo" />
-=======
-    <EditText
-        android:id="@+id/login_txt_login"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignBottom="@+id/login_txt_senha"
-        android:layout_alignLeft="@+id/login_txt_senha"
-        android:layout_alignRight="@+id/login_txt_senha"
-        android:layout_marginBottom="58dp"
-        android:background="@drawable/edittext"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="Digite seu login"
-        android:maxLength="12"
-        android:maxLines="1"
-        android:padding="8dip"
-        android:textSize="20dp"
-        android:singleLine="true" />
-    
-    <Button
-        android:id="@+id/login_btn_login"
-        style="@style/BtnTaxiLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login_txt_senha"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:text="Logar"
-        android:textColor="@android:color/white"
-        android:textSize="20dp" />
->>>>>>> 3704a0546b65d9aeb288e4669ed6bbe5e06021b1
+
+            <EditText
+                android:id="@+id/login_txt_login"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignBottom="@+id/login_txt_senha"
+                android:layout_alignLeft="@+id/login_txt_senha"
+                android:layout_alignRight="@+id/login_txt_senha"
+                android:layout_marginBottom="58dp"
+                android:background="@drawable/edittext"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Digite seu login"
+                android:maxLength="12"
+                android:maxLines="1"
+                android:padding="8dip"
+                android:singleLine="true"
+                android:textSize="20dp" />
 
             <EditText
                 android:id="@+id/login_txt_senha"
@@ -70,24 +56,6 @@
                 android:hint="Digite sua senha"
                 android:inputType="textPassword"
                 android:maxLength="16"
-                android:maxLines="1"
-                android:padding="8dip"
-                android:singleLine="true"
-                android:textSize="20dp" />
-
-            <EditText
-                android:id="@+id/login_txt_login"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignBottom="@+id/login_txt_senha"
-                android:layout_alignLeft="@+id/login_txt_senha"
-                android:layout_alignRight="@+id/login_txt_senha"
-                android:layout_marginBottom="58dp"
-                android:background="@drawable/edittext"
-                android:ems="10"
-                android:gravity="center"
-                android:hint="Digite seu login"
-                android:maxLength="12"
                 android:maxLines="1"
                 android:padding="8dip"
                 android:singleLine="true"

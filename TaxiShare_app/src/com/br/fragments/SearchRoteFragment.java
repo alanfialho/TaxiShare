@@ -75,8 +75,7 @@ public class SearchRoteFragment extends Fragment {
 		setBtnAction();
 		setMarker();
 
-		verificaTamanhoTela();
-		
+		verificaTamanhoTela();		
 
 		return rootView;	
 	}
@@ -148,8 +147,8 @@ public class SearchRoteFragment extends Fragment {
 		txtEndereco1 = (EditText) rootView.findViewById(R.id.rote_search_txt_origem);
 		txtEndereco2 = (EditText) rootView.findViewById(R.id.rote_search_txt_destino);
 
-		txtEndereco1.setText("rua quata 300");
-		txtEndereco2.setText("rua cervinho 191");
+//		txtEndereco1.setText("rua quata 300");
+//		txtEndereco2.setText("rua cervinho 191");
 		aQuery = new AQuery(rootView.getContext());	
 
 		mapUtils = new MapUtils(context, googleMap);

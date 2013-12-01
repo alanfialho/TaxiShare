@@ -123,8 +123,6 @@ public class LoginActivity extends Activity {
 		//Pegando os campos da tela
 		loginLogin = (EditText) findViewById(R.id.login_txt_login);
 		loginSenha = (EditText) findViewById(R.id.login_txt_senha);
-		loginLogin.setText("alan");
-		loginSenha.setText("123456");
 		loginLogin.requestFocus();
 		
 
@@ -174,7 +172,7 @@ public class LoginActivity extends Activity {
 			//Inica a popup de load
 			progress = Utils.setProgreesDialog(progress, context, "Efetuando Login", "Aguarde...");
 			//Pegando o email e a senha da tela
-			login = loginLogin.getText().toString();
+			login = loginLogin.getText().toString().replace(" ", "");
 			password = loginSenha.getText().toString().replace(" ", "");
 
 			try {
