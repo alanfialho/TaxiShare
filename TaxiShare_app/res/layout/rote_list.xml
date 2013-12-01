@@ -4,9 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="5sp"
-    android:paddingLeft="5sp"
-    android:paddingTop="5sp" >
+    android:padding="10dip" >
 
     <ListView
         android:id="@+id/rote_list_list_view"
@@ -18,11 +16,14 @@
 
     <Button
         android:id="@+id/rote_list_btn_criar"
+        style="@style/BtnTaxi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="false"
         android:layout_alignParentLeft="false"
         android:layout_below="@id/rote_list_list_view"
-        android:text="Criar Rota" />
+        android:layout_marginTop="20dp"
+        android:text="Criar Rota" 
+        android:textColor="@android:color/white"/>
 
 </RelativeLayout>

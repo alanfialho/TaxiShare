@@ -3,6 +3,7 @@ package com.br.fragments;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
@@ -14,6 +15,7 @@ import android.content.res.Configuration;
 import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,10 +60,11 @@ public class SearchRoteFragment extends Fragment {
 	List<Address> origemLista;
 	MapUtils mapUtils;
 	GpsTracker gps;
+	View rootView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.rote_search, container, false);
+		rootView = inflater.inflate(R.layout.rote_search, container, false);
 		context = getActivity();
 		gps = new GpsTracker(context);
 		try {
@@ -367,6 +370,7 @@ public class SearchRoteFragment extends Fragment {
 					//Caso tenha retornado, passamos a lista para o proximo fragment
 					Bundle args = new Bundle();
 					args.putParcelable("destinoAddress", dest);
+					args.putParcelable("origemAddress", ori);
 					args.putParcelableArrayList("rotas",rotas);								
 					Utils.changeFragment(getFragmentManager(), new ListRoteFragment(), args);
 				}
@@ -411,19 +415,23 @@ public class SearchRoteFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		mapView.onResume();
-		centerMapOnMyLocation();
+	
 
 	}
+	
 
 	@Override
 	public void onPause() {
 		super.onPause();
 		mapView.onPause();
+		
 	}
+	
 
 	@Override
 	public void onDestroy() {
 		mapView.onDestroy();
+		
 		super.onDestroy();
 	}
 
@@ -484,6 +492,11 @@ public class SearchRoteFragment extends Fragment {
 		}
 
 	}
+	
+	 public void onBackPressed() {
+	     
+		 
+	    } 
 	
 	private void verificaTamanhoTela(){
 		int screenSize = getResources().getConfiguration().screenLayout &Configuration.SCREENLAYOUT_SIZE_MASK;

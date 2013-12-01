@@ -17,9 +17,11 @@ import android.content.Context;
 import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.br.activitys.R;
 import com.br.entidades.EnderecoApp;
 import com.br.entidades.LoginApp;
@@ -259,5 +261,6 @@ public class CreateRoteFragment extends Fragment {
 
 
 	}
+
 
 }

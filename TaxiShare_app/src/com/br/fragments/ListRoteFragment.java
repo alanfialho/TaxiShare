@@ -13,11 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.br.activitys.R;
-
 import com.br.adapter.RoteAdapter;
 import com.br.entidades.RotaApp;
 import com.br.network.WSTaxiShare;
@@ -30,7 +30,8 @@ public class ListRoteFragment extends Fragment {
 	private ListView roteList;
 	Context context;
 	RoteAdapter adapter;
-	Address destination;
+	public static Address destination, origin;
+	private Button btnCriar;
 	//public static List<RotaApp> rotasBuscadas;
 
 
@@ -41,15 +42,17 @@ public class ListRoteFragment extends Fragment {
 		Bundle args = getArguments();
 		List<RotaApp> rotas = (List<RotaApp>) args.getSerializable("rotas");
 		destination = args.getParcelable("destinoAddress");
+		origin = args.getParcelable("origemAddress");
 		
 
 		fillSearchList(rotas);	
+		setBtnAction();
 
-		setListAction();
 		return rootView;
 	}
 
 	private void fillSearchList(List<RotaApp> rotas) {
+		btnCriar = (Button) rootView.findViewById(R.id.rote_list_btn_criar);
 		RoteAdapter roteAdapter = new RoteAdapter(context, rotas);		
 		roteList = (ListView) rootView.findViewById(R.id.rote_list_list_view);
 		roteList.setAdapter(roteAdapter);
@@ -69,6 +72,17 @@ public class ListRoteFragment extends Fragment {
 				Utils.changeFragment(getFragmentManager(), new ParticipateRoteFragment(), args);				
 			}			
 		});
+	}
+	
+	private void setBtnAction() {
+		btnCriar.setOnClickListener(new View.OnClickListener() {			
+			public void onClick(View view) {
+				Bundle args = new Bundle();
+				args.putParcelable("origemAddress", origin);
+				args.putParcelable("destinoAddress", destination);
+				Utils.changeFragment(getFragmentManager(), new CreateRoteFragment(), args);
+			}
+		});		
 	}
 	
 
@@ -104,8 +118,6 @@ public class ListRoteFragment extends Fragment {
 		}		
 	}
 	
-	private void setListAction() {
 
-	}
 	
 }

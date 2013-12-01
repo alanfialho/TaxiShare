@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.br.activitys.R;
 import com.br.entidades.EnderecoApp;
 import com.br.entidades.RotaApp;
-
 import com.br.network.WSTaxiShare;
 import com.br.resources.MapUtils;
 import com.br.resources.Utils;
@@ -27,6 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -37,7 +37,7 @@ public class ParticipateRoteFragment extends Fragment{
 	private MapView mapView;
 	private Bundle mBundle;
 	private Button btnParticipa;
-	private TextView lblOrigem, lblDestino, lblPassageiros, lblAdm, lblHora;
+	private TextView lblOrigem, lblOrigem2, lblDestino, lblDestino2, lblPassageiros, lblAdm, lblHora;
 	private Context context;
 	private RotaApp rota, rotaDetalhe;
 	private SessionManagement session;
@@ -88,14 +88,18 @@ public class ParticipateRoteFragment extends Fragment{
 		}
 
 		lblOrigem = (TextView) rootView.findViewById(R.id.rote_details_lbl_origem_info);
+		lblOrigem2 = (TextView) rootView.findViewById(R.id.rote_details_lbl_origem_info2);
 		lblDestino = (TextView) rootView.findViewById(R.id.rote_details_lbl_destino_info);
+		lblDestino2 = (TextView) rootView.findViewById(R.id.rote_details_lbl_destino_info2);
 		lblPassageiros = (TextView) rootView.findViewById(R.id.rote_details_lbl_passageiros_info);
 		lblAdm = (TextView) rootView.findViewById(R.id.rote_details_lbl_adm_nome);
 		lblHora = (TextView) rootView.findViewById(R.id.rote_details_lbl_hora_info);
 		btnParticipa = (Button) rootView.findViewById(R.id.rote_details_btn_participar);
 
-		lblOrigem.setText(rota.getEnderecos().get(0).getRua() + ", " + rota.getEnderecos().get(0).getNumero() + " - " + rota.getEnderecos().get(0).getCidade());
-		lblDestino.setText(rota.getEnderecos().get(1).getRua() + ", " + rota.getEnderecos().get(1).getNumero() + " - " + rota.getEnderecos().get(1).getCidade());
+		lblOrigem.setText(rota.getEnderecos().get(0).getRua() + ", " + rota.getEnderecos().get(0).getNumero());
+		lblOrigem2.setText(rota.getEnderecos().get(0).getBairro() + " - " + rota.getEnderecos().get(0).getCidade());
+		lblDestino.setText(rota.getEnderecos().get(1).getRua() + ", " + rota.getEnderecos().get(1).getNumero());
+		lblDestino2.setText(rota.getEnderecos().get(1).getBairro() + " - " + rota.getEnderecos().get(1).getCidade());
 		int passageiro =  4 - rota.getPassExistentes();
 		lblPassageiros.setText(passageiro + "");
 		lblHora.setText(rota.getDataRota().toString());
@@ -123,7 +127,7 @@ public class ParticipateRoteFragment extends Fragment{
 				longitudes[i] = Double.parseDouble(r.getEnderecos().get(i + 1).getLongitude());
 				String titulo = r.getUsuarios().get(i - 1).getLogin();
 				String rua = r.getEnderecos().get(i + 1).getRua() + ", " + r.getEnderecos().get(i + 1).getNumero() + " - " + r.getEnderecos().get(i + 1).getBairro();
-				setMarker(latitudes[i], longitudes[i], titulo, rua, false);
+				setMarker(latitudes[i], longitudes[i], titulo, rua, false).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_destino_verde));
 			}
 		}
 	}
@@ -133,6 +137,7 @@ public class ParticipateRoteFragment extends Fragment{
 		Marker mark = googleMap.addMarker(new MarkerOptions()
 		.position(new LatLng(latitude, longitude))
 		.title(title)
+		.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_destino_azul))
 		.snippet(snippet));
 		mark.showInfoWindow();
 
