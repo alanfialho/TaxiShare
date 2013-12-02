@@ -93,7 +93,7 @@
                 android:layout_below="@+id/login_btn_forget"
                 android:layout_marginTop="21dp"
                 android:background="@null"
-                android:text="Não tem cadastro? Cadastre-se!"
+                android:text="Não tem cadastro? Cadastre-se aqui!"
                 android:textColor="#f4a21e"
                 android:textSize="16dp" />
         </RelativeLayout>

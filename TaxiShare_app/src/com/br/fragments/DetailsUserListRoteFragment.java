@@ -387,7 +387,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 		@Override
 		protected void onPostExecute(String response) {
-			Utils.gerarToast(context, response);
+//			Utils.gerarToast(context, response);
 			Bundle args = new Bundle();
 			Utils.changeFragment(getFragmentManager(), new UserListRoteFragment(), args);
 			progress.dismiss();

@@ -118,12 +118,12 @@ public class MyGeocoder {
 						
 
 					} catch (JSONException e) {
-						Utils.gerarToast(context, e.getMessage());
+					//	Utils.gerarToast(context, e.getMessage());
 					}
 					
 				} else {
 					//Se o json vier vazio
-					Utils.gerarToast(context, "json null =>  " + json);
+					//Utils.gerarToast(context, "json null =>  " + json);
 				}
 			}//Fim do callback
 		});//Fim do AQUERY

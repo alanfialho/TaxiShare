@@ -1,8 +1,6 @@
 package com.br.fragments;
 
 import java.util.HashMap;
-import java.util.List;
-
 import com.br.activitys.R;
 import com.br.adapter.RoteAdapter;
 import com.br.adapter.UserRoteAdapterAdm;
@@ -18,20 +16,14 @@ import com.commonsware.cwac.merge.MergeAdapter;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.MergeCursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;

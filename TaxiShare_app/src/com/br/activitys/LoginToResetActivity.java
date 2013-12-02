@@ -93,6 +93,7 @@ public class LoginToResetActivity extends Activity {
 				String resposta = txtResposta.getText().toString();
 				if(resposta.equalsIgnoreCase(loginApp.getResposta())){
 					aQuery.id(R.id.resetPasswordLayout).visible();
+					aQuery.id(R.id.reset_pass_btn_checar).gone();
 					txtNovasenha.requestFocus();
 				}
 				else
