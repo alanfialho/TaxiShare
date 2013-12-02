@@ -26,7 +26,7 @@ public class IntroActivity extends Activity {
             }
         };
         Timer t = new Timer();
-        t.schedule(task, 1000);
+        t.schedule(task, 3500);
 	}
 
 	@Override

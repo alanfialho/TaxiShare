@@ -51,16 +51,13 @@
                 android:maxLines="1"
                 android:padding="8dip"
                 android:singleLine="true"
-                android:textSize="16sp" >
-
-                <requestFocus />
-            </EditText>
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/rote_search_txt_destino"
                 android:layout_width="271dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="22dp"
                 android:layout_marginLeft="55dp"
                 android:layout_marginTop="60dp"
                 android:background="@android:color/transparent"
@@ -69,9 +66,7 @@
                 android:padding="8dip"
                 android:singleLine="true"
                 android:textSize="16sp" />
-
         </FrameLayout>
-
     </RelativeLayout>
 
 </FrameLayout>

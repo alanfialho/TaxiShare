@@ -3,26 +3,26 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/backamarelo" >
+    android:background="@drawable/backcinza" >
 
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
         <RelativeLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
+            
             android:id="@+id/RelativeLayout2"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
 
             <ImageView
                 android:id="@+id/rote_users_list_item_icon"
-                android:layout_width="95dp"
-                android:layout_height="95dp"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="49dp"
-                android:src="@drawable/logopretoamarelo" />
+                android:src="@drawable/logo_amarelo" />
 
             <EditText
                 android:id="@+id/login_txt_login"
@@ -82,7 +82,7 @@
                 android:layout_marginTop="29dp"
                 android:background="@null"
                 android:text="Esqueci minha senha!"
-                android:textColor="#000000"
+                android:textColor="#f4a21e"
                 android:textSize="16dp" />
 
             <Button
@@ -94,7 +94,7 @@
                 android:layout_marginTop="21dp"
                 android:background="@null"
                 android:text="Não tem cadastro? Cadastre-se!"
-                android:textColor="#000000"
+                android:textColor="#f4a21e"
                 android:textSize="16dp" />
         </RelativeLayout>
     </ScrollView>

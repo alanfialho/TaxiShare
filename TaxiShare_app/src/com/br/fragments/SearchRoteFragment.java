@@ -3,6 +3,7 @@ package com.br.fragments;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.json.JSONObject;
 
@@ -13,6 +14,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -79,6 +81,7 @@ public class SearchRoteFragment extends Fragment {
 		setMarker();
 
 		verificaTamanhoTela();		
+		googleMap.getUiSettings().setZoomControlsEnabled(false);
 
 		return rootView;	
 	}
@@ -134,16 +137,18 @@ public class SearchRoteFragment extends Fragment {
 	public void setAtributes(View rootView){
 
 		mapView = (MapView) rootView.findViewById(R.id.rote_search_map);
+		
 		mapView.onCreate(mBundle);
 
+		
 		if (googleMap == null) {
-			googleMap = ((MapView) rootView.findViewById(R.id.rote_search_map)).getMap();
+			googleMap = mapView.getMap();
 			if (googleMap != null) {
 			}
 		}
 
 //		googleMap.setTrafficEnabled(true);
-		googleMap.getUiSettings().setZoomControlsEnabled(false);
+		
 
 		btnBusca = (Button) rootView.findViewById(R.id.rote_search_btn_buscar);
 
@@ -155,6 +160,7 @@ public class SearchRoteFragment extends Fragment {
 		aQuery = new AQuery(rootView.getContext());	
 
 		mapUtils = new MapUtils(context, googleMap);
+		
 
 	}
 
@@ -415,8 +421,12 @@ public class SearchRoteFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		mapView.onResume();
+		googleMap = mapView.getMap();
+		setMarker();
+		centerMapOnMyLocation();
+		googleMap.getUiSettings().setZoomControlsEnabled(false);
 	
-
+		
 	}
 	
 
@@ -424,6 +434,7 @@ public class SearchRoteFragment extends Fragment {
 	public void onPause() {
 		super.onPause();
 		mapView.onPause();
+		
 		
 	}
 	
@@ -434,6 +445,8 @@ public class SearchRoteFragment extends Fragment {
 		
 		super.onDestroy();
 	}
+	
+
 
 	public void questionaCriaRota(){
 
@@ -475,14 +488,23 @@ public class SearchRoteFragment extends Fragment {
 
 
 	private void centerMapOnMyLocation() {
-
+		
 		if(gps.canGetLocation()){
 
 			double latitude = gps.getLatitude();
 			double longitude = gps.getLongitude();
 			LatLng myLocation = null;
+			Geocoder g = new Geocoder(context, Locale.getDefault());
 
-
+			try {
+				List<Address> addresses = g.getFromLocation(latitude, longitude, 1);
+				if(addresses.size() > 0){
+					txtEndereco1.setText(addresses.get(0).getAddressLine(0));
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			myLocation = new LatLng(latitude,
 					longitude);
 			googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,
@@ -492,9 +514,9 @@ public class SearchRoteFragment extends Fragment {
 		}
 
 	}
-	
+
 	 public void onBackPressed() {
-	     
+	     super.onStart();
 		 
 	    } 
 	
@@ -507,7 +529,9 @@ public class SearchRoteFragment extends Fragment {
 		       case Configuration.SCREENLAYOUT_SIZE_NORMAL:
 		          //Toast.makeText(context, "Normal screen",Toast.LENGTH_LONG).show();
 		          txtEndereco1.setTextSize(14);
+		          txtEndereco1.getLayoutParams().width = 350;
 		          txtEndereco2.setTextSize(14);
+		          txtEndereco2.getLayoutParams().width = 350;
 		         
 		           break;
 		       case Configuration.SCREENLAYOUT_SIZE_SMALL:

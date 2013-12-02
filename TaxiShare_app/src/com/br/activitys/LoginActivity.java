@@ -133,7 +133,7 @@ public class LoginActivity extends Activity {
 		btnLinkToForgetPassword = (Button) findViewById(R.id.login_btn_forget);
 		img = (ImageView) findViewById(R.id.rote_users_list_item_icon);
 		
-		img.setImageResource(R.drawable.logopretoamarelo);
+		img.setImageResource(R.drawable.logo_amarelo);
 	}
 
 	//subclasse que define a acao de validacao

@@ -14,13 +14,13 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 
-public class Geocoder {
+public class MyGeocoder {
 
 	private Context context;
 	private List<Address> addresses;
 	
 
-	public Geocoder(Context context) {
+	public MyGeocoder(Context context) {
 		this.context = context;
 		addresses = new ArrayList<Address>();
 

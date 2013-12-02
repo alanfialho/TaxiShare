@@ -92,7 +92,8 @@ public class LoginToResetActivity extends Activity {
 			public void onClick(View view) {
 				String resposta = txtResposta.getText().toString();
 				if(resposta.equalsIgnoreCase(loginApp.getResposta())){
-					aQuery.id(R.id.resetPasswordLayout).visible();	
+					aQuery.id(R.id.resetPasswordLayout).visible();
+					txtNovasenha.requestFocus();
 				}
 				else
 					Utils.gerarToast(context, "Resposta Inválida");
@@ -189,6 +190,7 @@ public class LoginToResetActivity extends Activity {
 						loginApp.setId(objetoResposta.getInt("id"));
 						loginApp.setLogin(objetoResposta.getString("login"));	
 						loginApp.setResposta(objetoResposta.getString("resposta"));
+						txtResposta.requestFocus();
 
 					}else{
 						// Erro de login

@@ -239,7 +239,7 @@
             android:layout_marginTop="40dip"
             android:background="@null"
             android:text="Já sou cadastrado. Fazer login!"
-            android:textColor="#21dbd4"
+            android:textColor="#f4a21e"
             android:textStyle="bold" />
     </LinearLayout>
 
