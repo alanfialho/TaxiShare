@@ -124,6 +124,21 @@ public class EditPasswordFragment extends Fragment {
 			//Pegando as informações de pessoas
 			senhaAntiga = forgotSenhaAntiga.getText().toString().trim();
 			novaSenha = forgotNovaSenha.getText().toString();
+			
+
+			try {
+				AESCrypt senhaEncripatada = new AESCrypt(senhaAntiga);
+				senhaAntiga = senhaEncripatada.encrypt(senhaAntiga);
+
+				
+				AESCrypt senhaNovaEncriptada = new AESCrypt(novaSenha);
+				novaSenha = senhaNovaEncriptada.encrypt(novaSenha);
+
+			} catch (Exception e) {
+				Utils.logException("EditiPAsswordFragment", "CheckPasswordTask", "onPreExecute", e);
+				
+			}
+
 
 			if(senhaAntiga.isEmpty() || senhaAntiga.equals(" ")){
 				checkEmpty = false;
