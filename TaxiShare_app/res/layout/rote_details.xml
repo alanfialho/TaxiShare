@@ -100,21 +100,29 @@
                         android:padding="5dp"
                         android:src="@drawable/linhalaranja" />
 
-                    <TextView
-                        android:id="@+id/rote_details_lbl_adm"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Administrador: "
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="#f4a21e" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
 
-                    <TextView
-                        android:id="@+id/rote_details_lbl_adm_nome"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:text="Adm"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        <TextView
+                            android:id="@+id/rote_details_lbl_adm"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Administrador: "
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="#f4a21e" />
+
+                        <TextView
+                            android:id="@+id/rote_details_lbl_adm_nome"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="0dp"
+                            android:paddingTop="3dp"
+                            android:text="Adm"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    </LinearLayout>
 
                     <ImageView
                         android:id="@+id/ImageView02"
@@ -123,44 +131,55 @@
                         android:padding="5dp"
                         android:src="@drawable/linhalaranja" />
 
-                    <TextView
-                        android:id="@+id/rote_details_lbl_passageiros"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Lugares disponiveis: "
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="#f4a21e" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
 
-                    <TextView
-                        android:id="@+id/rote_details_lbl_passageiros_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:text="Lugar"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        <TextView
+                            android:id="@+id/rote_details_lbl_passageiros"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lugares disponiveis: "
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="#f4a21e" />
 
-                    <ImageView
-                        android:id="@+id/ImageView03"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:src="@drawable/linhalaranja" />
+                        <TextView
+                            android:id="@+id/rote_details_lbl_passageiros_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="0dp"
+                            android:paddingTop="3dp"
+                            android:text="Lugar"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                    <TextView
-                        android:id="@+id/rote_details_lbl_hora"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Saida: "
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="#f4a21e" />
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/rote_details_lbl_hora_info"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:text="Saida"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        android:paddingTop="5dp" >
+
+                        <TextView
+                            android:id="@+id/rote_details_lbl_hora"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Saida: "
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="#f4a21e" />
+
+                        <TextView
+                            android:id="@+id/rote_details_lbl_hora_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="0dp"
+                            android:paddingTop="3dp"
+                            android:text="Saida"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    </LinearLayout>
 
                     <Button
                         android:id="@+id/rote_details_btn_participar"

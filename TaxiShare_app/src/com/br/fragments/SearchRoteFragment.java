@@ -81,7 +81,7 @@ public class SearchRoteFragment extends Fragment {
 		setMarker();
 
 		verificaTamanhoTela();		
-		googleMap.getUiSettings().setZoomControlsEnabled(false);
+		
 
 		return rootView;	
 	}
@@ -170,7 +170,7 @@ public class SearchRoteFragment extends Fragment {
 			public void onClick(View view) {
 
 				ProgressDialog progress = null;
-				progress = Utils.setProgreesDialog(progress, context, "Buscando endereço", "Aguarde...");
+				//progress = Utils.setProgreesDialog(progress, context, "Buscando endereço", "Aguarde...");
 
 				//pega o texto dos campos
 				String origem = txtEndereco1.getText().toString();
@@ -188,7 +188,7 @@ public class SearchRoteFragment extends Fragment {
 
 				if(origemNumberTest && destinoNumberTest){
 					try {
-
+						progress = Utils.setProgreesDialog(progress, context, "Buscando endereço", "Aguarde...");
 						//recebe uma lista de endereços com objetos ADDRESS
 						origemLista = getListaDeEnderecos(origem);
 						destinoLista = getListaDeEnderecos(destino);
@@ -422,9 +422,10 @@ public class SearchRoteFragment extends Fragment {
 		super.onResume();
 		mapView.onResume();
 		googleMap = mapView.getMap();
+		googleMap.getUiSettings().setZoomControlsEnabled(false);
 		setMarker();
 		centerMapOnMyLocation();
-		googleMap.getUiSettings().setZoomControlsEnabled(false);
+		
 	
 		
 	}
@@ -518,30 +519,18 @@ public class SearchRoteFragment extends Fragment {
 	 public void onBackPressed() {
 	     super.onStart();
 		 
-	    } 
-	
-	private void verificaTamanhoTela(){
-		int screenSize = getResources().getConfiguration().screenLayout &Configuration.SCREENLAYOUT_SIZE_MASK;
-		  switch(screenSize) {
-		      case Configuration.SCREENLAYOUT_SIZE_LARGE:
-		        //Toast.makeText(context, "Large screen",Toast.LENGTH_LONG).show();
-		         break;
-		       case Configuration.SCREENLAYOUT_SIZE_NORMAL:
-		          //Toast.makeText(context, "Normal screen",Toast.LENGTH_LONG).show();
-		          txtEndereco1.setTextSize(14);
-		          txtEndereco1.getLayoutParams().width = 350;
-		          txtEndereco2.setTextSize(14);
-		          txtEndereco2.getLayoutParams().width = 350;
-		         
-		           break;
-		       case Configuration.SCREENLAYOUT_SIZE_SMALL:
-		           //Toast.makeText(context, "Small screen",Toast.LENGTH_LONG).show();
-		           break;
-		       default:
-		           //Toast.makeText(context, "Screen size is neither large, normal or small" , Toast.LENGTH_LONG).show();
+	 } 
 
+	 private void verificaTamanhoTela(){
+
+		 if ((getResources().getConfiguration().screenLayout &      Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_SMALL) {     
+			 txtEndereco1.setTextSize(14);
+			 txtEndereco1.getLayoutParams().width = 350;
+			 txtEndereco2.setTextSize(14);
+			 txtEndereco2.getLayoutParams().width = 350;
 		 }
-	}
+
+	 }
 }
 
 
