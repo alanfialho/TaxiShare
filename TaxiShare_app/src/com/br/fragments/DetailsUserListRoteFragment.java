@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.br.activitys.R;
 import com.br.entidades.EnderecoApp;
 import com.br.entidades.RotaApp;
@@ -396,7 +399,14 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 		@Override
 		protected void onPostExecute(String response) {
-//			Utils.gerarToast(context, response);
+
+			try {
+				JSONObject json = new JSONObject(response);
+				Utils.gerarToast(context, json.getString("descricao"));
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 			Bundle args = new Bundle();
 			Utils.changeFragment(getFragmentManager(), new UserListRoteFragment(), args);
 			progress.dismiss();

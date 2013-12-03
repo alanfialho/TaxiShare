@@ -19,7 +19,7 @@ import com.br.resources.Utils;
 
 public class WSTaxiShare {
 
-	private static final String URL_WS = "http://ec2-54-204-126-92.compute-1.amazonaws.com:8080/taxishare/ws/";
+	private static final String URL_WS = "http://ec2-50-17-155-59.compute-1.amazonaws.com:8080/WS_TaxiShare/ws/";
 	
 	public String login(String email, String password) {
 

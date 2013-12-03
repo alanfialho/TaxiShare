@@ -17,7 +17,6 @@ import android.content.Context;
 import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +69,7 @@ public class CreateRoteFragment extends Fragment {
 			textOrigem = (EditText) rootView.findViewById(R.id.rote_create_txt_origem);
 			textDestino = (EditText) rootView.findViewById(R.id.rote_create_txt_destino);
 			spnPessoas = (Spinner) rootView.findViewById(R.id.rote_create_sp_pessoas);
+//			spnPessoas.setContentDescription("Pessoas com você");
 			tpHorarioSaida = (TimePicker) rootView.findViewById(R.id.rote_create_tp_saida);
 
 

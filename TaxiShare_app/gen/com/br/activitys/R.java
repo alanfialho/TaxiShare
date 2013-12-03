@@ -619,9 +619,9 @@ containing a value of this type.
     }
     public static final class string {
         public static final int action_settings=0x7f060016;
-        public static final int action_websearch=0x7f06001a;
+        public static final int action_websearch=0x7f06001b;
         public static final int app_name=0x7f060015;
-        public static final int app_not_available=0x7f06001b;
+        public static final int app_not_available=0x7f06001c;
         /**   Title for notification shown when GooglePlayServices needs to be
         enabled for a application to work. [CHAR LIMIT=70] 
          */
@@ -702,10 +702,11 @@ containing a value of this type.
         public static final int common_signin_button_text_long=0x7f06000e;
         public static final int drawer_close=0x7f060019;
         public static final int drawer_open=0x7f060018;
-        public static final int googleMapsAPIKeyDebug=0x7f06001d;
-        public static final int googleMapsAPIKeyRelease=0x7f06001c;
+        public static final int googleMapsAPIKeyDebug=0x7f06001e;
+        public static final int googleMapsAPIKeyRelease=0x7f06001d;
         public static final int hello_world=0x7f060017;
-        public static final int title_activity_intro=0x7f06001e;
+        public static final int pessoascomvoce=0x7f06001a;
+        public static final int title_activity_intro=0x7f06001f;
     }
     public static final class style {
         /** 

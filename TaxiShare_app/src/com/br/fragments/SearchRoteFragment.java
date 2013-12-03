@@ -170,9 +170,6 @@ public class SearchRoteFragment extends Fragment {
 		btnBusca.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 
-				ProgressDialog progress = null;
-				//progress = Utils.setProgreesDialog(progress, context, "Buscando endereço", "Aguarde...");
-
 				//pega o texto dos campos
 				String origem = txtEndereco1.getText().toString();
 				String destino = txtEndereco2.getText().toString();
@@ -189,7 +186,6 @@ public class SearchRoteFragment extends Fragment {
 
 				if(origemNumberTest && destinoNumberTest){
 					try {
-						progress = Utils.setProgreesDialog(progress, context, "Buscando endereço", "Aguarde...");
 						//recebe uma lista de endereços com objetos ADDRESS
 						origemLista = getListaDeEnderecos(origem);
 						destinoLista = getListaDeEnderecos(destino);
@@ -253,7 +249,6 @@ public class SearchRoteFragment extends Fragment {
 							});
 
 							//Mostra a popup de origem primeiro
-							progress.dismiss();
 							popupOrigem.show();						
 
 						}

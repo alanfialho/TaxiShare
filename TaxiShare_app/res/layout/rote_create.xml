@@ -60,7 +60,7 @@
         android:id="@+id/rote_create_sp_pessoas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:prompt="@array/numero_pessoas" 
+        android:prompt="@string/pessoascomvoce"
         style="@style/SpinnerTaxiShare"/>
 
     <TextView
