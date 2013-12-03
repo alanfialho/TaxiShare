@@ -210,7 +210,7 @@ public class RotaResource {
                 saida = new ResponseEntity("Erro", 4, "Rota não encontrada!", null);
                 throw new Exception("Erro");
             }
-            else if(rota.getUsuarios().size() == 4){
+            else if(rota.getPassExistentes() == 4){
                 saida = new ResponseEntity("Erro", 5, "Rota já esta lotada!", null);
                 throw new Exception("Erro");
             }
@@ -310,7 +310,7 @@ public class RotaResource {
                 throw new Exception("Erro");
             }
             
-            if(endereco.getId() != 0)
+            if(endereco.getId() == 0)
             {
                 saida = new ResponseEntity("Erro", 8, "Endereco inválido!", null);
                 throw new Exception("Erro");
