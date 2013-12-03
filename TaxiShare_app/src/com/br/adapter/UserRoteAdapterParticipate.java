@@ -71,7 +71,7 @@ public class UserRoteAdapterParticipate extends BaseAdapter{
 		holder.option2.setText(destino);
 		//holder.option3.setText(passageiros);
 		holder.option4.setText("Participante");
-		holder.option4.setTextColor(Color.GREEN);
+		holder.option4.setTextColor(Color.parseColor("#006600"));
 		
 		
 

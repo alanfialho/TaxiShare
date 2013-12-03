@@ -17,6 +17,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,7 @@ public class SearchRoteFragment extends Fragment {
 	MapUtils mapUtils;
 	GpsTracker gps;
 	View rootView;
+	private boolean doubleBackToExitPressedOnce;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -515,10 +517,16 @@ public class SearchRoteFragment extends Fragment {
 
 	}
 
-	 public void onBackPressed() {
-	     super.onStart();
-		 
-	 } 
+	public void onBackPressed() {
+
+		if (doubleBackToExitPressedOnce) {
+			onBackPressed();
+			return;
+		}
+		this.doubleBackToExitPressedOnce = true;
+		onResume();
+
+	} 
 
 	 private void verificaTamanhoTela(){
 

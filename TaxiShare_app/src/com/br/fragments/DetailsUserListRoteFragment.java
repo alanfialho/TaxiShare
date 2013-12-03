@@ -44,10 +44,10 @@ public class DetailsUserListRoteFragment extends Fragment{
 	private MapView mapView;
 	private Bundle mBundle;
 	private Button btnSairRota, btnSms, btnLigar;
-	private TextView lblOrigem, lblDestino, lblPassageiros, lblAdm, lblHora;
+	private TextView lblOrigem, lblOrigem2, lblDestino, lblDestino2, lblPassageiros, lblAdm, lblHora;
 	private Context context;
 	private RotaApp rota, rotaDetalhe;
-	private List<String> logins, telefones;
+	private List<String> logins, telefones, loginsContato;
 	private int selecionado;
 	private SessionManagement session;
 
@@ -91,7 +91,9 @@ public class DetailsUserListRoteFragment extends Fragment{
 		session = new SessionManagement(rootView.getContext());
 
 		lblOrigem = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_origem_info);
+		lblOrigem2 = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_origem_info2);
 		lblDestino = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_destino_info);
+		lblDestino2 = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_destino_info2);
 		lblPassageiros = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_passageiros_info);
 		lblAdm = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_adm_nome);
 		lblHora = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_hora_info);
@@ -99,8 +101,14 @@ public class DetailsUserListRoteFragment extends Fragment{
 		btnSms = (Button) rootView.findViewById(R.id.rote_users_details_btn_sms);
 		btnLigar = (Button) rootView.findViewById(R.id.rote_users_details_btn_ligar);
 
-		lblOrigem.setText(rota.getEnderecos().get(0).getRua() + ", " + rota.getEnderecos().get(0).getNumero() + " - " + rota.getEnderecos().get(0).getCidade());
-		lblDestino.setText(rota.getEnderecos().get(1).getRua() + ", " + rota.getEnderecos().get(1).getNumero() + " - " + rota.getEnderecos().get(1).getCidade());
+		//lblOrigem.setText(rota.getEnderecos().get(0).getRua() + ", " + rota.getEnderecos().get(0).getNumero() + " - " + rota.getEnderecos().get(0).getCidade());
+		//lblDestino.setText(rota.getEnderecos().get(1).getRua() + ", " + rota.getEnderecos().get(1).getNumero() + " - " + rota.getEnderecos().get(1).getCidade());
+		lblOrigem.setText(rota.getEnderecos().get(0).getRua() + ", " + rota.getEnderecos().get(0).getNumero());
+		lblOrigem2.setText(rota.getEnderecos().get(0).getBairro() + " - " + rota.getEnderecos().get(0).getCidade());
+		lblDestino.setText(rota.getEnderecos().get(1).getRua() + ", " + rota.getEnderecos().get(1).getNumero());
+		lblDestino2.setText(rota.getEnderecos().get(1).getBairro() + " - " + rota.getEnderecos().get(1).getCidade());
+		
+		
 		int passageiro =  4 - rota.getPassExistentes();
 		lblPassageiros.setText(passageiro + "");
 		lblHora.setText(rota.getDataRota().toString());
@@ -131,6 +139,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 	public void setMarcadores(){
 		int participantes = 0;
 		logins = new ArrayList<String>();
+		loginsContato = new ArrayList<String>();
 		telefones = new ArrayList<String>();
 		participantes += rotaDetalhe.getUsuarios().size();
 		double[] latitudes = new double[participantes + 1];
@@ -154,7 +163,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 				latitudes[i] = Double.parseDouble(rotaDetalhe.getEnderecos().get(i + 1).getLatitude());
 				longitudes[i] = Double.parseDouble(rotaDetalhe.getEnderecos().get(i + 1).getLongitude());
 				String titulo = rotaDetalhe.getUsuarios().get(i - 1).getLogin();
-				logins.add(titulo);
+				loginsContato.add(titulo);
 				String telefoneParticipante = rotaDetalhe.getUsuarios().get(i - 1).getPessoa().getCelular();
 				telefones.add(telefoneParticipante);
 				String rua = rotaDetalhe.getEnderecos().get(i + 1).getRua() + ", " + rotaDetalhe.getEnderecos().get(i + 1).getNumero() + " - " + rotaDetalhe.getEnderecos().get(i + 1).getBairro();
@@ -234,7 +243,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 	private void popupSms(){
 		final ArrayList<Integer> mSelectedItems = new ArrayList<Integer>();  // Where we track the selected items
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		final CharSequence[] items = logins.toArray(new CharSequence[logins.size()]); 
+		final CharSequence[] items = loginsContato.toArray(new CharSequence[loginsContato.size()]); 
 
 		// Set the dialog title
 		builder.setTitle("Mandar SMS para...")
@@ -277,7 +286,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 	}
 
 	private void popupLigar(){
-		final CharSequence[] items = logins.toArray(new CharSequence[logins.size()]);
+		final CharSequence[] items = loginsContato.toArray(new CharSequence[loginsContato.size()]);
 
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -314,7 +323,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 		String tels = "";
 
 		for (int i = 0; i < c.size(); i++){
-			for (int j = 0; j < logins.size(); j++){
+			for (int j = 0; j < loginsContato.size(); j++){
 				if(Integer.parseInt(c.get(i).toString()) == j){
 					if(tels.isEmpty()){
 						tels += telefones.get(j);
@@ -339,7 +348,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 	private void efetuarLigacao(int l){
 		String tel = "";
-		for (int i = 0; i < logins.size(); i++){
+		for (int i = 0; i < loginsContato.size(); i++){
 			if (i == l){
 				tel = telefones.get(i);
 			}
@@ -369,8 +378,8 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 			String response = "";
 			EnderecoApp endereco = null;
-			for(int i = 0; i < logins.size(); i++){
-				if (userName.equals(logins.get(i))){
+			for(int i = 0; i < loginsContato.size(); i++){
+				if (userName.equals(loginsContato.get(i))){
 					endereco = rotaDetalhe.getEnderecos().get(i + 1);
 				}
 			}
