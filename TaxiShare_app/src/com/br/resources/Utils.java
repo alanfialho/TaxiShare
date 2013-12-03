@@ -25,6 +25,7 @@ public class Utils {
 		Log.i("gerarToast", message);
 		int duration = Toast.LENGTH_LONG;
 		Toast toast = Toast.makeText(context, message, duration);
+		//toast.setGravity(gravity, xOffset, yOffset)
 		toast.show();
 	}
 
