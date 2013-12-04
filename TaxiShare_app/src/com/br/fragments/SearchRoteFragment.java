@@ -366,6 +366,14 @@ public class SearchRoteFragment extends Fragment {
 
 			try {
 				JSONObject jsonResposta = new JSONObject(response);
+				
+				//Retira do rotas buscadas as rotas com numero de passageiros >= 4
+				for (int i = 0; i < rotas.size(); i++){
+					if (rotas.get(i).getPassExistentes() >= 4){
+						rotas.remove(i);
+
+					}
+				}
 
 				//Checamos se a resposta teve sucesso e se retornou uma lista de rotas
 				if(jsonResposta.getInt("errorCode")==0 && rotas.size() > 0){

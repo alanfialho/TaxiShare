@@ -122,11 +122,21 @@ public class DetailsUserListRoteFragment extends Fragment{
 	public void setBtnAction(){
 		btnSms.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				popupSms();
+				if (loginsContato.size() <= 0){
+					Utils.geraDialogInformacao("Sem participantes", "Ainda não há participantes nessa rota.", context);
+				} else{
+					popupSms();
+				}
+				
 			}});
 		btnLigar.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				popupLigar();
+				if (loginsContato.size() <= 0){
+					Utils.geraDialogInformacao("Sem participantes", "Ainda não há participantes nessa rota.", context);
+				} else{
+					popupLigar();
+				}
+				
 			}});
 		btnSairRota.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
@@ -155,10 +165,14 @@ public class DetailsUserListRoteFragment extends Fragment{
 		longitudes[0] = Double.parseDouble(rotaDetalhe.getEnderecos().get(1).getLongitude());
 		String adm = rotaDetalhe.getAdministrador().getLogin();
 		
-		if(verificaAdm(adm)){
+		if(verificaUser(adm)){
 			btnSairRota.setEnabled(false);
 			btnSairRota.setVisibility(View.INVISIBLE);
+			btnSairRota.getLayoutParams().height = 0;
+			
+			
 		}
+		
 
 		
 		lblAdm.setText(adm);
@@ -174,11 +188,18 @@ public class DetailsUserListRoteFragment extends Fragment{
 				latitudes[i] = Double.parseDouble(rotaDetalhe.getEnderecos().get(i + 1).getLatitude());
 				longitudes[i] = Double.parseDouble(rotaDetalhe.getEnderecos().get(i + 1).getLongitude());
 				String titulo = rotaDetalhe.getUsuarios().get(i - 1).getLogin();
-				loginsContato.add(titulo);
+				logins.add(titulo);
 				String telefoneParticipante = rotaDetalhe.getUsuarios().get(i - 1).getPessoa().getCelular();
 				telefones.add(telefoneParticipante);
 				String rua = rotaDetalhe.getEnderecos().get(i + 1).getRua() + ", " + rotaDetalhe.getEnderecos().get(i + 1).getNumero() + " - " + rotaDetalhe.getEnderecos().get(i + 1).getBairro();
 				setMarker(latitudes[i], longitudes[i], titulo, rua, false).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_destino_verde));
+			}
+		}
+		
+
+		for (int i = 0; i < logins.size(); i++){
+			if(!verificaUser(logins.get(i))){
+				loginsContato.add(logins.get(i));
 			}
 		}
 		
@@ -254,8 +275,11 @@ public class DetailsUserListRoteFragment extends Fragment{
 	}
 
 	private void popupSms(){
+		
+
 		final ArrayList<Integer> mSelectedItems = new ArrayList<Integer>();  // Where we track the selected items
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		
 		final CharSequence[] items = loginsContato.toArray(new CharSequence[loginsContato.size()]); 
 
 		// Set the dialog title
@@ -282,7 +306,14 @@ public class DetailsUserListRoteFragment extends Fragment{
 			public void onClick(DialogInterface dialog, int id) {
 				// User clicked OK, so save the mSelectedItems results somewhere
 				// or return them to the component that opened the dialog
-				enviaSms(mSelectedItems);
+				if(mSelectedItems.size() == 0){
+					dialog.cancel();
+					Utils.geraDialogInformacao("Sem seleção", "Nenhum contato foi selecionado", context);
+					
+				} else{
+					enviaSms(mSelectedItems);
+				}
+				
 			}
 		})
 		.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -299,9 +330,10 @@ public class DetailsUserListRoteFragment extends Fragment{
 	}
 
 	private void popupLigar(){
+		
+
 		final CharSequence[] items = loginsContato.toArray(new CharSequence[loginsContato.size()]);
-
-
+	
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle("Ligar para...");
 		builder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
@@ -392,8 +424,8 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 			String response = "";
 			EnderecoApp endereco = null;
-			for(int i = 0; i < loginsContato.size(); i++){
-				if (userName.equals(loginsContato.get(i))){
+			for(int i = 0; i < logins.size(); i++){
+				if (userName.equals(logins.get(i))){
 					endereco = rotaDetalhe.getEnderecos().get(i + 1);
 				}
 			}
@@ -424,11 +456,11 @@ public class DetailsUserListRoteFragment extends Fragment{
 		}		
 	}
 
-	public boolean verificaAdm(String adm){
+	public boolean verificaUser(String users){
 		String userName = "";
 		HashMap<String, String> user = session.getUserDetails();
 		userName = user.get(SessionManagement.KEY_LOGIN);
-		if(adm.equals(userName)){
+		if(users.equals(userName)){
 			return true;
 		}
 	return false;
