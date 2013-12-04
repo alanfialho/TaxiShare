@@ -8,6 +8,7 @@ import TS.FrameWork.DAO.exceptions.NonexistentEntityException;
 import TS.FrameWork.TO.Perimetro;
 import TS.FrameWork.TO.Rota;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -111,13 +112,19 @@ public class RotaJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             List<Rota> rotas;
+            List<Rota> rotas2;
+            List<Rota> result = new ArrayList();
             Query q = em.createQuery("SELECT distinct r "
                                     + "FROM Rota as r "
                                     + "JOIN r.enderecos as e "     
                                     + "WHERE ((e.latitude between "+origem.getBaixo()+" and "+origem.getCima()+") "
-                                    + "OR (e.latitude between "+destino.getBaixo()+" and "+destino.getCima()+")) "
-                                    + "AND ((e.longitude between "+origem.getEsquerda()+" and "+origem.getDireita()+") "
-                                    + "OR (e.longitude between " +destino.getEsquerda()+" and "+destino.getDireita()+")) "    
+                                    + "AND (e.longitude between "+origem.getEsquerda()+" and "+origem.getDireita()+")) and e.tipo = 'O') "    
+                                    + "AND r.flagAberta = 1");
+            Query q2 = em.createQuery("SELECT distinct r "
+                                    + "FROM Rota as r "
+                                    + "JOIN r.enderecos as e "     
+                                    + "WHERE ((e.latitude between "+destino.getBaixo()+" and "+destino.getCima()+") "
+                                    + "AND (e.longitude between "+destino.getEsquerda()+" and "+destino.getDireita()+")) and e.tipo = 'D') "    
                                     + "AND r.flagAberta = 1");
 //                    .setParameter("lat1", origem.getCima())
 //                    .setParameter("lat2", origem.getBaixo())
@@ -127,9 +134,27 @@ public class RotaJpaController implements Serializable {
 //                    .setParameter("long2", origem.getDireita())
 //                    .setParameter("long3", destino.getEsquerda())
 //                    .setParameter("long4", destino.getDireita());
-                    
+                        
+            
+            
+            
             rotas = q.getResultList();
-            return rotas;
+            rotas2 = q2.getResultList();
+            if(rotas.size() > 0 && rotas2.size()> 0)
+            {
+                for(int j=0; j<rotas.size();j++)
+                {
+                
+                    for(int i=0; i<rotas2.size();i++)
+                    {
+                        if(rotas.get(j).getId() == rotas2.get(i).getId())
+                        {
+                            result.add(rotas2.get(i));
+                        }
+                    }
+                }
+            }
+            return result;
             
         } catch(Exception ex) {
             throw ex;
