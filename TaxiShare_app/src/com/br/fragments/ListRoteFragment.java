@@ -63,15 +63,8 @@ public class ListRoteFragment extends Fragment {
 		btnCriar = (Button) rootView.findViewById(R.id.rote_list_btn_criar);
 
 		
-		//Retira do rotas buscadas as rotas com numero de passageiros >= 4
-		for (int i = 0; i < rotas.size(); i++){
-			RotaApp rotinha = rotas.get(i);
-
-			if (rotinha.getPassExistentes() >= 4){
-				rotas.remove(i);
-
-			}
-		}
+		
+		
 		
 		
 		RoteAdapter roteAdapter = new RoteAdapter(context, rotas);		

@@ -1,17 +1,26 @@
 package com.br.resources;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+
 import com.br.activitys.R;
+
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ParseException;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.Toast;
 
 
 public class Utils {
+	
 
 	public final static boolean isValidEmail(CharSequence target) {
 		if (target == null) {
@@ -19,6 +28,31 @@ public class Utils {
 		} else {
 			return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
 		}
+	}
+	
+	public final static void geraDialogInformacao(String titulo, String mensagem, Context context){
+		AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+		
+		builder1.setTitle(titulo);
+		builder1.setMessage(mensagem);
+
+		builder1.setNeutralButton("OK", new DialogInterface.OnClickListener(){
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+			
+			}
+		});
+		builder1.show();
+
+	}
+	
+	public static String convertTo24HoursFormat(String twelveHourTime) throws java.text.ParseException{
+		SimpleDateFormat formatter = new SimpleDateFormat("h:mm a");
+		java.util.Date date = formatter.parse(twelveHourTime);
+		twelveHourTime = date.toString();
+		return twelveHourTime;
+	  
 	}
 
 	public final static void gerarToast(Context context, String message){
