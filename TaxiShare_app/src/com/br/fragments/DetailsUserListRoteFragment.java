@@ -1,5 +1,6 @@
 package com.br.fragments;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -114,7 +115,11 @@ public class DetailsUserListRoteFragment extends Fragment{
 		
 		int passageiro =  4 - rota.getPassExistentes();
 		lblPassageiros.setText(passageiro + "");
-		lblHora.setText(rota.getDataRota().toString());
+		String hora = rota.getDataRota().toString();
+		hora = hora.split(" ") [3] + " " + hora.split(" ")[4];
+		hora = hora.split(":")[0] + "h" + hora.split(":")[1] + " " + hora.split(" ")[1];
+		lblHora.setText(hora);
+		
 		
 		
 	}

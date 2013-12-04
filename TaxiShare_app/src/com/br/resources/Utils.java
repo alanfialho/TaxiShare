@@ -1,5 +1,8 @@
 package com.br.resources;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+
 import com.br.activitys.R;
 
 import android.app.AlertDialog;
@@ -9,12 +12,15 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.ParseException;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.Toast;
 
 
 public class Utils {
+	
 
 	public final static boolean isValidEmail(CharSequence target) {
 		if (target == null) {
@@ -39,6 +45,14 @@ public class Utils {
 		});
 		builder1.show();
 
+	}
+	
+	public static String convertTo24HoursFormat(String twelveHourTime) throws java.text.ParseException{
+		SimpleDateFormat formatter = new SimpleDateFormat("h:mm a");
+		java.util.Date date = formatter.parse(twelveHourTime);
+		twelveHourTime = date.toString();
+		return twelveHourTime;
+	  
 	}
 
 	public final static void gerarToast(Context context, String message){
