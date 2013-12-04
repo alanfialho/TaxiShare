@@ -1,8 +1,12 @@
 package com.br.fragments;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.br.activitys.R;
 import com.br.entidades.EnderecoApp;
@@ -44,12 +48,13 @@ public class DetailsUserListRoteFragment extends Fragment{
 	private MapView mapView;
 	private Bundle mBundle;
 	private Button btnSairRota, btnSms, btnLigar;
-	private TextView lblOrigem, lblDestino, lblPassageiros, lblAdm, lblHora;
+	private TextView lblOrigem, lblOrigem2, lblDestino, lblDestino2, lblPassageiros, lblAdm, lblHora;
 	private Context context;
 	private RotaApp rota, rotaDetalhe;
-	private List<String> logins, telefones;
+	private List<String> logins, telefones, loginsContato;
 	private int selecionado;
 	private SessionManagement session;
+
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.rote_users_details, container, false);
@@ -91,7 +96,9 @@ public class DetailsUserListRoteFragment extends Fragment{
 		session = new SessionManagement(rootView.getContext());
 
 		lblOrigem = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_origem_info);
+		lblOrigem2 = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_origem_info2);
 		lblDestino = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_destino_info);
+		lblDestino2 = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_destino_info2);
 		lblPassageiros = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_passageiros_info);
 		lblAdm = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_adm_nome);
 		lblHora = (TextView) rootView.findViewById(R.id.rote_users_details_lbl_hora_info);
@@ -99,21 +106,42 @@ public class DetailsUserListRoteFragment extends Fragment{
 		btnSms = (Button) rootView.findViewById(R.id.rote_users_details_btn_sms);
 		btnLigar = (Button) rootView.findViewById(R.id.rote_users_details_btn_ligar);
 
-		lblOrigem.setText(rota.getEnderecos().get(0).getRua() + ", " + rota.getEnderecos().get(0).getNumero() + " - " + rota.getEnderecos().get(0).getCidade());
-		lblDestino.setText(rota.getEnderecos().get(1).getRua() + ", " + rota.getEnderecos().get(1).getNumero() + " - " + rota.getEnderecos().get(1).getCidade());
+		
+		lblOrigem.setText(rota.getEnderecos().get(0).getRua() + ", " + rota.getEnderecos().get(0).getNumero());
+		lblOrigem2.setText(rota.getEnderecos().get(0).getBairro() + " - " + rota.getEnderecos().get(0).getCidade());
+		lblDestino.setText(rota.getEnderecos().get(1).getRua() + ", " + rota.getEnderecos().get(1).getNumero());
+		lblDestino2.setText(rota.getEnderecos().get(1).getBairro() + " - " + rota.getEnderecos().get(1).getCidade());
+		
+		
 		int passageiro =  4 - rota.getPassExistentes();
 		lblPassageiros.setText(passageiro + "");
-		lblHora.setText(rota.getDataRota().toString());
+		String hora = rota.getDataRota().toString();
+		hora = hora.split(" ") [3] + " " + hora.split(" ")[4];
+		hora = hora.split(":")[0] + "h" + hora.split(":")[1] + " " + hora.split(" ")[1];
+		lblHora.setText(hora);
+		
+		
+		
 	}
 
 	public void setBtnAction(){
 		btnSms.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				popupSms();
+				if (loginsContato.size() <= 0){
+					Utils.geraDialogInformacao("Sem participantes", "Ainda não há participantes nessa rota.", context);
+				} else{
+					popupSms();
+				}
+				
 			}});
 		btnLigar.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				popupLigar();
+				if (loginsContato.size() <= 0){
+					Utils.geraDialogInformacao("Sem participantes", "Ainda não há participantes nessa rota.", context);
+				} else{
+					popupLigar();
+				}
+				
 			}});
 		btnSairRota.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
@@ -131,6 +159,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 	public void setMarcadores(){
 		int participantes = 0;
 		logins = new ArrayList<String>();
+		loginsContato = new ArrayList<String>();
 		telefones = new ArrayList<String>();
 		participantes += rotaDetalhe.getUsuarios().size();
 		double[] latitudes = new double[participantes + 1];
@@ -140,7 +169,17 @@ public class DetailsUserListRoteFragment extends Fragment{
 		latitudes[0] = Double.parseDouble(rotaDetalhe.getEnderecos().get(1).getLatitude());
 		longitudes[0] = Double.parseDouble(rotaDetalhe.getEnderecos().get(1).getLongitude());
 		String adm = rotaDetalhe.getAdministrador().getLogin();
+		
+		if(verificaUser(adm)){
+			btnSairRota.setEnabled(false);
+			btnSairRota.setVisibility(View.INVISIBLE);
+			btnSairRota.getLayoutParams().height = 0;
+			
+			
+		}
+		
 
+		
 		lblAdm.setText(adm);
 		logins.add(adm);
 		String telefoneAdm = rotaDetalhe.getAdministrador().getPessoa().getCelular();
@@ -161,6 +200,15 @@ public class DetailsUserListRoteFragment extends Fragment{
 				setMarker(latitudes[i], longitudes[i], titulo, rua, false).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_destino_verde));
 			}
 		}
+		
+
+		for (int i = 0; i < logins.size(); i++){
+			if(!verificaUser(logins.get(i))){
+				loginsContato.add(logins.get(i));
+			}
+		}
+		
+		
 	}
 
 
@@ -232,9 +280,12 @@ public class DetailsUserListRoteFragment extends Fragment{
 	}
 
 	private void popupSms(){
+		
+
 		final ArrayList<Integer> mSelectedItems = new ArrayList<Integer>();  // Where we track the selected items
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		final CharSequence[] items = logins.toArray(new CharSequence[logins.size()]); 
+		
+		final CharSequence[] items = loginsContato.toArray(new CharSequence[loginsContato.size()]); 
 
 		// Set the dialog title
 		builder.setTitle("Mandar SMS para...")
@@ -260,7 +311,14 @@ public class DetailsUserListRoteFragment extends Fragment{
 			public void onClick(DialogInterface dialog, int id) {
 				// User clicked OK, so save the mSelectedItems results somewhere
 				// or return them to the component that opened the dialog
-				enviaSms(mSelectedItems);
+				if(mSelectedItems.size() == 0){
+					dialog.cancel();
+					Utils.geraDialogInformacao("Sem seleção", "Nenhum contato foi selecionado", context);
+					
+				} else{
+					enviaSms(mSelectedItems);
+				}
+				
 			}
 		})
 		.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -277,9 +335,10 @@ public class DetailsUserListRoteFragment extends Fragment{
 	}
 
 	private void popupLigar(){
-		final CharSequence[] items = logins.toArray(new CharSequence[logins.size()]);
+		
 
-
+		final CharSequence[] items = loginsContato.toArray(new CharSequence[loginsContato.size()]);
+	
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle("Ligar para...");
 		builder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
@@ -314,7 +373,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 		String tels = "";
 
 		for (int i = 0; i < c.size(); i++){
-			for (int j = 0; j < logins.size(); j++){
+			for (int j = 0; j < loginsContato.size(); j++){
 				if(Integer.parseInt(c.get(i).toString()) == j){
 					if(tels.isEmpty()){
 						tels += telefones.get(j);
@@ -339,7 +398,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 	private void efetuarLigacao(int l){
 		String tel = "";
-		for (int i = 0; i < logins.size(); i++){
+		for (int i = 0; i < loginsContato.size(); i++){
 			if (i == l){
 				tel = telefones.get(i);
 			}
@@ -353,8 +412,9 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 	private class SairRotaTask extends AsyncTask<String, Void, String> {
 		ProgressDialog progress;
-		String userName;
+		
 		int rotaId, id;
+		String userName;
 
 		protected void onPreExecute() {
 			progress = Utils.setProgreesDialog(progress, context, "Carregando", "Aguarde...");
@@ -387,14 +447,31 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 		@Override
 		protected void onPostExecute(String response) {
-//			Utils.gerarToast(context, response);
+
+			try {
+				JSONObject json = new JSONObject(response);
+				Utils.gerarToast(context, json.getString("descricao"));
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 			Bundle args = new Bundle();
 			Utils.changeFragment(getFragmentManager(), new UserListRoteFragment(), args);
 			progress.dismiss();
 		}		
 	}
 
-
+	public boolean verificaUser(String users){
+		String userName = "";
+		HashMap<String, String> user = session.getUserDetails();
+		userName = user.get(SessionManagement.KEY_LOGIN);
+		if(users.equals(userName)){
+			return true;
+		}
+	return false;
+		
+	}
+	
 	@Override
 	public void onResume() {
 		super.onResume();

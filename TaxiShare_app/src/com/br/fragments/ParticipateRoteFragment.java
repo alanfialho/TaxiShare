@@ -102,7 +102,11 @@ public class ParticipateRoteFragment extends Fragment{
 		lblDestino2.setText(rota.getEnderecos().get(1).getBairro() + " - " + rota.getEnderecos().get(1).getCidade());
 		int passageiro =  4 - rota.getPassExistentes();
 		lblPassageiros.setText(passageiro + "");
-		lblHora.setText(rota.getDataRota().toString());
+		
+		String hora = rota.getDataRota().toString();
+		hora = hora.split(" ") [3] + " " + hora.split(" ")[4];
+		hora = hora.split(":")[0] + "h" + hora.split(":")[1] + " " + hora.split(" ")[1];
+		lblHora.setText(hora);
 	}
 
 	//Seta os marcadores no mapa
@@ -206,6 +210,7 @@ public class ParticipateRoteFragment extends Fragment{
 
 		@Override
 		protected void onPostExecute(String response) {
+			
 			Utils.gerarToast(context, "Entrou na rota");
 			Bundle args = new Bundle();
 			Utils.changeFragment(getFragmentManager(), new UserListRoteFragment(), args);

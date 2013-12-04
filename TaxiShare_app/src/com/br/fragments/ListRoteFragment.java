@@ -1,5 +1,6 @@
 package com.br.fragments;
 
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.Fragment;
@@ -19,9 +20,11 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.br.activitys.R;
 import com.br.adapter.RoteAdapter;
+import com.br.entidades.EnderecoApp;
 import com.br.entidades.RotaApp;
 import com.br.network.WSTaxiShare;
 import com.br.resources.Utils;
+import com.br.sessions.SessionManagement;
 
 
 public class ListRoteFragment extends Fragment {
@@ -32,6 +35,8 @@ public class ListRoteFragment extends Fragment {
 	RoteAdapter adapter;
 	public static Address destination, origin;
 	private Button btnCriar;
+	private int idUser;
+	private SessionManagement session;
 	//public static List<RotaApp> rotasBuscadas;
 
 
@@ -43,7 +48,7 @@ public class ListRoteFragment extends Fragment {
 		List<RotaApp> rotas = (List<RotaApp>) args.getSerializable("rotas");
 		destination = args.getParcelable("destinoAddress");
 		origin = args.getParcelable("origemAddress");
-		
+		session = new SessionManagement(rootView.getContext());
 
 		fillSearchList(rotas);	
 		setBtnAction();
@@ -52,10 +57,35 @@ public class ListRoteFragment extends Fragment {
 	}
 
 	private void fillSearchList(List<RotaApp> rotas) {
+		HashMap<String, String> user = session.getUserDetails();
+		idUser = Integer.parseInt(user.get(SessionManagement.KEY_PESSOAID));
+		
 		btnCriar = (Button) rootView.findViewById(R.id.rote_list_btn_criar);
+
+		
+		
+		
+		
+		
 		RoteAdapter roteAdapter = new RoteAdapter(context, rotas);		
-		roteList = (ListView) rootView.findViewById(R.id.rote_list_list_view);
+		roteList = (ListView) rootView.findViewById(R.id.rote_list_list_view);		
 		roteList.setAdapter(roteAdapter);
+		
+		
+		
+		
+/*		for (int i = 0; i < roteList.getCount(); i++){
+			RotaApp rotinha = (RotaApp) roteList.getAdapter().getItem(i);
+			int id = rotinha.getAdministrador().getId();
+			if (idUser == id){
+				roteList.removeViewAt(i);
+				
+			}
+		}*/
+		
+		
+		
+		
 		roteList.setDivider(new ColorDrawable(0xFFfbad25));
 		roteList.setDividerHeight(2);
 		roteList.setOnItemClickListener(new OnItemClickListener(){

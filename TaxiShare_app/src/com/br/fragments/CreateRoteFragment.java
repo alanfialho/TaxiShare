@@ -17,7 +17,6 @@ import android.content.Context;
 import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +69,9 @@ public class CreateRoteFragment extends Fragment {
 			textOrigem = (EditText) rootView.findViewById(R.id.rote_create_txt_origem);
 			textDestino = (EditText) rootView.findViewById(R.id.rote_create_txt_destino);
 			spnPessoas = (Spinner) rootView.findViewById(R.id.rote_create_sp_pessoas);
+//			spnPessoas.setContentDescription("Pessoas com você");
 			tpHorarioSaida = (TimePicker) rootView.findViewById(R.id.rote_create_tp_saida);
+			tpHorarioSaida.setIs24HourView(true);
 
 
 			//Importando botões
@@ -150,6 +151,7 @@ public class CreateRoteFragment extends Fragment {
 				//Instancia uma nova data
 				Date date = new Date(); 
 				Calendar calendar = GregorianCalendar.getInstance(); 
+				
 				
 				//Seta a data no calendario
 				calendar.setTime(date);   

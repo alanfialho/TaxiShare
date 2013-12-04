@@ -17,6 +17,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,7 @@ public class SearchRoteFragment extends Fragment {
 	MapUtils mapUtils;
 	GpsTracker gps;
 	View rootView;
+	private boolean doubleBackToExitPressedOnce;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -168,9 +170,6 @@ public class SearchRoteFragment extends Fragment {
 		btnBusca.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 
-				ProgressDialog progress = null;
-				//progress = Utils.setProgreesDialog(progress, context, "Buscando endereço", "Aguarde...");
-
 				//pega o texto dos campos
 				String origem = txtEndereco1.getText().toString();
 				String destino = txtEndereco2.getText().toString();
@@ -187,7 +186,6 @@ public class SearchRoteFragment extends Fragment {
 
 				if(origemNumberTest && destinoNumberTest){
 					try {
-						progress = Utils.setProgreesDialog(progress, context, "Buscando endereço", "Aguarde...");
 						//recebe uma lista de endereços com objetos ADDRESS
 						origemLista = getListaDeEnderecos(origem);
 						destinoLista = getListaDeEnderecos(destino);
@@ -251,7 +249,6 @@ public class SearchRoteFragment extends Fragment {
 							});
 
 							//Mostra a popup de origem primeiro
-							progress.dismiss();
 							popupOrigem.show();						
 
 						}
@@ -369,6 +366,14 @@ public class SearchRoteFragment extends Fragment {
 
 			try {
 				JSONObject jsonResposta = new JSONObject(response);
+				
+				//Retira do rotas buscadas as rotas com numero de passageiros >= 4
+				for (int i = 0; i < rotas.size(); i++){
+					if (rotas.get(i).getPassExistentes() >= 4){
+						rotas.remove(i);
+
+					}
+				}
 
 				//Checamos se a resposta teve sucesso e se retornou uma lista de rotas
 				if(jsonResposta.getInt("errorCode")==0 && rotas.size() > 0){
@@ -515,10 +520,16 @@ public class SearchRoteFragment extends Fragment {
 
 	}
 
-	 public void onBackPressed() {
-	     super.onStart();
-		 
-	 } 
+	public void onBackPressed() {
+
+		if (doubleBackToExitPressedOnce) {
+			onBackPressed();
+			return;
+		}
+		this.doubleBackToExitPressedOnce = true;
+		onResume();
+
+	} 
 
 	 private void verificaTamanhoTela(){
 
