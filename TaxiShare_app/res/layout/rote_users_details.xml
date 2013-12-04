@@ -16,7 +16,7 @@
         <LinearLayout
             android:id="@+id/layout_users_details_mapa"
             android:layout_width="match_parent"
-            android:layout_height="208dp" >
+            android:layout_height="250dp" >
 
             <com.google.android.gms.maps.MapView
                 android:id="@+id/rote_users_details_map"
