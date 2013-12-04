@@ -54,6 +54,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 	private int selecionado;
 	private SessionManagement session;
 
+
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.rote_users_details, container, false);
 		context = getActivity();
@@ -104,8 +105,7 @@ public class DetailsUserListRoteFragment extends Fragment{
 		btnSms = (Button) rootView.findViewById(R.id.rote_users_details_btn_sms);
 		btnLigar = (Button) rootView.findViewById(R.id.rote_users_details_btn_ligar);
 
-		//lblOrigem.setText(rota.getEnderecos().get(0).getRua() + ", " + rota.getEnderecos().get(0).getNumero() + " - " + rota.getEnderecos().get(0).getCidade());
-		//lblDestino.setText(rota.getEnderecos().get(1).getRua() + ", " + rota.getEnderecos().get(1).getNumero() + " - " + rota.getEnderecos().get(1).getCidade());
+		
 		lblOrigem.setText(rota.getEnderecos().get(0).getRua() + ", " + rota.getEnderecos().get(0).getNumero());
 		lblOrigem2.setText(rota.getEnderecos().get(0).getBairro() + " - " + rota.getEnderecos().get(0).getCidade());
 		lblDestino.setText(rota.getEnderecos().get(1).getRua() + ", " + rota.getEnderecos().get(1).getNumero());
@@ -115,6 +115,8 @@ public class DetailsUserListRoteFragment extends Fragment{
 		int passageiro =  4 - rota.getPassExistentes();
 		lblPassageiros.setText(passageiro + "");
 		lblHora.setText(rota.getDataRota().toString());
+		
+		
 	}
 
 	public void setBtnAction(){
@@ -152,7 +154,13 @@ public class DetailsUserListRoteFragment extends Fragment{
 		latitudes[0] = Double.parseDouble(rotaDetalhe.getEnderecos().get(1).getLatitude());
 		longitudes[0] = Double.parseDouble(rotaDetalhe.getEnderecos().get(1).getLongitude());
 		String adm = rotaDetalhe.getAdministrador().getLogin();
+		
+		if(verificaAdm(adm)){
+			btnSairRota.setEnabled(false);
+			btnSairRota.setVisibility(View.INVISIBLE);
+		}
 
+		
 		lblAdm.setText(adm);
 		logins.add(adm);
 		String telefoneAdm = rotaDetalhe.getAdministrador().getPessoa().getCelular();
@@ -173,6 +181,8 @@ public class DetailsUserListRoteFragment extends Fragment{
 				setMarker(latitudes[i], longitudes[i], titulo, rua, false).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_destino_verde));
 			}
 		}
+		
+		
 	}
 
 
@@ -365,8 +375,9 @@ public class DetailsUserListRoteFragment extends Fragment{
 
 	private class SairRotaTask extends AsyncTask<String, Void, String> {
 		ProgressDialog progress;
-		String userName;
+		
 		int rotaId, id;
+		String userName;
 
 		protected void onPreExecute() {
 			progress = Utils.setProgreesDialog(progress, context, "Carregando", "Aguarde...");
@@ -413,7 +424,17 @@ public class DetailsUserListRoteFragment extends Fragment{
 		}		
 	}
 
-
+	public boolean verificaAdm(String adm){
+		String userName = "";
+		HashMap<String, String> user = session.getUserDetails();
+		userName = user.get(SessionManagement.KEY_LOGIN);
+		if(adm.equals(userName)){
+			return true;
+		}
+	return false;
+		
+	}
+	
 	@Override
 	public void onResume() {
 		super.onResume();
