@@ -2,6 +2,9 @@ package com.br.fragments;
 
 import java.util.HashMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -57,7 +60,7 @@ public class ParticipateRoteFragment extends Fragment{
 		mapUtils = new MapUtils(context, googleMap);
 		setAtributes(rootView);
 		setBtnAction();
-		
+
 
 		return rootView;	
 	}
@@ -131,7 +134,7 @@ public class ParticipateRoteFragment extends Fragment{
 			}
 		}
 	}
-	
+
 	public Marker setMarker(double latitude, double longitude, String title, String snippet, boolean zoom) {
 		//		googleMap.addMarker(new MarkerOptions().position(new LatLng(-23.489839, -46.410520)).title("Marker"));
 		Marker mark = googleMap.addMarker(new MarkerOptions()
@@ -153,10 +156,10 @@ public class ParticipateRoteFragment extends Fragment{
 		googleMap.getProjection();
 		//Adiciona a latitude e longitude da minha localização a um objeto LatLng
 		CameraPosition cp = new CameraPosition.Builder()
-		   .target(new LatLng(myLatLng.latitude, myLatLng.longitude))// centro do mapa para uma lat e long
-		   .zoom(11)          // muda a orientação da camera para leste
-		   .tilt(34)             // ângulo de visão da câmera para 45 graus
-		   .build();             // cria um CameraPosition a partir do builder   
+		.target(new LatLng(myLatLng.latitude, myLatLng.longitude))// centro do mapa para uma lat e long
+		.zoom(11)          // muda a orientação da camera para leste
+		.tilt(34)             // ângulo de visão da câmera para 45 graus
+		.build();             // cria um CameraPosition a partir do builder   
 
 		//Move a camera do mapa para a minha localização de acordo com o objeto LatLng gerado
 		googleMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
@@ -206,9 +209,19 @@ public class ParticipateRoteFragment extends Fragment{
 
 		@Override
 		protected void onPostExecute(String response) {
-			Utils.gerarToast(context, "Entrou na rota");
-			Bundle args = new Bundle();
-			Utils.changeFragment(getFragmentManager(), new UserListRoteFragment(), args);
+
+			try {
+				JSONObject json = new JSONObject(response);
+				if(json.getInt("errorCode") == 0)
+				{
+					Bundle args = new Bundle();
+					Utils.changeFragment(getFragmentManager(), new UserListRoteFragment(), args);
+				}
+				Utils.gerarToast(context, json.getString("descricao"));
+			} catch (JSONException e) {
+				Utils.gerarToast(context, "Tente novamente mais tarde");
+			}
+
 			progress.dismiss();
 		}		
 	}
@@ -231,7 +244,7 @@ public class ParticipateRoteFragment extends Fragment{
 				WSTaxiShare ws = new WSTaxiShare();
 				rotaDetalhe = ws.detailRota(rotaId);
 				response = "{errorCode:0, descricao:Sucesso}";
-				
+
 			} catch (Exception e) {
 				Utils.logException("ParticipateRoteFragment", "FillList", "onPostExecute", e);
 				response = "{errorCode:1, descricao:Erro pegar detalhes rota!}";
