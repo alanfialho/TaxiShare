@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/backcinza" >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            
+            android:id="@+id/RelativeLayout2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <ImageView
+                android:id="@+id/rote_users_list_item_icon"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="49dp"
+                android:src="@drawable/logo_amarelo" />
+
+            <EditText
+                android:id="@+id/login_txt_login"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignBottom="@+id/login_txt_senha"
+                android:layout_alignLeft="@+id/login_txt_senha"
+                android:layout_alignRight="@+id/login_txt_senha"
+                android:layout_marginBottom="58dp"
+                android:background="@drawable/edittext"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Digite seu login"
+                android:maxLength="12"
+                android:maxLines="1"
+                android:padding="8dip"
+                android:singleLine="true"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/login_txt_senha"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignLeft="@+id/login_btn_login"
+                android:layout_alignRight="@+id/login_btn_login"
+                android:layout_below="@+id/rote_users_list_item_icon"
+                android:layout_marginTop="135dp"
+                android:background="@drawable/edittext"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Digite sua senha"
+                android:inputType="textPassword"
+                android:maxLength="16"
+                android:maxLines="1"
+                android:padding="8dip"
+                android:singleLine="true"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/login_btn_login"
+                style="@style/BtnTaxi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/login_txt_senha"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:text="Logar"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/login_btn_forget"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/login_btn_login"
+                android:layout_marginTop="29dp"
+                android:background="@null"
+                android:text="Esqueci minha senha!"
+                android:textColor="#f4a21e"
+                android:textSize="16dp" />
+
+            <Button
+                android:id="@+id/login_btn_register"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/login_btn_forget"
+                android:layout_marginTop="21dp"
+                android:background="@null"
+                android:text="Não tem cadastro? Cadastre-se aqui!"
+                android:textColor="#f4a21e"
+                android:textSize="16dp" />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
